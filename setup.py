@@ -11,7 +11,7 @@ test_requires = [
     'coverage<5',
     'flake8',
     'isort[pipfile]',
-    'pytest',
+    'pytest<5.2',
     'pytest-cov',
     'mypy',
 ]
