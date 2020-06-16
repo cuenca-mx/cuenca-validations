@@ -34,7 +34,7 @@ setup(
     package_data=dict(cuenca_validations=['py.typed']),
     python_requires='>=3.6',
     install_requires=[
-        'clabe>=1.0.0,<1.1.0',
+        'clabe>=1.1.0,<1.2.0',
         'pydantic>=1.5,<1.6',
         'dataclasses>=0.6;python_version<"3.7"',
     ],
