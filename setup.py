@@ -37,6 +37,7 @@ setup(
         'clabe>=1.1.1,<1.2.0',
         'pydantic>=1.5,<1.6',
         'dataclasses>=0.6;python_version<"3.7"',
+        'sphinx',
     ],
     setup_requires=['pytest-runner'],
     tests_require=test_requires,
