@@ -1,12 +1,12 @@
-from typing import ClassVar
-
 from pydantic import PositiveInt, StrictInt
-from pydantic.types import PaymentCardNumber as PydanticPaymentCardNumber
+
+from ..validators import sanitize_dict
 
 
-class PaymentCardNumber(PydanticPaymentCardNumber):
-    min_length: ClassVar[int] = 16
-    max_length: ClassVar[int] = 16
+class SantizedDict(dict):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        sanitize_dict(self)
 
 
 class StrictPositiveInt(StrictInt, PositiveInt):
