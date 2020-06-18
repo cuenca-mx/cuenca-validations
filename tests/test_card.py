@@ -3,7 +3,6 @@ from pydantic import BaseModel
 from pydantic.errors import PydanticValueError
 
 from cuenca_validations import PaymentCardNumber, StrictPayemntCardNumber
-from cuenca_validations.errors import CardBinValidationError
 
 VALID_BBVA = '4772130000000003'
 INVALID_BIN = '4050000000000001'
