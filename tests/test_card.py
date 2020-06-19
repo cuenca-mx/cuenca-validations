@@ -1,6 +1,5 @@
 import pytest
-from pydantic import BaseModel
-from pydantic.error_wrappers import ValidationError
+from pydantic import BaseModel, ValidationError
 
 from cuenca_validations import PaymentCardNumber, StrictPayemntCardNumber
 
