@@ -11,6 +11,7 @@ __all__ = [
     'Status',
     'StrictPayemntCardNumber',
     'StrictPositiveInt',
+    'StrictTransferRequest',
     'TransactionQuery',
     'TransferNetwork',
     'TransferQuery',
@@ -34,4 +35,4 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
-from .requests import TransferRequest
+from .requests import StrictTransferRequest, TransferRequest

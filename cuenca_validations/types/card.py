@@ -39,6 +39,8 @@ class StrictPayemntCardNumber(PaymentCardNumber):
     requires that the BIN be associated to a known BIN for a Mexican bank
     """
 
+    bank_code: str
+
     @classmethod
     def __get_validators__(cls) -> 'CallableGenerator':
         yield from PaymentCardNumber.__get_validators__()
