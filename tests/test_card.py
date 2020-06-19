@@ -1,6 +1,6 @@
 import pytest
 from pydantic import BaseModel
-from pydantic.errors import PydanticValueError
+from pydantic.error_wrappers import ValidationError
 
 from cuenca_validations import PaymentCardNumber, StrictPayemntCardNumber
 
@@ -21,5 +21,17 @@ def test_invalid_bin():
     class PaymentCard(BaseModel):
         card_number: StrictPayemntCardNumber
 
-    with pytest.raises(PydanticValueError):
+    with pytest.raises(ValidationError) as exc_info:
         PaymentCard(card_number=INVALID_BIN)
+    assert exc_info.value.errors() == [
+        {
+            'loc': ('card_number',),
+            'msg': 'card number does not have a valid Mexican debit card BIN',
+            'type': 'value_error.payment_card_number.bin',
+        }
+    ]
+
+
+def test_valid_bin_strict_payment():
+    cn = StrictPayemntCardNumber.validate_bin(PaymentCardNumber(VALID_BBVA))
+    assert cn == VALID_BBVA

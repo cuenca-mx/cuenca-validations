@@ -39,11 +39,13 @@ class StrictPayemntCardNumber(PaymentCardNumber):
     requires that the BIN be associated to a known BIN for a Mexican bank
     """
 
-    def __init__(self, card_number: str):
-        self.card_number = card_number
-        PaymentCardNumber.__init__(self, card_number)
+    @classmethod
+    def __get_validators__(cls) -> 'CallableGenerator':
+        yield from PaymentCardNumber.__get_validators__()
+        yield cls.validate_bin
 
-    def validate_bin(self):
-        if self.bank_code is None:
+    @classmethod
+    def validate_bin(cls, card_number: PaymentCardNumber):
+        if card_number.bank_code is None:
             raise CardBinValidationError
-        return self.card_number
+        return card_number
