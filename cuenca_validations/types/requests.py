@@ -3,7 +3,7 @@ from typing import Union
 from clabe import Clabe
 from pydantic import BaseModel, StrictStr
 
-from .card import PaymentCardNumber, StrictPayemntCardNumber
+from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
 
@@ -16,4 +16,4 @@ class TransferRequest(BaseModel):
 
 
 class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPayemntCardNumber]
+    account_number: Union[Clabe, StrictPaymentCardNumber]

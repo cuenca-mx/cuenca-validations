@@ -9,7 +9,7 @@ __all__ = [
     'QueryParams',
     'SantizedDict',
     'Status',
-    'StrictPayemntCardNumber',
+    'StrictPaymentCardNumber',
     'StrictPositiveInt',
     'StrictTransferRequest',
     'TransactionQuery',
@@ -18,7 +18,7 @@ __all__ = [
     'TransferRequest',
 ]
 
-from .card import PaymentCardNumber, StrictPayemntCardNumber
+from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
     CardNetwork,
     CardTransactionType,

@@ -34,7 +34,7 @@ class PaymentCardNumber(PydanticPaymentCardNumber):
         yield cls
 
 
-class StrictPayemntCardNumber(PaymentCardNumber):
+class StrictPaymentCardNumber(PaymentCardNumber):
     """
     requires that the BIN be associated to a known BIN for a Mexican bank
     """
