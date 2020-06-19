@@ -4,8 +4,8 @@ from typing import Optional
 from pydantic import BaseModel, Extra
 from pydantic.types import ConstrainedInt
 
-from ..types import sanitize_dict
 from ..typing import DictStrAny
+from ..validators import sanitize_dict
 
 MAX_PAGE_LIMIT = 100
 

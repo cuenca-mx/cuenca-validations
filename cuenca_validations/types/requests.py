@@ -3,7 +3,8 @@ from typing import Union
 from clabe import Clabe
 from pydantic import BaseModel, StrictStr
 
-from .general import PaymentCardNumber, StrictPositiveInt
+from .card import PaymentCardNumber
+from .general import StrictPositiveInt
 
 
 class TransferRequest(BaseModel):
