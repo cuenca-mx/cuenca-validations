@@ -7,12 +7,12 @@ version = SourceFileLoader(
 ).load_module()
 
 test_requires = [
-    'black',
-    'coverage<5',
-    'flake8',
-    'isort[pipfile]',
     'pytest',
+    'coverage<5',
     'pytest-cov',
+    'black',
+    'isort[pipfile]',
+    'flake8',
     'mypy',
 ]
 
