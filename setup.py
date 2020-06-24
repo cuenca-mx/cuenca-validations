@@ -7,13 +7,12 @@ version = SourceFileLoader(
 ).load_module()
 
 test_requires = [
-    'pytest',
-    'coverage<5',
-    'pytest-cov',
-    'black',
-    'isort[pipfile]',
-    'flake8',
-    'mypy',
+    'pytest==5.4.3',
+    'pytest-cov==2.10.0',
+    'black==19.10b0',
+    'isort[pipfile]==4.3.21',
+    'flake8==3.8.3',
+    'mypy==0.782',
 ]
 
 with open('README.md', 'r') as f:
@@ -34,8 +33,8 @@ setup(
     package_data=dict(cuenca_validations=['py.typed']),
     python_requires='>=3.6',
     install_requires=[
-        'clabe>=1.1.1,<1.2.0',
-        'pydantic>=1.5,<1.6',
+        'clabe==1.2.0',
+        'pydantic==1.5.1',
         'dataclasses>=0.6;python_version<"3.7"',
     ],
     setup_requires=['pytest-runner'],
