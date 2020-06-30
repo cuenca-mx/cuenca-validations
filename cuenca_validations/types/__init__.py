@@ -3,6 +3,7 @@ __all__ = [
     'CardNetwork',
     'CardTransactionType',
     'CardType',
+    'CJSONEncoder',
     'DepositNetwork',
     'Digits',
     'Limit',
@@ -29,7 +30,13 @@ from .enums import (
     Status,
     TransferNetwork,
 )
-from .general import Digits, SantizedDict, StrictPositiveInt, digits
+from .general import (
+    CJSONEncoder,
+    Digits,
+    SantizedDict,
+    StrictPositiveInt,
+    digits,
+)
 from .queries import (
     ApiKeyQuery,
     Limit,

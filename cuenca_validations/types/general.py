@@ -3,7 +3,7 @@ from typing import TYPE_CHECKING, Optional, Type
 
 from pydantic import ConstrainedStr, NotDigitError, PositiveInt, StrictInt
 
-from ..validators import sanitize_dict
+from ..validators import sanitize_dict, sanitize_item
 
 if TYPE_CHECKING:
     from pydantic.typing import CallableGenerator
@@ -18,7 +18,7 @@ class SantizedDict(dict):
 class CJSONEncoder(json.JSONEncoder):
     def default(self, o):
         try:
-            encoded = sanitize_dict(o)
+            encoded = sanitize_item(o)
         except AttributeError:
             encoded = super().default(o)
         return encoded
