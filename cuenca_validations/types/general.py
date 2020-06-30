@@ -1,6 +1,11 @@
+from typing import TYPE_CHECKING, Optional, Type
+
 from pydantic import ConstrainedStr, NotDigitError, PositiveInt, StrictInt
 
 from ..validators import sanitize_dict
+
+if TYPE_CHECKING:
+    from pydantic.typing import CallableGenerator
 
 
 class SantizedDict(dict):
@@ -16,6 +21,13 @@ class StrictPositiveInt(StrictInt, PositiveInt):
     """
 
     ...
+
+
+def digits(
+    min_length: Optional[int] = None, max_length: Optional[int] = None
+) -> Type[str]:
+    namespace = dict(min_length=min_length, max_length=max_length)
+    return type('DigitsValue', (Digits,), namespace)
 
 
 class Digits(ConstrainedStr):

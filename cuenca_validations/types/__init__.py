@@ -17,6 +17,7 @@ __all__ = [
     'TransferNetwork',
     'TransferQuery',
     'TransferRequest',
+    'digits',
 ]
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -28,7 +29,7 @@ from .enums import (
     Status,
     TransferNetwork,
 )
-from .general import Digits, SantizedDict, StrictPositiveInt
+from .general import Digits, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
     Limit,
