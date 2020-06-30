@@ -1,6 +1,4 @@
-from typing import Optional, Type
-
-from pydantic import PositiveInt, StrictInt, constr
+from pydantic import ConstrainedStr, NotDigitError, PositiveInt, StrictInt
 
 from ..validators import sanitize_dict
 
@@ -20,7 +18,14 @@ class StrictPositiveInt(StrictInt, PositiveInt):
     ...
 
 
-def digits(
-    min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Type[str]:
-    return constr(regex=r'^\d+$', min_length=min_length, max_length=max_length)
+class Digits(ConstrainedStr):
+    @classmethod
+    def validate_digits(cls, value: str) -> str:
+        if not value.isdigit():
+            raise NotDigitError
+        return value
+
+    @classmethod
+    def __get_validators__(cls) -> 'CallableGenerator':
+        yield cls.validate_digits
+        yield cls
