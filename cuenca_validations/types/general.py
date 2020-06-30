@@ -1,4 +1,6 @@
-from pydantic import PositiveInt, StrictInt
+from typing import Optional, Type
+
+from pydantic import PositiveInt, StrictInt, constr
 
 from ..validators import sanitize_dict
 
@@ -16,3 +18,9 @@ class StrictPositiveInt(StrictInt, PositiveInt):
     """
 
     ...
+
+
+def digits(
+    min_length: Optional[int] = None, max_length: Optional[int] = None
+) -> Type[str]:
+    return constr(regex=r'^\d+$', min_length=min_length, max_length=max_length)
