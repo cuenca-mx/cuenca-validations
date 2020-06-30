@@ -1,3 +1,4 @@
+import json
 from typing import TYPE_CHECKING, Optional, Type
 
 from pydantic import ConstrainedStr, NotDigitError, PositiveInt, StrictInt
@@ -12,6 +13,15 @@ class SantizedDict(dict):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         sanitize_dict(self)
+
+
+class CJSONEncoder(json.JSONEncoder):
+    def default(self, o):
+        try:
+            encoded = sanitize_dict(o)
+        except AttributeError:
+            encoded = super().default(o)
+        return encoded
 
 
 class StrictPositiveInt(StrictInt, PositiveInt):

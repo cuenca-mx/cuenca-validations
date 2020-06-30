@@ -9,7 +9,7 @@ def test_sanitized_dict():
     now = dt.datetime.now()
     assert SantizedDict(
         status=Status.succeeded, time=now, hello='there'
-    ) == dict(status='succeeded', time=now.isoformat(), hello='there')
+    ) == dict(status='succeeded', time=now.isoformat() + 'Z', hello='there')
 
 
 @pytest.mark.parametrize(
@@ -31,4 +31,4 @@ def test_count(count, truth):
 def test_dict():
     now = dt.datetime.utcnow()
     model = QueryParams(count=1, created_before=now)
-    assert model.dict() == dict(count=1, created_before=now.isoformat())
+    assert model.dict() == dict(count=1, created_before=now.isoformat() + 'Z')
