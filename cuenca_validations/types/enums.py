@@ -28,6 +28,7 @@ class DepositNetwork(str, Enum):
 class Status(str, Enum):
     created = 'created'
     submitted = 'submitted'
+    in_review = 'in_review'
     succeeded = 'succeeded'
     failed = 'failed'
 
