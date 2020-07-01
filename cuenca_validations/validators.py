@@ -7,17 +7,24 @@ __all__ = ['sanitize_dict']
 
 def sanitize_dict(d: dict):
     for k, v in d.items():
-        try:
-            d[k] = sanitize_item(v)
-        except AttributeError:
-            ...
+        d[k] = sanitize_item(v)
 
 
-def sanitize_item(item: Any) -> Any:
+def sanitize_item(item: Any, default_function=None) -> Any:
+    """
+    :param item: item to be sanitized
+    :param default_function: Optional function to be used when there is no case
+    for this type of item, default `None` it returns the item as is.
+    """
+    result = item
     if isinstance(item, dt.date):
         result = item.isoformat() + 'Z'  # Siempre usamos UTC
     elif isinstance(item, Enum):
         result = item.value
     else:
-        result = item.to_dict()
+        try:
+            result = item.to_dict()
+        except AttributeError:
+            if default_function:
+                result = default_function(item)
     return result

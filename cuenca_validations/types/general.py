@@ -17,11 +17,7 @@ class SantizedDict(dict):
 
 class CJSONEncoder(json.JSONEncoder):
     def default(self, o):
-        try:
-            encoded = sanitize_item(o)
-        except AttributeError:
-            encoded = super().default(o)
-        return encoded
+        return sanitize_item(o, default_function=super().default)
 
 
 class StrictPositiveInt(StrictInt, PositiveInt):
