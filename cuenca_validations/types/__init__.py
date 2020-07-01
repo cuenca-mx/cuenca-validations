@@ -4,7 +4,6 @@ __all__ = [
     'CardTransactionType',
     'CardType',
     'DepositNetwork',
-    'Digits',
     'JSONEncoder',
     'Limit',
     'PaymentCardNumber',
@@ -30,13 +29,7 @@ from .enums import (
     Status,
     TransferNetwork,
 )
-from .general import (
-    Digits,
-    JSONEncoder,
-    SantizedDict,
-    StrictPositiveInt,
-    digits,
-)
+from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
     Limit,
