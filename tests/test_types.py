@@ -70,6 +70,11 @@ def test_json_encoder():
 
 
 def test_invalid_class():
+    """
+    For a class that doesn't have a `to_dict` method and it is not a type of
+    `date` nor `Enum`, will use the default `json.JSONEncoder` method which
+    raises a `TypeError`.
+    """
     class ClassWithoutToDict:
         ...
 
