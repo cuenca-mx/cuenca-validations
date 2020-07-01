@@ -18,7 +18,7 @@ def sanitize_item(item: Any, default_function=None) -> Any:
     """
     result = item
     if isinstance(item, dt.date):
-        result = item.isoformat() + 'Z'  # Siempre usamos UTC
+        result = item.isoformat() + 'Z'  # comply with iso8601
     elif isinstance(item, Enum):
         result = item.value
     else:
