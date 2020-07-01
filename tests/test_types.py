@@ -44,29 +44,32 @@ def test_dict():
     assert model.dict() == dict(count=1, created_before=now.isoformat() + 'Z')
 
 
-def test_json_encoder():
-    class EnumTest(Enum):
-        s, p, e, i, d = range(5)
+class EnumTest(Enum):
+    s, p, e, i, d = range(5)
 
-    @dataclass
-    class TestClass:
-        uno: str
 
-        def to_dict(self):
-            return dict(uno=self.uno, dos='dos')
+@dataclass
+class TestClass:
+    uno: str
 
-    now = dt.datetime.utcnow()
-    test_class = TestClass(uno='uno')
+    def to_dict(self):
+        return dict(uno=self.uno, dos='dos')
 
-    to_encode = dict(enum=EnumTest.s, now=now, test_class=test_class,)
 
+@pytest.mark.parametrize(
+    'value, result',
+    [
+        (EnumTest.s, 0),
+        (dt.date.today(), dt.date.today().isoformat() + 'Z'),
+        (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
+    ],
+)
+def test_json_encoder(value, result):
+    to_encode = dict(value=value)
     encoded = json.dumps(to_encode, cls=JSONEncoder)
     decoded = json.loads(encoded)
 
-    assert decoded['enum'] == 0
-    assert decoded['now'] == now.isoformat() + 'Z'
-    assert decoded['test_class']['uno'] == 'uno'
-    assert decoded['test_class']['dos'] == 'dos'
+    assert decoded['value'] == result
 
 
 def test_invalid_class():
@@ -75,6 +78,7 @@ def test_invalid_class():
     `date` nor `Enum`, will use the default `json.JSONEncoder` method which
     raises a `TypeError`.
     """
+
     class ClassWithoutToDict:
         ...
 
@@ -84,7 +88,7 @@ def test_invalid_class():
 
 
 class Accounts(BaseModel):
-    number: digits(5, 8)
+    number: digits(5, 8)  # type: ignore
 
 
 def test_only_digits():
