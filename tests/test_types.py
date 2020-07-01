@@ -4,8 +4,15 @@ from dataclasses import dataclass
 from enum import Enum
 
 import pytest
+from pydantic import BaseModel
 
-from cuenca_validations import CJSONEncoder, QueryParams, SantizedDict, Status
+from cuenca_validations import (
+    CJSONEncoder,
+    QueryParams,
+    SantizedDict,
+    Status,
+    digits,
+)
 
 
 def test_sanitized_dict():
@@ -69,3 +76,28 @@ def test_invalid_class():
     invalid_class = ClassWithoutToDict()
     with pytest.raises(TypeError):
         json.dumps(invalid_class, cls=CJSONEncoder)
+
+
+def test_only_digits():
+    class Accounts(BaseModel):
+        number: digits(5, 8)
+
+    acc = Accounts(number='123456')
+    assert acc.number == '123456'
+
+
+@pytest.mark.parametrize(
+    'number, error',
+    [
+        ('123', 'value_error.any_str.min_length'),
+        ('1234567890', 'value_error.any_str.max_length'),
+        ('no_123', 'value_error.payment_card_number.digits'),
+    ],
+)
+def test_invalid_digits(number, error):
+    class Accounts(BaseModel):
+        number: digits(5, 8)
+
+    with pytest.raises(ValueError) as exception:
+        Accounts(number=number)
+    assert error in str(exception)

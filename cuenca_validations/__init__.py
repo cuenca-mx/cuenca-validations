@@ -22,6 +22,7 @@ __all__ = [
     'TransferQuery',
     'TransferRequest',
     'sanitize_dict',
+    'digits',
 ]
 
 from .types import (
@@ -43,6 +44,7 @@ from .types import (
     TransferNetwork,
     TransferQuery,
     TransferRequest,
+    digits,
 )
 from .typing import ClientRequestParams, DictStrAny, OptionalDict
 from .validators import sanitize_dict
