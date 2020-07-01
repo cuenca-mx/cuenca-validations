@@ -78,10 +78,11 @@ def test_invalid_class():
         json.dumps(invalid_class, cls=JSONEncoder)
 
 
-def test_only_digits():
-    class Accounts(BaseModel):
-        number: digits(5, 8)
+class Accounts(BaseModel):
+    number: digits(5, 8)
 
+
+def test_only_digits():
     acc = Accounts(number='123456')
     assert acc.number == '123456'
 
@@ -95,9 +96,6 @@ def test_only_digits():
     ],
 )
 def test_invalid_digits(number, error):
-    class Accounts(BaseModel):
-        number: digits(5, 8)
-
     with pytest.raises(ValueError) as exception:
         Accounts(number=number)
     assert error in str(exception)
