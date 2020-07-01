@@ -1,4 +1,4 @@
-from pydantic.errors import PydanticValueError
+from pydantic.errors import NotDigitError, PydanticValueError
 
 
 class CardBinValidationError(PydanticValueError):
@@ -9,3 +9,8 @@ class CardBinValidationError(PydanticValueError):
         'please file an issue:'
         'https://github.com/cuenca-mx/cuenca-validations/issues'
     )
+
+
+class NoDigitsError(NotDigitError):
+    code = 'digits'
+    msg_template = 'value is not all digits'

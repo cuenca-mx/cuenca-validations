@@ -1,8 +1,9 @@
 import json
 from typing import TYPE_CHECKING, Optional, Type
 
-from pydantic import ConstrainedStr, NotDigitError, PositiveInt, StrictInt
+from pydantic import ConstrainedStr, PositiveInt, StrictInt
 
+from ..errors import NoDigitsError
 from ..validators import sanitize_dict, sanitize_item
 
 if TYPE_CHECKING:
@@ -40,7 +41,7 @@ class Digits(ConstrainedStr):
     @classmethod
     def validate_digits(cls, value: str) -> str:
         if not value.isdigit():
-            raise NotDigitError
+            raise NoDigitsError
         return value
 
     @classmethod

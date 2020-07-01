@@ -91,7 +91,7 @@ def test_only_digits():
     [
         ('123', 'value_error.any_str.min_length'),
         ('1234567890', 'value_error.any_str.max_length'),
-        ('no_123', 'value_error.payment_card_number.digits'),
+        ('no_123', 'value_error.digits'),
     ],
 )
 def test_invalid_digits(number, error):
