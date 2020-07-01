@@ -7,7 +7,7 @@ import pytest
 from pydantic import BaseModel
 
 from cuenca_validations import (
-    CJSONEncoder,
+    JSONEncoder,
     QueryParams,
     SantizedDict,
     Status,
@@ -60,7 +60,7 @@ def test_json_encoder():
 
     to_encode = dict(enum=EnumTest.s, now=now, test_class=test_class,)
 
-    encoded = json.dumps(to_encode, cls=CJSONEncoder)
+    encoded = json.dumps(to_encode, cls=JSONEncoder)
     decoded = json.loads(encoded)
 
     assert decoded['enum'] == 0
@@ -75,7 +75,7 @@ def test_invalid_class():
 
     invalid_class = ClassWithoutToDict()
     with pytest.raises(TypeError):
-        json.dumps(invalid_class, cls=CJSONEncoder)
+        json.dumps(invalid_class, cls=JSONEncoder)
 
 
 def test_only_digits():

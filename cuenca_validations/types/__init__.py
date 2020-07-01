@@ -3,9 +3,9 @@ __all__ = [
     'CardNetwork',
     'CardTransactionType',
     'CardType',
-    'CJSONEncoder',
     'DepositNetwork',
     'Digits',
+    'JSONEncoder',
     'Limit',
     'PaymentCardNumber',
     'QueryParams',
@@ -31,8 +31,8 @@ from .enums import (
     TransferNetwork,
 )
 from .general import (
-    CJSONEncoder,
     Digits,
+    JSONEncoder,
     SantizedDict,
     StrictPositiveInt,
     digits,

@@ -16,7 +16,7 @@ class SantizedDict(dict):
         sanitize_dict(self)
 
 
-class CJSONEncoder(json.JSONEncoder):
+class JSONEncoder(json.JSONEncoder):
     def default(self, o):
         return sanitize_item(o, default_function=super().default)
 
