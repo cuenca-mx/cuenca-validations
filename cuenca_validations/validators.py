@@ -1,8 +1,10 @@
+__all__ = ['sanitize_dict', 'sanitize_item']
+
 import datetime as dt
 from enum import Enum
 from typing import Any
 
-__all__ = ['sanitize_dict']
+from .errors import NotDigitError
 
 
 def sanitize_dict(d: dict):
@@ -28,3 +30,9 @@ def sanitize_item(item: Any, default_function=None) -> Any:
             if default_function:
                 result = default_function(item)
     return result
+
+
+def validate_digits(value: str) -> str:
+    if not value.isdigit():
+        raise NotDigitError
+    return value

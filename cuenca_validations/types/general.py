@@ -3,8 +3,7 @@ from typing import TYPE_CHECKING, Optional, Type
 
 from pydantic import ConstrainedStr, PositiveInt, StrictInt
 
-from ..errors import NoDigitsError
-from ..validators import sanitize_dict, sanitize_item
+from ..validators import sanitize_dict, sanitize_item, validate_digits
 
 if TYPE_CHECKING:
     from pydantic.typing import CallableGenerator
@@ -39,12 +38,6 @@ def digits(
 
 class Digits(ConstrainedStr):
     @classmethod
-    def validate_digits(cls, value: str) -> str:
-        if not value.isdigit():
-            raise NoDigitsError
-        return value
-
-    @classmethod
     def __get_validators__(cls) -> 'CallableGenerator':
         yield from ConstrainedStr.__get_validators__()
-        yield cls.validate_digits
+        yield validate_digits
