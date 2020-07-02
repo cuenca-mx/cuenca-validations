@@ -15,7 +15,7 @@ def sanitize_dict(d: dict):
 def sanitize_item(item: Any, default: Callable = None) -> Any:
     """
     :param item: item to be sanitized
-    :param default_function: Optional function to be used when there is no case
+    :param default: Optional function to be used when there is no case
     for this type of item, default `None` it returns the item as is.
     """
     if isinstance(item, dt.date):
