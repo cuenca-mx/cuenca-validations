@@ -6,7 +6,7 @@ from enum import Enum
 import pytest
 from pydantic import BaseModel
 
-from cuenca_validations import (
+from cuenca_validations.types import (
     JSONEncoder,
     QueryParams,
     SantizedDict,
