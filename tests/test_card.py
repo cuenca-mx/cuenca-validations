@@ -1,8 +1,8 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from cuenca_validations import PaymentCardNumber, StrictPaymentCardNumber
 from cuenca_validations.errors import CardBinValidationError
+from cuenca_validations.types import PaymentCardNumber, StrictPaymentCardNumber
 
 VALID_BBVA = '4772130000000003'
 INVALID_BIN = '4050000000000001'
