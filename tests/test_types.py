@@ -14,12 +14,32 @@ from cuenca_validations.types import (
     digits,
 )
 
+today = dt.date.today()
+now = dt.datetime.now()
+utcnow = now.astimezone(dt.timezone.utc)
+
+
+class TestEnum(Enum):
+    zero = 0
+
+
+@dataclass
+class TestClass:
+    uno: str
+
+    def to_dict(self):
+        return dict(uno=self.uno, dos='dos')
+
+
+def test_dict():
+    model = QueryParams(count=1, created_before=now)
+    assert model.dict() == dict(count=1, created_before=utcnow.isoformat())
+
 
 def test_sanitized_dict():
-    now = dt.datetime.now()
     assert SantizedDict(
         status=Status.succeeded, time=now, hello='there'
-    ) == dict(status='succeeded', time=now.isoformat() + 'Z', hello='there')
+    ) == dict(status='succeeded', time=utcnow.isoformat(), hello='there')
 
 
 @pytest.mark.parametrize(
@@ -38,29 +58,12 @@ def test_count(count, truth):
     assert q.count is truth
 
 
-def test_dict():
-    now = dt.datetime.utcnow()
-    model = QueryParams(count=1, created_before=now)
-    assert model.dict() == dict(count=1, created_before=now.isoformat() + 'Z')
-
-
-class EnumTest(Enum):
-    s, p, e, i, d = range(5)
-
-
-@dataclass
-class TestClass:
-    uno: str
-
-    def to_dict(self):
-        return dict(uno=self.uno, dos='dos')
-
-
 @pytest.mark.parametrize(
     'value, result',
     [
-        (EnumTest.s, 0),
-        (dt.date.today(), dt.date.today().isoformat() + 'Z'),
+        (TestEnum.zero, 0),
+        (today, today.isoformat()),
+        (now, utcnow.isoformat()),
         (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
     ],
 )

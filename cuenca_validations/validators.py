@@ -2,7 +2,7 @@ __all__ = ['sanitize_dict', 'sanitize_item']
 
 import datetime as dt
 from enum import Enum
-from typing import Any
+from typing import Any, Callable
 
 from .errors import NotDigitError
 
@@ -12,24 +12,26 @@ def sanitize_dict(d: dict):
         d[k] = sanitize_item(v)
 
 
-def sanitize_item(item: Any, default_function=None) -> Any:
+def sanitize_item(item: Any, default: Callable = None) -> Any:
     """
     :param item: item to be sanitized
     :param default_function: Optional function to be used when there is no case
     for this type of item, default `None` it returns the item as is.
     """
-    result = item
     if isinstance(item, dt.date):
-        result = item.isoformat() + 'Z'  # comply with iso8601
+        if isinstance(item, dt.datetime) and not item.tzinfo:
+            rv = item.astimezone(dt.timezone.utc).isoformat()
+        else:
+            rv = item.isoformat()
     elif isinstance(item, Enum):
-        result = item.value
+        rv = item.value
+    elif hasattr(item, 'to_dict'):
+        rv = item.to_dict()
+    elif default:
+        rv = default(item)
     else:
-        try:
-            result = item.to_dict()
-        except AttributeError:
-            if default_function:
-                result = default_function(item)
-    return result
+        rv = item
+    return rv
 
 
 def validate_digits(value: str) -> str:

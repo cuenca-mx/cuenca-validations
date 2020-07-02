@@ -17,7 +17,7 @@ class SantizedDict(dict):
 
 class JSONEncoder(json.JSONEncoder):
     def default(self, o):
-        return sanitize_item(o, default_function=super().default)
+        return sanitize_item(o, default=super().default)
 
 
 class StrictPositiveInt(StrictInt, PositiveInt):
