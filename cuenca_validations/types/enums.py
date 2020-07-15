@@ -45,4 +45,3 @@ class TerminalNetwork(str, Enum):
     cash = 'cash'
     spei = 'spei'
     card = 'card'
-
