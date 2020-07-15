@@ -22,7 +22,7 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
         else:
             rv = item.isoformat()
     elif isinstance(item, Enum):
-        rv = item.value
+        rv = item.name
     elif hasattr(item, 'to_dict'):
         rv = item.to_dict()
     elif default:
