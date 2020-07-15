@@ -36,3 +36,12 @@ class Status(str, Enum):
 class TransferNetwork(str, Enum):
     internal = 'internal'
     spei = 'spei'
+
+
+class TerminalNetwork(str, Enum):
+    """
+    Terminal Cuenca payment networks.
+    """
+    cash = 'cash'
+    spei = 'spei'
+    card = 'card'
