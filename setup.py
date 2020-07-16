@@ -34,7 +34,7 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'clabe==1.2.2',
-        'pydantic==1.6',
+        'pydantic==1.6.1',
         'dataclasses>=0.6;python_version<"3.7"',
     ],
     setup_requires=['pytest-runner'],
