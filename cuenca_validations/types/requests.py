@@ -1,8 +1,9 @@
-from typing import Union
+from typing import Union, Optional
 
 from clabe import Clabe
 from pydantic import BaseModel, StrictStr
 
+from ..types.enums import CardStatus
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
@@ -17,3 +18,10 @@ class TransferRequest(BaseModel):
 
 class StrictTransferRequest(TransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
+
+
+class CardUpdateRequest(BaseModel):
+    user_id: Optional[str]
+    ledger_account_id: Optional[str]
+    status: Optional[CardStatus]
+    manufacturer: Optional[str]
