@@ -1,6 +1,7 @@
 __all__ = [
     'ApiKeyQuery',
     'CardNetwork',
+    'CardStatus',
     'CardTransactionType',
     'CardType',
     'DepositNetwork',
@@ -9,7 +10,7 @@ __all__ = [
     'PaymentCardNumber',
     'QueryParams',
     'SantizedDict',
-    'Status',
+    'TransactionStatus',
     'StrictPaymentCardNumber',
     'StrictPositiveInt',
     'StrictTransferRequest',
@@ -23,10 +24,11 @@ __all__ = [
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
     CardNetwork,
+    CardStatus,
     CardTransactionType,
     CardType,
     DepositNetwork,
-    Status,
+    TransactionStatus,
     TransferNetwork,
 )
 from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
