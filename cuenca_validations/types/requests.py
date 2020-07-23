@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, StrictStr
+from pydantic import BaseModel, Extra, StrictStr
 
 from ..types.enums import CardStatus
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -25,3 +25,6 @@ class CardUpdateRequest(BaseModel):
     ledger_account_id: Optional[str]
     status: Optional[CardStatus]
     manufacturer: Optional[str]
+
+    class Config:
+        extra = Extra.forbid
