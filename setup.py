@@ -33,7 +33,7 @@ setup(
     package_data=dict(cuenca_validations=['py.typed']),
     python_requires='>=3.6',
     install_requires=[
-        'clabe==1.2.2',
+        'clabe==1.2.3',
         'pydantic==1.6.1',
         'dataclasses>=0.6;python_version<"3.7"',
     ],
