@@ -28,3 +28,8 @@ class CardUpdateRequest(BaseModel):
 
     class Config:
         extra = Extra.forbid
+
+
+class CardRequest(BaseModel):
+    user_id: str
+    ledger_account_id: str
