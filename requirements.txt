@@ -1,0 +1,2 @@
+clabe==1.2.3
+pydantic==1.6.1
