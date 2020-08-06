@@ -54,4 +54,3 @@ class CardQuery(QueryParams):
     cvv2: Optional[str] = None
     icvv: Optional[str] = None
     pinblock: Optional[str] = None
-
