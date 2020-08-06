@@ -24,7 +24,6 @@ class CardUpdateRequest(BaseModel):
     user_id: Optional[str]
     ledger_account_id: Optional[str]
     status: Optional[CardStatus]
-    manufacturer: Optional[str]
 
     class Config:
         extra = Extra.forbid
