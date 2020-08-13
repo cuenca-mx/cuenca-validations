@@ -44,3 +44,13 @@ class TransferQuery(TransactionQuery):
 
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
+
+
+class CardQuery(QueryParams):
+    number: Optional[str] = None
+    exp_month: Optional[int] = None
+    exp_year: Optional[int] = None
+    cvv: Optional[str] = None
+    cvv2: Optional[str] = None
+    icvv: Optional[str] = None
+    pinblock: Optional[str] = None

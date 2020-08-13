@@ -10,7 +10,7 @@ from cuenca_validations.types import (
     JSONEncoder,
     QueryParams,
     SantizedDict,
-    Status,
+    TransactionStatus,
     digits,
 )
 
@@ -38,7 +38,7 @@ def test_dict():
 
 def test_sanitized_dict():
     assert SantizedDict(
-        status=Status.succeeded, time=now, hello='there'
+        status=TransactionStatus.succeeded, time=now, hello='there'
     ) == dict(status='succeeded', time=utcnow.isoformat(), hello='there')
 
 

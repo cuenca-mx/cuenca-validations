@@ -6,6 +6,14 @@ class CardNetwork(str, Enum):
     visa = 'visa'
 
 
+class CardStatus(str, Enum):
+    active = 'active'
+    blocked = 'blocked'
+    created = 'created'
+    deactivated = 'deactivated'
+    printing = 'printing'
+
+
 class CardTransactionType(str, Enum):
     auth = 'auth'
     capture = 'capture'
@@ -25,7 +33,7 @@ class DepositNetwork(str, Enum):
     spei = 'spei'
 
 
-class Status(str, Enum):
+class TransactionStatus(str, Enum):
     created = 'created'
     submitted = 'submitted'
     in_review = 'in_review'
