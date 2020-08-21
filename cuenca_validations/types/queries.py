@@ -17,7 +17,7 @@ class Limit(ConstrainedInt):
 
 class QueryParams(BaseModel):
     count: bool = False
-    limit: Optional[Limit] = None
+    limit: Limit = MAX_PAGE_LIMIT
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
