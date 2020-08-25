@@ -13,7 +13,7 @@ MAX_PAGE_SIZE = 100
 
 class PageSize(ConstrainedInt):
     gt = 0
-    le = MAX_PAGE_LIMIT
+    le = MAX_PAGE_SIZE
 
 
 class QueryParams(BaseModel):
