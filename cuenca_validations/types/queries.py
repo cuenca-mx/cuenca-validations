@@ -6,18 +6,20 @@ from pydantic.types import ConstrainedInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
+from .general import StrictPositiveInt
 
-MAX_PAGE_LIMIT = 100
+MAX_PAGE_SIZE = 100
 
 
-class Limit(ConstrainedInt):
+class PageSize(ConstrainedInt):
     gt = 0
-    le = MAX_PAGE_LIMIT
+    le = MAX_PAGE_SIZE
 
 
 class QueryParams(BaseModel):
     count: bool = False
-    limit: Optional[Limit] = None
+    page_size: PageSize = PageSize(MAX_PAGE_SIZE)
+    limit: Optional[StrictPositiveInt] = None
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
