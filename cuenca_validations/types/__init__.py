@@ -6,7 +6,7 @@ __all__ = [
     'CardType',
     'DepositNetwork',
     'JSONEncoder',
-    'Limit',
+    'PageSize',
     'PaymentCardNumber',
     'QueryParams',
     'SantizedDict',
@@ -34,7 +34,7 @@ from .enums import (
 from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
-    Limit,
+    PageSize,
     QueryParams,
     TransactionQuery,
     TransferQuery,
