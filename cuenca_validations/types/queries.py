@@ -2,11 +2,10 @@ import datetime as dt
 from typing import Optional
 
 from pydantic import BaseModel, Extra
-from pydantic.types import ConstrainedInt
+from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
-from .general import StrictPositiveInt
 
 MAX_PAGE_SIZE = 100
 
@@ -19,7 +18,7 @@ class PageSize(ConstrainedInt):
 class QueryParams(BaseModel):
     count: bool = False
     page_size: PageSize = PageSize(MAX_PAGE_SIZE)
-    limit: Optional[StrictPositiveInt] = None
+    limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
