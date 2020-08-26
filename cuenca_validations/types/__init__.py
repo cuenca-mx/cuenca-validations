@@ -17,6 +17,7 @@ __all__ = [
     'TransactionQuery',
     'TransferNetwork',
     'TransferQuery',
+    'DepositQuery',
     'TransferRequest',
     'digits',
 ]
@@ -38,5 +39,6 @@ from .queries import (
     QueryParams,
     TransactionQuery,
     TransferQuery,
+    DepositQuery,
 )
 from .requests import StrictTransferRequest, TransferRequest
