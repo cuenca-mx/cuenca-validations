@@ -35,10 +35,10 @@ from .enums import (
 from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
+    DepositQuery,
     PageSize,
     QueryParams,
     TransactionQuery,
     TransferQuery,
-    DepositQuery,
 )
 from .requests import StrictTransferRequest, TransferRequest
