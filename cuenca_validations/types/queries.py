@@ -27,7 +27,9 @@ class QueryParams(BaseModel):
         extra = Extra.forbid  # raise ValidationError if there are extra fields
 
     def dict(self, *args, **kwargs) -> DictStrAny:
-        d = super().dict(exclude_none=True, exclude_unset=True)
+        kwargs.setdefault('exclude_none', True)
+        kwargs.setdefault('exclude_unset', True)
+        d = super().dict(*args, **kwargs)
         if self.count:
             d['count'] = 1
         sanitize_dict(d)
