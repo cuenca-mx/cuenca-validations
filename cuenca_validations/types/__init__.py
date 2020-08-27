@@ -17,6 +17,7 @@ __all__ = [
     'TransactionQuery',
     'TransferNetwork',
     'TransferQuery',
+    'DepositQuery',
     'TransferRequest',
     'digits',
 ]
@@ -34,6 +35,7 @@ from .enums import (
 from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
+    DepositQuery,
     PageSize,
     QueryParams,
     TransactionQuery,

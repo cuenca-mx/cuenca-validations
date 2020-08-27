@@ -41,6 +41,11 @@ class TransactionQuery(QueryParams):
 class TransferQuery(TransactionQuery):
     account_number: Optional[str] = None
     idempotency_key: Optional[str] = None
+    tracking_key: Optional[str] = None
+
+
+class DepositQuery(TransactionQuery):
+    tracking_key: Optional[str] = None
 
 
 class ApiKeyQuery(QueryParams):
