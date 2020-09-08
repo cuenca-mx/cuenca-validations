@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, Extra, validator
 from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
@@ -62,3 +62,9 @@ class CardQuery(QueryParams):
     cvv2: Optional[str] = None
     icvv: Optional[str] = None
     pinblock: Optional[str] = None
+
+    @validator('exp_month', 'exp_year', 'cvv2', 'cvv')
+    def query_by_exp_cvv_if_number_set(cls, v, values):
+        if not values['number']:
+            raise ValueError('Number must be set to query by exp or cvv')
+        return v
