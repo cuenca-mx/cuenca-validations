@@ -136,7 +136,15 @@ def test_card_query_exp_cvv_if_number_set():
     )
 
 
-def test_card_query_exp_cvv_if_number_not_set():
-    values = dict(exp_month=1, exp_year=2026)
+@pytest.mark.parametrize(
+    'input_value',
+    [
+        (dict(exp_month=1)),
+        (dict(exp_year=2026)),
+        (dict(cvv2='123')),
+        (dict(cvv='123')),
+    ],
+)
+def test_card_query_exp_cvv_if_number_not_set(input_value):
     with pytest.raises(ValueError):
-        CardQuery(**values)
+        CardQuery(**input_value)
