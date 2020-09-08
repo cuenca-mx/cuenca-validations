@@ -6,6 +6,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
+from .enums import TransferNetwork
 
 MAX_PAGE_SIZE = 100
 
