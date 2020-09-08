@@ -1,6 +1,7 @@
 __all__ = [
     'ApiKeyQuery',
     'CardNetwork',
+    'CardQuery',
     'CardStatus',
     'CardTransactionType',
     'CardType',
@@ -35,6 +36,7 @@ from .enums import (
 from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
 from .queries import (
     ApiKeyQuery,
+    CardQuery,
     DepositQuery,
     PageSize,
     QueryParams,
