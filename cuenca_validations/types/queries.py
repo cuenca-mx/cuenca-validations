@@ -44,10 +44,12 @@ class TransferQuery(TransactionQuery):
     account_number: Optional[str] = None
     idempotency_key: Optional[str] = None
     tracking_key: Optional[str] = None
+    network: Optional[TransferNetwork] = None
 
 
 class DepositQuery(TransactionQuery):
     tracking_key: Optional[str] = None
+    network: Optional[TransferNetwork] = None
 
 
 class ApiKeyQuery(QueryParams):
