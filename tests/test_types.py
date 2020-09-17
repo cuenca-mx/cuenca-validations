@@ -32,25 +32,6 @@ class TestClass:
         return dict(uno=self.uno, dos='dos')
 
 
-def test_dict():
-    model = QueryParams(count=1, created_before=now)
-    assert model.dict() == dict(count=1, created_before=utcnow.isoformat())
-
-
-def test_dict_with_exclude():
-    model = QueryParams(count=1, created_before=now, user_id='USXXXX')
-    assert model.dict(exclude={'user_id'}) == dict(
-        count=1, created_before=utcnow.isoformat()
-    )
-
-
-def test_dict_with_exclude_unset():
-    model = QueryParams(count=1, created_before=now)
-    assert model.dict(exclude_unset=False) == dict(
-        count=1, created_before=utcnow.isoformat(), page_size=100
-    )
-
-
 def test_sanitized_dict():
     assert SantizedDict(
         status=TransactionStatus.succeeded, time=now, hello='there'

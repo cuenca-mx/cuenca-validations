@@ -27,13 +27,24 @@ class QueryParams(BaseModel):
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def dict(self, *args, exclude_query_params=False, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
         d = super().dict(*args, **kwargs)
         if self.count:
             d['count'] = 1
         sanitize_dict(d)
+
+        # required to build filters based only in class level fields
+        # excludes all fields from `QueryParams` base class
+        # except `user_id`
+        if exclude_query_params:
+            base_fields = set(QueryParams.__fields__.keys())
+            fields = set(self.__fields__.keys()) - base_fields
+
+            fields.add('user_id')
+            d = {key: val for key, val in d.items() if key in fields}
+
         return d
 
 
