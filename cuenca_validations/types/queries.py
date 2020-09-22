@@ -53,6 +53,10 @@ class DepositQuery(TransactionQuery):
     network: Optional[TransferNetwork] = None
 
 
+class BillPaymentQuery(TransactionQuery):
+    account_number: Optional[str] = None
+
+
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
 
