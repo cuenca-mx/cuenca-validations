@@ -15,6 +15,7 @@ __all__ = [
     'TransactionStatus',
     'StrictPaymentCardNumber',
     'StrictPositiveInt',
+    'StrictPositiveFloat',
     'StrictTransferRequest',
     'TransactionQuery',
     'TransferNetwork',
@@ -34,7 +35,13 @@ from .enums import (
     TransactionStatus,
     TransferNetwork,
 )
-from .general import JSONEncoder, SantizedDict, StrictPositiveInt, digits
+from .general import (
+    JSONEncoder,
+    SantizedDict,
+    StrictPositiveFloat,
+    StrictPositiveInt,
+    digits,
+)
 from .queries import (
     ApiKeyQuery,
     BillPaymentQuery,
