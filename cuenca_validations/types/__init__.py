@@ -14,6 +14,7 @@ __all__ = [
     'QueryParams',
     'SantizedDict',
     'ServiceProviderCategory',
+    'ServiceProviderQuery',
     'StrictPaymentCardNumber',
     'StrictPositiveInt',
     'StrictPositiveFloat',
@@ -51,6 +52,7 @@ from .queries import (
     DepositQuery,
     PageSize,
     QueryParams,
+    ServiceProviderQuery,
     TransactionQuery,
     TransferQuery,
 )
