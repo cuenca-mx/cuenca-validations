@@ -1,7 +1,13 @@
 import json
 from typing import TYPE_CHECKING, Optional, Type
 
-from pydantic import ConstrainedStr, PositiveInt, StrictInt
+from pydantic import (
+    ConstrainedStr,
+    PositiveFloat,
+    PositiveInt,
+    StrictFloat,
+    StrictInt,
+)
 
 from ..validators import sanitize_dict, sanitize_item, validate_digits
 
@@ -24,6 +30,15 @@ class StrictPositiveInt(StrictInt, PositiveInt):
     """
     - StrictInt: ensures a float isn't passed in by accident
     - PositiveInt: ensures the value is above 0
+    """
+
+    ...
+
+
+class StrictPositiveFloat(StrictFloat, PositiveFloat):
+    """
+    - StrictFloat: ensures an integer isn't passed in by accident
+    - PositiveFloat: ensures the value is above 0
     """
 
     ...
