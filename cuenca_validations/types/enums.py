@@ -44,3 +44,8 @@ class TransactionStatus(str, Enum):
 class TransferNetwork(str, Enum):
     internal = 'internal'
     spei = 'spei'
+
+
+class CommissionType(str, Enum):
+    card_request = 'card_request'
+    cash_deposit = 'cash_deposit'
