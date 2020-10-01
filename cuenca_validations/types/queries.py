@@ -75,7 +75,3 @@ class CardQuery(QueryParams):
         if not values['number']:
             raise ValueError('Number must be set to query by exp or cvv')
         return v
-
-
-class ServiceProviderQuery(QueryParams):
-    category: Optional[ServiceProviderCategory] = None
