@@ -33,6 +33,19 @@ class DepositNetwork(str, Enum):
     spei = 'spei'
 
 
+class ServiceProviderCategory(str, Enum):
+    cable = 'cable'
+    credit_card = 'credit_card'
+    electricity = 'electricity'
+    gas = 'gas'
+    internet = 'internet'
+    landline_telephone = 'landline_telephone'
+    mobile_telephone_postpaid = 'mobile_telephone_postpaid'
+    mobile_telephone_prepaid = 'mobile_telephone_prepaid'
+    satelite_televesion = 'satelite_televesion'
+    water = 'water'
+
+
 class TransactionStatus(str, Enum):
     created = 'created'
     submitted = 'submitted'
