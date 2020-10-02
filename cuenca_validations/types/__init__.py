@@ -8,6 +8,7 @@ __all__ = [
     'CardType',
     'CommissionType',
     'DepositNetwork',
+    'EntryModel',
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
@@ -27,6 +28,7 @@ __all__ = [
 ]
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .entry import EntryModel
 from .enums import (
     CardNetwork,
     CardStatus,
