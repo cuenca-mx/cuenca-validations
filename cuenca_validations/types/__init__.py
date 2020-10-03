@@ -10,6 +10,7 @@ __all__ = [
     'DepositNetwork',
     'EntryModel',
     'JSONEncoder',
+    'LedgerEntryType',
     'PageSize',
     'PaymentCardNumber',
     'QueryParams',
@@ -36,6 +37,7 @@ from .enums import (
     CardType,
     CommissionType,
     DepositNetwork,
+    LedgerEntryType,
     TransactionStatus,
     TransferNetwork,
 )
