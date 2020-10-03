@@ -62,3 +62,8 @@ class TransferNetwork(str, Enum):
 class CommissionType(str, Enum):
     card_request = 'card_request'
     cash_deposit = 'cash_deposit'
+
+
+class LedgerEntryType(str, Enum):
+    credit = 'credit'
+    debit = 'debit'
