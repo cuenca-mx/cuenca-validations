@@ -9,6 +9,11 @@ def test_entry_model():
     assert entry.get_model() == 'Deposit'
 
 
+def test_entry_model_none_for_type_incorrect():
+    entry = EntryModel(id='CDXXX', type='debit')
+    assert not entry.get_model()
+
+
 def test_invalid_id_entry_model():
     with pytest.raises(ValidationError) as exc_info:
         EntryModel(id='XXXXX', type='credit')

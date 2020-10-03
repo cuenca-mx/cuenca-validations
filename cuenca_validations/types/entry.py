@@ -4,15 +4,14 @@ from pydantic import BaseModel, validator
 
 mapper = dict(
     credit={
-        'Deposit': ['TR', 'SP', 'LT'],
-        'CashDeposit': ['CD'],
+        'Deposit': ['TR', 'SP', 'LT', 'CD'],
         'CardTransaction': ['CT'],
     },
     debit={
         'BillPayment': ['ST'],
         'Transfer': ['TR', 'SP', 'LT'],
         'WhatsappTransfer': ['SW'],
-        'Comission': ['CO'],
+        'Commission': ['CO'],
         'CardTransaction': ['CT'],
     },
 )
@@ -38,5 +37,5 @@ class EntryModel(BaseModel):
     def get_model(cls):
         for model, types in mapper[cls.type].items():
             if cls.id[:2] in types:
-                break
-        return model
+                return model
+        return None
