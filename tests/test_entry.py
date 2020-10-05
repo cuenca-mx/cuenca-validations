@@ -30,5 +30,5 @@ def test_invalid_type_entry_model():
     assert exc_info.value.errors()[0] == dict(
         loc=('type',),
         type='value_error',
-        msg='invalid type format',
+        msg='invalid entry_type format',
     )

@@ -64,6 +64,6 @@ class CommissionType(str, Enum):
     cash_deposit = 'cash_deposit'
 
 
-class LedgerEntryType(str, Enum):
+class EntryType(str, Enum):
     credit = 'credit'
     debit = 'debit'
