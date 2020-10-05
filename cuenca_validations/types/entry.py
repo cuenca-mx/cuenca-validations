@@ -22,20 +22,24 @@ class EntryModel(BaseModel):
     type: str
 
     @validator('id')
-    def validate_id(cls, v):
+    def validate_id(cls, id):
         ids = list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
-        if v[:2] not in ids:
+        if id[:2] not in ids:
             raise ValueError('invalid id format')
-        return v
+        return id
 
     @validator('type')
-    def validate_type(cls, v):
-        if v not in mapper.keys():
-            raise ValueError('invalid type format')
-        return v
+    def validate_type(cls, entry_type):
+        if entry_type not in mapper.keys():
+            raise ValueError('invalid entry_type format')
+        return entry_type
 
     def get_model(cls):
-        for model, types in mapper[cls.type].items():
-            if cls.id[:2] in types:
-                return model
-        return None
+        return next(
+            (
+                model
+                for model, types in mapper[cls.type].items()
+                if cls.id[:2] in types
+            ),
+            None,
+        )
