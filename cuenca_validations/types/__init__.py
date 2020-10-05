@@ -38,8 +38,8 @@ from .enums import (
     CardType,
     CommissionType,
     DepositNetwork,
-    ServiceProviderCategory,
     LedgerEntryType,
+    ServiceProviderCategory,
     TransactionStatus,
     TransferNetwork,
 )
