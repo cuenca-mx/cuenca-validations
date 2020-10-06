@@ -67,3 +67,4 @@ class CommissionType(str, Enum):
 class EntryType(str, Enum):
     credit = 'credit'
     debit = 'debit'
+    commission = 'commission'
