@@ -14,6 +14,10 @@ mapper = dict(
         'Commission': ['CO'],
         'CardTransaction': ['CT'],
     },
+    commission={
+        'Deposit': ['TR', 'SP', 'LT', 'CD'],
+        'Transfer': ['TR', 'SP', 'LT'],
+    },
 )
 
 
