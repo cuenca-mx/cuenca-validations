@@ -42,7 +42,7 @@ class ServiceProviderCategory(str, Enum):
     landline_telephone = 'landline_telephone'
     mobile_telephone_postpaid = 'mobile_telephone_postpaid'
     mobile_telephone_prepaid = 'mobile_telephone_prepaid'
-    satelite_televesion = 'satelite_televesion'
+    satelite_television = 'satelite_television'
     water = 'water'
 
 
