@@ -9,6 +9,7 @@ __all__ = [
     'CommissionType',
     'DepositNetwork',
     'DepositQuery',
+    'EntryType',
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
@@ -22,7 +23,6 @@ __all__ = [
     'RelatedTransaction',
     'TransactionQuery',
     'TransactionStatus',
-    'TransactionType',
     'TransferNetwork',
     'TransferQuery',
     'TransferRequest',
@@ -37,9 +37,9 @@ from .enums import (
     CardType,
     CommissionType,
     DepositNetwork,
+    EntryType,
     ServiceProviderCategory,
     TransactionStatus,
-    TransactionType,
     TransferNetwork,
 )
 from .general import (
@@ -59,5 +59,5 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
+from .related_transaction import RelatedTransaction
 from .requests import StrictTransferRequest, TransferRequest
-from .transaction import RelatedTransaction

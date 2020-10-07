@@ -1,11 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from cuenca_validations.types import (
-    DepositNetwork,
-    RelatedTransaction,
-    TransactionType,
-)
+from cuenca_validations.types import EntryType, RelatedTransaction
 
 
 class Model(BaseModel):
@@ -17,8 +13,7 @@ def test_related_transaction():
     model = Model(related_transaction_uri=transaction_uri)
     assert model.related_transaction_uri == transaction_uri
     assert (
-        model.related_transaction_uri.get_model(TransactionType.commission)
-        == 'Deposit'
+        model.related_transaction_uri.get_model(EntryType.credit) == 'Deposit'
     )
 
 
@@ -42,12 +37,3 @@ def test_invalid_value_id_related_transaction():
         type='value_error',
         msg='invalid value format',
     )
-
-
-def test_invalid_type_related_transaction():
-    transaction_uri = '/deposits/SPXXX'
-    model = Model(related_transaction_uri=transaction_uri)
-    assert model.related_transaction_uri == transaction_uri
-    with pytest.raises(ValueError) as exc_info:
-        assert not model.related_transaction_uri.get_model(DepositNetwork.cash)
-    assert str(exc_info.value) == 'The required enum is TransactionType'

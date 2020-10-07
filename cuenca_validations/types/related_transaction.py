@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from .enums import TransactionType
+from .enums import EntryType
 
 mapper = dict(
     credit={
@@ -54,9 +54,7 @@ class RelatedTransaction(str):
     def _mapper_ids():
         return list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
 
-    def get_model(cls, _type):
-        if type(_type) is not TransactionType:
-            raise ValueError('The required enum is TransactionType')
+    def get_model(cls, _type: EntryType):
         return next(
             (
                 model
