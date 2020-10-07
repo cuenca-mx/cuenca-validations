@@ -1,7 +1,11 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from cuenca_validations.types import EntryType, RelatedTransaction
+from cuenca_validations.types import (
+    CommissionType,
+    EntryType,
+    RelatedTransaction,
+)
 
 
 class Model(BaseModel):
@@ -14,6 +18,18 @@ def test_related_transaction():
     assert model.related_transaction_uri == transaction_uri
     assert (
         model.related_transaction_uri.get_model(EntryType.credit) == 'Deposit'
+    )
+
+
+def test_related_transaction_mapper_entry():
+    transaction_uri = '/deposits/SPXXX'
+    model = Model(related_transaction_uri=transaction_uri)
+    assert model.related_transaction_uri == transaction_uri
+    assert (
+        model.related_transaction_uri.get_model(
+            CommissionType.cash_deposit.value
+        )
+        == 'Deposit'
     )
 
 

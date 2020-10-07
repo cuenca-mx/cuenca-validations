@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from .enums import EntryType
+from .enums import CommissionType, EntryType
 
 mapper = dict(
     credit={
@@ -15,11 +15,9 @@ mapper = dict(
         'Commission': ['CO'],
         'CardTransaction': ['CT'],
     },
-    commission={
-        'Deposit': ['TR', 'SP', 'LT', 'CD'],
-        'Transfer': ['TR', 'SP', 'LT'],
-    },
 )
+
+mapper_entry = {CommissionType.cash_deposit.value: EntryType.credit.value}
 
 
 class RelatedTransaction(str):
@@ -54,11 +52,13 @@ class RelatedTransaction(str):
     def _mapper_ids():
         return list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
 
-    def get_model(cls, _type: EntryType):
+    def get_model(cls, _type: str):
+        if _type in mapper_entry:
+            _type = mapper_entry[_type]
         return next(
             (
                 model
-                for model, types in mapper[_type.value].items()
+                for model, types in mapper[_type].items()
                 if cls.id[:2] in types
             ),
             None,
