@@ -23,9 +23,13 @@ mapper = dict(
 
 
 class RelatedTransaction(str):
-    def __init__(cls, uri: str):
-        cls.uri = uri
-        cls.id = cls._get_id(uri)
+    id: str
+    uri: str
+    mapper_ids: list
+
+    def __init__(cls, value: str):
+        cls.uri = value
+        cls.id = cls._get_id(value) or value
         cls.mapper_ids = cls._mapper_ids()
 
     @classmethod
@@ -35,10 +39,8 @@ class RelatedTransaction(str):
 
     @classmethod
     def validate(cls, tr: 'RelatedTransaction') -> 'RelatedTransaction':
-        if not tr.id:
-            raise ValueError('invalid uri format')
         if not tr.id or tr.id[:2] not in tr.mapper_ids:
-            raise ValueError('invalid id format')
+            raise ValueError('invalid value format')
         return tr
 
     @staticmethod

@@ -22,25 +22,25 @@ def test_related_transaction():
     )
 
 
-def test_invalid_id_related_transaction():
+def test_invalid_value_uri_related_transaction():
     transaction_uri = '/deposits/XXXXX'
     with pytest.raises(ValidationError) as exc_info:
         Model(related_transaction_uri=transaction_uri)
     assert exc_info.value.errors()[0] == dict(
         loc=('related_transaction_uri',),
         type='value_error',
-        msg='invalid id format',
+        msg='invalid value format',
     )
 
 
-def test_invalid_uri_related_transaction():
-    transaction_uri = '/depositsXXXXX'
+def test_invalid_value_id_related_transaction():
+    transaction_uri = 'XXXXX'
     with pytest.raises(ValidationError) as exc_info:
         Model(related_transaction_uri=transaction_uri)
     assert exc_info.value.errors()[0] == dict(
         loc=('related_transaction_uri',),
         type='value_error',
-        msg='invalid uri format',
+        msg='invalid value format',
     )
 
 
