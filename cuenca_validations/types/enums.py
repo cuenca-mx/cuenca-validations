@@ -64,7 +64,7 @@ class CommissionType(str, Enum):
     cash_deposit = 'cash_deposit'
 
 
-class EntryType(str, Enum):
+class TransactionType(str, Enum):
     credit = 'credit'
     debit = 'debit'
     commission = 'commission'

@@ -1,7 +1,7 @@
 import re
+from typing import Optional
 
-from enums import EntryType
-from pydantic import BaseModel, validator
+from .enums import TransactionType
 
 mapper = dict(
     credit={
@@ -34,27 +34,31 @@ class RelatedTransaction(str):
         yield cls.validate
 
     @classmethod
-    def validate(cls, tr: 'Transaction') -> 'CallableGenerator':
-        if tr.id[:2] not in tr.mapper_ids:
+    def validate(cls, tr: 'RelatedTransaction') -> 'RelatedTransaction':
+        if not tr.id:
+            raise ValueError('invalid uri format')
+        if not tr.id or tr.id[:2] not in tr.mapper_ids:
             raise ValueError('invalid id format')
         return tr
 
     @staticmethod
-    def _get_id(uri: str) -> str:
+    def _get_id(uri: str) -> Optional[str]:
         match = re.search(r'/[a-z]+/(\w+)', uri)
+        if not match:
+            return None
         return match.group(1)
 
     @staticmethod
     def _mapper_ids():
         return list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
 
-    def get_model(cls, entry_type) -> str:
-        if type(entry_type) is not EntryType:
-            raise ValueError('The required enum is EntryType')
+    def get_model(cls, _type):
+        if type(_type) is not TransactionType:
+            raise ValueError('The required enum is TransactionType')
         return next(
             (
                 model
-                for model, types in mapper[entry_type.value].items()
+                for model, types in mapper[_type.value].items()
                 if cls.id[:2] in types
             ),
             None,
