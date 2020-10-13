@@ -1,12 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from cuenca_validations.types import (
-    CommissionType,
-    EntryType,
-    RelatedTransaction,
-    RelatedTransactionType,
-)
+from cuenca_validations.types import EntryType, RelatedTransaction
 
 
 class Model(BaseModel):
@@ -22,35 +17,23 @@ def test_related_transaction():
     )
 
 
-def test_related_transaction_mapper_entry():
-    transaction_uri = '/deposits/SPXXX'
-    model = Model(related_transaction_uri=transaction_uri)
-    assert model.related_transaction_uri == transaction_uri
-    assert (
-        model.related_transaction_uri.get_model(
-            CommissionType.cash_deposit.value
-        )
-        == 'Deposit'
-    )
-
-
-def test_invalid_value_uri_related_transaction():
+def test_invalid_id_related_transaction():
     transaction_uri = '/deposits/XXXXX'
     with pytest.raises(ValidationError) as exc_info:
         Model(related_transaction_uri=transaction_uri)
     assert exc_info.value.errors()[0] == dict(
         loc=('related_transaction_uri',),
         type='value_error',
-        msg='invalid value format',
+        msg='invalid id format',
     )
 
 
-def test_invalid_value_id_related_transaction():
-    transaction_uri = 'XXXXX'
+def test_invalid_uri_related_transaction():
+    transaction_uri = '/depositsXXXXX'
     with pytest.raises(ValidationError) as exc_info:
         Model(related_transaction_uri=transaction_uri)
     assert exc_info.value.errors()[0] == dict(
         loc=('related_transaction_uri',),
         type='value_error',
-        msg='invalid value format',
+        msg='invalid uri format',
     )

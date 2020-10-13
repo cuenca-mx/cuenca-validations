@@ -1,7 +1,7 @@
 import re
 from typing import Optional
 
-from .enums import CommissionType, EntryType
+from .enums import EntryType
 
 mapper = dict(
     credit={
@@ -19,13 +19,13 @@ mapper = dict(
 
 
 class RelatedTransaction(str):
-    id: str
+    id: Optional[str]
     uri: str
     mapper_ids: list
 
-    def __init__(cls, value: str):
-        cls.uri = value
-        cls.id = cls._get_id(value) or value
+    def __init__(cls, uri: str):
+        cls.uri = uri
+        cls.id = cls._get_id(uri)
         cls.mapper_ids = cls._mapper_ids()
 
     @classmethod
@@ -35,8 +35,10 @@ class RelatedTransaction(str):
 
     @classmethod
     def validate(cls, tr: 'RelatedTransaction') -> 'RelatedTransaction':
-        if not tr.id or tr.id[:2] not in tr.mapper_ids:
-            raise ValueError('invalid value format')
+        if not tr.id:
+            raise ValueError('invalid uri format')
+        if tr.id[:2] not in tr.mapper_ids:
+            raise ValueError('invalid id format')
         return tr
 
     @staticmethod
@@ -50,12 +52,12 @@ class RelatedTransaction(str):
     def _mapper_ids():
         return list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
 
-    def get_model(cls, _type: str):
+    def get_model(cls, entry_type: EntryType):
         return next(
             (
                 model
-                for model, types in mapper[_type].items()
-                if cls.id[:2] in types
+                for model, types in mapper[entry_type.value].items()
+                if cls.id and cls.id[:2] in types
             ),
             None,
         )
