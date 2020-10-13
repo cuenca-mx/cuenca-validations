@@ -6,8 +6,10 @@ __all__ = [
     'CardStatus',
     'CardTransactionType',
     'CardType',
+    'CommissionType',
     'DepositNetwork',
     'DepositQuery',
+    'EntryType',
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
@@ -18,6 +20,7 @@ __all__ = [
     'StrictPositiveInt',
     'StrictPositiveFloat',
     'StrictTransferRequest',
+    'RelatedTransaction',
     'TransactionQuery',
     'TransactionStatus',
     'TransferNetwork',
@@ -32,7 +35,9 @@ from .enums import (
     CardStatus,
     CardTransactionType,
     CardType,
+    CommissionType,
     DepositNetwork,
+    EntryType,
     ServiceProviderCategory,
     TransactionStatus,
     TransferNetwork,
@@ -54,4 +59,5 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
+from .related_transaction import RelatedTransaction
 from .requests import StrictTransferRequest, TransferRequest
