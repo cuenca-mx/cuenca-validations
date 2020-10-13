@@ -1,8 +1,6 @@
 import re
 from typing import Optional
 
-from .enums import EntryType
-
 mapper = dict(
     bill_payment='BillPayment',
     card_transactions='CardTransaction',
@@ -40,4 +38,4 @@ class RelatedTransaction(str):
         return match.group(1)
 
     def get_model(cls):
-        return mapper[cls.resource] if cls.colecction in mapper else None
+        return mapper[cls.resource] if cls.resource in mapper else None

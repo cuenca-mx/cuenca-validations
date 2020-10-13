@@ -12,9 +12,7 @@ def test_related_transaction():
     transaction_uri = '/deposits/SPXXX'
     model = Model(related_transaction_uri=transaction_uri)
     assert model.related_transaction_uri == transaction_uri
-    assert (
-        model.related_transaction_uri.get_model() == 'Deposit'
-    )
+    assert model.related_transaction_uri.get_model() == 'Deposit'
 
 
 def test_invalid_uri_related_transaction():
