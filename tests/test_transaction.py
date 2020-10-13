@@ -1,7 +1,7 @@
 import pytest
 from pydantic import BaseModel, ValidationError
 
-from cuenca_validations.types import EntryType, RelatedTransaction
+from cuenca_validations.types import RelatedTransaction
 
 
 class Model(BaseModel):
@@ -13,18 +13,7 @@ def test_related_transaction():
     model = Model(related_transaction_uri=transaction_uri)
     assert model.related_transaction_uri == transaction_uri
     assert (
-        model.related_transaction_uri.get_model(EntryType.credit) == 'Deposit'
-    )
-
-
-def test_invalid_id_related_transaction():
-    transaction_uri = '/deposits/XXXXX'
-    with pytest.raises(ValidationError) as exc_info:
-        Model(related_transaction_uri=transaction_uri)
-    assert exc_info.value.errors()[0] == dict(
-        loc=('related_transaction_uri',),
-        type='value_error',
-        msg='invalid id format',
+        model.related_transaction_uri.get_model() == 'Deposit'
     )
 
 
