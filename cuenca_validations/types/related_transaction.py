@@ -17,8 +17,6 @@ mapper = dict(
     },
 )
 
-mapper_entry = {CommissionType.cash_deposit.value: EntryType.credit.value}
-
 
 class RelatedTransaction(str):
     id: str
@@ -53,7 +51,6 @@ class RelatedTransaction(str):
         return list(set(re.findall(r"'([A-Z]{0,2})'", str(mapper))))
 
     def get_model(cls, _type: str):
-        _type = mapper_entry[_type] if _type in mapper_entry else _type
         return next(
             (
                 model

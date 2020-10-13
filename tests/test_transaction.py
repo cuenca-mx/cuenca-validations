@@ -5,6 +5,7 @@ from cuenca_validations.types import (
     CommissionType,
     EntryType,
     RelatedTransaction,
+    RelatedTransactionType,
 )
 
 
