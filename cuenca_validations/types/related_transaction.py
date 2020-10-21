@@ -2,7 +2,7 @@ import re
 from typing import Optional
 
 mapper = dict(
-    bill_payment='BillPayment',
+    bill_payments='BillPayment',
     card_transactions='CardTransaction',
     commissions='Commission',
     deposits='Deposit',
