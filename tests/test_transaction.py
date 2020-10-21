@@ -15,6 +15,13 @@ def test_related_transaction():
     assert model.related_transaction_uri.get_model() == 'Deposit'
 
 
+def test_related_transaction_with_underscore():
+    transaction_uri = '/bill_payments/STXXX'
+    model = Model(related_transaction_uri=transaction_uri)
+    assert model.related_transaction_uri == transaction_uri
+    assert model.related_transaction_uri.get_model() == 'BillPayment'
+
+
 def test_invalid_uri_related_transaction():
     transaction_uri = '/depositsXXXXX'
     with pytest.raises(ValidationError) as exc_info:

@@ -32,7 +32,7 @@ class RelatedTransaction(str):
 
     @staticmethod
     def _get_resource(uri: str) -> Optional[str]:
-        match = re.search(r'/([a-z]+)/[\w]+', uri)
+        match = re.search(r'/([a-z_]+)/[\w]+', uri)
         if not match:
             return None
         return match.group(1)
