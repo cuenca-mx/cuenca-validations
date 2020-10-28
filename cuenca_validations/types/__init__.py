@@ -1,6 +1,7 @@
 __all__ = [
     'ApiKeyQuery',
     'BillPaymentQuery',
+    'CardErrorType',
     'CardNetwork',
     'CardQuery',
     'CardStatus',
@@ -31,6 +32,7 @@ __all__ = [
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
+    CardErrorType,
     CardNetwork,
     CardStatus,
     CardTransactionType,
