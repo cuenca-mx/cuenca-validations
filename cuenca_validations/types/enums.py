@@ -20,6 +20,8 @@ class CardTransactionType(str, Enum):
     expiration = 'expiration'
     refund = 'refund'
     void = 'void'
+    advice = 'advice'
+    charge_back = 'charge_back'
 
 
 class CardType(str, Enum):
@@ -67,3 +69,15 @@ class CommissionType(str, Enum):
 class EntryType(str, Enum):
     credit = 'credit'
     debit = 'debit'
+
+
+class CardErrorType(Enum):
+    blocked = 'blocked'
+    insufficient_founds = 'insufficient_founds'
+    notification = 'notification'
+    notification_deactivated_card = 'notification_deactivated_card'
+    contactless_amount_limit = 'contactless_amount_limit'
+    communication = 'communication'
+    fraud_detection = 'fraud_detection'
+    fraud_detection_uncertain = 'fraud_detection_uncertain'
+    invalid_pin = 'invalid_pin'
