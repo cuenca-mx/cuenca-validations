@@ -20,8 +20,7 @@ class CardTransactionType(str, Enum):
     expiration = 'expiration'
     refund = 'refund'
     void = 'void'
-    advice = 'advice'
-    charge_back = 'charge_back'
+    chargeback = 'chargeback'
 
 
 class CardType(str, Enum):
