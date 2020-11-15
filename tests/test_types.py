@@ -14,6 +14,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
+from cuenca_validations.types.queries import AuthorizationQuery
 
 today = dt.date.today()
 now = dt.datetime.now()
@@ -148,3 +149,19 @@ def test_card_query_exp_cvv_if_number_set():
 def test_card_query_exp_cvv_if_number_not_set(input_value):
     with pytest.raises(ValueError):
         CardQuery(**input_value)
+
+
+def test_authorization_query():
+    query = AuthorizationQuery(
+        actions='some://nice/resource.create,some://nice/resource.read'
+    )
+    assert query.actions == [
+        ('some://nice/resource', 'create'),
+        ('some://nice/resource', 'read'),
+    ]
+
+
+@pytest.mark.parametrize('action', ['', 'invalid/action/scheme'])
+def test_authorization_query_bad_request(action):
+    with pytest.raises(ValueError):
+        AuthorizationQuery(actions=action)

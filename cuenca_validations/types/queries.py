@@ -1,5 +1,6 @@
 import datetime as dt
-from typing import Optional
+from typing import List, Optional, Tuple
+from urllib.parse import urlparse
 
 from pydantic import BaseModel, Extra, validator
 from pydantic.types import ConstrainedInt, PositiveInt
@@ -75,3 +76,21 @@ class CardQuery(QueryParams):
         if not values['number']:
             raise ValueError('Number must be set to query by exp or cvv')
         return v
+
+
+class AuthorizationQuery(BaseModel):
+    actions: List[Tuple[str, str]]
+
+    @validator('actions', pre=True)
+    def validate_actions(cls, value):
+        urls = (urlparse(item) for item in value.split(','))
+
+        actions = []
+        for url in urls:
+            items = [url.scheme, url.netloc] + url.path.split('.')
+            if any(not item for item in items):
+                raise ValueError(
+                    'actions must match scheme://netloc/path.action pattern'
+                )
+            actions.append(tuple(url.geturl().split('.')))
+        return actions
