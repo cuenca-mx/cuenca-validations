@@ -6,7 +6,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
-from .enums import TransferNetwork
+from .enums import InvoiceType, TransferNetwork
 
 MAX_PAGE_SIZE = 100
 
@@ -76,3 +76,8 @@ class CardQuery(QueryParams):
         if not values['number']:
             raise ValueError('Number must be set to query by exp or cvv')
         return v
+
+
+class InvoiceQuery(QueryParams):
+    invoice_type: Optional[InvoiceType] = None
+    month_id: Optional[int] = None
