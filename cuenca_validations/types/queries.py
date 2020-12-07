@@ -6,7 +6,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
-from .enums import InvoiceType, TransferNetwork
+from .enums import DocumentType, TransferNetwork
 
 MAX_PAGE_SIZE = 100
 
@@ -79,5 +79,5 @@ class CardQuery(QueryParams):
 
 
 class InvoiceQuery(QueryParams):
-    invoice_type: Optional[InvoiceType] = None
+    invoice_type: Optional[DocumentType] = None
     month_id: Optional[int] = None
