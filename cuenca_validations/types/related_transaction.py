@@ -18,7 +18,7 @@ class RelatedTransaction(str):
 
     def __init__(cls, uri: str):
         cls.uri = uri
-        cls.resource, cls.id = cls._get_uri_data(uri)
+        cls.resource, cls.id = cls._get_resource_data(uri)
 
     @classmethod
     def __get_validators__(cls):
@@ -32,7 +32,7 @@ class RelatedTransaction(str):
         return tr
 
     @staticmethod
-    def _get_uri_data(uri: str) -> Tuple[Optional[str], Optional[str]]:
+    def _get_resource_data(uri: str) -> Tuple[Optional[str], Optional[str]]:
         match = re.search(r'/([a-z_]+)/([\w]+)', uri)
         if not match:
             return (None, None)
