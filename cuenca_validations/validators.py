@@ -18,9 +18,8 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
     """
     if isinstance(item, dt.date):
         if isinstance(item, dt.datetime) and not item.tzinfo:
-            rv = item.astimezone(dt.timezone.utc).isoformat()
-        else:
-            rv = item.isoformat()
+            rv = item.astimezone(dt.timezone.utc)
+        rv = item.isoformat()
     elif isinstance(item, Enum):
         rv = item.value
     elif hasattr(item, 'to_dict'):
