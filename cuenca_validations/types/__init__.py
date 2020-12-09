@@ -1,13 +1,16 @@
 __all__ = [
     'ApiKeyQuery',
     'BillPaymentQuery',
+    'CardErrorType',
     'CardNetwork',
     'CardQuery',
     'CardStatus',
     'CardTransactionType',
     'CardType',
+    'CommissionType',
     'DepositNetwork',
     'DepositQuery',
+    'EntryType',
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
@@ -18,6 +21,7 @@ __all__ = [
     'StrictPositiveInt',
     'StrictPositiveFloat',
     'StrictTransferRequest',
+    'RelatedTransaction',
     'TransactionQuery',
     'TransactionStatus',
     'TransferNetwork',
@@ -28,11 +32,14 @@ __all__ = [
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
+    CardErrorType,
     CardNetwork,
     CardStatus,
     CardTransactionType,
     CardType,
+    CommissionType,
     DepositNetwork,
+    EntryType,
     ServiceProviderCategory,
     TransactionStatus,
     TransferNetwork,
@@ -54,4 +61,5 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
+from .related_transaction import RelatedTransaction
 from .requests import StrictTransferRequest, TransferRequest

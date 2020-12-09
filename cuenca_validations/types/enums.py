@@ -20,6 +20,7 @@ class CardTransactionType(str, Enum):
     expiration = 'expiration'
     refund = 'refund'
     void = 'void'
+    chargeback = 'chargeback'
 
 
 class CardType(str, Enum):
@@ -57,3 +58,25 @@ class TransactionStatus(str, Enum):
 class TransferNetwork(str, Enum):
     internal = 'internal'
     spei = 'spei'
+
+
+class CommissionType(str, Enum):
+    card_request = 'card_request'
+    cash_deposit = 'cash_deposit'
+
+
+class EntryType(str, Enum):
+    credit = 'credit'
+    debit = 'debit'
+
+
+class CardErrorType(Enum):
+    blocked = 'blocked'
+    insufficient_founds = 'insufficient_founds'
+    notification = 'notification'
+    notification_deactivated_card = 'notification_deactivated_card'
+    contactless_amount_limit = 'contactless_amount_limit'
+    communication = 'communication'
+    fraud_detection = 'fraud_detection'
+    fraud_detection_uncertain = 'fraud_detection_uncertain'
+    invalid_pin = 'invalid_pin'
