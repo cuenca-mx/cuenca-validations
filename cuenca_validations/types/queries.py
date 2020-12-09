@@ -77,6 +77,6 @@ class CardQuery(QueryParams):
         return v
 
 
-class InvoiceQuery(QueryParams):
-    invoice_type: Optional[DocumentType] = None
+class DocumentQuery(QueryParams):
+    document_type: Optional[DocumentType] = None
     month_id: Optional[int] = None
