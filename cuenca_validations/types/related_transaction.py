@@ -1,5 +1,5 @@
 import re
-from typing import List, Optional
+from typing import Optional, Tuple
 
 mapper = dict(
     bill_payments='BillPayment',
@@ -14,12 +14,11 @@ mapper = dict(
 class RelatedTransaction(str):
     uri: str
     resource: Optional[str]
+    id: Optional[str]
 
     def __init__(cls, uri: str):
         cls.uri = uri
-        resource_data = cls._get_resource(uri)
-        cls.resource = resource_data[0]
-        cls.id = resource_data[1]
+        cls.resource, cls.id = cls._get_resource(uri)
 
     @classmethod
     def __get_validators__(cls):
@@ -33,11 +32,11 @@ class RelatedTransaction(str):
         return tr
 
     @staticmethod
-    def _get_resource(uri: str) -> List[Optional[str]]:
+    def _get_resource(uri: str) -> Tuple[Optional[str], Optional[str]]:
         match = re.search(r'/([a-z_]+)/([\w]+)', uri)
         if not match:
-            return [None, None]
-        return [match.group(1), match.group(2)]
+            return (None, None)
+        return (match.group(1), match.group(2))
 
     def get_model(cls):
         return mapper[cls.resource] if cls.resource in mapper else None

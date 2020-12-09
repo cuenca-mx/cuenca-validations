@@ -13,6 +13,7 @@ def test_related_transaction():
     model = Model(related_transaction_uri=transaction_uri)
     assert model.related_transaction_uri == transaction_uri
     assert model.related_transaction_uri.get_model() == 'Deposit'
+    assert model.related_transaction_uri.id == 'SPXXX'
 
 
 def test_related_transaction_with_underscore():
@@ -20,6 +21,7 @@ def test_related_transaction_with_underscore():
     model = Model(related_transaction_uri=transaction_uri)
     assert model.related_transaction_uri == transaction_uri
     assert model.related_transaction_uri.get_model() == 'BillPayment'
+    assert model.related_transaction_uri.id == 'STXXX'
 
 
 def test_invalid_uri_related_transaction():
