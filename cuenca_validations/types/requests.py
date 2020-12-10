@@ -1,3 +1,4 @@
+from datetime import date
 from typing import Optional, Union
 
 from clabe import Clabe
@@ -39,5 +40,5 @@ class DocumentRequest(BaseModel):
     clabe: str
     address: str
     rfc: str
-    month_id: str
+    date: date
     document_type: DocumentType
