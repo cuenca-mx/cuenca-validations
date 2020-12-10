@@ -23,6 +23,7 @@ class QueryParams(BaseModel):
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
+    related_transaction: Optional[str] = None
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
@@ -55,10 +56,6 @@ class DepositQuery(TransactionQuery):
 
 class BillPaymentQuery(TransactionQuery):
     account_number: Optional[str] = None
-
-
-class BalanceEntryQuery(QueryParams):
-    transaction_id: Optional[str] = None
 
 
 class ApiKeyQuery(QueryParams):
