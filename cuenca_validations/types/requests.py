@@ -37,7 +37,7 @@ class CardRequest(BaseModel):
 
 class DocumentRequest(BaseModel):
     client_name: str
-    clabe: str
+    clabe: Clabe
     address: str
     rfc: str
     date: date
