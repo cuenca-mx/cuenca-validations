@@ -1,9 +1,9 @@
 from datetime import date
 from typing import Optional, Union
 
+import stdnum  # type: ignore
 from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr, validator
-from stdnum.mx import rfc
 
 from ..types.enums import CardStatus, DocumentType
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -46,7 +46,7 @@ class DocumentRequest(BaseModel):
 
     @validator('rfc')
     def check_rfc(cls, rfc_value: str):
-        if not rfc.is_valid(rfc_value):
+        if not stdnum.mx.rfc.is_valid(rfc_value):
             raise ValueError('Invalid rfc format')
         return rfc_value
 
