@@ -1,8 +1,7 @@
 from datetime import date
 
 import pytest
-from clabe import Clabe
-from pydantic import BaseModel, ValidationError
+from pydantic import ValidationError
 
 from cuenca_validations.types import DocumentRequest, DocumentType
 
