@@ -11,6 +11,7 @@ __all__ = [
     'DepositNetwork',
     'DepositQuery',
     'DocumentQuery',
+    'DocumentRequest',
     'DocumentType',
     'EntryType',
     'JSONEncoder',
@@ -66,4 +67,4 @@ from .queries import (
     TransferQuery,
 )
 from .related_transaction import RelatedTransaction
-from .requests import StrictTransferRequest, TransferRequest
+from .requests import DocumentRequest, StrictTransferRequest, TransferRequest
