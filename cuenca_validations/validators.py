@@ -25,6 +25,8 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
         rv = item.value
     elif hasattr(item, 'to_dict'):
         rv = item.to_dict()
+    elif hasattr(item, 'dict'):
+        rv = item.dict()
     elif default:
         rv = default(item)
     else:

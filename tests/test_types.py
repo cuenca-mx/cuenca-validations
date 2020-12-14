@@ -80,6 +80,10 @@ def test_count(count, truth):
         (today, today.isoformat()),
         (now, utcnow.isoformat()),
         (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
+        (
+            QueryParams(count=1, created_before=now),
+            dict(count=1, created_before=utcnow.isoformat()),
+        ),
     ],
 )
 def test_json_encoder(value, result):
