@@ -2,7 +2,8 @@ from datetime import date
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, StrictStr
+from pydantic import BaseModel, Extra, StrictStr, validator
+from stdnum.mx import rfc
 
 from ..types.enums import CardStatus, DocumentType
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -40,5 +41,22 @@ class DocumentRequest(BaseModel):
     clabe: Clabe
     address: str
     rfc: str
-    date: date
+    date: tuple
     document_type: DocumentType
+
+    @validator('rfc')
+    def check_rfc(cls, rfc_value: str):
+        if not rfc.is_valid(rfc_value):
+            raise ValueError('Invalid rfc format')
+        return rfc_value
+
+    @validator('date')
+    def check_date(cls, date_tuple: tuple):
+        date_now = date.today()
+        date_value = date(date_tuple[0], date_tuple[1], 1)
+        if (
+            date_value.year == date_now.year
+            and date_value.month == date_now.month
+        ):
+            raise ValueError('You cannot check the current month')
+        return date_value
