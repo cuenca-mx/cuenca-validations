@@ -41,7 +41,7 @@ class DocumentRequest(BaseModel):
     clabe: Clabe
     address: str
     rfc: str
-    date: Union[tuple, dt.date]
+    date: dt.date
     document_type: DocumentType
 
     @validator('rfc')
@@ -50,11 +50,15 @@ class DocumentRequest(BaseModel):
             raise ValueError('Invalid rfc format')
         return rfc_value
 
+    @validator('date', pre=True)
+    def set_date(cls, date: Union[tuple, str]) -> dt.date:
+        if isinstance(date, tuple):
+            return dt.date(date[0], date[1], 1)
+        return dt.datetime.strptime(date, '%Y-%m-%d').date()
+
     @validator('date')
-    def check_date(cls, date_value: Union[tuple, dt.date]) -> dt.date:
+    def check_date(cls, date_value: dt.date) -> dt.date:
         date_now = dt.date.today()
-        if isinstance(date_value, tuple):
-            date_value = dt.date(date_value[0], date_value[1], 1)
         if (
             date_value.year == date_now.year
             and date_value.month == date_now.month

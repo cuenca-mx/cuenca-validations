@@ -20,6 +20,20 @@ def test_valid_document_request():
     assert document.document_type == DocumentType.invoice
 
 
+def test_valid_document_request_date_string():
+    document = DocumentRequest(
+        client_name='Iron Man',
+        clabe='002000000000000008',
+        address='Address Foo',
+        rfc='GODE561231GR8',
+        date='2020-11-01',
+        document_type=DocumentType.invoice,
+    )
+    assert document.client_name == 'Iron Man'
+    assert document.date == date(2020, 11, 1)
+    assert document.document_type == DocumentType.invoice
+
+
 def test_invalid_rfc_document_request():
     with pytest.raises(ValidationError) as exc_info:
         DocumentRequest(
