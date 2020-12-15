@@ -17,7 +17,11 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
     for this type of item, default `None` it returns the item as is.
     """
     if isinstance(item, dt.date):
-        if isinstance(item, dt.datetime) and not item.tzinfo:
+        if (
+            isinstance(item, dt.datetime)
+            and not item.tzinfo
+            and item.microsecond
+        ):
             rv = item.astimezone(dt.timezone.utc).isoformat()
         else:
             rv = item.isoformat()
@@ -25,8 +29,6 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
         rv = item.value
     elif hasattr(item, 'to_dict'):
         rv = item.to_dict()
-    elif hasattr(item, 'dict'):
-        rv = item.dict()
     elif default:
         rv = default(item)
     else:
