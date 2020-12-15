@@ -1,5 +1,5 @@
-from datetime import date
-from typing import Optional, Union
+from datetime import date, datetime
+from typing import Optional, Union, cast
 
 from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr, validator
@@ -45,13 +45,13 @@ class DocumentRequest(BaseModel):
     document_type: DocumentType
 
     @validator('rfc')
-    def check_rfc(cls, rfc_value: str):
+    def check_rfc(cls, rfc_value: str) -> str:
         if not mx.rfc.is_valid(rfc_value):
             raise ValueError('Invalid rfc format')
         return rfc_value
 
     @validator('date')
-    def check_date(cls, date_tuple: tuple):
+    def check_date(cls, date_tuple: tuple) -> datetime:
         date_now = date.today()
         date_value = date(date_tuple[0], date_tuple[1], 1)
         if (
@@ -59,4 +59,4 @@ class DocumentRequest(BaseModel):
             and date_value.month == date_now.month
         ):
             raise ValueError('You cannot check the current month')
-        return date_value
+        return cast(datetime, date_value)
