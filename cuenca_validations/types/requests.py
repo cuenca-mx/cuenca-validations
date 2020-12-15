@@ -51,9 +51,10 @@ class DocumentRequest(BaseModel):
         return rfc_value
 
     @validator('date', pre=True)
-    def check_date(cls, date_tuple: tuple) -> dt.date:
+    def check_date(cls, date_value: Union[tuple, dt.date]) -> dt.date:
         date_now = dt.date.today()
-        date_value = dt.date(date_tuple[0], date_tuple[1], 1)
+        if isinstance(date_value, tuple):
+            date_value = dt.date(date_value[0], date_value[1], 1)
         if (
             date_value.year == date_now.year
             and date_value.month == date_now.month
