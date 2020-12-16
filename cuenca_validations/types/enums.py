@@ -82,6 +82,6 @@ class CardErrorType(Enum):
     invalid_pin = 'invalid_pin'
 
 
-class DocumentType(Enum):
-    billing_statement = 'billing_statement'
-    invoice = 'invoice'
+class FileType(Enum):
+    pdf = 'pdf'
+    xml = 'xml'
