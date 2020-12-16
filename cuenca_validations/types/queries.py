@@ -6,7 +6,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
-from .enums import DocumentType, TransferNetwork
+from .enums import FileType, TransferNetwork
 
 MAX_PAGE_SIZE = 100
 
@@ -78,6 +78,7 @@ class CardQuery(QueryParams):
         return v
 
 
-class DocumentQuery(QueryParams):
-    document_type: Optional[DocumentType] = None
-    month_id: Optional[int] = None
+class StatementQuery(QueryParams):
+    month: Optional[int] = None
+    year: Optional[int] = None
+    file_type: Optional[FileType] = None

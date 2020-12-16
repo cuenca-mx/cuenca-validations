@@ -1,11 +1,9 @@
-import datetime as dt
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, StrictStr, validator
-from stdnum import mx  # type: ignore
+from pydantic import BaseModel, Extra, StrictStr
 
-from ..types.enums import CardStatus, DocumentType
+from ..types.enums import CardStatus
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
@@ -34,34 +32,3 @@ class CardUpdateRequest(BaseModel):
 class CardRequest(BaseModel):
     user_id: str
     ledger_account_id: str
-
-
-class DocumentRequest(BaseModel):
-    client_name: str
-    clabe: Clabe
-    address: str
-    rfc: str
-    date: dt.date
-    document_type: DocumentType
-
-    @validator('rfc')
-    def check_rfc(cls, rfc_value: str) -> str:
-        if not mx.rfc.is_valid(rfc_value):
-            raise ValueError('Invalid rfc format')
-        return rfc_value
-
-    @validator('date', pre=True)
-    def set_date(cls, date: Union[tuple, str]) -> dt.date:
-        if isinstance(date, tuple):
-            return dt.date(date[0], date[1], 1)
-        return dt.datetime.strptime(date, '%Y-%m-%d').date()
-
-    @validator('date')
-    def check_date(cls, date_value: dt.date) -> dt.date:
-        date_now = dt.date.today()
-        if (
-            date_value.year == date_now.year
-            and date_value.month == date_now.month
-        ):
-            raise ValueError('You cannot check the current month')
-        return date_value
