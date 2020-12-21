@@ -21,6 +21,7 @@ class CardTransactionType(str, Enum):
     refund = 'refund'
     void = 'void'
     chargeback = 'chargeback'
+    fast_funds = 'fast_funds'
 
 
 class CardType(str, Enum):
