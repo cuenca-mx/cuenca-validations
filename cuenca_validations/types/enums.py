@@ -28,6 +28,16 @@ class CardType(str, Enum):
     virtual = 'virtual'
 
 
+class CardIssuer(str, Enum):
+    accendo = 'accendo'
+    cuenca = 'cuenca'
+
+
+class CardFundingType(str, Enum):
+    credit = 'credit'
+    debit = 'debit'
+
+
 class DepositNetwork(str, Enum):
     cash = 'cash'
     internal = 'internal'
