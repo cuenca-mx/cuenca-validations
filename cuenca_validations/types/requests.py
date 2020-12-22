@@ -3,7 +3,7 @@ from typing import Optional, Union
 from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr
 
-from ..types.enums import CardStatus
+from ..types.enums import CardStatus, CardIssuer, CardFundingType
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
@@ -40,6 +40,8 @@ class CardUpdateRequest(BaseRequest):
 class CardRequest(BaseRequest):
     user_id: str
     ledger_account_id: str
+    issuer: CardIssuer
+    funding_type: CardFundingType
 
 
 class ApiKeyUpdateRequest(BaseRequest):
