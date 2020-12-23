@@ -32,3 +32,21 @@ class CardUpdateRequest(BaseModel):
 class CardRequest(BaseModel):
     user_id: str
     ledger_account_id: str
+
+
+class IndentityRequest(BaseModel):
+    id: str
+    rfc: str
+    user_id: str
+    created_at: str
+    curp_status: str
+    gov_id_count: int
+    gov_id_status: str
+    black_list_validation: Optional[dict]
+    black_lists_status: Optional[str]
+    ine_validation: Optional[dict]
+    mati_identity: Optional[dict]
+    proof_of_address_status: str
+    selfie_status: str
+    selfie_video_count: int
+    selfie_video_status: str

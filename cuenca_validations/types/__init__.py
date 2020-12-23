@@ -11,6 +11,7 @@ __all__ = [
     'DepositNetwork',
     'DepositQuery',
     'EntryType',
+    'IndentityRequest',
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
@@ -62,4 +63,4 @@ from .queries import (
     TransferQuery,
 )
 from .related_transaction import RelatedTransaction
-from .requests import StrictTransferRequest, TransferRequest
+from .requests import StrictTransferRequest, TransferRequest, IndentityRequest
