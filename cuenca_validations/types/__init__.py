@@ -63,4 +63,4 @@ from .queries import (
     TransferQuery,
 )
 from .related_transaction import RelatedTransaction
-from .requests import StrictTransferRequest, TransferRequest, IndentityRequest
+from .requests import IndentityRequest, StrictTransferRequest, TransferRequest
