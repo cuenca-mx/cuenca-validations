@@ -32,3 +32,11 @@ class CardUpdateRequest(BaseModel):
 class CardRequest(BaseModel):
     user_id: str
     ledger_account_id: str
+
+
+class ApiKeyUpdateRequest(BaseModel):
+    user_id: Optional[str]
+    metadata: Optional[str]
+
+    class Config:
+        extra = Extra.forbid
