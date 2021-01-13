@@ -47,7 +47,7 @@ class StrictPaymentCardNumber(PaymentCardNumber):
         yield cls.validate_bin
 
     @classmethod
-    def validate_bin(cls, card_number: PaymentCardNumber):
+    def validate_bin(cls, card_number: PaymentCardNumber) -> PaymentCardNumber:
         if card_number.bank_code is None:
             raise CardBinValidationError
         return card_number
