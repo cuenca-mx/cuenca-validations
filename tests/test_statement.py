@@ -8,6 +8,12 @@ from cuenca_validations.types import StatementQuery
 date_now = dt.date.today()
 
 
+def test_valid_year_month():
+    statement = StatementQuery(year=2020, month=12)
+    assert statement.year == 2020
+    assert statement.month == 12
+
+
 def test_invalid_month():
     with pytest.raises(ValidationError) as exc_info:
         StatementQuery(year=date_now.year, month=13)
