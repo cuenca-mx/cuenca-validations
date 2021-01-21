@@ -79,6 +79,5 @@ class CardQuery(QueryParams):
 
 
 class StatementQuery(QueryParams):
+    year: int
     month: Optional[int] = None
-    year: Optional[int] = None
-    file_type: Optional[FileType] = None
