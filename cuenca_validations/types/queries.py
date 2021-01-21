@@ -84,10 +84,11 @@ class StatementQuery(QueryParams):
 
     @validator('year', 'month')
     def validate_year_month(cls, v, values):
-        date_now = dt.date.today()
+        month_now = dt.date.today().replace(day=1)
         if 'year' in values:
-            if values['year'] > date_now.year:
-                raise ValueError('You cannot check the current year')
-            if values['year'] == date_now.year and v >= date_now.month:
-                raise ValueError('You cannot check the current month')
+            month = dt.date(month_now.year, v, 1)
+            if month >= month_now:
+                raise ValueError(
+                    'You cannot request current month or in the future'
+                )
         return v
