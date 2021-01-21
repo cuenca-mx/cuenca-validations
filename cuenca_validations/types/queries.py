@@ -80,14 +80,13 @@ class CardQuery(QueryParams):
 
 class StatementQuery(QueryParams):
     year: int
-    month: Optional[int] = None
+    month: int
 
-    @validator('year', 'month')
-    def validate_year_month(cls, v, values):
-        date_now = dt.date.today()
-        if 'year' in values:
-            if values['year'] > date_now.year:
-                raise ValueError('You cannot check the current year')
-            if values['year'] == date_now.year and v >= date_now.month:
-                raise ValueError('You cannot check the current month')
-        return v
+    @validator('month')
+    def validate_year_month(cls, month, values):
+        year = values['year']
+        month_now = dt.date.today().replace(day=1)
+        month_set = dt.date(year, month, 1)
+        if month_set >= month_now:
+            raise ValueError(f'{year}-{month} is not a valid year-month pair')
+        return month
