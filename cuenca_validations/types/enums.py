@@ -81,3 +81,8 @@ class CardErrorType(Enum):
     fraud_detection = 'fraud_detection'
     fraud_detection_uncertain = 'fraud_detection_uncertain'
     invalid_pin = 'invalid_pin'
+
+
+class FileType(Enum):
+    pdf = 'pdf'
+    xml = 'xml'
