@@ -24,7 +24,7 @@ def test_invalid_current_month():
     assert exc_info.value.errors()[0] == dict(
         loc=('month',),
         type='value_error',
-        msg='You cannot request current month or in the future',
+        msg=f'{date_now.year + 1}-1 is not a valid year-month pair',
     )
 
 
@@ -34,5 +34,5 @@ def test_invalid_future_month():
     assert exc_info.value.errors()[0] == dict(
         loc=('month',),
         type='value_error',
-        msg='You cannot request current month or in the future',
+        msg=f'{date_now.year}-{date_now.month} is not a valid year-month pair',
     )
