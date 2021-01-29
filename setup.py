@@ -28,7 +28,7 @@ setup(
         'clabe>=1.2,<1.3',
         'pydantic>=1.6,<1.8',
         'dataclasses>=0.6;python_version<"3.7"',
-        'python-stdnum==1.14',
+        'python-stdnum==1.15',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
