@@ -6,7 +6,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
-from .enums import CardFundingType, CardIssuer, TransferNetwork
+from .enums import CardFundingType, CardIssuer, CardStatus, TransferNetwork
 
 MAX_PAGE_SIZE = 100
 
@@ -72,6 +72,7 @@ class CardQuery(QueryParams):
     pinblock: Optional[str] = None
     issuer: Optional[CardIssuer] = None
     funding_type: Optional[CardFundingType] = None
+    status: Optional[CardStatus] = None
 
     @validator('exp_month', 'exp_year', 'cvv2', 'cvv')
     def query_by_exp_cvv_if_number_set(cls, v, values):
