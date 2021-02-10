@@ -9,12 +9,7 @@ from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
 
-class ExtraForbidBaseModel(BaseModel):
-    class Config:
-        extra = Extra.forbid
-
-
-class TransferRequest(ExtraForbidBaseModel):
+class TransferRequest(BaseModel):
     recipient_name: StrictStr
     account_number: Union[Clabe, PaymentCardNumber]
     amount: StrictPositiveInt  # in centavos
@@ -26,23 +21,26 @@ class StrictTransferRequest(TransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
 
 
-class CardUpdateRequest(ExtraForbidBaseModel):
+class CardUpdateRequest(BaseModel):
     user_id: Optional[str]
     ledger_account_id: Optional[str]
     status: Optional[CardStatus]
 
+    class Config:
+        extra = Extra.forbid
 
-class CardRequest(ExtraForbidBaseModel):
+
+class CardRequest(BaseModel):
     user_id: str
     ledger_account_id: str
 
 
-class ApiKeyUpdateRequest(ExtraForbidBaseModel):
+class ApiKeyUpdateRequest(BaseModel):
     user_id: Optional[str]
     metadata: Optional[DictStrAny]
 
 
-class ApiKeyRequest(ExtraForbidBaseModel):
+class ApiKeyRequest(BaseModel):
     id: StrictStr
     secret: StrictStr
     user_id: StrictStr
