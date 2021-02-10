@@ -58,6 +58,10 @@ class BillPaymentQuery(TransactionQuery):
     account_number: Optional[str] = None
 
 
+class CardTransactionQuery(TransactionQuery):
+    card_id: Optional[str] = None
+
+
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
 
