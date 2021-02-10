@@ -1,14 +1,20 @@
-from typing import Optional, Union
+from typing import Dict, Optional, Union
 
 from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr
 
 from ..types.enums import CardStatus
+from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
 
-class TransferRequest(BaseModel):
+class ExtraForbidBaseModel(BaseModel):
+    class Config:
+        extra = Extra.forbid
+
+
+class TransferRequest(ExtraForbidBaseModel):
     recipient_name: StrictStr
     account_number: Union[Clabe, PaymentCardNumber]
     amount: StrictPositiveInt  # in centavos
@@ -20,23 +26,24 @@ class StrictTransferRequest(TransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
 
 
-class CardUpdateRequest(BaseModel):
+class CardUpdateRequest(ExtraForbidBaseModel):
     user_id: Optional[str]
     ledger_account_id: Optional[str]
     status: Optional[CardStatus]
 
-    class Config:
-        extra = Extra.forbid
 
-
-class CardRequest(BaseModel):
+class CardRequest(ExtraForbidBaseModel):
     user_id: str
     ledger_account_id: str
 
 
-class ApiKeyUpdateRequest(BaseModel):
+class ApiKeyUpdateRequest(ExtraForbidBaseModel):
     user_id: Optional[str]
-    metadata: Optional[str]
+    metadata: Optional[Dict]
 
-    class Config:
-        extra = Extra.forbid
+
+class ApiKeyRequest(ExtraForbidBaseModel):
+    id: StrictStr
+    secret: StrictStr
+    user_id: StrictStr
+    metadata: DictStrAny
