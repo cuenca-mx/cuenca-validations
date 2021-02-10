@@ -1,4 +1,4 @@
-from typing import Dict, Optional, Union
+from typing import Optional, Union
 
 from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr
@@ -39,7 +39,7 @@ class CardRequest(ExtraForbidBaseModel):
 
 class ApiKeyUpdateRequest(ExtraForbidBaseModel):
     user_id: Optional[str]
-    metadata: Optional[Dict]
+    metadata: Optional[DictStrAny]
 
 
 class ApiKeyRequest(ExtraForbidBaseModel):
