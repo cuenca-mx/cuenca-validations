@@ -32,14 +32,11 @@ class StrictTransferRequest(TransferRequest):
 
 
 class CardUpdateRequest(BaseRequest):
-    user_id: Optional[str]
-    ledger_account_id: Optional[str]
     status: Optional[CardStatus]
 
 
 class CardRequest(BaseRequest):
     user_id: str
-    ledger_account_id: str
     issuer: CardIssuer
     funding_type: CardFundingType
 
