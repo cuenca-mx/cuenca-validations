@@ -36,7 +36,7 @@ class CardUpdateRequest(BaseRequest):
 
 
 class CardRequest(BaseRequest):
-    user_id: str
+    user_id: str = 'me'
     issuer: CardIssuer
     funding_type: CardFundingType
 
