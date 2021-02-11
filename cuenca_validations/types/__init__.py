@@ -1,5 +1,6 @@
 __all__ = [
     'ApiKeyQuery',
+    'ApiKeyUpdateRequest',
     'BillPaymentQuery',
     'CardErrorType',
     'CardNetwork',
@@ -68,4 +69,8 @@ from .queries import (
     TransferQuery,
 )
 from .related_transaction import RelatedTransaction
-from .requests import StrictTransferRequest, TransferRequest
+from .requests import (
+    ApiKeyUpdateRequest,
+    StrictTransferRequest,
+    TransferRequest,
+)

@@ -4,6 +4,7 @@ from clabe import Clabe
 from pydantic import BaseModel, Extra, StrictStr
 
 from ..types.enums import CardStatus
+from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 
@@ -32,3 +33,8 @@ class CardUpdateRequest(BaseModel):
 class CardRequest(BaseModel):
     user_id: str
     ledger_account_id: str
+
+
+class ApiKeyUpdateRequest(BaseModel):
+    user_id: Optional[str]
+    metadata: Optional[DictStrAny]
