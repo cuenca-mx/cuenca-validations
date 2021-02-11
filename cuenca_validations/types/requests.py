@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, StrictStr
+from pydantic import BaseModel, Extra, StrictStr, conint, constr
 
 from ..types.enums import CardFundingType, CardIssuer, CardStatus
 from ..typing import DictStrAny
@@ -40,6 +40,17 @@ class CardUpdateRequest(BaseRequest):
 class CardRequest(BaseRequest):
     user_id: str
     ledger_account_id: str
+    issuer: CardIssuer
+    funding_type: CardFundingType
+
+
+class CardActivationRequest(BaseModel):
+    number: str
+    exp_month: conint(strict=True, ge=1, le=12)
+    exp_year: conint(strict=True, ge=2018, le=2099)
+    cvv2: constr(
+        strip_whitespace=True, strict=True, min_length=4, max_length=4
+    )
     issuer: CardIssuer
     funding_type: CardFundingType
 
