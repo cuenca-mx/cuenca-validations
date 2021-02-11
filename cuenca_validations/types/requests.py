@@ -46,7 +46,7 @@ class CardActivationRequest(BaseModel):
     exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
     exp_year: conint(strict=True, ge=2018, le=2099)  # type: ignore
     cvv2: constr(  # type: ignore
-        strip_whitespace=True, strict=True, min_length=4, max_length=4
+        strip_whitespace=True, strict=True, min_length=3, max_length=3
     )
     issuer: CardIssuer
     funding_type: CardFundingType
