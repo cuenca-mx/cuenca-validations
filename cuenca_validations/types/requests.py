@@ -28,7 +28,7 @@ class CardUpdateRequest(BaseModel):
 
 
 class CardRequest(BaseModel):
-    user_id: str
+    user_id: str = 'me'
     issuer: CardIssuer
     funding_type: CardFundingType
 
