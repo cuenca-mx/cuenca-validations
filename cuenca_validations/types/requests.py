@@ -38,10 +38,3 @@ class CardRequest(BaseModel):
 class ApiKeyUpdateRequest(BaseModel):
     user_id: Optional[str]
     metadata: Optional[DictStrAny]
-
-
-class ApiKeyRequest(BaseModel):
-    id: StrictStr
-    secret: StrictStr
-    user_id: StrictStr
-    metadata: DictStrAny
