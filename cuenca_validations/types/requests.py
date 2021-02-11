@@ -34,7 +34,7 @@ class CardRequest(BaseModel):
 
 
 class CardActivationRequest(BaseModel):
-    number: str
+    number: PaymentCardNumber
     exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
     exp_year: conint(strict=True, ge=2018, le=2099)  # type: ignore
     cvv2: constr(  # type: ignore
