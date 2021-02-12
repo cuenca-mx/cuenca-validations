@@ -71,7 +71,7 @@ class EntryType(str, Enum):
     debit = 'debit'
 
 
-class CardErrorType(Enum):
+class CardErrorType(str, Enum):
     blocked = 'blocked'
     insufficient_founds = 'insufficient_founds'
     notification = 'notification'
@@ -83,6 +83,6 @@ class CardErrorType(Enum):
     invalid_pin = 'invalid_pin'
 
 
-class FileFormat(Enum):
+class FileFormat(str, Enum):
     pdf = 'application/pdf'
     xml = 'application/xml'
