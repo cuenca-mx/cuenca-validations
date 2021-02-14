@@ -45,3 +45,7 @@ class CardRequest(BaseRequest):
 class ApiKeyUpdateRequest(BaseRequest):
     user_id: Optional[str]
     metadata: Optional[DictStrAny]
+
+
+class PasswordRequest(BaseRequest):
+    password: StrictStr
