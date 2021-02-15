@@ -70,6 +70,7 @@ from .queries import (
 )
 from .related_transaction import RelatedTransaction
 from .requests import (
+    ApiKeyRequest,
     ApiKeyUpdateRequest,
     StrictTransferRequest,
     TransferRequest,
