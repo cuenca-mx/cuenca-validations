@@ -14,7 +14,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.requests import CardUpdateRequest
+from cuenca_validations.types.requests import ApiKeyUpdateRequest
 
 today = dt.date.today()
 now = dt.datetime.now()
@@ -152,5 +152,5 @@ def test_card_query_exp_cvv_if_number_not_set(input_value):
 
 
 def test_exclude_none_in_dict():
-    request = CardUpdateRequest(user_id='US123')
+    request = ApiKeyUpdateRequest(user_id='US123')
     assert request.dict() == dict(user_id='US123')

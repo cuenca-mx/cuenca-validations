@@ -32,7 +32,7 @@ class StrictTransferRequest(TransferRequest):
 
 
 class CardUpdateRequest(BaseRequest):
-    status: Optional[CardStatus]
+    status: CardStatus
 
 
 class CardRequest(BaseRequest):
