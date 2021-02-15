@@ -2,16 +2,18 @@ import re
 from typing import Optional, Tuple
 
 mapper = dict(
+    accounts='Account',
     bill_payments='BillPayment',
     card_transactions='CardTransaction',
     commissions='Commission',
     deposits='Deposit',
+    service_providers='ServiceProvider',
     transfers='Transfer',
     whatsapp_transfers='WhatsappTransfer',
 )
 
 
-class RelatedTransaction(str):
+class RelatedResource(str):
     uri: str
     resource: Optional[str]
     id: Optional[str]
@@ -26,7 +28,7 @@ class RelatedTransaction(str):
         yield cls.validate
 
     @classmethod
-    def validate(cls, tr: 'RelatedTransaction') -> 'RelatedTransaction':
+    def validate(cls, tr: 'RelatedResource') -> 'RelatedResource':
         if not tr.resource:
             raise ValueError('invalid uri format')
         return tr

@@ -68,7 +68,7 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
-from .related_transaction import RelatedTransaction
+from .related_resource import RelatedResource
 from .requests import (
     ApiKeyUpdateRequest,
     StrictTransferRequest,
