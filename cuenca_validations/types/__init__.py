@@ -1,5 +1,6 @@
 __all__ = [
     'ApiKeyQuery',
+    'ApiKeyRequest',
     'ApiKeyUpdateRequest',
     'BillPaymentQuery',
     'CardErrorType',
