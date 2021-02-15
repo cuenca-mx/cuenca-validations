@@ -48,4 +48,4 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 
 class ApiKeyRequest(BaseRequest):
-    metadata: Optional[DictStrAny]
+    metadata: Optional[DictStrAny] = None
