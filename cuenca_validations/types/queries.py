@@ -23,7 +23,6 @@ class QueryParams(BaseModel):
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
-    related_transaction: Optional[str] = None
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
@@ -36,6 +35,10 @@ class QueryParams(BaseModel):
             d['count'] = 1
         sanitize_dict(d)
         return d
+
+
+class BalanceEntrieQuery(QueryParams):
+    related_transaction: Optional[str] = None
 
 
 class TransactionQuery(QueryParams):
