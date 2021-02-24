@@ -79,7 +79,7 @@ class CardQuery(QueryParams):
     cvv: Optional[str] = None
     cvv2: Optional[str] = None
     icvv: Optional[str] = None
-    pinblock: Optional[str] = None
+    pin_block: Optional[str] = None
     issuer: Optional[CardIssuer] = None
     funding_type: Optional[CardFundingType] = None
     status: Optional[CardStatus] = None
