@@ -18,7 +18,6 @@ __all__ = [
     'PageSize',
     'PaymentCardNumber',
     'QueryParams',
-    'RelatedResource',
     'SantizedDict',
     'ServiceProviderCategory',
     'StatementQuery',
@@ -68,7 +67,6 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
-from .related_resource import RelatedResource
 from .requests import (
     ApiKeyUpdateRequest,
     StrictTransferRequest,
