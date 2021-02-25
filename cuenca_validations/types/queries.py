@@ -38,7 +38,7 @@ class QueryParams(BaseModel):
 
 
 class BalanceEntrieQuery(QueryParams):
-    related_transaction_uri: Optional[str] = None
+    related_transaction_uri: str
 
 
 class TransactionQuery(QueryParams):

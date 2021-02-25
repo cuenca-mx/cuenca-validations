@@ -7,6 +7,7 @@ import pytest
 from pydantic import BaseModel
 
 from cuenca_validations.types import (
+    BalanceEntrieQuery,
     CardQuery,
     JSONEncoder,
     QueryParams,
@@ -42,6 +43,16 @@ def test_dict_with_exclude():
     model = QueryParams(count=1, created_before=now, user_id='USXXXX')
     assert model.dict(exclude={'user_id'}) == dict(
         count=1, created_before=utcnow.isoformat()
+    )
+
+
+def test_dict_balance_entries_query():
+    model = BalanceEntrieQuery(
+        user_id='USXXXX',
+        related_transaction_uri='/some/id',
+    )
+    assert model.dict(exclude={'user_id'}) == dict(
+        related_transaction_uri='/some/id',
     )
 
 
