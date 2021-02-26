@@ -58,4 +58,5 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 
 class PasswordRequest(BaseRequest):
-    password: StrictStr
+    user_id: Optional[str]
+    password: Optional[str]
