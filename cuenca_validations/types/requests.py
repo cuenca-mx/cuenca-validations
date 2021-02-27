@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, StrictStr
+from pydantic import BaseModel, Extra, StrictStr, constr
 
 from ..types.enums import CardStatus
 from ..typing import DictStrAny
@@ -45,3 +45,13 @@ class CardRequest(BaseRequest):
 class ApiKeyUpdateRequest(BaseRequest):
     user_id: Optional[str]
     metadata: Optional[DictStrAny]
+
+
+class PasswordRequest(BaseRequest):
+    password: constr(
+        strip_whitespace=True,
+        strict=True,
+        min_length=6,
+        max_length=6,
+        regex=r'\d{6}',  # noqa: F722
+    )
