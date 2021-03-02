@@ -19,3 +19,57 @@ class CardBinValidationError(PydanticValueError):
 class NotDigitError(PydanticNotDigitError):
     code = 'digits'
     msg_template = 'value is not all digits'
+
+
+class AuthError(Exception):
+    """Exceptions related to ApiKeys, Login, Password, etc"""
+
+    code: int
+    status_code: int
+
+
+class WrongCredsError(AuthError):
+    """Invalid ApiKeys"""
+
+    code = 101
+    status_code = 401
+
+
+class MissingAuthorizationHeaderError(AuthError):
+    """Neither Basic Auth or JWT found"""
+
+    code = 102
+    status_code = 401
+
+
+class UserNotLoggedInError(AuthError):
+    """Login required for this method"""
+
+    code = 103
+    status_code = 401
+
+
+class NoPasswordFoundError(AuthError):
+    """User must create a password before to continue"""
+
+    code = 104
+    status_code = 401
+
+
+class AuthMethodNotAllowedError(AuthError):
+    """No permissions to use this authentication method"""
+
+    code = 105
+    status_code = 401
+
+
+AUTHED_ERROR_CODES = {
+    exc.code: exc
+    for exc in [
+        WrongCredsError,
+        MissingAuthorizationHeaderError,
+        UserNotLoggedInError,
+        NoPasswordFoundError,
+        AuthMethodNotAllowedError,
+    ]
+}

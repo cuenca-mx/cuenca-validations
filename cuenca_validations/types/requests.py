@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, StrictStr
+from pydantic import BaseModel, Extra, Field, StrictStr
 
 from ..types.enums import CardStatus
 from ..typing import DictStrAny
@@ -45,3 +45,11 @@ class CardRequest(BaseRequest):
 class ApiKeyUpdateRequest(BaseRequest):
     user_id: Optional[str]
     metadata: Optional[DictStrAny]
+
+
+class UserLoginUpdateRequest(BaseRequest):
+    is_active: bool
+
+
+class PasswordRequest(BaseRequest):
+    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
