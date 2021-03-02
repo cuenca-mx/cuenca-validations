@@ -59,7 +59,7 @@ class BillPaymentQuery(TransactionQuery):
 
 
 class CardTransactionQuery(TransactionQuery):
-    card_id: Optional[str] = None
+    card_uri: Optional[str] = None
 
 
 class ApiKeyQuery(QueryParams):
