@@ -23,32 +23,29 @@ class NotDigitError(PydanticNotDigitError):
 
 class AuthedException(Exception):
     """Exceptions related to ApiKeys, Login, Password, etc"""
-
-
-class NoPasswordFound(AuthedException):
-    """User must create a password before to continue"""
-
-
-class UserNotLoggedIn(AuthedException):
-    """Login required for this method"""
+    code: int
 
 
 class WrongCreds(AuthedException):
     """Invalid ApiKeys"""
+    code = 101
 
 
 class MissingAuthorizationHeader(AuthedException):
     """Neither Basic Auth or JWT found"""
+    code = 102
+
+
+class UserNotLoggedIn(AuthedException):
+    """Login required for this method"""
+    code = 103
+
+
+class NoPasswordFound(AuthedException):
+    """User must create a password before to continue"""
+    code = 104
 
 
 class AuthMethodNotAllowed(AuthedException):
     """No permissions to use this authentication method"""
-
-
-AUTHED_ERROR_CODES = {
-    101: WrongCreds,
-    102: MissingAuthorizationHeader,
-    103: UserNotLoggedIn,
-    104: NoPasswordFound,
-    105: AuthMethodNotAllowed,
-}
+    code = 105
