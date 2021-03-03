@@ -48,8 +48,10 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 
 class UserCredentialUpdateRequest(BaseRequest):
-    is_active: bool
-    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+    is_active: Optional[bool]
+    password: Optional[str] = Field(
+        ..., max_length=6, min_length=6, regex=r'\d{6}'
+    )
 
 
 class UserCredentialRequest(BaseRequest):
