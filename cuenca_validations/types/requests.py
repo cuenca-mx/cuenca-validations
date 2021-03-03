@@ -47,9 +47,10 @@ class ApiKeyUpdateRequest(BaseRequest):
     metadata: Optional[DictStrAny]
 
 
-class UserLoginUpdateRequest(BaseRequest):
+class UserCredentialUpdateRequest(BaseRequest):
     is_active: bool
+    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
 
 
-class PasswordRequest(BaseRequest):
+class UserCredentialRequest(BaseRequest):
     password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
