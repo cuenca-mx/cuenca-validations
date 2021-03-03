@@ -56,3 +56,8 @@ class Digits(ConstrainedStr):
     def __get_validators__(cls) -> 'CallableGenerator':
         yield from ConstrainedStr.__get_validators__()
         yield validate_digits
+
+
+class Password(Digits):
+    min_length = 6
+    max_length = 6

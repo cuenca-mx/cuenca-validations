@@ -16,6 +16,7 @@ __all__ = [
     'FileFormat',
     'JSONEncoder',
     'PageSize',
+    'Password',
     'PaymentCardNumber',
     'QueryParams',
     'SantizedDict',
@@ -51,6 +52,7 @@ from .enums import (
 )
 from .general import (
     JSONEncoder,
+    Password,
     SantizedDict,
     StrictPositiveFloat,
     StrictPositiveInt,

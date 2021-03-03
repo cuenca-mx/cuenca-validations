@@ -1,12 +1,12 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, Field, StrictStr
+from pydantic import BaseModel, Extra, StrictStr
 
 from ..types.enums import CardStatus
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
-from .general import StrictPositiveInt
+from .general import Password, StrictPositiveInt
 
 
 class BaseRequest(BaseModel):
@@ -51,5 +51,9 @@ class UserLoginUpdateRequest(BaseRequest):
     is_active: bool
 
 
-class PasswordRequest(BaseRequest):
-    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+class UserCredentialRequest(BaseRequest):
+    password: Password
+
+
+class UserCredentialUpdateRequest(BaseRequest):
+    password: Optional[Password]
