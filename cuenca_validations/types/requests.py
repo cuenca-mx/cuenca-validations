@@ -53,7 +53,12 @@ class UserLoginUpdateRequest(BaseRequest):
 
 class UserCredentialRequest(BaseRequest):
     password: Password
+    is_active: bool
+    user_id: Optional[str]
 
 
 class UserCredentialUpdateRequest(BaseRequest):
     password: Optional[Password]
+    is_active: Optional[bool]
+    user_id: Optional[str]
+
