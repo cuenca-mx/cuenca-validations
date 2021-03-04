@@ -1,7 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, Field, StrictStr
+from pydantic import BaseModel, Extra, Field, StrictStr, root_validator
 
 from ..types.enums import CardStatus
 from ..typing import DictStrAny
@@ -47,9 +47,23 @@ class ApiKeyUpdateRequest(BaseRequest):
     metadata: Optional[DictStrAny]
 
 
-class UserLoginUpdateRequest(BaseRequest):
-    is_active: bool
+class UserCredentialUpdateRequest(BaseRequest):
+    is_active: Optional[bool]
+    password: Optional[str] = Field(
+        None, max_length=6, min_length=6, regex=r'\d{6}'
+    )
+
+    def dict(self, *args, **kwargs) -> DictStrAny:
+        # Password can be None but BaseRequest excludes None
+        return BaseModel.dict(self, *args, **kwargs)
+
+    @root_validator(pre=True)
+    def check_one_property_at_a_time(cls, values: DictStrAny) -> DictStrAny:
+        not_none_count = sum(1 for val in values.values() if val)
+        if not_none_count > 1:
+            raise ValueError('Only one property can be updated at a time')
+        return values
 
 
-class PasswordRequest(BaseRequest):
+class UserCredentialRequest(BaseRequest):
     password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')

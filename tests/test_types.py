@@ -14,7 +14,10 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.requests import CardUpdateRequest
+from cuenca_validations.types.requests import (
+    CardUpdateRequest,
+    UserCredentialUpdateRequest,
+)
 
 today = dt.date.today()
 now = dt.datetime.now()
@@ -154,3 +157,27 @@ def test_card_query_exp_cvv_if_number_not_set(input_value):
 def test_exclude_none_in_dict():
     request = CardUpdateRequest(user_id='US123')
     assert request.dict() == dict(user_id='US123')
+
+
+def test_update_one_property_at_a_time_request():
+    with pytest.raises(ValueError):
+        UserCredentialUpdateRequest(user_id='US123', password='123456')
+
+    req = UserCredentialUpdateRequest(password='123456')
+    assert not req.is_active and req.password == '123456'
+
+    req = UserCredentialUpdateRequest(is_active=True)
+    assert req.is_active and not req.password
+
+
+@pytest.mark.parametrize(
+    'data,expected_dict',
+    [
+        (dict(password='123456'), dict(password='123456', is_active=None)),
+        (dict(is_active=True), dict(password=None, is_active=True)),
+        (dict(), dict(password=None, is_active=None)),
+    ],
+)
+def test_update_credential_update_request_dict(data, expected_dict):
+    req = UserCredentialUpdateRequest(**data)
+    assert req.dict() == expected_dict

@@ -31,6 +31,8 @@ __all__ = [
     'TransferNetwork',
     'TransferQuery',
     'TransferRequest',
+    'UserCredentialRequest',
+    'UserCredentialUpdateRequest',
     'digits',
 ]
 
@@ -73,4 +75,6 @@ from .requests import (
     ApiKeyUpdateRequest,
     StrictTransferRequest,
     TransferRequest,
+    UserCredentialRequest,
+    UserCredentialUpdateRequest,
 )

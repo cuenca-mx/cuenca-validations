@@ -63,7 +63,7 @@ class AuthMethodNotAllowedError(AuthError):
     status_code = 401
 
 
-AUTHED_ERROR_CODES = {
+ERROR_CODES = {
     exc.code: exc
     for exc in [
         WrongCredsError,
