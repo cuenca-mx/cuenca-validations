@@ -47,14 +47,15 @@ class ApiKeyUpdateRequest(BaseRequest):
     metadata: Optional[DictStrAny]
 
 
-class UserCredentialUpdateRequest(BaseModel):
+class UserCredentialUpdateRequest(BaseRequest):
     is_active: Optional[bool]
     password: Optional[str] = Field(
         None, max_length=6, min_length=6, regex=r'\d{6}'
     )
 
-    class Config:
-        extra = Extra.forbid
+    def dict(self, *args, **kwargs) -> DictStrAny:
+        # Password can be None but BaseRequest excludes None
+        return BaseModel.dict(*args, **kwargs)
 
     @root_validator(pre=True)
     def check_one_property_at_a_time(cls, values: DictStrAny) -> DictStrAny:
