@@ -55,7 +55,7 @@ class UserCredentialUpdateRequest(BaseRequest):
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
-        return BaseModel.dict(*args, **kwargs)
+        return BaseModel.dict(self, *args, **kwargs)
 
     @root_validator(pre=True)
     def check_one_property_at_a_time(cls, values: DictStrAny) -> DictStrAny:

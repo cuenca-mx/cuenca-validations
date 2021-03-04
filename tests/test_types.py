@@ -168,3 +168,16 @@ def test_update_one_property_at_a_time_request():
 
     req = UserCredentialUpdateRequest(is_active=True)
     assert req.is_active and not req.password
+
+
+@pytest.mark.parametrize(
+    'data,expected_dict',
+    [
+        (dict(password='123456'), dict(password='123456', is_active=None)),
+        (dict(is_active=True), dict(password=None, is_active=True)),
+        (dict(), dict(password=None, is_active=None)),
+    ],
+)
+def test_update_credential_update_request_dict(data, expected_dict):
+    req = UserCredentialUpdateRequest(**data)
+    assert req.dict() == expected_dict
