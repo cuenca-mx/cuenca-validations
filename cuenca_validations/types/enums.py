@@ -22,6 +22,7 @@ class CardTransactionType(str, Enum):
     void = 'void'
     chargeback = 'chargeback'
     fast_funds = 'fast_funds'
+    push = 'push'
 
 
 class CardType(str, Enum):
