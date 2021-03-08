@@ -1,9 +1,9 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, Field, StrictStr, root_validator
+from pydantic import BaseModel, Extra, Field, StrictStr, conint, constr, root_validator
 
-from ..types.enums import CardStatus
+from ..types.enums import CardFundingType, CardIssuer, CardStatus
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
@@ -32,14 +32,24 @@ class StrictTransferRequest(TransferRequest):
 
 
 class CardUpdateRequest(BaseRequest):
-    user_id: Optional[str]
-    ledger_account_id: Optional[str]
-    status: Optional[CardStatus]
+    status: CardStatus
 
 
 class CardRequest(BaseRequest):
-    user_id: str
-    ledger_account_id: str
+    user_id: str = 'me'
+    issuer: CardIssuer
+    funding_type: CardFundingType
+
+
+class CardActivationRequest(BaseModel):
+    number: StrictStr
+    exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
+    exp_year: conint(strict=True, ge=18, le=99)  # type: ignore
+    cvv2: constr(  # type: ignore
+        strip_whitespace=True, strict=True, min_length=3, max_length=3
+    )
+    issuer: CardIssuer
+    funding_type: CardFundingType
 
 
 class ApiKeyUpdateRequest(BaseRequest):
