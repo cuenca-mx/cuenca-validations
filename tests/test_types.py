@@ -15,8 +15,7 @@ from cuenca_validations.types import (
     digits,
 )
 from cuenca_validations.types.requests import (
-ApiKeyUpdateRequest,
-    CardUpdateRequest,
+    ApiKeyUpdateRequest,
     UserCredentialUpdateRequest,
 )
 
