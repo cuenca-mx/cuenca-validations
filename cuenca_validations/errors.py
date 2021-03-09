@@ -58,6 +58,7 @@ class NoPasswordFoundError(CuencaError):
 
 class CardNotFoundError(CuencaError):
     """Card could not be found with this data"""
+
     code = 105
     status_code = 404
 
@@ -71,6 +72,7 @@ class AuthMethodNotAllowedError(CuencaError):
 
 class TooManyAttemptsError(CuencaError):
     """This user has tried too many times to activate a card"""
+
     code = 107
     status_code = 403
 
