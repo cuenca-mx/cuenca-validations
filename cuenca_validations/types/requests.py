@@ -1,7 +1,15 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, Field, StrictStr, conint, constr, root_validator
+from pydantic import (
+    BaseModel,
+    Extra,
+    Field,
+    StrictStr,
+    conint,
+    constr,
+    root_validator,
+)
 
 from ..types.enums import CardFundingType, CardIssuer, CardStatus
 from ..typing import DictStrAny
