@@ -1,4 +1,5 @@
 __all__ = [
+    'AccountQuery',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'BillPaymentQuery',
@@ -58,6 +59,7 @@ from .general import (
     digits,
 )
 from .queries import (
+    AccountQuery,
     ApiKeyQuery,
     BillPaymentQuery,
     CardQuery,

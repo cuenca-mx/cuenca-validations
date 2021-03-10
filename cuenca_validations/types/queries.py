@@ -94,3 +94,9 @@ class StatementQuery(QueryParams):
         if month_set >= month_now:
             raise ValueError(f'{year}-{month} is not a valid year-month pair')
         return month
+
+
+class AccountQuery(QueryParams):
+    account_number: Optional[str] = None
+    bank_code: Optional[str] = None
+    user_id: Optional[str] = None
