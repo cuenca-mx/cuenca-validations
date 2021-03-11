@@ -99,4 +99,3 @@ class StatementQuery(QueryParams):
 class AccountQuery(QueryParams):
     account_number: Optional[str] = None
     bank_code: Optional[str] = None
-    user_id: Optional[str] = None
