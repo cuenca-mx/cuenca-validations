@@ -1,4 +1,5 @@
 __all__ = [
+    'AccountQuery',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'BillPaymentQuery',
@@ -25,7 +26,6 @@ __all__ = [
     'StrictPositiveInt',
     'StrictPositiveFloat',
     'StrictTransferRequest',
-    'RelatedTransaction',
     'TransactionQuery',
     'TransactionStatus',
     'TransferNetwork',
@@ -59,6 +59,7 @@ from .general import (
     digits,
 )
 from .queries import (
+    AccountQuery,
     ApiKeyQuery,
     BillPaymentQuery,
     CardQuery,
@@ -70,7 +71,6 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
 )
-from .related_transaction import RelatedTransaction
 from .requests import (
     ApiKeyUpdateRequest,
     StrictTransferRequest,
