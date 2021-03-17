@@ -56,13 +56,6 @@ class NoPasswordFoundError(CuencaError):
     status_code = 401
 
 
-class CardNotFoundError(CuencaError):
-    """Card could not be found with this data"""
-
-    code = 105
-    status_code = 404
-
-
 class AuthMethodNotAllowedError(CuencaError):
     """No permissions to use this authentication method"""
 
@@ -85,5 +78,6 @@ ERROR_CODES = {
         UserNotLoggedInError,
         NoPasswordFoundError,
         AuthMethodNotAllowedError,
+        TooManyAttemptsError
     ]
 }
