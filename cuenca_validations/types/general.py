@@ -1,13 +1,7 @@
 import json
 from typing import TYPE_CHECKING, Optional, Type
 
-from pydantic import (
-    ConstrainedStr,
-    PositiveFloat,
-    PositiveInt,
-    StrictFloat,
-    StrictInt,
-)
+from pydantic import ConstrainedFloat, ConstrainedInt, ConstrainedStr
 
 from ..validators import sanitize_dict, sanitize_item, validate_digits
 
@@ -26,19 +20,37 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-class StrictPositiveInt(StrictInt, PositiveInt):
+class ConPositiveInt(ConstrainedInt):
     """
-    - StrictInt: ensures a float isn't passed in by accident
-    - PositiveInt: ensures the value is above 0
+    - strict: ensures a float isn't passed in by accident
+    - ge (greater than or equal): ensures the value is above 0
+    """
+
+    strict = True
+    ge = 0
+
+
+class ConPositiveFloat(ConstrainedFloat):
+    """
+    - strict: ensures an integer isn't passed in by accident
+    - ge (greater than or equal): ensures the value is above 0
+    """
+
+    strict = True
+    ge = 0
+
+
+class StrictPositiveInt(ConPositiveInt):
+    """
+    (Configured by ConPositiveInt)
     """
 
     ...
 
 
-class StrictPositiveFloat(StrictFloat, PositiveFloat):
+class StrictPositiveFloat(ConstrainedFloat):
     """
-    - StrictFloat: ensures an integer isn't passed in by accident
-    - PositiveFloat: ensures the value is above 0
+    (Configured by ConPositiveFloat)
     """
 
     ...
