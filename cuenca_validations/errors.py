@@ -78,6 +78,6 @@ ERROR_CODES = {
         UserNotLoggedInError,
         NoPasswordFoundError,
         AuthMethodNotAllowedError,
-        TooManyAttemptsError
+        TooManyAttemptsError,
     ]
 }
