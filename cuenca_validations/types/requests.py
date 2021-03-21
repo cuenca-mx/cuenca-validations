@@ -56,8 +56,6 @@ class CardActivationRequest(BaseModel):
     cvv2: constr(  # type: ignore
         strip_whitespace=True, strict=True, min_length=3, max_length=3
     )
-    issuer: CardIssuer
-    funding_type: CardFundingType
 
 
 class ApiKeyUpdateRequest(BaseRequest):
