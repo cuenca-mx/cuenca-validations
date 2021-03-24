@@ -21,46 +21,53 @@ class NotDigitError(PydanticNotDigitError):
     msg_template = 'value is not all digits'
 
 
-class AuthError(Exception):
+class CuencaError(Exception):
     """Exceptions related to ApiKeys, Login, Password, etc"""
 
     code: int
     status_code: int
 
 
-class WrongCredsError(AuthError):
+class WrongCredsError(CuencaError):
     """Invalid ApiKeys"""
 
     code = 101
     status_code = 401
 
 
-class MissingAuthorizationHeaderError(AuthError):
+class MissingAuthorizationHeaderError(CuencaError):
     """Neither Basic Auth or JWT found"""
 
     code = 102
     status_code = 401
 
 
-class UserNotLoggedInError(AuthError):
+class UserNotLoggedInError(CuencaError):
     """Login required for this method"""
 
     code = 103
     status_code = 401
 
 
-class NoPasswordFoundError(AuthError):
+class NoPasswordFoundError(CuencaError):
     """User must create a password before to continue"""
 
     code = 104
     status_code = 401
 
 
-class AuthMethodNotAllowedError(AuthError):
+class AuthMethodNotAllowedError(CuencaError):
     """No permissions to use this authentication method"""
 
-    code = 105
+    code = 106
     status_code = 401
+
+
+class TooManyAttemptsError(CuencaError):
+    """This user has tried too many times to activate a card"""
+
+    code = 107
+    status_code = 403
 
 
 ERROR_CODES = {
@@ -71,5 +78,6 @@ ERROR_CODES = {
         UserNotLoggedInError,
         NoPasswordFoundError,
         AuthMethodNotAllowedError,
+        TooManyAttemptsError,
     ]
 }
