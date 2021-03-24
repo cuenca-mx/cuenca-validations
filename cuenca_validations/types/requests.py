@@ -1,15 +1,7 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import (
-    BaseModel,
-    Extra,
-    Field,
-    StrictStr,
-    conint,
-    constr,
-    root_validator,
-)
+from pydantic import BaseModel, Extra, Field, StrictStr, conint, root_validator
 
 from ..types.enums import CardFundingType, CardIssuer, CardStatus
 from ..typing import DictStrAny
@@ -53,8 +45,8 @@ class CardActivationRequest(BaseModel):
     number: StrictStr
     exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
     exp_year: conint(strict=True, ge=18, le=99)  # type: ignore
-    cvv2: constr(  # type: ignore
-        strip_whitespace=True, strict=True, min_length=3, max_length=3
+    cvv2: str = Field(
+        ..., strip_whitespace=True, min_length=3, max_length=3, regex=r'\d{3}'
     )
 
 
