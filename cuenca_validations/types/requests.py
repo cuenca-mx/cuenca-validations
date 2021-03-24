@@ -42,7 +42,13 @@ class CardRequest(BaseRequest):
 
 
 class CardActivationRequest(BaseModel):
-    number: StrictStr
+    number: str = Field(
+        ...,
+        strip_whitespace=True,
+        min_length=16,
+        max_length=16,
+        regex=r'\d{16}',
+    )
     exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
     exp_year: conint(strict=True, ge=18, le=99)  # type: ignore
     cvv2: str = Field(
