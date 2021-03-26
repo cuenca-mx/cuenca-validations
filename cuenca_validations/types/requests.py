@@ -1,7 +1,15 @@
 from typing import Optional, Union
 
 from clabe import Clabe
-from pydantic import BaseModel, Extra, Field, StrictStr, conint, root_validator
+from pydantic import (
+    BaseModel,
+    Extra,
+    Field,
+    StrictStr,
+    conint,
+    constr,
+    root_validator,
+)
 
 from ..types.enums import CardFundingType, CardIssuer, CardStatus
 from ..typing import DictStrAny
@@ -81,3 +89,39 @@ class UserCredentialUpdateRequest(BaseRequest):
 
 class UserCredentialRequest(BaseRequest):
     password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+
+
+class CardValidationRequest(BaseModel):
+    number: str = Field(
+        ...,
+        strip_whitespace=True,
+        min_length=16,
+        max_length=16,
+        regex=r'\d{16}',
+    )
+    exp_month: Optional[conint(strict=True, ge=1, le=12)]  # type: ignore
+    exp_year: Optional[conint(strict=True, ge=18, le=99)]  # type: ignore
+    cvv: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    cvv2: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    icvv: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    pin_block: Optional[constr(strip_whitespace=True)] = None  # type: ignore
+
+
+class ARPCRequest(BaseModel):
+    card_id: StrictStr
+    cvv: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    cvv2: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    icvv: Optional[  # type: ignore
+        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
+    ]
+    pin_block: Optional[constr(strip_whitespace=True)]  # type: ignore
