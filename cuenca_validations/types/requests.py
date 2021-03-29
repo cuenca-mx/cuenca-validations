@@ -115,13 +115,24 @@ class CardValidationRequest(BaseModel):
 
 class ARPCRequest(BaseModel):
     card_id: StrictStr
-    cvv: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    cvv2: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    icvv: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    pin_block: Optional[constr(strip_whitespace=True)]  # type: ignore
+    arqc: StrictStr  # type: ignore
+    key_derivation_method: constr(  # type: ignore
+        strict=True, min_length=1, max_length=1
+    )
+    arpc_method: constr(  # type: ignore
+        strict=True, min_length=1, max_length=1
+    )
+    txn_data: StrictStr  # type: ignore
+    master_key_derivation_mode: StrictStr = ''  # type: ignore
+    pan_sequence: constr(  # type: ignore
+        strict=True, min_length=2, max_length=2
+    ) = ''
+    atc: StrictStr = ''  # type: ignore
+    unique_number: StrictStr = ''  # type: ignore
+    arc: StrictStr = ''  # type: ignore
+    card_status_update: StrictStr = ''  # type: ignore
+    proprietary_data: StrictStr = ''  # type: ignore
+    derivation_parameters: StrictStr = ''  # type: ignore
+    derivation_iv: StrictStr = ''  # type: ignore
+    master_key_derivation_data: StrictStr = ''  # type: ignore
+    padding: StrictStr = ''  # type: ignore
