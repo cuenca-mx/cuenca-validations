@@ -114,7 +114,13 @@ class CardValidationRequest(BaseModel):
 
 
 class ARPCRequest(BaseModel):
-    card_id: StrictStr
+    number: str = Field(
+        ...,
+        strip_whitespace=True,
+        min_length=16,
+        max_length=16,
+        regex=r'\d{16}',
+    )
     arqc: StrictStr  # type: ignore
     key_derivation_method: constr(  # type: ignore
         strict=True, min_length=1, max_length=1
