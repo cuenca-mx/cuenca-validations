@@ -20,7 +20,7 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-class ConPositiveInt(ConstrainedInt):
+class StrictPositiveInt(ConstrainedInt):
     """
     - strict: ensures a float isn't passed in by accident
     - ge (greater than or equal): ensures the value is above 0
@@ -29,8 +29,10 @@ class ConPositiveInt(ConstrainedInt):
     strict = True
     ge = 0
 
+    ...
 
-class ConPositiveFloat(ConstrainedFloat):
+
+class StrictPositiveFloat(ConstrainedFloat):
     """
     - strict: ensures an integer isn't passed in by accident
     - ge (greater than or equal): ensures the value is above 0
@@ -38,20 +40,6 @@ class ConPositiveFloat(ConstrainedFloat):
 
     strict = True
     ge = 0
-
-
-class StrictPositiveInt(ConPositiveInt):
-    """
-    (Configured by ConPositiveInt)
-    """
-
-    ...
-
-
-class StrictPositiveFloat(ConstrainedFloat):
-    """
-    (Configured by ConPositiveFloat)
-    """
 
     ...
 
