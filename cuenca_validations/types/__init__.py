@@ -2,6 +2,7 @@ __all__ = [
     'AccountQuery',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
+    'BalanceEntryQuery',
     'BillPaymentQuery',
     'CardErrorType',
     'CardFundingType',
@@ -65,6 +66,7 @@ from .general import (
 from .queries import (
     AccountQuery,
     ApiKeyQuery,
+    BalanceEntryQuery,
     BillPaymentQuery,
     CardQuery,
     CardTransactionQuery,
