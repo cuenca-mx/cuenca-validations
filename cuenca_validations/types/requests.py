@@ -40,7 +40,8 @@ class StrictTransferRequest(TransferRequest):
 
 
 class CardUpdateRequest(BaseRequest):
-    status: CardStatus
+    status: Optional[CardStatus]
+    pin_block: Optional[str]
 
 
 class CardRequest(BaseRequest):
