@@ -1,3 +1,2 @@
 clabe==1.2.4
 pydantic==1.8.1
-python-stdnum==1.15
