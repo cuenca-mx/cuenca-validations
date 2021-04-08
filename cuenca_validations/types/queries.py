@@ -108,3 +108,7 @@ class StatementQuery(QueryParams):
 
 class AccountQuery(QueryParams):
     account_number: Optional[str] = None
+
+
+class BalanceEntryQuery(QueryParams):
+    funding_instrument_uri: Optional[str] = None
