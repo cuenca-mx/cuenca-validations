@@ -122,24 +122,12 @@ class ARPCRequest(BaseModel):
         max_length=16,
         regex=r'\d{16}',
     )
-    arqc: StrictStr  # type: ignore
-    key_derivation_method: constr(  # type: ignore
-        strict=True, min_length=1, max_length=1
-    )
+    arqc: StrictStr
     arpc_method: constr(  # type: ignore
         strict=True, min_length=1, max_length=1
     )
-    txn_data: StrictStr  # type: ignore
-    master_key_derivation_mode: StrictStr = ''  # type: ignore
-    pan_sequence: constr(  # type: ignore
-        strict=True, min_length=2, max_length=2
-    ) = ''
-    atc: StrictStr = ''  # type: ignore
-    unique_number: StrictStr = ''  # type: ignore
-    arc: StrictStr = ''  # type: ignore
-    card_status_update: StrictStr = ''  # type: ignore
-    proprietary_data: StrictStr = ''  # type: ignore
-    derivation_parameters: StrictStr = ''  # type: ignore
-    derivation_iv: StrictStr = ''  # type: ignore
-    master_key_derivation_data: StrictStr = ''  # type: ignore
-    padding: StrictStr = ''  # type: ignore
+    transaction_data: StrictStr
+    response_code: StrictStr
+    transaction_counter: StrictStr
+    pan_sequence: StrictStr
+    unique_number: StrictStr
