@@ -11,7 +11,12 @@ from pydantic import (
     root_validator,
 )
 
-from ..types.enums import CardFundingType, CardIssuer, CardStatus, TrackDataMethod
+from ..types.enums import (
+    CardFundingType,
+    CardIssuer,
+    CardStatus,
+    TrackDataMethod,
+)
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
