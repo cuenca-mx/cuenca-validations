@@ -11,7 +11,7 @@ from pydantic import (
     root_validator,
 )
 
-from ..types.enums import CardFundingType, CardIssuer, CardStatus
+from ..types.enums import CardFundingType, CardIssuer, CardStatus, TrackDataMethod
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
@@ -131,3 +131,4 @@ class ARPCRequest(BaseModel):
     transaction_counter: StrictStr
     pan_sequence: StrictStr
     unique_number: StrictStr
+    track_data_method: TrackDataMethod

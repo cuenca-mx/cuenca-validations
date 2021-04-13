@@ -98,3 +98,14 @@ class CardErrorType(str, Enum):
 class FileFormat(str, Enum):
     pdf = 'application/pdf'
     xml = 'application/xml'
+
+
+class TrackDataMethod(str, Enum):
+    not_set = 'not-set'
+    terminal = 'terminal'
+    manual = 'manual'
+    unknown = 'unknown'
+    contactless = 'contactless'
+    fall_back = 'fall_back'
+    magnetic_stripe = 'magnetic_stripe'
+    recurring_charge = 'recurring_charge'
