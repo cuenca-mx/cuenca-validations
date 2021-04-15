@@ -109,3 +109,17 @@ class TrackDataMethod(str, Enum):
     fall_back = 'fall_back'
     magnetic_stripe = 'magnetic_stripe'
     recurring_charge = 'recurring_charge'
+
+
+class CardDesign(str, Enum):
+    clasica = 'clasica'
+    travesia = 'travesia'
+    carla = 'carla'
+
+
+class CardFulfillment(str, Enum):
+    new_local = 'NL'
+    new_foreign = 'NF'
+    replacement_mc = 'RE'
+    replacement_local = 'RL'
+    replacement_foreign = 'RF'

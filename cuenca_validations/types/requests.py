@@ -12,6 +12,8 @@ from pydantic import (
 )
 
 from ..types.enums import (
+    CardDesign,
+    CardFulfillment,
     CardFundingType,
     CardIssuer,
     CardStatus,
@@ -137,3 +139,9 @@ class ARPCRequest(BaseModel):
     pan_sequence: StrictStr
     unique_number: StrictStr
     track_data_method: TrackDataMethod
+
+
+class CardBatchRequest(BaseRequest):
+    card_design: CardDesign
+    card_fulfillment: CardFulfillment
+    number_of_cards: conint(strict=True, ge=1, le=999999)
