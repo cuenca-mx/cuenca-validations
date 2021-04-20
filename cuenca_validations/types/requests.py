@@ -13,9 +13,9 @@ from pydantic import (
 
 from ..types.enums import (
     CardDesign,
-    CardFulfillment,
     CardFundingType,
     CardIssuer,
+    CardPackaging,
     CardStatus,
     TrackDataMethod,
 )
