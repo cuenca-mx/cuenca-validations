@@ -114,7 +114,7 @@ class TrackDataMethod(str, Enum):
 class CardDesign(str, Enum):
     clasica = 'clasica'
     travesia = 'travesia'
-    carla = 'carla'
+    limited_edition = 'limited_edition'
 
 
 class CardFulfillment(str, Enum):
