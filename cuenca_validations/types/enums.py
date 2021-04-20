@@ -112,14 +112,14 @@ class TrackDataMethod(str, Enum):
 
 
 class CardDesign(str, Enum):
-    clasica = 'clasica'
+    classic = 'classic'
     travesia = 'travesia'
     limited_edition = 'limited_edition'
 
 
-class CardFulfillment(str, Enum):
-    new_local = 'NL'
-    new_foreign = 'NF'
-    replacement_mc = 'RE'
-    replacement_local = 'RL'
-    replacement_foreign = 'RF'
+class CardPackaging(str, Enum):
+    manual_local = 'NL'
+    manual_nonlocal = 'NF'
+    automated_local = 'RL'
+    automated_nonlocal = 'RF'
+    automated_batch_shipping = 'RE'

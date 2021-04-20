@@ -143,5 +143,5 @@ class ARPCRequest(BaseModel):
 
 class CardBatchRequest(BaseRequest):
     card_design: CardDesign
-    card_fulfillment: CardFulfillment
+    card_packaging: CardPackaging
     number_of_cards: conint(strict=True, ge=1, le=999999)  # type: ignore
