@@ -17,6 +17,7 @@ from ..types.enums import (
     CardIssuer,
     CardPackaging,
     CardStatus,
+    CardType,
     TrackDataMethod,
 )
 from ..typing import DictStrAny
@@ -145,3 +146,44 @@ class CardBatchRequest(BaseRequest):
     card_design: CardDesign
     card_packaging: CardPackaging
     number_of_cards: conint(strict=True, ge=1, le=999999)  # type: ignore
+
+
+class CardTransactionRequest(BaseModel):
+    card_id: str
+    user_id: str
+    amount: int
+    merchant_name: str
+    merchant_type: str
+    merchant_data: str
+    currency_code: str
+    prosa_transaction_id: str
+    retrieval_reference: str
+
+
+class ReverseRequest(CardTransactionRequest):
+    authorizer_number: str
+
+
+class ChargeRequest(CardTransactionRequest):
+    card_type: CardType
+    transaction_type: str
+    authorizer_number: Optional[str]
+    track_data_method: Optional[str]
+    pos_capability: Optional[str]
+    logical_network: Optional[str]
+    is_cvv: Optional[bool] = False
+    get_balance: Optional[bool] = False
+
+
+class NotificationRequest(CardTransactionRequest):
+    card_status: CardStatus
+    card_type: CardType
+    transaction_type: str
+    authorizer_number: Optional[str]
+    track_data_method: Optional[str]
+    pos_capability: Optional[str]
+    logical_network: Optional[str]
+
+
+class BalanceRequest(BaseModel):
+    user_id: str
