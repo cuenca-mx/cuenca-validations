@@ -158,16 +158,17 @@ class CardTransactionRequest(BaseModel):
     currency_code: str
     prosa_transaction_id: str
     retrieval_reference: str
+    card_type: CardType
+    card_status: CardStatus
+    transaction_type: str
+    authorizer_number: Optional[str]
 
 
 class ReverseRequest(CardTransactionRequest):
-    authorizer_number: str
+    ...
 
 
 class ChargeRequest(CardTransactionRequest):
-    card_type: CardType
-    transaction_type: str
-    authorizer_number: Optional[str]
     track_data_method: Optional[str]
     pos_capability: Optional[str]
     logical_network: Optional[str]
@@ -176,10 +177,6 @@ class ChargeRequest(CardTransactionRequest):
 
 
 class NotificationRequest(CardTransactionRequest):
-    card_status: CardStatus
-    card_type: CardType
-    transaction_type: str
-    authorizer_number: Optional[str]
     track_data_method: Optional[str]
     pos_capability: Optional[str]
     logical_network: Optional[str]
