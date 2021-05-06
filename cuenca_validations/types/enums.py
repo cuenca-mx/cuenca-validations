@@ -120,7 +120,7 @@ class PosCapability(str, Enum):
     reserved = 'reserved'
 
 
-class AuthorizerTransactionType(str, Enum):
+class AuthorizerTransaction(str, Enum):
     advice = 'advice'
     normal_purchase = 'normal_purchase'
     cash_advance = 'cash_advance'

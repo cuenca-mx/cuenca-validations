@@ -12,7 +12,7 @@ from pydantic import (
 )
 
 from ..types.enums import (
-    AuthorizerTransactionType,
+    AuthorizerTransaction,
     CardDesign,
     CardFundingType,
     CardIssuer,
@@ -163,7 +163,7 @@ class CardTransactionRequest(BaseModel):
     retrieval_reference: str
     card_type: CardType
     card_status: CardStatus
-    transaction_type: AuthorizerTransactionType
+    transaction_type: AuthorizerTransaction
     authorizer_number: Optional[str]
 
 
