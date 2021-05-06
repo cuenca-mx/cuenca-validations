@@ -171,13 +171,13 @@ class ReverseRequest(CardTransactionRequest):
     ...
 
 
-class NotificationRequest(CardTransactionRequest):
+class CardNotificationRequest(CardTransactionRequest):
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
     logical_network: Optional[str]
 
 
-class ChargeRequest(NotificationRequest):
+class ChargeRequest(CardNotificationRequest):
     is_cvv: Optional[bool] = False
     get_balance: Optional[bool] = False
 

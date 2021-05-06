@@ -4,7 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 import pytest
-from pydantic import BaseModel
+from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
     CardQuery,
@@ -16,6 +16,8 @@ from cuenca_validations.types import (
 )
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
+    ChargeRequest,
+    UserCardNotificationRequest,
     UserCredentialUpdateRequest,
 )
 
@@ -181,3 +183,35 @@ def test_update_one_property_at_a_time_request():
 def test_update_credential_update_request_dict(data, expected_dict):
     req = UserCredentialUpdateRequest(**data)
     assert req.dict() == expected_dict
+
+
+def test_card_transaction_requests():
+    data = dict(
+        card_id='CA123',
+        user_id='US123',
+        amount=100,
+        merchant_name='visa',
+        merchant_data='0279288357            00012558',
+        merchant_type='wtype',
+        currency_code='458',
+        prosa_transaction_id='12345',
+        authorizer_number='123456',
+        retrieval_reference='who ks',
+        transaction_type='normal_purchase',
+        card_type='virtual',
+        card_status='active',
+        track_data_method='terminal',
+        pos_capability='pin_accepted',
+        is_cvv=False,
+        get_balance=False,
+    )
+    ChargeRequest(**data)
+
+    # missing fields
+    with pytest.raises(ValidationError):
+        UserCardNotificationRequest(**data)
+
+    # invalid fields
+    data['amount'] = -1
+    with pytest.raises(ValidationError):
+        UserCardNotificationRequest(**data)
