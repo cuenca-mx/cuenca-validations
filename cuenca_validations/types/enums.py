@@ -136,6 +136,11 @@ class AuthorizerTransactionType(str, Enum):
     re_authorization = 're_authorization'
 
 
+class UserCardNotification(str, Enum):
+    balance_inquiry = 'balance_inquiry'
+    card_blocked = 'card_blocked'
+
+
 class CardDesign(str, Enum):
     classic = 'classic'
     travesia = 'travesia'

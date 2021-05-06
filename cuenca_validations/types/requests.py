@@ -21,6 +21,7 @@ from ..types.enums import (
     CardType,
     PosCapability,
     TrackDataMethod,
+    UserCardNotification,
 )
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -170,19 +171,16 @@ class ReverseRequest(CardTransactionRequest):
     ...
 
 
-class ChargeRequest(CardTransactionRequest):
-    track_data_method: TrackDataMethod
-    pos_capability: PosCapability
-    logical_network: Optional[str]
-    is_cvv: Optional[bool] = False
-    get_balance: Optional[bool] = False
-
-
 class NotificationRequest(CardTransactionRequest):
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
     logical_network: Optional[str]
 
 
-class BalanceRequest(BaseModel):
-    user_id: str
+class ChargeRequest(NotificationRequest):
+    is_cvv: Optional[bool] = False
+    get_balance: Optional[bool] = False
+
+
+class UserCardNotificationRequest(CardTransactionRequest):
+    type: UserCardNotification
