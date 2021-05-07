@@ -134,6 +134,8 @@ class AuthorizerTransaction(str, Enum):
     card_validation = 'card_validation'
     check_out = 'check_out'
     re_authorization = 're_authorization'
+    fast_funds = 'fast_funds'
+    fast_funds_reverse = 'fast_funds_reverse'
 
 
 class UserCardNotification(str, Enum):
