@@ -141,7 +141,7 @@ class AuthorizerTransaction(str, Enum):
 class UserCardNotification(str, Enum):
     balance_inquiry = 'balance_inquiry'
     card_blocked = 'card_blocked'
-    interest_free_purchase = 'interest_free_purchase'
+    monthly_purchases = 'monthly_purchases'
 
 
 class CardDesign(str, Enum):
