@@ -2,6 +2,7 @@ __all__ = [
     'AccountQuery',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
+    'AuthorizerTransaction',
     'BalanceEntryQuery',
     'BillPaymentQuery',
     'CardErrorType',
@@ -21,6 +22,7 @@ __all__ = [
     'JSONEncoder',
     'PageSize',
     'PaymentCardNumber',
+    'PosCapability',
     'QueryParams',
     'SantizedDict',
     'ServiceProviderCategory',
@@ -29,11 +31,13 @@ __all__ = [
     'StrictPositiveInt',
     'StrictPositiveFloat',
     'StrictTransferRequest',
+    'TrackDataMethod',
     'TransactionQuery',
     'TransactionStatus',
     'TransferNetwork',
     'TransferQuery',
     'TransferRequest',
+    'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
     'digits',
@@ -41,6 +45,7 @@ __all__ = [
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
+    AuthorizerTransaction,
     CardErrorType,
     CardFundingType,
     CardIssuer,
@@ -52,9 +57,12 @@ from .enums import (
     DepositNetwork,
     EntryType,
     FileFormat,
+    PosCapability,
     ServiceProviderCategory,
+    TrackDataMethod,
     TransactionStatus,
     TransferNetwork,
+    UserCardNotification,
 )
 from .general import (
     JSONEncoder,

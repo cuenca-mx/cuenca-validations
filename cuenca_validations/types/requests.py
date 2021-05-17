@@ -12,12 +12,16 @@ from pydantic import (
 )
 
 from ..types.enums import (
+    AuthorizerTransaction,
     CardDesign,
     CardFundingType,
     CardIssuer,
     CardPackaging,
     CardStatus,
+    CardType,
+    PosCapability,
     TrackDataMethod,
+    UserCardNotification,
 )
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -145,3 +149,38 @@ class CardBatchRequest(BaseRequest):
     card_design: CardDesign
     card_packaging: CardPackaging
     number_of_cards: conint(strict=True, ge=1, le=999999)  # type: ignore
+
+
+class CardTransactionRequest(BaseModel):
+    card_id: str
+    user_id: str
+    amount: StrictPositiveInt
+    merchant_name: str
+    merchant_type: str
+    merchant_data: str
+    currency_code: str
+    prosa_transaction_id: str
+    retrieval_reference: str
+    card_type: CardType
+    card_status: CardStatus
+    transaction_type: AuthorizerTransaction
+    authorizer_number: Optional[str]
+
+
+class ReverseRequest(CardTransactionRequest):
+    ...
+
+
+class CardNotificationRequest(CardTransactionRequest):
+    track_data_method: TrackDataMethod
+    pos_capability: PosCapability
+    logical_network: Optional[str]
+
+
+class ChargeRequest(CardNotificationRequest):
+    is_cvv: Optional[bool] = False
+    get_balance: Optional[bool] = False
+
+
+class UserCardNotificationRequest(CardTransactionRequest):
+    type: UserCardNotification

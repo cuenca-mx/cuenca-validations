@@ -111,6 +111,39 @@ class TrackDataMethod(str, Enum):
     recurring_charge = 'recurring_charge'
 
 
+class PosCapability(str, Enum):
+    not_set = 'not-set'
+    unknown = 'unknown'
+    pin_accepted = 'pin_accepted'
+    pin_not_accepted = 'pin_not_accepted'
+    pin_pad_down = 'pin_pad_down'
+    reserved = 'reserved'
+
+
+class AuthorizerTransaction(str, Enum):
+    advice = 'advice'
+    normal_purchase = 'normal_purchase'
+    cash_advance = 'cash_advance'
+    returns = 'returns'
+    balance_inquiry = 'balance_inquiry'
+    purchase_with_cashback = 'purchase_with_cashback'
+    not_defined = 'not_defined'
+    mail_or_phone_order = 'mail_or_phone_order'
+    change_pin = 'change_pin'
+    notification = 'notification'
+    card_validation = 'card_validation'
+    check_out = 'check_out'
+    re_authorization = 're_authorization'
+    fast_funds = 'fast_funds'
+    fast_funds_reverse = 'fast_funds_reverse'
+
+
+class UserCardNotification(str, Enum):
+    balance_inquiry = 'balance_inquiry'
+    card_blocked = 'card_blocked'
+    monthly_purchases = 'monthly_purchases'
+
+
 class CardDesign(str, Enum):
     classic = 'classic'
     travesia = 'travesia'
