@@ -207,11 +207,18 @@ def test_card_transaction_requests():
     )
     ChargeRequest(**data)
 
+    # Validate atm_fee optional
+    data['atm_fee'] = 1800
+    ChargeRequest(**data)
+
     # missing fields
     with pytest.raises(ValidationError):
         UserCardNotificationRequest(**data)
 
     # invalid fields
+    data['atm_fee'] = -1
+    with pytest.raises(ValidationError):
+        ChargeRequest(**data)
     data['amount'] = -1
     with pytest.raises(ValidationError):
         UserCardNotificationRequest(**data)
