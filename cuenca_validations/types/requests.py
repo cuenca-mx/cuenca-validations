@@ -180,6 +180,7 @@ class CardNotificationRequest(CardTransactionRequest):
 class ChargeRequest(CardNotificationRequest):
     is_cvv: Optional[bool] = False
     get_balance: Optional[bool] = False
+    atm_fee: Optional[StrictPositiveInt]
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
