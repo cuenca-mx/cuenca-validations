@@ -37,9 +37,8 @@ class CardIssuer(str, Enum):
 
 
 class IssuerNetwork(str, Enum):
-    master_card = 'MasterCard'
+    mastercard = 'MasterCard'
     visa = 'Visa'
-    master_card_4 = 'MasterCard4'
     other = 'Other'
 
 
