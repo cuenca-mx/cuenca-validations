@@ -19,6 +19,7 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
+    IssuerNetwork,
     PosCapability,
     TrackDataMethod,
     UserCardNotification,
@@ -181,6 +182,7 @@ class ChargeRequest(CardNotificationRequest):
     is_cvv: Optional[bool] = False
     get_balance: Optional[bool] = False
     atm_fee: Optional[StrictPositiveInt]
+    issuer: IssuerNetwork
 
 
 class UserCardNotificationRequest(CardTransactionRequest):

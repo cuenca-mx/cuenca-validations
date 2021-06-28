@@ -36,6 +36,13 @@ class CardIssuer(str, Enum):
     cuenca = 'cuenca'
 
 
+class IssuerNetwork(str, Enum):
+    master_card = 'MasterCard'
+    visa = 'Visa'
+    master_card_4 = 'MasterCard4'
+    other = 'Other'
+
+
 class CardFundingType(str, Enum):
     credit = 'credit'
     debit = 'debit'
