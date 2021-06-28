@@ -204,7 +204,7 @@ def test_card_transaction_requests():
         pos_capability='pin_accepted',
         is_cvv=False,
         get_balance=False,
-        issuer='MasterCard4',
+        issuer='MasterCard',
     )
     ChargeRequest(**data)
 
