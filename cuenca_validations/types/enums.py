@@ -98,6 +98,7 @@ class CardErrorType(str, Enum):
     fraud_detection = 'fraud_detection'
     fraud_detection_uncertain = 'fraud_detection_uncertain'
     invalid_pin = 'invalid_pin'
+    cash_advance_daily_limit = 'cash_advance_daily_limit'
 
 
 class FileFormat(str, Enum):
