@@ -175,3 +175,17 @@ class CardholderVerificationMethod(str, Enum):
     quick_payment_service = 'quick_payment_service'
     contactless = 'contactless'
     app_confirmation = 'app_confirmation'
+
+
+class Currency(str, Enum):
+    mxn = 'mxn'
+    usdc = 'usdc'
+    btc = 'btc'
+    cuenca = 'cuenca'
+
+
+class WalletType(str, Enum):
+    saving = 'saving'
+    crypto = 'crypto'
+    foreign_currency = 'foreign_currency'
+    cuenca = 'cuenca'
