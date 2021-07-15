@@ -162,3 +162,17 @@ class CardPackaging(str, Enum):
     automated_local = 'RL'
     automated_nonlocal = 'RF'
     automated_batch_shipping = 'RE'
+
+
+class Currency(str, Enum):
+    mxn = 'mxn'
+    usdc = 'usdc'
+    btc = 'btc'
+    cuenca = 'cuenca'
+
+
+class WalletType(str, Enum):
+    saving = 'saving'
+    crypto = 'crypto'
+    foreign_currency = 'foreign_currency'
+    cuenca = 'cuenca'
