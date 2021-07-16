@@ -20,6 +20,7 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
+    Currency,
     IssuerNetwork,
     PosCapability,
     TrackDataMethod,
@@ -190,3 +191,11 @@ class ChargeRequest(CardNotificationRequest):
 
 class UserCardNotificationRequest(CardTransactionRequest):
     type: UserCardNotification
+
+
+class SavingRequest(BaseRequest):
+    name: str
+    category: str
+    goal: int
+    end_goal: int
+    currency: Currency
