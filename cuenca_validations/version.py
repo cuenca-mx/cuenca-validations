@@ -1,1 +1,1 @@
-__version__ = '0.9.8.devwallet2'
+__version__ = '0.9.9.dev1'
