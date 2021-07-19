@@ -182,7 +182,7 @@ class Currency(str, Enum):
     mxn = 'mxn'
     usdc = 'usdc'
     btc = 'btc'
-    cuenca = 'cuenca'
+    cuenca = 'cuenca_coins'
 
 
 class WalletType(str, Enum):
