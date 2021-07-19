@@ -17,6 +17,7 @@ from cuenca_validations.types import (
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
+    SavingRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
 )
@@ -223,3 +224,24 @@ def test_card_transaction_requests():
     data['amount'] = -1
     with pytest.raises(ValidationError):
         UserCardNotificationRequest(**data)
+
+
+def test_saving_request():
+    dt_now = dt.datetime.now()
+    data = dict(
+        name='Mi depa',
+        category='vehicle',
+        currency='mxn',
+        amount=66600,
+        end_date=dt_now + dt.timedelta(days=1),
+    )
+    SavingRequest(**data)
+
+    data['amount'] = -1000
+    with pytest.raises(ValidationError):
+        SavingRequest(**data)
+
+    data['amount'] = 66600
+    data['end_date'] = dt_now
+    with pytest.raises(ValidationError):
+        SavingRequest(**data)

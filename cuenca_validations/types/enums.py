@@ -76,6 +76,7 @@ class TransactionStatus(str, Enum):
 class TransferNetwork(str, Enum):
     internal = 'internal'
     spei = 'spei'
+    wallet = 'wallet'
 
 
 class CommissionType(str, Enum):
@@ -187,5 +188,11 @@ class Currency(str, Enum):
 class WalletType(str, Enum):
     saving = 'saving'
     crypto = 'crypto'
-    foreign_currency = 'foreign_currency'
-    cuenca = 'cuenca'
+
+
+class SavingCategory(str, Enum):
+    vehicle = 'vehicle'
+    property = 'property'
+    education = 'education'
+    travel = 'travel'
+    other = 'other'
