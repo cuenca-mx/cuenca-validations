@@ -181,7 +181,6 @@ class CardholderVerificationMethod(str, Enum):
 class Currency(str, Enum):
     mxn = 'mxn'
     usdc = 'usdc'
-    btc = 'btc'
     cuenca = 'cuenca_coins'
 
 
