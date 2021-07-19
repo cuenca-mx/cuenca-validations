@@ -1,3 +1,4 @@
+from datetime import datetime
 from typing import Optional, Union
 
 from clabe import Clabe
@@ -10,6 +11,7 @@ from pydantic import (
     constr,
     root_validator,
 )
+from pydantic.class_validators import validator
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -22,6 +24,7 @@ from ..types.enums import (
     Currency,
     IssuerNetwork,
     PosCapability,
+    SavingCategory,
     TrackDataMethod,
     UserCardNotification,
 )
@@ -191,8 +194,16 @@ class UserCardNotificationRequest(CardTransactionRequest):
 
 
 class SavingRequest(BaseRequest):
+    '''Request for oaxaca to create a saving object'''
+
     name: str
-    category: str
-    goal: int
-    end_goal: int
+    category: SavingCategory
+    amount: StrictPositiveInt
+    end_date: datetime
     currency: Currency
+
+    @validator('end_date')
+    def validate_end_date(cls, v: datetime) -> datetime:
+        if v <= datetime.now():
+            raise ValueError('The end_date always need to be higher than now')
+        return v
