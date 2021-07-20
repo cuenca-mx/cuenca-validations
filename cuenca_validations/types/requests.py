@@ -124,7 +124,7 @@ class CardValidationRequest(BaseModel):
         constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
     ]
     pin_block: Optional[constr(strip_whitespace=True)] = None  # type: ignore
-    pin_tries_exceeded_offline: Optional[bool] = None
+    pin_attempts_exceeded: Optional[bool] = None
 
 
 class ARPCRequest(BaseModel):
