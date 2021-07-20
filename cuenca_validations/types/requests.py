@@ -15,6 +15,7 @@ from ..types.enums import (
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
+    CardholderVerificationMethod,
     CardIssuer,
     CardPackaging,
     CardStatus,
@@ -184,6 +185,7 @@ class ChargeRequest(CardNotificationRequest):
     get_balance: Optional[bool] = False
     atm_fee: Optional[StrictPositiveInt]
     issuer: IssuerNetwork
+    cardholder_verification_method: Optional[CardholderVerificationMethod]
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
