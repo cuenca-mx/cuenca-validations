@@ -45,6 +45,7 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
+    'WalletAccount',
     'WalletType',
     'digits',
 ]
@@ -104,3 +105,4 @@ from .requests import (
     UserCredentialRequest,
     UserCredentialUpdateRequest,
 )
+from .wallets import WalletAccount
