@@ -162,3 +162,14 @@ class CardPackaging(str, Enum):
     automated_local = 'RL'
     automated_nonlocal = 'RF'
     automated_batch_shipping = 'RE'
+
+
+class CardholderVerificationMethod(str, Enum):
+    unknown_1 = '0'
+    unkwown_2 = ' '
+    signature = '1'
+    pin = '2'
+    not_attended = '3'
+    mail_or_phone = '4'
+    quick_payment_service = '5'
+    contactless = '9'
