@@ -32,7 +32,7 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
-
+from .wallets import WalletAccount
 
 class BaseRequest(BaseModel):
     class Config:
@@ -46,14 +46,14 @@ class BaseRequest(BaseModel):
 
 class TransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber]
+    account_number: Union[Clabe, PaymentCardNumber,WalletAccount ]
     amount: StrictPositiveInt  # in centavos
     descriptor: StrictStr  # how it'll appear for the recipient
     idempotency_key: str  # must be unique for each transfer
 
 
 class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber]
+    account_number: Union[Clabe, StrictPaymentCardNumber, WalletAccount]
 
 
 class CardUpdateRequest(BaseRequest):
