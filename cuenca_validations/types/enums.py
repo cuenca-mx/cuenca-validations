@@ -173,3 +173,4 @@ class CardholderVerificationMethod(str, Enum):
     mail_or_phone = '4'
     quick_payment_service = '5'
     contactless = '9'
+    app_confirmation = '10'
