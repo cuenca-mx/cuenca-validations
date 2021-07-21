@@ -165,8 +165,7 @@ class CardPackaging(str, Enum):
 
 
 class CardholderVerificationMethod(str, Enum):
-    unknown_1 = '0'
-    unkwown_2 = ' '
+    unknown = '0'
     signature = '1'
     pin = '2'
     not_attended = '3'
