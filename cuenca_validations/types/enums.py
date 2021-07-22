@@ -165,6 +165,8 @@ class CardPackaging(str, Enum):
 
 
 class CardholderVerificationMethod(str, Enum):
+    # Describes how the cardholder verified their
+    # identity (PIN, signature, with app, etc.).
     unknown = '0'
     signature = '1'
     pin = '2'
