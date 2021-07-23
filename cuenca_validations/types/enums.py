@@ -162,3 +162,16 @@ class CardPackaging(str, Enum):
     automated_local = 'RL'
     automated_nonlocal = 'RF'
     automated_batch_shipping = 'RE'
+
+
+class CardholderVerificationMethod(str, Enum):
+    # Describes how the cardholder verified their
+    # identity (PIN, signature, with app, etc.).
+    unknown = '0'
+    signature = '1'
+    pin = '2'
+    not_attended = '3'
+    mail_or_phone = '4'
+    quick_payment_service = '5'
+    contactless = '9'
+    app_confirmation = '10'
