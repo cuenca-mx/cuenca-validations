@@ -167,11 +167,11 @@ class CardPackaging(str, Enum):
 class CardholderVerificationMethod(str, Enum):
     # Describes how the cardholder verified their
     # identity (PIN, signature, with app, etc.).
-    unknown = '0'
-    signature = '1'
-    pin = '2'
-    not_attended = '3'
-    mail_or_phone = '4'
-    quick_payment_service = '5'
-    contactless = '9'
-    app_confirmation = '10'
+    unknown = 'unknown'
+    signature = 'signature'
+    pin = 'pin'
+    not_attended = 'not_attended'
+    mail_or_phone = 'mail_or_phone'
+    quick_payment_service = 'quick_payment_service'
+    contactless = 'contactless'
+    app_confirmation = 'app_confirmation'
