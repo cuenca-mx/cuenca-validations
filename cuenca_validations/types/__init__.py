@@ -45,7 +45,8 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
-    'WalletAccount',
+    'WalletTransactionRequest',
+    'WalletTransactionType',
     'WalletType',
     'digits',
 ]
