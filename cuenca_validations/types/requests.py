@@ -1,4 +1,4 @@
-from datetime import datetime
+import datetime as dt
 from typing import Optional, Union
 
 from clabe import Clabe
@@ -28,11 +28,12 @@ from ..types.enums import (
     SavingCategory,
     TrackDataMethod,
     UserCardNotification,
+    WalletTransactionType,
 )
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
-from .wallets import WalletAccount
+
 
 class BaseRequest(BaseModel):
     class Config:
@@ -46,14 +47,14 @@ class BaseRequest(BaseModel):
 
 class TransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber,WalletAccount ]
+    account_number: Union[Clabe, PaymentCardNumber]
     amount: StrictPositiveInt  # in centavos
     descriptor: StrictStr  # how it'll appear for the recipient
     idempotency_key: str  # must be unique for each transfer
 
 
 class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber, WalletAccount]
+    account_number: Union[Clabe, StrictPaymentCardNumber]
 
 
 class CardUpdateRequest(BaseRequest):
@@ -197,16 +198,20 @@ class UserCardNotificationRequest(CardTransactionRequest):
 
 
 class SavingRequest(BaseRequest):
-    '''Request for oaxaca to create a saving object'''
-
     name: str
     category: SavingCategory
-    amount: StrictPositiveInt
-    end_date: datetime
+    goal_amount: StrictPositiveInt
+    goal_date: dt.datetime
     currency: Currency
 
-    @validator('end_date')
-    def validate_end_date(cls, v: datetime) -> datetime:
-        if v <= datetime.now():
+    @validator('goal_date')
+    def validate_end_date(cls, v: dt.datetime) -> dt.datetime:
+        if v <= dt.datetime.now():
             raise ValueError('The end_date always need to be higher than now')
         return v
+
+
+class WalletTransactionRequest(BaseRequest):
+    wallet_id: str
+    transaction_type: WalletTransactionType
+    amount: StrictPositiveInt
