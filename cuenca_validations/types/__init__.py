@@ -74,6 +74,7 @@ from .enums import (
     TransactionStatus,
     TransferNetwork,
     UserCardNotification,
+    WalletTransactionType,
     WalletType,
 )
 from .general import (
@@ -104,5 +105,5 @@ from .requests import (
     TransferRequest,
     UserCredentialRequest,
     UserCredentialUpdateRequest,
+    WalletTransactionRequest,
 )
-from .wallets import WalletAccount

@@ -181,12 +181,15 @@ class CardholderVerificationMethod(str, Enum):
 class Currency(str, Enum):
     mxn = 'mxn'
     usdc = 'usdc'
-    cuenca = 'cuenca_coins'
 
 
 class WalletType(str, Enum):
     saving = 'saving'
-    crypto = 'crypto'
+
+
+class WalletTransactionType(str, Enum):
+    deposit = 'deposit'
+    withdrawal = 'withdrawal'
 
 
 class SavingCategory(str, Enum):
