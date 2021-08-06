@@ -232,16 +232,16 @@ def test_saving_request():
         name='Mi depa',
         category='vehicle',
         currency='mxn',
-        amount=66600,
-        end_date=dt_now + dt.timedelta(days=1),
+        goal_amount=66600,
+        goal_date=dt_now + dt.timedelta(days=1),
     )
     SavingRequest(**data)
 
-    data['amount'] = -1000
+    data['goal_amount'] = -1000
     with pytest.raises(ValidationError):
         SavingRequest(**data)
 
-    data['amount'] = 66600
-    data['end_date'] = dt_now
+    data['goal_amount'] = 66600
+    data['goal_date'] = dt_now
     with pytest.raises(ValidationError):
         SavingRequest(**data)
