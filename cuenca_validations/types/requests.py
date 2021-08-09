@@ -205,9 +205,9 @@ class SavingRequest(BaseRequest):
     currency: Currency
 
     @validator('goal_date')
-    def validate_end_date(cls, v: dt.datetime) -> dt.datetime:
+    def validate_goal_date(cls, v: dt.datetime) -> dt.datetime:
         if v <= dt.datetime.now():
-            raise ValueError('The end_date always need to be higher than now')
+            raise ValueError('The goal_date always need to be higher than now')
         return v
 
 
