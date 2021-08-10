@@ -22,7 +22,6 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
-    Currency,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
@@ -202,11 +201,25 @@ class SavingRequest(BaseRequest):
     category: SavingCategory
     goal_amount: StrictPositiveInt
     goal_date: dt.datetime
-    currency: Currency
 
     @validator('goal_date')
     def validate_goal_date(cls, v: dt.datetime) -> dt.datetime:
         if v <= dt.datetime.now():
+            raise ValueError('The goal_date always need to be higher than now')
+        return v
+
+
+class SavingUpdateRequest(BaseRequest):
+    name: Optional[str]
+    category: Optional[SavingCategory]
+    goal_amount: Optional[StrictPositiveInt]
+    goal_date: Optional[dt.datetime]
+
+    @validator('goal_date')
+    def validate_goal_date(
+        cls, v: Optional[dt.datetime]
+    ) -> Optional[dt.datetime]:
+        if v and v <= dt.datetime.now():
             raise ValueError('The goal_date always need to be higher than now')
         return v
 

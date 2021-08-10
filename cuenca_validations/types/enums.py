@@ -177,15 +177,6 @@ class CardholderVerificationMethod(str, Enum):
     app_confirmation = 'app_confirmation'
 
 
-class Currency(str, Enum):
-    mxn = 'mxn'
-    usdc = 'usdc'
-
-
-class WalletType(str, Enum):
-    saving = 'saving'
-
-
 class WalletTransactionType(str, Enum):
     deposit = 'deposit'
     withdrawal = 'withdrawal'
