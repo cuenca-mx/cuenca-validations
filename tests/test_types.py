@@ -18,6 +18,7 @@ from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
     SavingRequest,
+    SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
 )
@@ -231,11 +232,11 @@ def test_saving_request():
     data = dict(
         name='Mi depa',
         category='vehicle',
-        currency='mxn',
         goal_amount=66600,
         goal_date=dt_now + dt.timedelta(days=1),
     )
     SavingRequest(**data)
+    SavingUpdateRequest(**data)
 
     data['goal_amount'] = -1000
     with pytest.raises(ValidationError):
@@ -245,3 +246,5 @@ def test_saving_request():
     data['goal_date'] = dt_now
     with pytest.raises(ValidationError):
         SavingRequest(**data)
+    with pytest.raises(ValidationError):
+        SavingUpdateRequest(**data)

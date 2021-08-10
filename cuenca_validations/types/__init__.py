@@ -16,7 +16,6 @@ __all__ = [
     'CardTransactionType',
     'CardType',
     'CommissionType',
-    'Currency',
     'DepositNetwork',
     'DepositQuery',
     'EntryType',
@@ -30,6 +29,7 @@ __all__ = [
     'SantizedDict',
     'SavingCategory',
     'SavingRequest',
+    'SavingUpdateRequest',
     'ServiceProviderCategory',
     'StatementQuery',
     'StrictPaymentCardNumber',
@@ -47,7 +47,7 @@ __all__ = [
     'UserCredentialUpdateRequest',
     'WalletTransactionRequest',
     'WalletTransactionType',
-    'WalletType',
+    'WalletQuery',
     'digits',
 ]
 
@@ -63,7 +63,6 @@ from .enums import (
     CardTransactionType,
     CardType,
     CommissionType,
-    Currency,
     DepositNetwork,
     EntryType,
     FileFormat,
@@ -76,7 +75,6 @@ from .enums import (
     TransferNetwork,
     UserCardNotification,
     WalletTransactionType,
-    WalletType,
 )
 from .general import (
     JSONEncoder,
@@ -98,10 +96,12 @@ from .queries import (
     StatementQuery,
     TransactionQuery,
     TransferQuery,
+    WalletQuery,
 )
 from .requests import (
     ApiKeyUpdateRequest,
     SavingRequest,
+    SavingUpdateRequest,
     StrictTransferRequest,
     TransferRequest,
     UserCredentialRequest,
