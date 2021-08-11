@@ -112,7 +112,12 @@ class AccountQuery(QueryParams):
 
 class BalanceEntryQuery(QueryParams):
     funding_instrument_uri: Optional[str] = None
+    wallet_id: str = 'default'
 
 
 class WalletQuery(QueryParams):
     active: Optional[bool] = None
+
+
+class WalletTransactionQuery(QueryParams):
+    wallet_uri: Optional[bool] = None
