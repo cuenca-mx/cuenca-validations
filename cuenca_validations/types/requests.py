@@ -225,6 +225,6 @@ class SavingUpdateRequest(BaseRequest):
 
 
 class WalletTransactionRequest(BaseRequest):
-    wallet_id: str
+    wallet_uri: str
     transaction_type: WalletTransactionType
     amount: StrictPositiveInt
