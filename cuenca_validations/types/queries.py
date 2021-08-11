@@ -120,4 +120,4 @@ class WalletQuery(QueryParams):
 
 
 class WalletTransactionQuery(QueryParams):
-    wallet_uri: Optional[bool] = None
+    wallet_uri: Optional[str] = None
