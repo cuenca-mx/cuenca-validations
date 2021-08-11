@@ -48,6 +48,7 @@ __all__ = [
     'WalletTransactionRequest',
     'WalletTransactionType',
     'WalletQuery',
+    'WalletTransactionQuery',
     'digits',
 ]
 
@@ -97,6 +98,7 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
     WalletQuery,
+    WalletTransactionQuery,
 )
 from .requests import (
     ApiKeyUpdateRequest,
