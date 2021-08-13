@@ -204,7 +204,7 @@ class SavingRequest(BaseRequest):
 
     @validator('goal_date')
     def validate_goal_date(cls, v: dt.datetime) -> dt.datetime:
-        if v <= dt.datetime.now():
+        if v <= dt.datetime.utcnow():
             raise ValueError('The goal_date always need to be higher than now')
         return v
 
@@ -219,7 +219,7 @@ class SavingUpdateRequest(BaseRequest):
     def validate_goal_date(
         cls, v: Optional[dt.datetime]
     ) -> Optional[dt.datetime]:
-        if v and v <= dt.datetime.now():
+        if v and v <= dt.datetime.utcnow():
             raise ValueError('The goal_date always need to be higher than now')
         return v
 
