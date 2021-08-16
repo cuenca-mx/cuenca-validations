@@ -36,6 +36,11 @@ class CardIssuer(str, Enum):
     cuenca = 'cuenca'
 
 
+class IssuerNetwork(str, Enum):
+    mastercard = 'Mastercard'
+    visa = 'Visa'
+
+
 class CardFundingType(str, Enum):
     credit = 'credit'
     debit = 'debit'
@@ -93,6 +98,7 @@ class CardErrorType(str, Enum):
     fraud_detection = 'fraud_detection'
     fraud_detection_uncertain = 'fraud_detection_uncertain'
     invalid_pin = 'invalid_pin'
+    cash_advance_daily_limit = 'cash_advance_daily_limit'
 
 
 class FileFormat(str, Enum):
@@ -111,6 +117,39 @@ class TrackDataMethod(str, Enum):
     recurring_charge = 'recurring_charge'
 
 
+class PosCapability(str, Enum):
+    not_set = 'not-set'
+    unknown = 'unknown'
+    pin_accepted = 'pin_accepted'
+    pin_not_accepted = 'pin_not_accepted'
+    pin_pad_down = 'pin_pad_down'
+    reserved = 'reserved'
+
+
+class AuthorizerTransaction(str, Enum):
+    advice = 'advice'
+    normal_purchase = 'normal_purchase'
+    cash_advance = 'cash_advance'
+    returns = 'returns'
+    balance_inquiry = 'balance_inquiry'
+    purchase_with_cashback = 'purchase_with_cashback'
+    not_defined = 'not_defined'
+    mail_or_phone_order = 'mail_or_phone_order'
+    change_pin = 'change_pin'
+    notification = 'notification'
+    card_validation = 'card_validation'
+    check_out = 'check_out'
+    re_authorization = 're_authorization'
+    fast_funds = 'fast_funds'
+    fast_funds_reverse = 'fast_funds_reverse'
+
+
+class UserCardNotification(str, Enum):
+    balance_inquiry = 'balance_inquiry'
+    card_blocked = 'card_blocked'
+    monthly_purchases = 'monthly_purchases'
+
+
 class CardDesign(str, Enum):
     classic = 'classic'
     travesia = 'travesia'
@@ -123,3 +162,16 @@ class CardPackaging(str, Enum):
     automated_local = 'RL'
     automated_nonlocal = 'RF'
     automated_batch_shipping = 'RE'
+
+
+class CardholderVerificationMethod(str, Enum):
+    # Describes how the cardholder verified their
+    # identity (PIN, signature, with app, etc.).
+    unknown = 'unknown'
+    signature = 'signature'
+    pin = 'pin'
+    not_attended = 'not_attended'
+    mail_or_phone = 'mail_or_phone'
+    quick_payment_service = 'quick_payment_service'
+    contactless = 'contactless'
+    app_confirmation = 'app_confirmation'
