@@ -183,8 +183,12 @@ class WalletTransactionType(str, Enum):
 
 
 class SavingCategory(str, Enum):
+    general = 'general'
+    home = 'home'
     vehicle = 'vehicle'
-    property = 'property'
-    education = 'education'
     travel = 'travel'
+    clothing = 'clothing'
     other = 'other'
+    medical = 'medical'
+    accident = 'accident'
+    education = 'education'
