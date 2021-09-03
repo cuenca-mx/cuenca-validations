@@ -196,9 +196,7 @@ class UserCardNotificationRequest(CardTransactionRequest):
     type: UserCardNotification
 
 
-class SavingUpdateRequest(BaseRequest):
-    name: Optional[str]
-    category: Optional[SavingCategory]
+class SavingBaseRequest(BaseRequest):
     goal_amount: Optional[StrictPositiveInt]
     goal_date: Optional[dt.datetime]
 
@@ -211,9 +209,14 @@ class SavingUpdateRequest(BaseRequest):
         return v
 
 
-class SavingRequest(SavingUpdateRequest):
+class SavingRequest(SavingBaseRequest):
     name: str
     category: SavingCategory
+
+
+class SavingUpdateRequest(SavingBaseRequest):
+    name: Optional[str]
+    category: Optional[SavingCategory]
 
 
 class WalletTransactionRequest(BaseRequest):
