@@ -230,13 +230,12 @@ def test_card_transaction_requests():
 def test_saving_request():
     dt_now = dt.datetime.now()
     data = dict(
-        name='Mi depa',
+        name='My car',
         category='vehicle',
         goal_amount=66600,
         goal_date=dt_now + dt.timedelta(days=1),
     )
     SavingRequest(**data)
-    SavingUpdateRequest(**data)
 
     data['goal_amount'] = -1000
     with pytest.raises(ValidationError):
@@ -246,5 +245,15 @@ def test_saving_request():
     data['goal_date'] = dt_now
     with pytest.raises(ValidationError):
         SavingRequest(**data)
+
+
+def test_saving_update_request():
+    data = dict(
+        name='Mt home ',
+        category='home',
+        goal_amount=1000,
+    )
+    SavingUpdateRequest(**data)
+    data['goal_date'] = dt.datetime(2000, 1, 1)
     with pytest.raises(ValidationError):
         SavingUpdateRequest(**data)
