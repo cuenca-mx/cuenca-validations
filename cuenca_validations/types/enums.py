@@ -175,3 +175,20 @@ class CardholderVerificationMethod(str, Enum):
     quick_payment_service = 'quick_payment_service'
     contactless = 'contactless'
     app_confirmation = 'app_confirmation'
+
+
+class WalletTransactionType(str, Enum):
+    deposit = 'deposit'
+    withdrawal = 'withdrawal'
+
+
+class SavingCategory(str, Enum):
+    general = 'general'
+    home = 'home'
+    vehicle = 'vehicle'
+    travel = 'travel'
+    clothing = 'clothing'
+    other = 'other'
+    medical = 'medical'
+    accident = 'accident'
+    education = 'education'

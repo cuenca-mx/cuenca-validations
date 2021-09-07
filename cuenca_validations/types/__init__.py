@@ -27,6 +27,9 @@ __all__ = [
     'PosCapability',
     'QueryParams',
     'SantizedDict',
+    'SavingCategory',
+    'SavingRequest',
+    'SavingUpdateRequest',
     'ServiceProviderCategory',
     'StatementQuery',
     'StrictPaymentCardNumber',
@@ -42,6 +45,10 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
+    'WalletTransactionRequest',
+    'WalletTransactionType',
+    'WalletQuery',
+    'WalletTransactionQuery',
     'digits',
 ]
 
@@ -62,11 +69,13 @@ from .enums import (
     FileFormat,
     IssuerNetwork,
     PosCapability,
+    SavingCategory,
     ServiceProviderCategory,
     TrackDataMethod,
     TransactionStatus,
     TransferNetwork,
     UserCardNotification,
+    WalletTransactionType,
 )
 from .general import (
     JSONEncoder,
@@ -88,11 +97,16 @@ from .queries import (
     StatementQuery,
     TransactionQuery,
     TransferQuery,
+    WalletQuery,
+    WalletTransactionQuery,
 )
 from .requests import (
     ApiKeyUpdateRequest,
+    SavingRequest,
+    SavingUpdateRequest,
     StrictTransferRequest,
     TransferRequest,
     UserCredentialRequest,
     UserCredentialUpdateRequest,
+    WalletTransactionRequest,
 )

@@ -1,3 +1,4 @@
+import datetime as dt
 from typing import Optional, Union
 
 from clabe import Clabe
@@ -10,6 +11,7 @@ from pydantic import (
     constr,
     root_validator,
 )
+from pydantic.class_validators import validator
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -22,8 +24,10 @@ from ..types.enums import (
     CardType,
     IssuerNetwork,
     PosCapability,
+    SavingCategory,
     TrackDataMethod,
     UserCardNotification,
+    WalletTransactionType,
 )
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -190,3 +194,32 @@ class ChargeRequest(CardNotificationRequest):
 
 class UserCardNotificationRequest(CardTransactionRequest):
     type: UserCardNotification
+
+
+class SavingBaseRequest(BaseRequest):
+    goal_amount: Optional[StrictPositiveInt]
+    goal_date: Optional[dt.datetime]
+
+    @validator('goal_date')
+    def validate_goal_date(
+        cls, v: Optional[dt.datetime]
+    ) -> Optional[dt.datetime]:
+        if v and v <= dt.datetime.utcnow():
+            raise ValueError('The goal_date always need to be higher than now')
+        return v
+
+
+class SavingRequest(SavingBaseRequest):
+    name: str
+    category: SavingCategory
+
+
+class SavingUpdateRequest(SavingBaseRequest):
+    name: Optional[str]
+    category: Optional[SavingCategory]
+
+
+class WalletTransactionRequest(BaseRequest):
+    wallet_uri: str
+    transaction_type: WalletTransactionType
+    amount: StrictPositiveInt
