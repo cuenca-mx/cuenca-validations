@@ -192,3 +192,21 @@ class SavingCategory(str, Enum):
     medical = 'medical'
     accident = 'accident'
     education = 'education'
+
+
+class EcommerceIndicator(str, Enum):
+    """
+    Adquirente graba
+    Emisor lee
+    0, “ “ = No es una transacción de comercio electrónico
+    1 = Transacción MOTO
+    5 = Comercio seguro, titular autenticado (3D Secure)
+    6 = Comercio seguro, titular no autenticado (3D Secure)
+    7 = Autenticación 3D Secure no realizada
+    """
+
+    not_ecommerce = '0'
+    moto_transaction = '1'
+    authenticated_3ds = '5'
+    not_authenticated_3ds = '6'
+    not_3ds = '7'
