@@ -14,6 +14,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
+from cuenca_validations.types.enums import EcommerceIndicator
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
@@ -207,13 +208,14 @@ def test_card_transaction_requests():
         is_cvv=False,
         get_balance=False,
         issuer='Mastercard',
+        ecommerce_indicator='0',
     )
     ChargeRequest(**data)
 
     # Validate atm_fee optional
     data['atm_fee'] = 1800
-    ChargeRequest(**data)
-
+    request = ChargeRequest(**data)
+    assert request.ecommerce_indicator is EcommerceIndicator.not_ecommerce
     # missing fields
     with pytest.raises(ValidationError):
         UserCardNotificationRequest(**data)

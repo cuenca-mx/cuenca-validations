@@ -22,6 +22,7 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
+    EcommerceIndicator,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
@@ -190,6 +191,7 @@ class ChargeRequest(CardNotificationRequest):
     atm_fee: Optional[StrictPositiveInt]
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
+    ecommerce_indicator: Optional[EcommerceIndicator]
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
