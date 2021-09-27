@@ -204,3 +204,9 @@ class EcommerceIndicator(str, Enum):
     6 = Comercio seguro, titular no autenticado (3D Secure)
     7 = Autenticación 3D Secure no realizada
     """
+
+    NotEcommerce = '0'
+    TransaccionMOTO = '1'
+    ComercioSeguro3DSAutenticado = '5'
+    ComercioSeguro3DSNoAutenticado = '6'
+    No3DS = '7'
