@@ -205,8 +205,9 @@ class EcommerceIndicator(str, Enum):
     7 = Autenticación 3D Secure no realizada
     """
 
-    NotEcommerce = '0'
-    TransaccionMOTO = '1'
-    ComercioSeguro3DSAutenticado = '5'
-    ComercioSeguro3DSNoAutenticado = '6'
-    No3DS = '7'
+    
+    not_ecommerce = '0'
+    moto_transaction = '1'
+    authenticated_3ds = '5'
+    not_authenticated_3ds = '6'
+    not_3ds = '7'
