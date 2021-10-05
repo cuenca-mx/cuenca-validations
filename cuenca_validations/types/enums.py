@@ -26,6 +26,12 @@ class CardTransactionType(str, Enum):
     push_confirmation = 'push_confirmation'
 
 
+class CardFraudType(str, Enum):
+    authorize = 'authorize'
+    rejected = 'rejected'
+    uncertain = 'uncertain'
+
+
 class CardType(str, Enum):
     physical = 'physical'
     virtual = 'virtual'
