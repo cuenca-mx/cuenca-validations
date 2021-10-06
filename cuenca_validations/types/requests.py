@@ -27,6 +27,7 @@ from ..types.enums import (
     PosCapability,
     SavingCategory,
     TrackDataMethod,
+    TransactionTokenValidationStatus,
     UserCardNotification,
     WalletTransactionType,
 )
@@ -225,3 +226,7 @@ class WalletTransactionRequest(BaseRequest):
     wallet_uri: str
     transaction_type: WalletTransactionType
     amount: StrictPositiveInt
+
+
+class TransactionTokenValidationUpdateRequest(BaseRequest):
+    status: TransactionTokenValidationStatus
