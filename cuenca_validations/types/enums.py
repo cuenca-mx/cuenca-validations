@@ -226,3 +226,9 @@ class EcommerceIndicator(str, Enum):
     not_authenticated_3ds = '6'
     not_3ds = '7'
     not_secure_transaction = '8'
+
+
+class TransactionTokenValidationStatus(str, Enum):
+    pending = 'pending'
+    accepted = 'accepted'
+    rejected = 'rejected'
