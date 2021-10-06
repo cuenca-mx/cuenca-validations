@@ -230,3 +230,8 @@ class WalletTransactionRequest(BaseRequest):
 
 class TransactionTokenValidationUpdateRequest(BaseRequest):
     status: TransactionTokenValidationStatus
+
+
+class UserPldRiskLevelRequest(BaseModel):
+    user_id: str
+    level: float = Field(ge=0.0, le=1.0)
