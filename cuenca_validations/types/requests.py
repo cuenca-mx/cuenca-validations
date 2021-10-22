@@ -193,6 +193,7 @@ class ChargeRequest(CardNotificationRequest):
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
     ecommerce_indicator: Optional[EcommerceIndicator]
+    fraud_validation_id: Optional[str]
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
