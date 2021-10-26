@@ -229,7 +229,7 @@ class WalletTransactionRequest(BaseRequest):
     amount: StrictPositiveInt
 
 
-class FraudValidationRequest(BaseRequest):
+class FraudValidationRequest(BaseModel):
     amount: StrictPositiveInt
     merchant_name: str
     merchant_type: str
