@@ -229,8 +229,26 @@ class WalletTransactionRequest(BaseRequest):
     amount: StrictPositiveInt
 
 
-class FraudValidationRequest(ChargeRequest):
-    # Same as ChargeRequest but with Card data optional
+class FraudValidationRequest(BaseRequest):
+    amount: StrictPositiveInt
+    merchant_name: str
+    merchant_type: str
+    merchant_data: str
+    currency_code: str
+    prosa_transaction_id: str
+    retrieval_reference: str
+    transaction_type: AuthorizerTransaction
+    authorizer_number: Optional[str]
+    track_data_method: TrackDataMethod
+    pos_capability: PosCapability
+    logical_network: Optional[str]
+    is_cvv: Optional[bool] = False
+    get_balance: Optional[bool] = False
+    atm_fee: Optional[StrictPositiveInt]
+    issuer: IssuerNetwork
+    cardholder_verification_method: Optional[CardholderVerificationMethod]
+    ecommerce_indicator: Optional[EcommerceIndicator]
+    fraud_validation_id: Optional[str]
     card_id: Optional[str]  # type: ignore
     user_id: Optional[str]  # type: ignore
     card_type: Optional[CardType]  # type: ignore
