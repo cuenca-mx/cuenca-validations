@@ -229,6 +229,14 @@ class WalletTransactionRequest(BaseRequest):
     amount: StrictPositiveInt
 
 
+class FraudValidationRequest(ChargeRequest):
+    # Same as ChargeRequest but with Card data optional
+    card_id: Optional[str]  # type: ignore
+    user_id: Optional[str]  # type: ignore
+    card_type: Optional[CardType]  # type: ignore
+    card_status: Optional[CardStatus]  # type: ignore
+
+
 class TransactionTokenValidationUpdateRequest(BaseRequest):
     status: TransactionTokenValidationStatus
 
