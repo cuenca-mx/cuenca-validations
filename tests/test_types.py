@@ -2,7 +2,6 @@ import datetime as dt
 import json
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict
 
 import pytest
 from pydantic import BaseModel, ValidationError
@@ -19,7 +18,6 @@ from cuenca_validations.types.enums import EcommerceIndicator
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
-    FraudValidationRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
@@ -190,9 +188,8 @@ def test_update_credential_update_request_dict(data, expected_dict):
     assert req.dict() == expected_dict
 
 
-@pytest.fixture
-def charge_request_data() -> Dict:
-    return dict(
+def test_card_transaction_requests():
+    data = dict(
         card_id='CA123',
         user_id='US123',
         amount=100,
@@ -213,35 +210,23 @@ def charge_request_data() -> Dict:
         issuer='Mastercard',
         ecommerce_indicator='0',
     )
-
-
-def test_card_transaction_requests(charge_request_data: Dict):
-    ChargeRequest(**charge_request_data)
+    ChargeRequest(**data)
 
     # Validate atm_fee optional
-    charge_request_data['atm_fee'] = 1800
-    request = ChargeRequest(**charge_request_data)
+    data['atm_fee'] = 1800
+    request = ChargeRequest(**data)
     assert request.ecommerce_indicator is EcommerceIndicator.not_ecommerce
     # missing fields
     with pytest.raises(ValidationError):
-        UserCardNotificationRequest(**charge_request_data)
+        UserCardNotificationRequest(**data)
 
     # invalid fields
-    charge_request_data['atm_fee'] = -1
+    data['atm_fee'] = -1
     with pytest.raises(ValidationError):
-        ChargeRequest(**charge_request_data)
-    charge_request_data['amount'] = -1
+        ChargeRequest(**data)
+    data['amount'] = -1
     with pytest.raises(ValidationError):
-        UserCardNotificationRequest(**charge_request_data)
-
-
-def test_optional_card_data(charge_request_data):
-    charge_request_data.pop('card_id')
-    charge_request_data.pop('user_id')
-    charge_request_data.pop('card_type')
-    charge_request_data.pop('card_status')
-    request = FraudValidationRequest(**charge_request_data)
-    assert request.ecommerce_indicator is EcommerceIndicator.not_ecommerce
+        UserCardNotificationRequest(**data)
 
 
 def test_saving_request():
