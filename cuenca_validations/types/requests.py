@@ -247,7 +247,6 @@ class FraudValidationRequest(BaseModel):
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
     ecommerce_indicator: Optional[EcommerceIndicator]
-    fraud_validation_id: Optional[str]
     card_id: Optional[str]  # type: ignore
     user_id: Optional[str]  # type: ignore
     card_type: Optional[CardType]  # type: ignore
