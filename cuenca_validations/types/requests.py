@@ -244,7 +244,6 @@ class FraudValidationRequest(BaseModel):
     logical_network: Optional[str]
     is_cvv: Optional[bool] = False
     get_balance: Optional[bool] = False
-    atm_fee: Optional[StrictPositiveInt]
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
     ecommerce_indicator: Optional[EcommerceIndicator]
