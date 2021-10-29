@@ -236,7 +236,6 @@ class FraudValidationRequest(BaseModel):
     merchant_data: str
     currency_code: str
     transaction_type: AuthorizerTransaction
-    authorizer_number: Optional[str]
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
     logical_network: Optional[str]
