@@ -235,15 +235,12 @@ class FraudValidationRequest(BaseModel):
     merchant_type: str
     merchant_data: str
     currency_code: str
-    prosa_transaction_id: str
-    retrieval_reference: str
     transaction_type: AuthorizerTransaction
     authorizer_number: Optional[str]
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
     logical_network: Optional[str]
     is_cvv: Optional[bool] = False
-    get_balance: Optional[bool] = False
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
     ecommerce_indicator: Optional[EcommerceIndicator]
