@@ -200,13 +200,22 @@ class EcommerceIndicator(str, Enum):
     Emisor lee
     0, “ “ = No es una transacción de comercio electrónico
     1 = Transacción MOTO
+    2 = MOTO Indicator – Recurring Transaction
+    3 = MOTO Indicator – Installment Payment
+    4 = MOTO Indicator – Deferred Transaction
     5 = Comercio seguro, titular autenticado (3D Secure)
     6 = Comercio seguro, titular no autenticado (3D Secure)
     7 = Autenticación 3D Secure no realizada
+    8 – La transacción no incluye el uso de ningún cifrado de transacción
+        como SSL, no se realiza autenticación.
     """
 
     not_ecommerce = '0'
     moto_transaction = '1'
+    moto_recurring_transaction = '2'
+    moto_installment_payment = '3'
+    moto_deferred_transaction = '4'
     authenticated_3ds = '5'
     not_authenticated_3ds = '6'
     not_3ds = '7'
+    not_secure_transaction = '8'
