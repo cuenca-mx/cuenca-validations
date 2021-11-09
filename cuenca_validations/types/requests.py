@@ -281,7 +281,8 @@ class AddressRequest(BaseModel):
 class UserProofRequest(BaseModel):
     user_id: Optional[str]
     type: UserProofType
-    feedme_uri: str
+    feedme_uri: Optional[str]
+    value: Optional[str]
 
 
 class UserDataRequest(BaseModel):
