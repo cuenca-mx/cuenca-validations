@@ -28,7 +28,6 @@ class CardTransactionType(str, Enum):
 
 class CardFraudType(str, Enum):
     authorize = 'authorize'
-    authorize_uncertain = 'authorize_uncertain'
     rejected = 'rejected'
     uncertain = 'uncertain'
 
