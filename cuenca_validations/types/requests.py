@@ -19,16 +19,20 @@ from ..types.enums import (
     CardFundingType,
     CardholderVerificationMethod,
     CardIssuer,
+    CardIssuerType,
     CardPackaging,
     CardStatus,
     CardType,
     EcommerceIndicator,
+    GovtIdType,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    UserDataType,
+    UserProofType,
     WalletTransactionType,
 )
 from ..typing import DictStrAny
@@ -256,3 +260,93 @@ class TransactionTokenValidationUpdateRequest(BaseRequest):
 class UserPldRiskLevelRequest(BaseModel):
     user_id: str
     level: float = Field(ge=0.0, le=1.0)
+
+
+class AddressRequest(BaseModel):
+    user_id: Optional[str]
+    calle: str
+    numero_ext: str
+    codigo_postal: str
+    estado: str
+    colonia: str
+    ciudad: Optional[str] = None
+    numero_int: Optional[str] = None
+
+    class Config:
+        anystr_strip_whitespace = True
+        min_anystr_length = 1
+        extra = 'allow'
+
+
+class UserProofRequest(BaseModel):
+    user_id: Optional[str]
+    type: UserProofType
+    feedme_uri: str
+
+
+class UserDataRequest(BaseModel):
+    user_id: Optional[str]
+    type: UserDataType
+    data: str
+
+
+class BeneficiaryRequest(BaseModel):
+    user_id: Optional[str]
+    name: str
+    birth_date: dt.datetime
+    phone_number: str
+    user_relationship: str
+    percentage: int
+
+
+class GovtIDRequest(BaseModel):
+    user_uri: Optional[str]
+    type: GovtIdType
+    is_mx: bool
+    feedme_uri: str
+    number: Optional[str] = None
+
+
+class TOSAgreementRequest(BaseModel):
+    user_id: Optional[str]
+    version: int
+    ip: str
+    location: str
+    type: CardIssuerType
+
+
+class UserRequest(BaseModel):
+    nombres: str
+    primer_apellido: str
+    segundo_apellido: Optional[str] = None
+    gender: Optional[str] = None
+    birth_place: Optional[str] = None
+    birth_date: Optional[str] = None
+    birth_country: Optional[str] = None
+    pronouns: Optional[str] = None
+    curp: Optional[str] = None
+
+    # estos son para en caso de que se mande de un jalón
+    address: Optional[AddressRequest] = None
+    phone_number: Optional[UserDataRequest] = None
+    email_address: Optional[UserDataRequest] = None
+    terms: Optional[TOSAgreementRequest] = None
+    profession: Optional[UserDataRequest] = None
+    proof_of_address: Optional[UserProofRequest] = None
+    proof_of_life: Optional[UserProofRequest] = None
+    govt_id: Optional[GovtIDRequest] = None
+
+    @validator(
+        'nombres', 'primer_apellido', 'gender', 'birth_place', 'birth_date'
+    )
+    def segundo_apellido_opcional(cls, segundo_value):
+        if len(segundo_value) <= 0:
+            raise ValueError('Length must be greater than 0')
+        return segundo_value
+
+    class Config:
+        anystr_strip_whitespace = True
+
+
+class HumanRequest(UserRequest):
+    user_id: Optional[str]
