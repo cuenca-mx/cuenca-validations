@@ -26,6 +26,12 @@ class CardTransactionType(str, Enum):
     push_confirmation = 'push_confirmation'
 
 
+class CardFraudType(str, Enum):
+    authorize = 'authorize'
+    rejected = 'rejected'
+    uncertain = 'uncertain'
+
+
 class CardType(str, Enum):
     physical = 'physical'
     virtual = 'virtual'
@@ -219,3 +225,9 @@ class EcommerceIndicator(str, Enum):
     not_authenticated_3ds = '6'
     not_3ds = '7'
     not_secure_transaction = '8'
+
+
+class TransactionTokenValidationStatus(str, Enum):
+    pending = 'pending'
+    accepted = 'accepted'
+    rejected = 'rejected'

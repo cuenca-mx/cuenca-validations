@@ -27,6 +27,7 @@ from ..types.enums import (
     PosCapability,
     SavingCategory,
     TrackDataMethod,
+    TransactionTokenValidationStatus,
     UserCardNotification,
     WalletTransactionType,
 )
@@ -192,6 +193,7 @@ class ChargeRequest(CardNotificationRequest):
     issuer: IssuerNetwork
     cardholder_verification_method: Optional[CardholderVerificationMethod]
     ecommerce_indicator: Optional[EcommerceIndicator]
+    fraud_validation_id: Optional[str]
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
@@ -225,3 +227,32 @@ class WalletTransactionRequest(BaseRequest):
     wallet_uri: str
     transaction_type: WalletTransactionType
     amount: StrictPositiveInt
+
+
+class FraudValidationRequest(BaseModel):
+    amount: StrictPositiveInt
+    merchant_name: str
+    merchant_type: str
+    merchant_data: str
+    currency_code: str
+    transaction_type: AuthorizerTransaction
+    track_data_method: TrackDataMethod
+    pos_capability: PosCapability
+    logical_network: Optional[str]
+    is_cvv: Optional[bool] = False
+    issuer: IssuerNetwork
+    cardholder_verification_method: Optional[CardholderVerificationMethod]
+    ecommerce_indicator: Optional[EcommerceIndicator]
+    card_id: Optional[str]  # type: ignore
+    user_id: Optional[str]  # type: ignore
+    card_type: Optional[CardType]  # type: ignore
+    card_status: Optional[CardStatus]  # type: ignore
+
+
+class TransactionTokenValidationUpdateRequest(BaseRequest):
+    status: TransactionTokenValidationStatus
+
+
+class UserPldRiskLevelRequest(BaseModel):
+    user_id: str
+    level: float = Field(ge=0.0, le=1.0)
