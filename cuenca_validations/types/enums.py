@@ -236,6 +236,8 @@ class TransactionTokenValidationStatus(str, Enum):
 class UserProofType(Enum):
     proof_of_address = 'proof_of_address'
     proof_of_life = 'proof_of_life'
+    curp = 'curp'
+    blacklist_check = 'blacklist_check'  # quien es quien
 
 
 # pasar a cuenca-validations
