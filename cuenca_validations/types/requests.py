@@ -34,7 +34,7 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
-from .identities import Address, BlacklistValidation, KYCFile, TOSAgreement
+from .identities import Address, Beneficiary, KYCFile, TOSAgreement
 
 
 class BaseRequest(BaseModel):
@@ -271,16 +271,13 @@ class UserRequest(BaseModel):
     birth_place: Optional[str] = None
     birth_country: Optional[str] = None
     terms_of_service: TOSAgreement
-    blaclist_validation: BlacklistValidation
-    address: Address
-    govt_id: KYCFile
-    proof_of_address: KYCFile
-    proof_of_life: KYCFile
     # para el user en sí
-    platform_id: str
     phone_number: str
     email_address: str
     profession: str
     platform_terms_of_service: TOSAgreement
-    status: str
-    level: str
+    beneficiary: Beneficiary
+    address: Address
+    govt_id: KYCFile
+    proof_of_address: KYCFile
+    proof_of_life: KYCFile

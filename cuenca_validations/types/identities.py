@@ -27,6 +27,7 @@ class Beneficiary:
     phone_number: str
     user_relationship: str
     percentage: int
+    created_at: dt.datetime
 
 
 @dataclass
@@ -35,14 +36,12 @@ class BlacklistValidation:
     created_at: dt.datetime
     feedme_uri: Optional[str]
     value: Optional[str]
-    deactivated_at: Optional[dt.datetime]
     status: str
 
 
 @dataclass
 class KYCFile:
     created_at: dt.datetime
-    updated_at: dt.datetime
     type: KYCFileType
     feedme_uri_front: str
     feedme_uri_back: str
