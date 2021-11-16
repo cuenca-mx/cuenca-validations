@@ -1,11 +1,10 @@
 import datetime as dt
+import re
 from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
 from .enums import KYCFileType, States
-
-# pasar a rquests?
 
 
 @dataclass
@@ -53,3 +52,20 @@ class TOSAgreement:
     ip: str
     location: str
     type: str  # hay que definir bien
+
+
+class PhoneNumber(str):
+    phone_number_regex = re.compile(r'^\+[0-9]{12}$')
+
+    @classmethod
+    def __get_validators__(cls):
+        yield cls.validate
+
+    @classmethod
+    def validate(cls, v):
+        if not isinstance(v, str):
+            raise TypeError
+        m = cls.phone_number_regex.fullmatch(v)
+        if not m:
+            raise ValueError('invalid phone number format')
+        return m.string

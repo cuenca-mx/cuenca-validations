@@ -35,7 +35,13 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
-from .identities import Address, Beneficiary, KYCFile, TOSAgreement
+from .identities import (
+    Address,
+    Beneficiary,
+    KYCFile,
+    PhoneNumber,
+    TOSAgreement,
+)
 
 
 class BaseRequest(BaseModel):
@@ -273,7 +279,7 @@ class UserRequest(BaseModel):
     birth_country: Optional[str] = None
     terms_of_service: TOSAgreement
     # para el user en sí
-    phone_number: str
+    phone_number: PhoneNumber
     email_address: str
     profession: str
     platform_terms_of_service: TOSAgreement
