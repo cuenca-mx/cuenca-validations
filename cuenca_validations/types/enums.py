@@ -234,6 +234,50 @@ class TransactionTokenValidationStatus(str, Enum):
 
 
 class KYCFileType(Enum):
-    govt_id = 'govt_id'
+    ine = 'ine'
+    passport = 'passport'
+    residence = 'residence'
+    matricula_consular = 'matricula_consular'
+    proof_of_liveness = 'proof_of_liveness'
     proof_of_address = 'proof_of_address'
-    proof_of_life = 'proof_of_address'
+
+
+class Gender(Enum):
+    female = 'female'
+    male = 'male'
+
+
+class States(Enum):
+    NE = 'Nacido en el Extranjero'
+    AS = 'Aguascalientes'
+    BC = 'Baja California'
+    BS = 'Baja California Sur'
+    CC = 'Campeche'
+    CS = 'Chiapas'
+    CH = 'Chihuahua'
+    CL = 'Coahuila'
+    CM = 'Colima'
+    DF = 'Ciudad de México'
+    DG = 'Durango'
+    GT = 'Guanajuato'
+    GR = 'Guerrero'
+    HG = 'Hidalgo'
+    JC = 'Jalisco'
+    MC = 'México'
+    MN = 'Michoacan'
+    MS = 'Morelos'
+    NT = 'Nayarit'
+    NL = 'Nuevo León'
+    OC = 'Oaxaca'
+    PL = 'Puebla'
+    QT = 'Querétaro'
+    QR = 'Quintana Roo'
+    SP = 'San Luis Potosí'
+    SL = 'Sinaloa'
+    SR = 'Sonora'
+    TC = 'Tabasco'
+    TL = 'Tlaxcala'
+    TS = 'Tamaulipas'
+    VZ = 'Veracruz'
+    YN = 'Yucatán'
+    ZS = 'Zacatecas'
