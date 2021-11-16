@@ -3,18 +3,9 @@ from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
-from .enums import CardIssuerType, KYCFileType
+from .enums import KYCFileType
 
 # pasar a rquests?
-
-
-@dataclass
-class TOSAgreement:
-    created_at: dt.datetime
-    version: int
-    ip: str
-    location: str
-    type: str  # hay que definir bien
 
 
 @dataclass
@@ -27,6 +18,15 @@ class Address:
     estado: str
     ciudad: Optional[str]
     colonia: str
+
+
+@dataclass
+class Beneficiary:
+    name: str
+    birth_date: dt.datetime
+    phone_number: str
+    user_relationship: str
+    percentage: int
 
 
 @dataclass
@@ -48,3 +48,12 @@ class KYCFile:
     feedme_uri_back: str
     is_mx: bool
     data: Optional[str]
+
+
+@dataclass
+class TOSAgreement:
+    created_at: dt.datetime
+    version: int
+    ip: str
+    location: str
+    type: str  # hay que definir bien
