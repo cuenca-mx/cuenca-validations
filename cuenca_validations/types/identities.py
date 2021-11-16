@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic.dataclasses import dataclass
 
-from .enums import KYCFileType
+from .enums import KYCFileType, States
 
 # pasar a rquests?
 
@@ -15,7 +15,7 @@ class Address:
     numero_ext: str
     numero_int: Optional[str]
     codigo_postal: str
-    estado: str
+    estado: States
     ciudad: Optional[str]
     colonia: str
 
@@ -32,10 +32,7 @@ class Beneficiary:
 
 @dataclass
 class BlacklistValidation:
-    id: str
     created_at: dt.datetime
-    feedme_uri: Optional[str]
-    value: Optional[str]
     status: str
 
 
@@ -44,9 +41,9 @@ class KYCFile:
     created_at: dt.datetime
     type: KYCFileType
     feedme_uri_front: str
-    feedme_uri_back: str
+    feedme_uri_back: Optional[str]
     is_mx: bool
-    data: Optional[str]
+    data: Optional[dict]
 
 
 @dataclass

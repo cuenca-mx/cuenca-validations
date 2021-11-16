@@ -23,6 +23,7 @@ from ..types.enums import (
     CardStatus,
     CardType,
     EcommerceIndicator,
+    Gender,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
@@ -266,7 +267,7 @@ class UserRequest(BaseModel):
     segundo_apellido: Optional[str] = None
     curp: str
     rfc: Optional[str] = None
-    gender: Optional[str] = None
+    gender: Optional[Gender] = None
     birth_date: Optional[str] = None
     birth_place: Optional[str] = None
     birth_country: Optional[str] = None
