@@ -14,7 +14,7 @@ class TOSAgreement:
     version: int
     ip: str
     location: str
-    type: CardIssuerType
+    type: str  # hay que definir bien
 
 
 @dataclass
