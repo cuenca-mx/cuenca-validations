@@ -1,10 +1,13 @@
 __all__ = [
     'AccountQuery',
+    'Address',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
     'BalanceEntryQuery',
+    'Beneficiary',
     'BillPaymentQuery',
+    'BlacklistValidation',
     'CardErrorType',
     'CardFundingType',
     'CardholderVerificationMethod',
@@ -23,6 +26,7 @@ __all__ = [
     'FileFormat',
     'IssuerNetwork',
     'JSONEncoder',
+    'KYCFile',
     'PageSize',
     'PaymentCardNumber',
     'PosCapability',
@@ -37,6 +41,7 @@ __all__ = [
     'StrictPositiveInt',
     'StrictPositiveFloat',
     'StrictTransferRequest',
+    'TOSAgreement',
     'TrackDataMethod',
     'TransactionQuery',
     'TransactionStatus',
@@ -86,6 +91,13 @@ from .general import (
     StrictPositiveFloat,
     StrictPositiveInt,
     digits,
+)
+from .identities import (
+    Address,
+    Beneficiary,
+    BlacklistValidation,
+    KYCFile,
+    TOSAgreement,
 )
 from .queries import (
     AccountQuery,

@@ -234,11 +234,6 @@ class TransactionTokenValidationStatus(str, Enum):
     rejected = 'rejected'
 
 
-class CardIssuerType(Enum):
-    ifpe = 'ifpe'
-    tarjetas_cuenca = 'tarjetas_cuenca'
-
-
 class KYCFileType(Enum):
     govt_id = 'govt_id'
     proof_of_address = 'proof_of_address'
