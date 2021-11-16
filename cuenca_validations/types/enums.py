@@ -234,38 +234,12 @@ class TransactionTokenValidationStatus(str, Enum):
     rejected = 'rejected'
 
 
-class UserProofType(Enum):
-    proof_of_address = 'proof_of_address'
-    proof_of_life = 'proof_of_life'
-    curp = 'curp'
-    blacklist_check = 'blacklist_check'  # quien es quien
-
-
-# pasar a cuenca-validations
-class UserProofStatus(Enum):
-    # checar estos valores
-    created = 'created'
-    succeeded = 'succeeded'
-    failed = 'failed'
-
-
-class UserDataType(Enum):
-    phone_number = 'phone_number'
-    email_address = 'email_address'
-    profession = 'profession'
-
-
-class GovtIdType(Enum):
-    ine_front = 'ine_front'
-    ine_back = 'ine_back'
-    passport = 'passport'
-    residence = 'residence'
-    matricula_consular = 'matricula_consular'
-    matricula_back = 'matricula_back'
-    residence_back = 'residence_back'
-    proof_of_liveness = 'proof_of_liveness'
-
-
 class CardIssuerType(Enum):
     ifpe = 'ifpe'
     tarjetas_cuenca = 'tarjetas_cuenca'
+
+
+class KYCFileType(Enum):
+    govt_id = 'govt_id'
+    proof_of_address = 'proof_of_address'
+    proof_of_life = 'proof_of_address'
