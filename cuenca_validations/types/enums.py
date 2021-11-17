@@ -87,6 +87,7 @@ class TransferNetwork(str, Enum):
 class CommissionType(str, Enum):
     card_request = 'card_request'
     cash_deposit = 'cash_deposit'
+    spei = 'spei'
 
 
 class EntryType(str, Enum):
