@@ -7,7 +7,6 @@ __all__ = [
     'BalanceEntryQuery',
     'Beneficiary',
     'BillPaymentQuery',
-    'BlacklistValidation',
     'CardErrorType',
     'CardFundingType',
     'CardholderVerificationMethod',
@@ -102,7 +101,6 @@ from .general import (
 from .identities import (
     Address,
     Beneficiary,
-    BlacklistValidation,
     KYCFile,
     PhoneNumber,
     TOSAgreement,

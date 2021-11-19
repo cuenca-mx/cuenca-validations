@@ -3,6 +3,7 @@ import re
 from typing import Optional
 
 from pydantic.dataclasses import dataclass
+from pydantic.types import StrictStr
 
 from .enums import KYCFileType, States
 
@@ -30,12 +31,6 @@ class Beneficiary:
 
 
 @dataclass
-class BlacklistValidation:
-    created_at: dt.datetime
-    status: str
-
-
-@dataclass
 class KYCFile:
     created_at: dt.datetime
     type: KYCFileType
@@ -54,18 +49,18 @@ class TOSAgreement:
     type: str  # hay que definir bien
 
 
-class PhoneNumber(str):
-    phone_number_regex = re.compile(r'^\+[0-9]{12}$')
+class PhoneNumber(StrictStr):
+    min_length = 10
+    max_length = 12
+    regex = re.compile(r'^\+[0-9]{12}$')
 
-    @classmethod
-    def __get_validators__(cls):
-        yield cls.validate
 
-    @classmethod
-    def validate(cls, v):
-        if not isinstance(v, str):
-            raise TypeError
-        m = cls.phone_number_regex.fullmatch(v)
-        if not m:
-            raise ValueError('invalid phone number format')
-        return m.string
+class Curp(StrictStr):
+    min_length = 18
+    max_length = 18
+    regex = re.compile(r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$')
+
+
+class Rfc(StrictStr):
+    min_length = 12
+    max_length = 13
