@@ -266,7 +266,7 @@ class UserPldRiskLevelRequest(BaseModel):
     level: float = Field(ge=0.0, le=1.0)
 
 
-class UserRequest(BaseModel):
+class UserCreationRequest(BaseModel):
     # datos para crear identity
     nombres: str
     primer_apellido: str
@@ -279,10 +279,35 @@ class UserRequest(BaseModel):
     birth_country: Optional[str] = None
     terms_of_service: TOSAgreement
     # para el user en sí
+    platform_id: str
     phone_number: PhoneNumber
     email_address: str
     profession: str
     platform_terms_of_service: TOSAgreement
+    beneficiary: Beneficiary
+    address: Address
+    govt_id: KYCFile
+    proof_of_address: KYCFile
+    proof_of_life: KYCFile
+
+
+class IdentityRequest(BaseModel):
+    nombres: str
+    primer_apellido: str
+    segundo_apellido: Optional[str] = None
+    curp: str
+    rfc: Optional[str] = None
+    gender: Optional[Gender] = None
+    birth_date: Optional[str] = None
+    birth_place: Optional[str] = None
+    birth_country: Optional[str] = None
+
+
+class UserRequest(BaseModel):
+    platform_id: str
+    phone_number: PhoneNumber
+    email_address: str
+    profession: str
     beneficiary: Beneficiary
     address: Address
     govt_id: KYCFile

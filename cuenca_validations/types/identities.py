@@ -2,47 +2,39 @@ import datetime as dt
 import re
 from typing import Optional
 
-from pydantic.dataclasses import dataclass
+from pydantic import BaseModel
 from pydantic.types import StrictStr
 
 from .enums import KYCFileType, States
 
 
-@dataclass
-class Address:
-    created_at: dt.datetime
+class Address(BaseModel):
     calle: str
     numero_ext: str
-    numero_int: Optional[str]
     codigo_postal: str
     estado: States
-    ciudad: Optional[str]
     colonia: str
+    ciudad: Optional[str] = None
+    numero_int: Optional[str] = None
 
 
-@dataclass
-class Beneficiary:
+class Beneficiary(BaseModel):
     name: str
     birth_date: dt.datetime
     phone_number: str
     user_relationship: str
     percentage: int
-    created_at: dt.datetime
 
 
-@dataclass
-class KYCFile:
-    created_at: dt.datetime
+class KYCFile(BaseModel):
     type: KYCFileType
-    feedme_uri_front: str
-    feedme_uri_back: Optional[str]
     is_mx: bool
-    data: Optional[dict]
+    feedme_uri_front: str
+    feedme_uri_back: Optional[str] = None
+    data: Optional[dict] = None
 
 
-@dataclass
-class TOSAgreement:
-    created_at: dt.datetime
+class TOSAgreement(BaseModel):
     version: int
     ip: str
     location: str
@@ -51,8 +43,8 @@ class TOSAgreement:
 
 class PhoneNumber(StrictStr):
     min_length = 10
-    max_length = 12
-    regex = re.compile(r'^\+[0-9]{12}$')
+    max_length = 13
+    regex = re.compile(r'^\+{0,1}[0-9]{10,12}$')
 
 
 class Curp(StrictStr):

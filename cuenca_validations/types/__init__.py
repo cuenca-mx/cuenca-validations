@@ -25,6 +25,7 @@ __all__ = [
     'FileFormat',
     'Gender',
     'IssuerNetwork',
+    'IdentityRequest',
     'JSONEncoder',
     'KYCFile',
     'KYCFileType',
@@ -54,6 +55,7 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
+    'UserCreationRequest',
     'UserRequest',
     'WalletTransactionRequest',
     'WalletTransactionType',
@@ -123,10 +125,12 @@ from .queries import (
 )
 from .requests import (
     ApiKeyUpdateRequest,
+    IdentityRequest,
     SavingRequest,
     SavingUpdateRequest,
     StrictTransferRequest,
     TransferRequest,
+    UserCreationRequest,
     UserCredentialRequest,
     UserCredentialUpdateRequest,
     UserRequest,
