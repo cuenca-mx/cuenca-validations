@@ -296,7 +296,7 @@ class IdentityRequest(BaseModel):
     nombres: str
     primer_apellido: str
     segundo_apellido: Optional[str] = None
-    curp: str
+    curp: Curp
     rfc: Optional[str] = None
     gender: Optional[Gender] = None
     birth_date: Optional[str] = None
