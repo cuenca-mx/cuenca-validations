@@ -38,6 +38,7 @@ from .general import StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
+    Curp,
     KYCFile,
     PhoneNumber,
     TOSAgreement,
@@ -271,7 +272,7 @@ class UserCreationRequest(BaseModel):
     nombres: str
     primer_apellido: str
     segundo_apellido: Optional[str] = None
-    curp: str
+    curp: Curp
     rfc: Optional[str] = None
     gender: Optional[Gender] = None
     birth_date: Optional[str] = None
