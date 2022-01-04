@@ -281,3 +281,9 @@ class States(Enum):
     VZ = 'Veracruz'
     YN = 'Yucatán'
     ZS = 'Zacatecas'
+
+
+class CurpStatus(Enum):
+    validation_succeeded = 'validation_succeeded'
+    validation_failed = 'validation_failed'
+    not_validated = 'not_validated'

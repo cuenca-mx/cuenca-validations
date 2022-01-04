@@ -47,7 +47,7 @@ class PhoneNumber(StrictStr):
     regex = re.compile(r'^\+{0,1}[0-9]{10,12}$')
 
 
-class Curp(StrictStr):
+class CurpType(StrictStr):
     min_length = 18
     max_length = 18
     regex = re.compile(r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$')
@@ -56,3 +56,7 @@ class Curp(StrictStr):
 class Rfc(StrictStr):
     min_length = 12
     max_length = 13
+
+
+class Curp(BaseModel):
+    value: CurpType
