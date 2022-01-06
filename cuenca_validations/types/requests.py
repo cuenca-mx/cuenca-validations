@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Optional, Union
+from typing import List, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -285,7 +285,7 @@ class UserCreationRequest(BaseModel):
     email_address: str
     profession: str
     platform_terms_of_service: TOSAgreement
-    beneficiary: Beneficiary
+    beneficiary: List[Beneficiary]
     address: Address
     govt_id: KYCFile
     proof_of_address: KYCFile
@@ -309,7 +309,7 @@ class UserRequest(BaseModel):
     phone_number: PhoneNumber
     email_address: str
     profession: str
-    beneficiary: Beneficiary
+    beneficiary: List[Beneficiary]
     address: Address
     govt_id: KYCFile
     proof_of_address: KYCFile
