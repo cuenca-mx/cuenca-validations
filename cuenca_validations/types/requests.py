@@ -314,3 +314,14 @@ class UserRequest(BaseModel):
     govt_id: KYCFile
     proof_of_address: KYCFile
     proof_of_life: KYCFile
+
+    @validator('beneficiary')
+    def beneficiary_percentage(cls, v: List[Beneficiary]):
+        total = 0
+        for beneficiary in v:
+            total += beneficiary.percentage
+        if total != 100:
+            raise ValueError(
+                'The total percentage of beneficiaries does not add 100.'
+            )
+        return v
