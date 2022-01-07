@@ -23,6 +23,7 @@ from ..types.enums import (
     CardStatus,
     CardType,
     EcommerceIndicator,
+    EntidadFederativa,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
@@ -292,15 +293,18 @@ class UserCreationRequest(BaseModel):
     proof_of_life: KYCFile
 
 
-class IdentityRequest(BaseModel):
+class CurpValidationRequest(BaseModel):
     nombres: str
     primer_apellido: str
     segundo_apellido: Optional[str] = None
+    birth_date: dt.date
+    birth_place: EntidadFederativa
+    gender: Sexo
+
+
+class IdentityRequest(CurpValidationRequest):
     curp: Curp
     rfc: Optional[str] = None
-    gender: Optional[Sexo] = None
-    birth_date: Optional[str] = None
-    birth_place: Optional[str] = None
     birth_country: Optional[str] = None
 
 
