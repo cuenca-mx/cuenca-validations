@@ -247,7 +247,6 @@ class Sexo(str, Enum):
     hombre = 'H'
 
 
-
 class EntidadFederativa(Enum):
     NE = 'Nacido en el Extranjero'
     AS = 'Aguascalientes'
