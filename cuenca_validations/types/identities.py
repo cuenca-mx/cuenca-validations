@@ -5,14 +5,14 @@ from typing import Optional
 from pydantic import BaseModel
 from pydantic.types import StrictStr
 
-from .enums import KYCFileType, States
+from .enums import EntidadFederativa, KYCFileType
 
 
 class Address(BaseModel):
     calle: str
     numero_ext: str
     codigo_postal: str
-    estado: States
+    estado: EntidadFederativa
     colonia: str
     ciudad: Optional[str] = None
     numero_int: Optional[str] = None

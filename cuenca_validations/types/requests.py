@@ -23,10 +23,10 @@ from ..types.enums import (
     CardStatus,
     CardType,
     EcommerceIndicator,
-    Gender,
     IssuerNetwork,
     PosCapability,
     SavingCategory,
+    Sexo,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
@@ -274,7 +274,7 @@ class UserCreationRequest(BaseModel):
     segundo_apellido: Optional[str] = None
     curp: Curp
     rfc: Optional[str] = None
-    gender: Optional[Gender] = None
+    gender: Optional[Sexo] = None
     birth_date: Optional[str] = None
     birth_place: Optional[str] = None
     birth_country: Optional[str] = None
@@ -298,7 +298,7 @@ class IdentityRequest(BaseModel):
     segundo_apellido: Optional[str] = None
     curp: Curp
     rfc: Optional[str] = None
-    gender: Optional[Gender] = None
+    gender: Optional[Sexo] = None
     birth_date: Optional[str] = None
     birth_place: Optional[str] = None
     birth_country: Optional[str] = None
