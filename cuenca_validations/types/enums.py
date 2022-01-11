@@ -234,7 +234,7 @@ class TransactionTokenValidationStatus(str, Enum):
     rejected = 'rejected'
 
 
-class KYCFileType(Enum):
+class KYCFileType(str, Enum):
     ine = 'ine'
     passport = 'passport'
     residence = 'residence'
@@ -248,7 +248,7 @@ class Sexo(str, Enum):
     hombre = 'H'
 
 
-class EntidadFederativa(Enum):
+class EntidadFederativa(str, Enum):
     NE = 'Nacido en el Extranjero'
     AS = 'Aguascalientes'
     BC = 'Baja California'
@@ -284,7 +284,7 @@ class EntidadFederativa(Enum):
     ZS = 'Zacatecas'
 
 
-class CurpStatus(Enum):
+class CurpStatus(str, Enum):
     validation_succeeded = 'validation_succeeded'
     validation_failed = 'validation_failed'
     not_validated = 'not_validated'
