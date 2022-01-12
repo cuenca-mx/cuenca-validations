@@ -302,9 +302,12 @@ class CurpValidationRequest(BaseModel):
     gender: Sexo
 
 
-class IdentityRequest(CurpValidationRequest):
+class IdentityRequest(BaseModel):
     curp: Curp
     rfc: Optional[str] = None
+    gender: Optional[Sexo] = None
+    birth_date: Optional[str] = None
+    birth_place: Optional[str] = None
     birth_country: Optional[str] = None
 
 
