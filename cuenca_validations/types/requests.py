@@ -95,8 +95,9 @@ class CardActivationRequest(BaseModel):
 
 
 class ApiKeyUpdateRequest(BaseRequest):
-    user_id: Optional[str]
-    metadata: Optional[DictStrAny]
+    user_id: Optional[str] = None
+    platform_id: Optional[str] = None
+    metadata: Optional[DictStrAny] = None
 
 
 class UserCredentialUpdateRequest(BaseRequest):
