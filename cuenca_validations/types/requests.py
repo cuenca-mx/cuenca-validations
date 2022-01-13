@@ -281,7 +281,6 @@ class UserCreationRequest(BaseModel):
     birth_country: Optional[str] = None
     terms_of_service: TOSAgreement
     # para el user en sí
-    platform_id: str
     phone_number: PhoneNumber
     email_address: str
     profession: str
@@ -302,13 +301,7 @@ class CurpValidationRequest(BaseModel):
     gender: Sexo
 
 
-class IdentityRequest(BaseModel):
-    nombres: str
-    primer_apellido: str
-    segundo_apellido: Optional[str] = None
-    birth_date: Optional[str] = None
-    birth_place: Optional[str] = None
-    gender: Optional[Sexo] = None
+class IdentityRequest(CurpValidationRequest):
     curp: Curp
     rfc: Optional[str] = None
     birth_country: Optional[str] = None
