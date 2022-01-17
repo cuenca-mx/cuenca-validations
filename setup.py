@@ -27,6 +27,7 @@ setup(
     install_requires=[
         'clabe>=1.2,<1.3',
         'pydantic>=1.6,<1.9',
+        'email-validator>=1.1.*,<1.2.0'
         'dataclasses>=0.6;python_version<"3.7"',
     ],
     classifiers=[
