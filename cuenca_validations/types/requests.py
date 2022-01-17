@@ -12,6 +12,7 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
+from pydantic.networks import EmailStr
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -286,7 +287,7 @@ class UserCreationRequest(BaseModel):
     terms_of_service: TOSAgreement
     # para el user en sí
     phone_number: PhoneNumber
-    email_address: str
+    email_address: EmailStr
     profession: str
     platform_terms_of_service: TOSAgreement
     beneficiary: List[Beneficiary]
@@ -314,7 +315,7 @@ class IdentityRequest(CurpValidationRequest):
 class UserRequest(BaseModel):
     platform_id: str
     phone_number: PhoneNumber
-    email_address: str
+    email_address: EmailStr
     profession: str
     beneficiary: List[Beneficiary]
     address: Address
@@ -361,7 +362,7 @@ class KYCFileUpdateRequest(BaseModel):
 
 class UserUpdateRequest(BaseModel):
     phone_number: Optional[str] = None
-    email_address: Optional[str] = None
+    email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     status: Optional[str] = None
