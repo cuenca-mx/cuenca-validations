@@ -22,6 +22,7 @@ from cuenca_validations.types.requests import (
     SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
+    UserRequest,
 )
 
 today = dt.date.today()
@@ -259,3 +260,74 @@ def test_saving_update_request():
     data['goal_date'] = dt.datetime(2000, 1, 1)
     with pytest.raises(ValidationError):
         SavingUpdateRequest(**data)
+
+
+def test_user_request_beneficiary():
+    request = dict(
+        platform_id='ARTERIA',
+        phone_number='+525555555555',
+        email_address='email@email.com',
+        profession='worker',
+        beneficiary=[
+            dict(
+                name='Pedro Pérez',
+                birth_date=dt.datetime(2020, 1, 1).isoformat(),
+                phone_number='+525555555555',
+                user_relationship='brother',
+                percentage=50,
+            ),
+            dict(
+                name='José Pérez',
+                birth_date=dt.datetime(2020, 1, 2).isoformat(),
+                phone_number='+525544444444',
+                user_relationship='brother',
+                percentage=50,
+            ),
+        ],
+        address=dict(
+            calle='calle 1',
+            numero_ext='2',
+            numero_int='3',
+            codigo_postal='09900',
+            estado='Ciudad de México',
+            colonia='Obrera',
+        ),
+        govt_id=dict(
+            type='ine',
+            feedme_uri_front='ine.feedme.com',
+            is_mx=True,
+        ),
+        proof_of_address=dict(
+            type='proof_of_address',
+            feedme_uri_front='proof_of_address.feedme.com',
+            is_mx=True,
+        ),
+        proof_of_life=dict(
+            type='proof_of_liveness',
+            feedme_uri_front='proof_of_address.feedme.com',
+            is_mx=True,
+        ),
+    )
+    ur = UserRequest(**request)
+    assert ur.platform_id == request['platform_id']
+    request['beneficiary'] = [
+        dict(
+            name='Pedro Pérez',
+            birth_date=dt.datetime(2020, 1, 1).isoformat(),
+            phone_number='+525555555555',
+            user_relationship='brother',
+            percentage=40,
+        ),
+        dict(
+            name='José Pérez',
+            birth_date=dt.datetime(2020, 1, 2).isoformat(),
+            phone_number='+525544444444',
+            user_relationship='brother',
+            percentage=50,
+        ),
+    ]
+    with pytest.raises(ValueError) as v:
+        UserRequest(**request)
+        assert (
+            'The total percentage of beneficiaries does not add 100.' in str(v)
+        )

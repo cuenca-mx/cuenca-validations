@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Union
 from clabe import Clabe
 from pydantic import (
     BaseModel,
+    EmailStr,
     Extra,
     Field,
     StrictStr,
@@ -12,7 +13,6 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
-from pydantic.networks import EmailStr
 
 from ..types.enums import (
     AuthorizerTransaction,

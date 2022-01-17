@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Optional
 
-from pydantic import BaseModel, Extra, validator
+from pydantic import BaseModel, EmailStr, Extra, validator
 from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
@@ -131,7 +131,7 @@ class WalletTransactionQuery(QueryParams):
 class UserQuery(QueryParams):
     platform_id: Optional[str] = None
     phone_number: Optional[str] = None
-    email_address: Optional[str] = None
+    email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     status: Optional[str] = None
 
