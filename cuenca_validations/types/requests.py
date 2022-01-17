@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import List, Optional, Union
+from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -25,12 +25,14 @@ from ..types.enums import (
     EcommerceIndicator,
     EntidadFederativa,
     IssuerNetwork,
+    KYCFileType,
     PosCapability,
     SavingCategory,
     Sexo,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    VerificationStatus,
     WalletTransactionType,
 )
 from ..typing import DictStrAny
@@ -40,6 +42,7 @@ from .identities import (
     Address,
     Beneficiary,
     Curp,
+    CurpType,
     KYCFile,
     PhoneNumber,
     TOSAgreement,
@@ -329,3 +332,63 @@ class UserRequest(BaseModel):
                 'The total percentage of beneficiaries does not add 100.'
             )
         return v
+
+
+class AddressUpdateRequest(BaseModel):
+    calle: Optional[str] = None
+    numero_ext: Optional[str] = None
+    numero_int: Optional[str] = None
+    codigo_postal: Optional[str] = None
+    estado: Optional[EntidadFederativa] = None
+    ciudad: Optional[str] = None
+    colonia: Optional[str] = None
+
+
+class TOSUpdateRequest(BaseModel):
+    version: Optional[str] = None
+    ip: Optional[str] = None
+    location: Optional[str] = None
+    type: Optional[str] = None
+
+
+class KYCFileUpdateRequest(BaseModel):
+    type: Optional[KYCFileType]
+    feedme_uri_front: Optional[str] = None
+    feedme_uri_back: Optional[str] = None
+    is_mx: Optional[bool] = None
+    data: Optional[Dict] = None
+
+
+class UserUpdateRequest(BaseModel):
+    phone_number: Optional[str] = None
+    email_address: Optional[str] = None
+    profession: Optional[str] = None
+    terms_of_service: Optional[TOSUpdateRequest] = None
+    status: Optional[str] = None
+    address: Optional[AddressUpdateRequest] = None
+    govt_id: Optional[KYCFileUpdateRequest] = None
+    proof_of_address: Optional[KYCFileUpdateRequest] = None
+    proof_of_life: Optional[KYCFileUpdateRequest] = None
+
+
+class CurpUpdateRequest(BaseModel):
+    value: CurpType
+
+
+class IdentityUpdateRequest(BaseModel):
+    nombres: Optional[str] = None
+    primer_apellido: Optional[str] = None
+    segundo_apellido: Optional[str] = None
+    curp: Optional[CurpUpdateRequest] = None
+    rfc: Optional[str] = None
+    gender: Optional[Sexo] = None
+    birth_date: Optional[dt.date] = None
+    birth_place: Optional[EntidadFederativa] = None
+    birth_country: Optional[str] = None
+    status: Optional[str] = None
+    tos_agreement: Optional[TOSUpdateRequest] = None
+    blacklist_validation_status: Optional[VerificationStatus] = None
+    address: Optional[AddressUpdateRequest] = None
+    govt_id: Optional[KYCFileUpdateRequest] = None
+    proof_of_address: Optional[KYCFileUpdateRequest] = None
+    proof_of_life: Optional[KYCFileUpdateRequest] = None

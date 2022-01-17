@@ -11,8 +11,13 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
+    EntidadFederativa,
+    EventType,
+    Sexo,
     TransferNetwork,
+    VerificationStatus,
 )
+from .identities import CurpType
 
 MAX_PAGE_SIZE = 100
 
@@ -121,3 +126,30 @@ class WalletQuery(QueryParams):
 
 class WalletTransactionQuery(QueryParams):
     wallet_uri: Optional[str] = None
+
+
+class UserQuery(QueryParams):
+    platform_id: Optional[str] = None
+    phone_number: Optional[str] = None
+    email_address: Optional[str] = None
+    profession: Optional[str] = None
+    status: Optional[str] = None
+
+
+class IdentityQuery(QueryParams):
+    nombres: Optional[str] = None
+    primer_apellido: Optional[str] = None
+    segundo_apellido: Optional[str] = None
+    curp: Optional[CurpType] = None
+    rfc: Optional[str] = None
+    gender: Optional[Sexo] = None
+    birth_place: Optional[EntidadFederativa] = None
+    birth_country: Optional[str] = None
+    status: Optional[str] = None
+    blacklist_validation_status: Optional[VerificationStatus] = None
+
+
+class EventQuery(QueryParams):
+    identity_id: Optional[str] = None
+    platform_id: Optional[str] = None
+    event_type: Optional[EventType] = None
