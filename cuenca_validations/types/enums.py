@@ -284,12 +284,6 @@ class EntidadFederativa(str, Enum):
     ZS = 'Zacatecas'
 
 
-class CurpStatus(str, Enum):
-    validation_succeeded = 'validation_succeeded'
-    validation_failed = 'validation_failed'
-    not_validated = 'not_validated'
-
-
 class VerificationStatus(Enum):
     not_verified = 'not_verified'
     submitted = 'submitted'
@@ -301,7 +295,7 @@ class VerificationStatus(Enum):
 
 class EventType(Enum):
     created = 'created'
-    curp_validation_succeeded = 'curp_validation_succeeded'
-    curp_validation_failed = 'curp_validation_failed'
-    blacklist_validation_updated = 'blacklist_validation_updated'
-    field_updated = 'field_updated'
+    succeeded = 'succeeded'
+    failed = 'failed'
+    updated = 'updated'
+    deactivated = 'deactivated'

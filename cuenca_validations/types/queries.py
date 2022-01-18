@@ -11,13 +11,10 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
-    EntidadFederativa,
     EventType,
-    Sexo,
     TransferNetwork,
-    VerificationStatus,
 )
-from .identities import CurpType
+from .identities import CurpField
 
 MAX_PAGE_SIZE = 100
 
@@ -132,21 +129,13 @@ class UserQuery(QueryParams):
     platform_id: Optional[str] = None
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
-    profession: Optional[str] = None
     status: Optional[str] = None
 
 
 class IdentityQuery(QueryParams):
-    nombres: Optional[str] = None
-    primer_apellido: Optional[str] = None
-    segundo_apellido: Optional[str] = None
-    curp: Optional[CurpType] = None
+    curp: Optional[CurpField] = None
     rfc: Optional[str] = None
-    gender: Optional[Sexo] = None
-    birth_place: Optional[EntidadFederativa] = None
-    birth_country: Optional[str] = None
     status: Optional[str] = None
-    blacklist_validation_status: Optional[VerificationStatus] = None
 
 
 class EventQuery(QueryParams):

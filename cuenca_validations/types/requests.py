@@ -13,6 +13,7 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
+from pydantic.validators import IPv4Address
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -43,7 +44,7 @@ from .identities import (
     Address,
     Beneficiary,
     Curp,
-    CurpType,
+    CurpField,
     KYCFile,
     PhoneNumber,
     TOSAgreement,
@@ -347,7 +348,7 @@ class AddressUpdateRequest(BaseModel):
 
 class TOSUpdateRequest(BaseModel):
     version: Optional[str] = None
-    ip: Optional[str] = None
+    ip: Optional[IPv4Address] = None
     location: Optional[str] = None
     type: Optional[str] = None
 
@@ -373,7 +374,7 @@ class UserUpdateRequest(BaseModel):
 
 
 class CurpUpdateRequest(BaseModel):
-    value: CurpType
+    curp: CurpField
 
 
 class IdentityUpdateRequest(BaseModel):
