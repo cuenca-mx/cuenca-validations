@@ -294,17 +294,17 @@ def test_user_request_beneficiary():
         ),
         govt_id=dict(
             type='ine',
-            feedme_uri_front='ine.feedme.com',
+            uri_front='ine.feedme.com',
             is_mx=True,
         ),
         proof_of_address=dict(
             type='proof_of_address',
-            feedme_uri_front='proof_of_address.feedme.com',
+            uri_front='proof_of_address.feedme.com',
             is_mx=True,
         ),
         proof_of_life=dict(
             type='proof_of_liveness',
-            feedme_uri_front='proof_of_address.feedme.com',
+            uri_front='proof_of_address.feedme.com',
             is_mx=True,
         ),
     )
