@@ -274,30 +274,6 @@ class UserPldRiskLevelRequest(BaseModel):
     level: float = Field(ge=0.0, le=1.0)
 
 
-class UserCreationRequest(BaseModel):
-    # datos para crear identity
-    nombres: str
-    primer_apellido: str
-    segundo_apellido: Optional[str] = None
-    curp: Curp
-    rfc: Optional[str] = None
-    gender: Optional[Sexo] = None
-    birth_date: Optional[str] = None
-    birth_place: Optional[str] = None
-    birth_country: Optional[str] = None
-    terms_of_service: TOSAgreement
-    # para el user en sí
-    phone_number: PhoneNumber
-    email_address: EmailStr
-    profession: str
-    platform_terms_of_service: TOSAgreement
-    beneficiary: List[Beneficiary]
-    address: Address
-    govt_id: KYCFile
-    proof_of_address: KYCFile
-    proof_of_life: KYCFile
-
-
 class CurpValidationRequest(BaseModel):
     nombres: str
     primer_apellido: str
@@ -313,8 +289,7 @@ class IdentityRequest(CurpValidationRequest):
     birth_country: Optional[str] = None
 
 
-class UserRequest(BaseModel):
-    platform_id: str
+class UserRequest(IdentityRequest):
     phone_number: PhoneNumber
     email_address: EmailStr
     profession: str
@@ -323,6 +298,8 @@ class UserRequest(BaseModel):
     govt_id: KYCFile
     proof_of_address: KYCFile
     proof_of_life: KYCFile
+    terms_of_service: TOSAgreement
+    platform_terms_of_service: TOSAgreement
 
     @validator('beneficiary')
     def beneficiary_percentage(cls, v: List[Beneficiary]):
