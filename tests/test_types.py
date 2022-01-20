@@ -325,7 +325,7 @@ def test_user_request_beneficiary():
             is_mx=True,
         ),
     )
-    ur = UserRequest(**request)
+    UserRequest(**request)
     request['beneficiary'] = [
         dict(
             name='Pedro Pérez',
