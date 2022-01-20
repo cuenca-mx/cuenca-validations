@@ -293,11 +293,11 @@ class UserRequest(IdentityRequest):
     phone_number: PhoneNumber
     email_address: EmailStr
     profession: str
-    beneficiary: List[Beneficiary]
+    beneficiary: Optional[List[Beneficiary]] = None
     address: Address
-    govt_id: KYCFile
-    proof_of_address: KYCFile
-    proof_of_life: KYCFile
+    govt_id: Optional[KYCFile] = None
+    proof_of_address: Optional[KYCFile] = None
+    proof_of_life: Optional[KYCFile] = None
     terms_of_service: TOSAgreement
     platform_terms_of_service: TOSAgreement
 

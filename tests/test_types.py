@@ -264,7 +264,24 @@ def test_saving_update_request():
 
 def test_user_request_beneficiary():
     request = dict(
-        platform_id='ARTERIA',
+        nombres='Pedro',
+        primer_apellido='Páramo',
+        birth_date=dt.date(1917, 5, 17),
+        birth_place='México',
+        gender='H',
+        curp=dict(curp='ABCD920604HDFSRN03'),
+        terms_of_service=dict(
+            version=1,
+            ip='127.0.0.1',
+            location='1111,1111',
+            type='',
+        ),
+        platform_terms_of_service=dict(
+            version=1,
+            ip='127.0.0.1',
+            location='1111,1111',
+            type='',
+        ),
         phone_number='+525555555555',
         email_address='email@email.com',
         profession='worker',
@@ -309,7 +326,6 @@ def test_user_request_beneficiary():
         ),
     )
     ur = UserRequest(**request)
-    assert ur.platform_id == request['platform_id']
     request['beneficiary'] = [
         dict(
             name='Pedro Pérez',
