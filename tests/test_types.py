@@ -264,11 +264,11 @@ def test_saving_update_request():
 
 def test_user_request_beneficiary():
     request = dict(
-        nombres='Pedro',
-        primer_apellido='Páramo',
-        birth_date=dt.date(1917, 5, 17),
-        birth_place='México',
-        gender='H',
+        names='Pedro',
+        first_surname='Páramo',
+        date_of_birth=dt.date(1917, 5, 17),
+        state_of_birth='México',
+        gender='male',
         curp=dict(curp='ABCD920604HDFSRN03'),
         terms_of_service=dict(
             version=1,
@@ -302,12 +302,12 @@ def test_user_request_beneficiary():
             ),
         ],
         address=dict(
-            calle='calle 1',
-            numero_ext='2',
-            numero_int='3',
-            codigo_postal='09900',
-            estado='Ciudad de México',
-            colonia='Obrera',
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            postal_code='09900',
+            state='Ciudad de México',
+            country='Obrera',
         ),
         govt_id=dict(
             type='ine',

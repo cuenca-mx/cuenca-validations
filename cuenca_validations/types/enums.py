@@ -243,12 +243,12 @@ class KYCFileType(str, Enum):
     proof_of_address = 'proof_of_address'
 
 
-class Sexo(str, Enum):
-    mujer = 'M'
-    hombre = 'H'
+class Gender(str, Enum):
+    female = 'female'
+    male = 'male'
 
 
-class EntidadFederativa(str, Enum):
+class State(str, Enum):
     NE = 'Nacido en el Extranjero'
     AS = 'Aguascalientes'
     BC = 'Baja California'

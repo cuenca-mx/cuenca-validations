@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
-from .enums import EntidadFederativa, KYCFileType
+from .enums import KYCFileType, State
 
 
 class PhoneNumber(StrictStr):
@@ -27,13 +27,13 @@ class Rfc(StrictStr):
 
 
 class Address(BaseModel):
-    calle: str
-    numero_ext: str
-    codigo_postal: str
-    estado: EntidadFederativa
-    colonia: str
-    ciudad: Optional[str] = None
-    numero_int: Optional[str] = None
+    street: str
+    ext_number: str
+    postal_code: str
+    state: State
+    country: str
+    city: Optional[str] = None
+    int_number: Optional[str] = None
 
 
 class Beneficiary(BaseModel):

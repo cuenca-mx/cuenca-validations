@@ -25,12 +25,12 @@ from ..types.enums import (
     CardStatus,
     CardType,
     EcommerceIndicator,
-    EntidadFederativa,
+    Gender,
     IssuerNetwork,
     KYCFileType,
     PosCapability,
     SavingCategory,
-    Sexo,
+    State,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
@@ -275,18 +275,18 @@ class UserPldRiskLevelRequest(BaseModel):
 
 
 class CurpValidationRequest(BaseModel):
-    nombres: str
-    primer_apellido: str
-    segundo_apellido: Optional[str] = None
-    birth_date: dt.date
-    birth_place: EntidadFederativa
-    gender: Sexo
+    names: str
+    first_surname: str
+    second_surname: Optional[str] = None
+    date_of_birth: dt.date
+    state_of_birth: State
+    gender: Gender
 
 
 class IdentityRequest(CurpValidationRequest):
     curp: Curp
     rfc: Optional[str] = None
-    birth_country: Optional[str] = None
+    country_of_birth: Optional[str] = None
 
 
 class UserRequest(IdentityRequest):
@@ -314,13 +314,13 @@ class UserRequest(IdentityRequest):
 
 
 class AddressUpdateRequest(BaseModel):
-    calle: Optional[str] = None
-    numero_ext: Optional[str] = None
-    numero_int: Optional[str] = None
-    codigo_postal: Optional[str] = None
-    estado: Optional[EntidadFederativa] = None
-    ciudad: Optional[str] = None
-    colonia: Optional[str] = None
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    postal_code: Optional[str] = None
+    state: Optional[State] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
 
 
 class TOSUpdateRequest(BaseModel):
@@ -355,15 +355,15 @@ class CurpUpdateRequest(BaseModel):
 
 
 class IdentityUpdateRequest(BaseModel):
-    nombres: Optional[str] = None
-    primer_apellido: Optional[str] = None
-    segundo_apellido: Optional[str] = None
+    names: Optional[str] = None
+    first_surname: Optional[str] = None
+    second_surname: Optional[str] = None
     curp: Optional[CurpUpdateRequest] = None
     rfc: Optional[str] = None
-    gender: Optional[Sexo] = None
-    birth_date: Optional[dt.date] = None
-    birth_place: Optional[EntidadFederativa] = None
-    birth_country: Optional[str] = None
+    gender: Optional[Gender] = None
+    date_of_birth: Optional[dt.date] = None
+    state_of_birth: Optional[State] = None
+    country_of_birth: Optional[str] = None
     status: Optional[str] = None
     tos_agreement: Optional[TOSUpdateRequest] = None
     blacklist_validation_status: Optional[VerificationStatus] = None
