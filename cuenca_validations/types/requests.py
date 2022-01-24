@@ -45,7 +45,6 @@ from .identities import (
     Beneficiary,
     Curp,
     CurpField,
-    KYCFile,
     PhoneNumber,
     TOSAgreement,
 )
@@ -279,38 +278,32 @@ class CurpValidationRequest(BaseModel):
     first_surname: str
     second_surname: Optional[str] = None
     date_of_birth: dt.date
-    state_of_birth: State
+    state_of_birth: Optional[State] = None
+    country_of_birth: str
     gender: Gender
+    manual_curp: Optional[CurpField] = None
+
+    @root_validator(pre=True)
+    def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
+        if (
+            values['country_of_birth'] == 'MX'
+            and 'state_of_birth' not in values
+        ):
+            raise ValueError('state_of_birth required')
+        return values
 
 
 class IdentityRequest(CurpValidationRequest):
     curp: Curp
     rfc: Optional[str] = None
-    country_of_birth: Optional[str] = None
 
 
-class UserRequest(IdentityRequest):
+class UserRequest(BaseModel):
+    curp: CurpField
     phone_number: PhoneNumber
     email_address: EmailStr
     profession: str
-    beneficiary: Optional[List[Beneficiary]] = None
     address: Address
-    govt_id: Optional[KYCFile] = None
-    proof_of_address: Optional[KYCFile] = None
-    proof_of_life: Optional[KYCFile] = None
-    terms_of_service: TOSAgreement
-    platform_terms_of_service: TOSAgreement
-
-    @validator('beneficiary')
-    def beneficiary_percentage(cls, v: List[Beneficiary]):
-        total = 0
-        for beneficiary in v:
-            total += beneficiary.percentage
-        if total != 100:
-            raise ValueError(
-                'The total percentage of beneficiaries does not add 100.'
-            )
-        return v
 
 
 class AddressUpdateRequest(BaseModel):
@@ -342,12 +335,25 @@ class UserUpdateRequest(BaseModel):
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
-    terms_of_service: Optional[TOSUpdateRequest] = None
-    status: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
+    beneficiary: Optional[List[Beneficiary]] = None
     govt_id: Optional[KYCFileUpdateRequest] = None
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
+    terms_of_service: Optional[TOSUpdateRequest] = None
+    platform_terms_of_service: Optional[TOSAgreement] = None
+
+    @validator('beneficiary')
+    def beneficiary_percentage(cls, v: Optional[List[Beneficiary]] = None):
+        if v:
+            total = 0
+            for beneficiary in v:
+                total += beneficiary.percentage
+            if total != 100:
+                raise ValueError(
+                    'The total percentage of beneficiaries does not add 100.'
+                )
+        return v
 
 
 class CurpUpdateRequest(BaseModel):
