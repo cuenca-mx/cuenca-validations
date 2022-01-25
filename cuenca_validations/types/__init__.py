@@ -18,7 +18,6 @@ __all__ = [
     'CardTransactionQuery',
     'CardTransactionType',
     'CardType',
-    'Curp',
     'CurpUpdateRequest',
     'CurpValidationRequest',
     'CommissionType',
@@ -117,7 +116,6 @@ from .general import (
 from .identities import (
     Address,
     Beneficiary,
-    Curp,
     KYCFile,
     PhoneNumber,
     TOSAgreement,

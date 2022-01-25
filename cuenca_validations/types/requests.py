@@ -43,7 +43,6 @@ from .general import StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
-    Curp,
     CurpField,
     PhoneNumber,
     TOSAgreement,
@@ -294,7 +293,7 @@ class CurpValidationRequest(BaseModel):
 
 
 class IdentityRequest(CurpValidationRequest):
-    curp: Curp
+    curp: CurpField
     rfc: Optional[str] = None
 
 

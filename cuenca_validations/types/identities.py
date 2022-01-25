@@ -57,7 +57,3 @@ class TOSAgreement(BaseModel):
     ip: IPv4Address
     location: str
     type: str  # hay que definir bien
-
-
-class Curp(BaseModel):
-    curp: CurpField
