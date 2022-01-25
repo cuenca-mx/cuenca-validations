@@ -355,15 +355,11 @@ class UserUpdateRequest(BaseModel):
         return v
 
 
-class CurpUpdateRequest(BaseModel):
-    curp: CurpField
-
-
 class IdentityUpdateRequest(BaseModel):
     names: Optional[str] = None
     first_surname: Optional[str] = None
     second_surname: Optional[str] = None
-    curp: Optional[CurpUpdateRequest] = None
+    curp: Optional[CurpField] = None
     rfc: Optional[str] = None
     gender: Optional[Gender] = None
     date_of_birth: Optional[dt.date] = None

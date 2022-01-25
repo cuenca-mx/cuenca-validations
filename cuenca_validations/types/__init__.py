@@ -18,7 +18,6 @@ __all__ = [
     'CardTransactionQuery',
     'CardTransactionType',
     'CardType',
-    'CurpUpdateRequest',
     'CurpValidationRequest',
     'CommissionType',
     'DepositNetwork',
@@ -142,7 +141,6 @@ from .queries import (
 from .requests import (
     AddressUpdateRequest,
     ApiKeyUpdateRequest,
-    CurpUpdateRequest,
     CurpValidationRequest,
     IdentityRequest,
     IdentityUpdateRequest,
