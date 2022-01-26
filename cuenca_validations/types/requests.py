@@ -2,6 +2,7 @@ import datetime as dt
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
+from dateutil.relativedelta import relativedelta
 from pydantic import (
     BaseModel,
     EmailStr,
@@ -282,6 +283,13 @@ class CurpValidationRequest(BaseModel):
     gender: Gender
     manual_curp: Optional[CurpField] = None
 
+    @validator('date_of_birth')
+    def validate_birth_date(cls, dob: dt.date):
+        current_date = dt.datetime.utcnow()
+        if relativedelta(current_date, dob).years < 18:
+            raise ValueError('User does not meet age requirement.')
+        return dob
+
     @root_validator(pre=True)
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
         if (
@@ -303,6 +311,14 @@ class UserRequest(BaseModel):
     email_address: EmailStr
     profession: str
     address: Address
+
+    @validator('curp')
+    def validate_birth_date(cls, curp: CurpField):
+        birth_date = dt.datetime.strptime(curp[4:10], '%y%m%d')
+        current_date = dt.datetime.utcnow()
+        if relativedelta(current_date, birth_date).years < 18:
+            raise ValueError('User does not meet age requirement.')
+        return curp
 
 
 class AddressUpdateRequest(BaseModel):
