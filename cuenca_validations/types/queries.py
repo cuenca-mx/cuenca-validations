@@ -11,6 +11,7 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
+    EntityStatus,
     EventType,
     TransferNetwork,
 )
@@ -32,6 +33,7 @@ class QueryParams(BaseModel):
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
     related_transaction: Optional[str] = None
+    platform_id: Optional[str] = None
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
@@ -126,19 +128,17 @@ class WalletTransactionQuery(QueryParams):
 
 
 class UserQuery(QueryParams):
-    platform_id: Optional[str] = None
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
-    status: Optional[str] = None
+    status: Optional[EntityStatus] = None
 
 
 class IdentityQuery(QueryParams):
     curp: Optional[CurpField] = None
     rfc: Optional[str] = None
-    status: Optional[str] = None
+    status: Optional[EntityStatus] = None
 
 
 class EventQuery(QueryParams):
     identity_id: Optional[str] = None
-    platform_id: Optional[str] = None
     event_type: Optional[EventType] = None

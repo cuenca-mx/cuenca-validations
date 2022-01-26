@@ -284,11 +284,11 @@ class CurpValidationRequest(BaseModel):
     manual_curp: Optional[CurpField] = None
 
     @validator('date_of_birth')
-    def validate_birth_date(cls, dob: dt.date) -> dt.date:
+    def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
         current_date = dt.datetime.utcnow()
-        if relativedelta(current_date, dob).years < 18:
+        if relativedelta(current_date, date_of_birth).years < 18:
             raise ValueError('User does not meet age requirement.')
-        return dob
+        return date_of_birth
 
     @root_validator(pre=True)
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
@@ -339,9 +339,9 @@ class TOSUpdateRequest(BaseModel):
 
 
 class KYCFileUpdateRequest(BaseModel):
-    type: Optional[KYCFileType]
-    feedme_uri_front: Optional[str] = None
-    feedme_uri_back: Optional[str] = None
+    type: Optional[KYCFileType] = None
+    uri_front: Optional[str] = None
+    uri_back: Optional[str] = None
     is_mx: Optional[bool] = None
     data: Optional[Dict] = None
 
@@ -359,16 +359,14 @@ class UserUpdateRequest(BaseModel):
     platform_terms_of_service: Optional[TOSAgreement] = None
 
     @validator('beneficiary')
-    def beneficiary_percentage(cls, v: Optional[List[Beneficiary]] = None):
-        if v:
-            total = 0
-            for beneficiary in v:
-                total += beneficiary.percentage
-            if total != 100:
-                raise ValueError(
-                    'The total percentage of beneficiaries does not add 100.'
-                )
-        return v
+    def beneficiary_percentage(
+        cls, beneficiaries: Optional[List[Beneficiary]] = None
+    ):
+        if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
+            raise ValueError(
+                'The total percentage of beneficiaries does not add 100.'
+            )
+        return beneficiaries
 
 
 class IdentityUpdateRequest(BaseModel):

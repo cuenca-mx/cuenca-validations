@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 import pytest
+from freezegun import freeze_time
 from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
@@ -14,7 +15,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.enums import EcommerceIndicator
+from cuenca_validations.types.enums import EcommerceIndicator, State
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
@@ -264,7 +265,8 @@ def test_saving_update_request():
         SavingUpdateRequest(**data)
 
 
-def test_user_request_beneficiary():
+@freeze_time('2022-01-01')
+def test_user_request():
     request = dict(
         curp='ABCD920604HDFSRN03',
         phone_number='+525555555555',
@@ -275,25 +277,26 @@ def test_user_request_beneficiary():
             ext_number='2',
             int_number='3',
             postal_code='09900',
-            state='Ciudad de México',
+            state=State.DF.value,
             country='Obrera',
         ),
     )
     UserRequest(**request)
 
-    # changing to 2006
+    # changing curp so user is underage
     request['curp'] = 'ABCD060604HDFSRN03'
     with pytest.raises(ValueError) as v:
         UserRequest(**request)
         assert 'User does not meet age requirement.' in str(v)
 
 
+@freeze_time('2022-01-01')
 def test_curp_validation_request():
     request = dict(
         names='Pedro',
         first_surname='Páramo',
         date_of_birth=dt.date(1917, 5, 17),
-        state_of_birth='México',
+        state_of_birth=State.DF.value,
         gender='male',
         manual_curp='ABCD920604HDFSRN03',
         country_of_birth='MX',
@@ -307,6 +310,7 @@ def test_curp_validation_request():
         CurpValidationRequest(**request)
         assert 'User does not meet age requirement.' in str(v)
 
+    # changing date of birth so user is underage
     request['date_of_birth'] = dt.date(1917, 5, 17)
     del request['state_of_birth']
 
