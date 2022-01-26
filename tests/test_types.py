@@ -18,11 +18,13 @@ from cuenca_validations.types.enums import EcommerceIndicator
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
+    CurpValidationRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
     UserRequest,
+    UserUpdateRequest,
 )
 
 today = dt.date.today()
@@ -264,27 +266,57 @@ def test_saving_update_request():
 
 def test_user_request_beneficiary():
     request = dict(
+        curp='ABCD920604HDFSRN03',
+        phone_number='+525555555555',
+        email_address='email@email.com',
+        profession='worker',
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            postal_code='09900',
+            state='Ciudad de México',
+            country='Obrera',
+        ),
+    )
+    UserRequest(**request)
+
+    # changing to 2006
+    request['curp'] = 'ABCD060604HDFSRN03'
+    with pytest.raises(ValueError) as v:
+        UserRequest(**request)
+        assert 'User does not meet age requirement.' in str(v)
+
+
+def test_curp_validation_request():
+    request = dict(
         names='Pedro',
         first_surname='Páramo',
         date_of_birth=dt.date(1917, 5, 17),
         state_of_birth='México',
         gender='male',
-        curp=dict(curp='ABCD920604HDFSRN03'),
-        terms_of_service=dict(
-            version=1,
-            ip='127.0.0.1',
-            location='1111,1111',
-            type='',
-        ),
-        platform_terms_of_service=dict(
-            version=1,
-            ip='127.0.0.1',
-            location='1111,1111',
-            type='',
-        ),
-        phone_number='+525555555555',
-        email_address='email@email.com',
-        profession='worker',
+        manual_curp='ABCD920604HDFSRN03',
+        country_of_birth='MX',
+    )
+
+    CurpValidationRequest(**request)
+
+    request['date_of_birth'] = dt.date(2006, 5, 17)
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(**request)
+        assert 'User does not meet age requirement.' in str(v)
+
+    request['date_of_birth'] = dt.date(1917, 5, 17)
+    del request['state_of_birth']
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(**request)
+        assert 'state_of_birth required' in str(v)
+
+
+def test_user_update_request():
+    request = dict(
         beneficiary=[
             dict(
                 name='Pedro Pérez',
@@ -300,50 +332,22 @@ def test_user_request_beneficiary():
                 user_relationship='brother',
                 percentage=50,
             ),
-        ],
-        address=dict(
-            street='calle 1',
-            ext_number='2',
-            int_number='3',
-            postal_code='09900',
-            state='Ciudad de México',
-            country='Obrera',
-        ),
-        govt_id=dict(
-            type='ine',
-            uri_front='ine.feedme.com',
-            is_mx=True,
-        ),
-        proof_of_address=dict(
-            type='proof_of_address',
-            uri_front='proof_of_address.feedme.com',
-            is_mx=True,
-        ),
-        proof_of_life=dict(
-            type='proof_of_liveness',
-            uri_front='proof_of_address.feedme.com',
-            is_mx=True,
-        ),
+        ]
     )
-    UserRequest(**request)
+    UserUpdateRequest(**request)
+
     request['beneficiary'] = [
         dict(
             name='Pedro Pérez',
             birth_date=dt.datetime(2020, 1, 1).isoformat(),
             phone_number='+525555555555',
             user_relationship='brother',
-            percentage=40,
-        ),
-        dict(
-            name='José Pérez',
-            birth_date=dt.datetime(2020, 1, 2).isoformat(),
-            phone_number='+525544444444',
-            user_relationship='brother',
             percentage=50,
         ),
     ]
+
     with pytest.raises(ValueError) as v:
-        UserRequest(**request)
+        UserUpdateRequest(**request)
         assert (
             'The total percentage of beneficiaries does not add 100.' in str(v)
         )
