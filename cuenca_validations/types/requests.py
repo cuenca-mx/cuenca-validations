@@ -284,7 +284,7 @@ class CurpValidationRequest(BaseModel):
     manual_curp: Optional[CurpField] = None
 
     @validator('date_of_birth')
-    def validate_birth_date(cls, dob: dt.date):
+    def validate_birth_date(cls, dob: dt.date) -> dt.date:
         current_date = dt.datetime.utcnow()
         if relativedelta(current_date, dob).years < 18:
             raise ValueError('User does not meet age requirement.')
@@ -313,7 +313,7 @@ class UserRequest(BaseModel):
     address: Address
 
     @validator('curp')
-    def validate_birth_date(cls, curp: CurpField):
+    def validate_birth_date(cls, curp: CurpField) -> CurpField:
         birth_date = dt.datetime.strptime(curp[4:10], '%y%m%d')
         current_date = dt.datetime.utcnow()
         if relativedelta(current_date, birth_date).years < 18:
