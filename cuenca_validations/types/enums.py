@@ -249,39 +249,39 @@ class Gender(str, Enum):
 
 
 class State(str, Enum):
-    NE = 'NE'
-    AS = 'AS'
-    BC = 'BC'
-    BS = 'BS'
-    CC = 'CC'
-    CS = 'CS'
-    CH = 'CH'
-    CL = 'CL'
-    CM = 'CM'
-    DF = 'DF'
-    DG = 'DG'
-    GT = 'GT'
-    GR = 'GR'
-    HG = 'HG'
-    JC = 'JC'
-    MC = 'MC'
-    MN = 'MN'
-    MS = 'MS'
-    NT = 'NT'
-    NL = 'NL'
-    OC = 'OC'
-    PL = 'PL'
-    QT = 'QT'
-    QR = 'QR'
-    SP = 'SP'
-    SL = 'SL'
-    SR = 'SR'
-    TC = 'TC'
-    TL = 'TL'
-    TS = 'TS'
-    VZ = 'VZ'
-    YN = 'YN'
-    ZS = 'ZS'
+    NE = 'NE'  # Nacido en el Extranjero
+    AS = 'AS'  # Aguascalientes
+    BC = 'BC'  # Baja California
+    BS = 'BS'  # Baja California Sur
+    CC = 'CC'  # Campeche
+    CS = 'CS'  # Chiapas
+    CH = 'CH'  # Chihuahua
+    CL = 'CL'  # Coahuila
+    CM = 'CM'  # Colima
+    DF = 'DF'  # Ciudad de México
+    DG = 'DG'  # Durango
+    GT = 'GT'  # Guanajuato
+    GR = 'GR'  # Guerrero
+    HG = 'HG'  # Hidalgo
+    JC = 'JC'  # Jalisco
+    MC = 'MC'  # México
+    MN = 'MN'  # Michoacan
+    MS = 'MS'  # Morelos
+    NT = 'NT'  # Nayarit
+    NL = 'NL'  # Nuevo León
+    OC = 'OC'  # Oaxaca
+    PL = 'PL'  # Puebla
+    QT = 'QT'  # Querétaro
+    QR = 'QR'  # Quintana Roo
+    SP = 'SP'  # San Luis Potosí
+    SL = 'SL'  # Sinaloa
+    SR = 'SR'  # Sonora
+    TC = 'TC'  # Tabasco
+    TL = 'TL'  # Tlaxcala
+    TS = 'TS'  # Tamaulipas
+    VZ = 'VZ'  # Veracruz
+    YN = 'YN'  # Yucatán
+    ZS = 'ZS'  # Zacatecas
 
 
 class VerificationStatus(Enum):
