@@ -300,11 +300,6 @@ class CurpValidationRequest(BaseModel):
         return values
 
 
-class IdentityRequest(CurpValidationRequest):
-    curp: CurpField
-    rfc: Optional[str] = None
-
-
 class UserRequest(BaseModel):
     curp: CurpField
     phone_number: PhoneNumber
