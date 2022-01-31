@@ -363,21 +363,3 @@ class UserUpdateRequest(BaseModel):
             )
         return beneficiaries
 
-
-class IdentityUpdateRequest(BaseModel):
-    names: Optional[str] = None
-    first_surname: Optional[str] = None
-    second_surname: Optional[str] = None
-    curp: Optional[CurpField] = None
-    rfc: Optional[str] = None
-    gender: Optional[Gender] = None
-    date_of_birth: Optional[dt.date] = None
-    state_of_birth: Optional[State] = None
-    country_of_birth: Optional[str] = None
-    status: Optional[str] = None
-    tos_agreement: Optional[TOSUpdateRequest] = None
-    blacklist_validation_status: Optional[VerificationStatus] = None
-    address: Optional[AddressUpdateRequest] = None
-    govt_id: Optional[KYCFileUpdateRequest] = None
-    proof_of_address: Optional[KYCFileUpdateRequest] = None
-    proof_of_life: Optional[KYCFileUpdateRequest] = None
