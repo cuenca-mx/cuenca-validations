@@ -362,4 +362,3 @@ class UserUpdateRequest(BaseModel):
                 'The total percentage of beneficiaries does not add 100.'
             )
         return beneficiaries
-
