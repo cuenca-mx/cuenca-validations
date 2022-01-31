@@ -232,3 +232,7 @@ class TransactionTokenValidationStatus(str, Enum):
     pending = 'pending'
     accepted = 'accepted'
     rejected = 'rejected'
+
+
+class SessionType:
+    registration = 'session.registration'
