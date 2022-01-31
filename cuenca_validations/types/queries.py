@@ -141,4 +141,4 @@ class IdentityQuery(QueryParams):
 
 class EventQuery(QueryParams):
     identity_id: Optional[str] = None
-    event_type: Optional[EventType] = None
+    type: Optional[EventType] = None
