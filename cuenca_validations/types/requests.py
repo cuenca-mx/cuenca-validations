@@ -345,14 +345,14 @@ class UserUpdateRequest(BaseModel):
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
-    beneficiary: Optional[List[Beneficiary]] = None
+    beneficiaries: Optional[List[Beneficiary]] = None
     govt_id: Optional[KYCFileUpdateRequest] = None
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
 
-    @validator('beneficiary')
+    @validator('beneficiaries')
     def beneficiary_percentage(
         cls, beneficiaries: Optional[List[Beneficiary]] = None
     ):

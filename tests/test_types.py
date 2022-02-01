@@ -278,10 +278,11 @@ def test_user_request():
             int_number='3',
             postal_code='09900',
             state=State.DF.value,
-            country='Obrera',
+            country='MEX',
+            city='Obrera',
         ),
     )
-    UserRequest(**request)
+    assert UserRequest(**request).dict() == request
 
     # changing curp so user is underage
     request['curp'] = 'ABCD060604HDFSRN03'
@@ -321,26 +322,28 @@ def test_curp_validation_request():
 
 def test_user_update_request():
     request = dict(
-        beneficiary=[
+        beneficiaries=[
             dict(
                 name='Pedro Pérez',
-                birth_date=dt.datetime(2020, 1, 1).isoformat(),
+                birth_date=dt.datetime(2020, 1, 1),
                 phone_number='+525555555555',
                 user_relationship='brother',
                 percentage=50,
             ),
             dict(
                 name='José Pérez',
-                birth_date=dt.datetime(2020, 1, 2).isoformat(),
+                birth_date=dt.datetime(2020, 1, 2),
                 phone_number='+525544444444',
                 user_relationship='brother',
                 percentage=50,
             ),
         ]
     )
-    UserUpdateRequest(**request)
+    update_req = UserUpdateRequest(**request)
+    beneficiaries = [b.dict() for b in update_req.beneficiaries]
+    assert beneficiaries == request['beneficiaries']
 
-    request['beneficiary'] = [
+    request['beneficiaries'] = [
         dict(
             name='Pedro Pérez',
             birth_date=dt.datetime(2020, 1, 1).isoformat(),
