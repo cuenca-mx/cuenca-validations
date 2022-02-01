@@ -296,14 +296,15 @@ def test_curp_validation_request():
     request = dict(
         names='Pedro',
         first_surname='Páramo',
+        second_surname=None,
         date_of_birth=dt.date(1917, 5, 17),
         state_of_birth=State.DF.value,
         gender='male',
         manual_curp='ABCD920604HDFSRN03',
         country_of_birth='MX',
     )
-
-    CurpValidationRequest(**request)
+    req_curp = CurpValidationRequest(**request)
+    assert req_curp.dict() == request
 
     request['date_of_birth'] = dt.date(2006, 5, 17)
 
