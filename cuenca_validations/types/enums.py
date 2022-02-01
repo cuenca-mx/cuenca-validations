@@ -306,3 +306,7 @@ class EntityStatus(str, Enum):
     deactivated = 'deactivated'
     fraud = 'fraud'
     pld_blocked = 'pld_blocked'
+
+
+class SessionType(str, Enum):
+    registration = 'session.registration'
