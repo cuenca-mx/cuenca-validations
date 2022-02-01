@@ -53,7 +53,7 @@ class KYCFile(BaseModel):
 
 
 class TOSAgreement(BaseModel):
-    version: int
+    version: str
     ip: IPv4Address
     location: str
     type: str  # hay que definir bien
