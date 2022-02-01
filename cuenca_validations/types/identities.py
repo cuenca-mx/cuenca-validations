@@ -11,8 +11,8 @@ from .enums import KYCFileType, State
 
 class PhoneNumber(StrictStr):
     min_length = 10
-    max_length = 13
-    regex = re.compile(r'^\+{0,1}[0-9]{10,12}$')
+    max_length = 15
+    regex = re.compile(r'^\+?[0-9]{10,14}$')
 
 
 class CurpField(StrictStr):
