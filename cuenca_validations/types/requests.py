@@ -31,6 +31,7 @@ from ..types.enums import (
     KYCFileType,
     PosCapability,
     SavingCategory,
+    SessionType,
     State,
     TrackDataMethod,
     TransactionTokenValidationStatus,
@@ -361,3 +362,10 @@ class UserUpdateRequest(BaseModel):
                 'The total percentage of beneficiaries does not add 100.'
             )
         return beneficiaries
+
+
+class SessionRequest(BaseRequest):
+    user_id: str
+    type: SessionType
+    success_url: Optional[str] = None
+    failure_url: Optional[str] = None

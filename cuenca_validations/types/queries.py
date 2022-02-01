@@ -13,6 +13,7 @@ from .enums import (
     CardType,
     EntityStatus,
     EventType,
+    SessionType,
     TransferNetwork,
 )
 from .identities import CurpField
@@ -142,3 +143,7 @@ class IdentityQuery(QueryParams):
 class EventQuery(QueryParams):
     identity_id: Optional[str] = None
     type: Optional[EventType] = None
+
+
+class SessionQuery(QueryParams):
+    type: SessionType
