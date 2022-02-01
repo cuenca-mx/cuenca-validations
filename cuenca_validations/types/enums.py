@@ -284,7 +284,7 @@ class State(str, Enum):
     ZS = 'ZS'  # Zacatecas
 
 
-class VerificationStatus(Enum):
+class VerificationStatus(str, Enum):
     not_verified = 'not_verified'
     submitted = 'submitted'
     rejected = 'rejected'
@@ -293,7 +293,7 @@ class VerificationStatus(Enum):
     upload_again = 'upload_again'
 
 
-class EventType(Enum):
+class EventType(str, Enum):
     created = 'created'
     succeeded = 'succeeded'
     failed = 'failed'
@@ -301,8 +301,12 @@ class EventType(Enum):
     deactivated = 'deactivated'
 
 
-class EntityStatus(Enum):
+class EntityStatus(str, Enum):
     active = 'active'
     deactivated = 'deactivated'
     fraud = 'fraud'
     pld_blocked = 'pld_blocked'
+
+
+class TOSAgreementType(str, Enum):
+    ifpe = 'ifpe'

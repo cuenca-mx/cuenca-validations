@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
-from .enums import KYCFileType, State
+from .enums import KYCFileType, State, TOSAgreementType
 
 
 class PhoneNumber(StrictStr):
@@ -56,4 +56,4 @@ class TOSAgreement(BaseModel):
     version: str
     ip: IPv4Address
     location: str
-    type: str  # hay que definir bien
+    type: TOSAgreementType
