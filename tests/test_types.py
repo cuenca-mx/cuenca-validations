@@ -4,6 +4,7 @@ from dataclasses import dataclass
 from enum import Enum
 
 import pytest
+from freezegun import freeze_time
 from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
@@ -14,14 +15,17 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.enums import EcommerceIndicator
+from cuenca_validations.types.enums import EcommerceIndicator, State
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
+    CurpValidationRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
+    UserRequest,
+    UserUpdateRequest,
 )
 
 today = dt.date.today()
@@ -259,3 +263,99 @@ def test_saving_update_request():
     data['goal_date'] = dt.datetime(2000, 1, 1)
     with pytest.raises(ValidationError):
         SavingUpdateRequest(**data)
+
+
+@freeze_time('2022-01-01')
+def test_user_request():
+    request = dict(
+        curp='ABCD920604HDFSRN03',
+        phone_number='+525555555555',
+        email_address='email@email.com',
+        profession='worker',
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            postal_code='09900',
+            state=State.DF.value,
+            country='MEX',
+            city='Obrera',
+        ),
+    )
+    assert UserRequest(**request).dict() == request
+
+    # changing curp so user is underage
+    request['curp'] = 'ABCD060604HDFSRN03'
+    with pytest.raises(ValueError) as v:
+        UserRequest(**request)
+        assert 'User does not meet age requirement.' in str(v)
+
+
+@freeze_time('2022-01-01')
+def test_curp_validation_request():
+    request = dict(
+        names='Pedro',
+        first_surname='Páramo',
+        second_surname=None,
+        date_of_birth=dt.date(1917, 5, 17),
+        state_of_birth=State.DF.value,
+        gender='male',
+        manual_curp='ABCD920604HDFSRN03',
+        country_of_birth='MX',
+    )
+    req_curp = CurpValidationRequest(**request)
+    assert req_curp.dict() == request
+
+    request['date_of_birth'] = dt.date(2006, 5, 17)
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(**request)
+        assert 'User does not meet age requirement.' in str(v)
+
+    # changing date of birth so user is underage
+    request['date_of_birth'] = dt.date(1917, 5, 17)
+    del request['state_of_birth']
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(**request)
+        assert 'state_of_birth required' in str(v)
+
+
+def test_user_update_request():
+    request = dict(
+        beneficiaries=[
+            dict(
+                name='Pedro Pérez',
+                birth_date=dt.datetime(2020, 1, 1),
+                phone_number='+525555555555',
+                user_relationship='brother',
+                percentage=50,
+            ),
+            dict(
+                name='José Pérez',
+                birth_date=dt.datetime(2020, 1, 2),
+                phone_number='+525544444444',
+                user_relationship='brother',
+                percentage=50,
+            ),
+        ]
+    )
+    update_req = UserUpdateRequest(**request)
+    beneficiaries = [b.dict() for b in update_req.beneficiaries]
+    assert beneficiaries == request['beneficiaries']
+
+    request['beneficiaries'] = [
+        dict(
+            name='Pedro Pérez',
+            birth_date=dt.datetime(2020, 1, 1).isoformat(),
+            phone_number='+525555555555',
+            user_relationship='brother',
+            percentage=50,
+        ),
+    ]
+
+    with pytest.raises(ValueError) as v:
+        UserUpdateRequest(**request)
+        assert (
+            'The total percentage of beneficiaries does not add 100.' in str(v)
+        )

@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Optional
 
-from pydantic import BaseModel, Extra, validator
+from pydantic import BaseModel, EmailStr, Extra, validator
 from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
@@ -11,8 +11,12 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
+    EventType,
+    SessionType,
     TransferNetwork,
+    UserStatus,
 )
+from .identities import CurpField
 
 MAX_PAGE_SIZE = 100
 
@@ -30,6 +34,7 @@ class QueryParams(BaseModel):
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
     related_transaction: Optional[str] = None
+    platform_id: Optional[str] = None
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
@@ -121,3 +126,24 @@ class WalletQuery(QueryParams):
 
 class WalletTransactionQuery(QueryParams):
     wallet_uri: Optional[str] = None
+
+
+class UserQuery(QueryParams):
+    phone_number: Optional[str] = None
+    email_address: Optional[EmailStr] = None
+    status: Optional[UserStatus] = None
+
+
+class IdentityQuery(QueryParams):
+    curp: Optional[CurpField] = None
+    rfc: Optional[str] = None
+    status: Optional[UserStatus] = None
+
+
+class EventQuery(QueryParams):
+    identity_id: Optional[str] = None
+    type: Optional[EventType] = None
+
+
+class SessionQuery(QueryParams):
+    type: SessionType

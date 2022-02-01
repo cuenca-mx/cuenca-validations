@@ -1,9 +1,11 @@
 import datetime as dt
-from typing import Optional, Union
+from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
+from dateutil.relativedelta import relativedelta
 from pydantic import (
     BaseModel,
+    EmailStr,
     Extra,
     Field,
     StrictStr,
@@ -12,6 +14,7 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
+from pydantic.validators import IPv4Address
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -23,9 +26,13 @@ from ..types.enums import (
     CardStatus,
     CardType,
     EcommerceIndicator,
+    Gender,
     IssuerNetwork,
+    KYCFileType,
     PosCapability,
     SavingCategory,
+    SessionType,
+    State,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
@@ -34,6 +41,13 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
+from .identities import (
+    Address,
+    Beneficiary,
+    CurpField,
+    PhoneNumber,
+    TOSAgreement,
+)
 
 
 class BaseRequest(BaseModel):
@@ -85,8 +99,9 @@ class CardActivationRequest(BaseModel):
 
 
 class ApiKeyUpdateRequest(BaseRequest):
-    user_id: Optional[str]
-    metadata: Optional[DictStrAny]
+    user_id: Optional[str] = None
+    platform_id: Optional[str] = None
+    metadata: Optional[DictStrAny] = None
 
 
 class UserCredentialUpdateRequest(BaseRequest):
@@ -256,3 +271,108 @@ class TransactionTokenValidationUpdateRequest(BaseRequest):
 class UserPldRiskLevelRequest(BaseModel):
     user_id: str
     level: float = Field(ge=0.0, le=1.0)
+
+
+class CurpValidationRequest(BaseModel):
+    names: str
+    first_surname: str
+    second_surname: Optional[str] = None
+    date_of_birth: dt.date
+    state_of_birth: Optional[State] = None
+    country_of_birth: str
+    gender: Gender
+    manual_curp: Optional[CurpField] = None
+
+    class Config:
+        anystr_strip_whitespace = True
+
+    @validator('second_surname')
+    def validate_surname(cls, value: Optional[str]) -> Optional[str]:
+        return value if value else None  # Empty strings as None
+
+    @validator('date_of_birth')
+    def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
+        current_date = dt.datetime.utcnow()
+        if relativedelta(current_date, date_of_birth).years < 18:
+            raise ValueError('User does not meet age requirement.')
+        return date_of_birth
+
+    @root_validator(pre=True)
+    def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
+        if (
+            values['country_of_birth'] == 'MX'
+            and 'state_of_birth' not in values
+        ):
+            raise ValueError('state_of_birth required')
+        return values
+
+
+class UserRequest(BaseModel):
+    curp: CurpField
+    phone_number: PhoneNumber
+    email_address: EmailStr
+    profession: str
+    address: Address
+
+    @validator('curp')
+    def validate_birth_date(cls, curp: CurpField) -> CurpField:
+        birth_date = dt.datetime.strptime(curp[4:10], '%y%m%d')
+        current_date = dt.datetime.utcnow()
+        if relativedelta(current_date, birth_date).years < 18:
+            raise ValueError('User does not meet age requirement.')
+        return curp
+
+
+class AddressUpdateRequest(BaseModel):
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    postal_code: Optional[str] = None
+    state: Optional[State] = None
+    city: Optional[str] = None
+    country: Optional[str] = None
+
+
+class TOSUpdateRequest(BaseModel):
+    version: Optional[str] = None
+    ip: Optional[IPv4Address] = None
+    location: Optional[str] = None
+    type: Optional[str] = None
+
+
+class KYCFileUpdateRequest(BaseModel):
+    type: Optional[KYCFileType] = None
+    uri_front: Optional[str] = None
+    uri_back: Optional[str] = None
+    is_mx: Optional[bool] = None
+    data: Optional[Dict] = None
+
+
+class UserUpdateRequest(BaseModel):
+    phone_number: Optional[str] = None
+    email_address: Optional[EmailStr] = None
+    profession: Optional[str] = None
+    address: Optional[AddressUpdateRequest] = None
+    beneficiaries: Optional[List[Beneficiary]] = None
+    govt_id: Optional[KYCFileUpdateRequest] = None
+    proof_of_address: Optional[KYCFileUpdateRequest] = None
+    proof_of_life: Optional[KYCFileUpdateRequest] = None
+    terms_of_service: Optional[TOSUpdateRequest] = None
+    platform_terms_of_service: Optional[TOSAgreement] = None
+
+    @validator('beneficiaries')
+    def beneficiary_percentage(
+        cls, beneficiaries: Optional[List[Beneficiary]] = None
+    ):
+        if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
+            raise ValueError(
+                'The total percentage of beneficiaries does not add 100.'
+            )
+        return beneficiaries
+
+
+class SessionRequest(BaseRequest):
+    user_id: str
+    type: SessionType
+    success_url: Optional[str] = None
+    failure_url: Optional[str] = None
