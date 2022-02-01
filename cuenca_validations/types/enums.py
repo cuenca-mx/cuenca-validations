@@ -306,7 +306,3 @@ class EntityStatus(str, Enum):
     deactivated = 'deactivated'
     fraud = 'fraud'
     pld_blocked = 'pld_blocked'
-
-
-class TOSAgreementType(str, Enum):
-    ifpe = 'ifpe'
