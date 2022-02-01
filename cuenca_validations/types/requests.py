@@ -35,7 +35,6 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
-    VerificationStatus,
     WalletTransactionType,
 )
 from ..typing import DictStrAny
