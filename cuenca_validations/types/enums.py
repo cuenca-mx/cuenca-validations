@@ -301,7 +301,7 @@ class EventType(str, Enum):
     deactivated = 'deactivated'
 
 
-class EntityStatus(str, Enum):
+class UserStatus(str, Enum):
     active = 'active'
     deactivated = 'deactivated'
     fraud = 'fraud'

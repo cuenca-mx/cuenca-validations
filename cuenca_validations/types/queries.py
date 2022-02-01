@@ -11,10 +11,10 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
-    EntityStatus,
     EventType,
     SessionType,
     TransferNetwork,
+    UserStatus,
 )
 from .identities import CurpField
 
@@ -131,13 +131,13 @@ class WalletTransactionQuery(QueryParams):
 class UserQuery(QueryParams):
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
-    status: Optional[EntityStatus] = None
+    status: Optional[UserStatus] = None
 
 
 class IdentityQuery(QueryParams):
     curp: Optional[CurpField] = None
     rfc: Optional[str] = None
-    status: Optional[EntityStatus] = None
+    status: Optional[UserStatus] = None
 
 
 class EventQuery(QueryParams):
