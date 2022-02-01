@@ -283,6 +283,13 @@ class CurpValidationRequest(BaseModel):
     gender: Gender
     manual_curp: Optional[CurpField] = None
 
+    class Config:
+        anystr_strip_whitespace = True
+
+    @validator('second_surname')
+    def validate_surname(cls, value: Optional[str]) -> Optional[str]:
+        return value if value else None  # Empty strings as None
+
     @validator('date_of_birth')
     def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
         current_date = dt.datetime.utcnow()
