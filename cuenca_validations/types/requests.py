@@ -25,6 +25,7 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
+    Country,
     EcommerceIndicator,
     Gender,
     IssuerNetwork,
@@ -279,7 +280,7 @@ class CurpValidationRequest(BaseModel):
     second_surname: Optional[str] = None
     date_of_birth: dt.date
     state_of_birth: Optional[State] = None
-    country_of_birth: str
+    country_of_birth: Country
     gender: Gender
     manual_curp: Optional[CurpField] = None
 
@@ -323,7 +324,7 @@ class AddressUpdateRequest(BaseModel):
     postal_code: Optional[str] = None
     state: Optional[State] = None
     city: Optional[str] = None
-    country: Optional[str] = None
+    country: Optional[Country] = None
 
 
 class TOSUpdateRequest(BaseModel):

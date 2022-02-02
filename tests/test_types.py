@@ -15,7 +15,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.enums import EcommerceIndicator, State
+from cuenca_validations.types.enums import Country, EcommerceIndicator, State
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
@@ -278,7 +278,7 @@ def test_user_request():
             int_number='3',
             postal_code='09900',
             state=State.DF.value,
-            country='MEX',
+            country=Country.MX,
             city='Obrera',
         ),
     )
