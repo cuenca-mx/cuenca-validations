@@ -354,7 +354,7 @@ class UserUpdateRequest(BaseModel):
     profession: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
     beneficiaries: Optional[List[Beneficiary]] = None
-    govt_id: Optional[KYCFileUpdateRequest] = None
+    govt_id: Optional[List[KYCFileUpdateRequest]] = None
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
