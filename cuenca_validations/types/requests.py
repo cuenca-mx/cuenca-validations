@@ -350,12 +350,12 @@ class KYCFileUpdateRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    phone_number: Optional[str] = None
+    phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
     beneficiaries: Optional[List[Beneficiary]] = None
-    govt_id: Optional[KYCFileUpdateRequest] = None
+    govt_id: Optional[List[KYCFileUpdateRequest]] = None
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
