@@ -6,7 +6,7 @@ from pydantic import BaseModel
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
-from .enums import KYCFileType, State
+from .enums import Country, KYCFileType, State
 
 
 class PhoneNumber(StrictStr):
@@ -31,7 +31,7 @@ class Address(BaseModel):
     ext_number: str
     postal_code: str
     state: State
-    country: str
+    country: Country
     city: Optional[str] = None
     int_number: Optional[str] = None
 
