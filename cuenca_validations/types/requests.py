@@ -8,6 +8,7 @@ from pydantic import (
     EmailStr,
     Extra,
     Field,
+    HttpUrl,
     StrictStr,
     conint,
     constr,
@@ -37,6 +38,7 @@ from ..types.enums import (
     TransactionTokenValidationStatus,
     UserCardNotification,
     WalletTransactionType,
+    WebhookEvent,
 )
 from ..typing import DictStrAny
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -376,3 +378,16 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[str] = None
     failure_url: Optional[str] = None
+
+
+class EndpointBaseRequest(BaseRequest):
+    events: Optional[List[WebhookEvent]]
+
+
+class EndpointRequest(EndpointBaseRequest):
+    url: HttpUrl
+
+
+class EndpointUpdateRequest(EndpointBaseRequest):
+    url: Optional[HttpUrl]
+    is_active: Optional[bool]

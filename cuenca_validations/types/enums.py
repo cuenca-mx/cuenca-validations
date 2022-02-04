@@ -310,3 +310,11 @@ class UserStatus(str, Enum):
 
 class SessionType(str, Enum):
     registration = 'session.registration'
+
+
+class WebhookEvent(str, Enum):
+    user_created = 'user.created'
+    user_update = 'user.update'
+    user_level_update = 'user_level.update'
+    transaction_created = 'transaction.created'
+    transaction_update = 'transaction.update'
