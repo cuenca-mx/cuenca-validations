@@ -303,6 +303,11 @@ def test_curp_validation_request():
         manual_curp='ABCD920604HDFSRN03',
         country_of_birth='MX',
     )
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest()
+        assert '5 validation errors for CurpValidationRequest' in str(v)
+
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
 
@@ -318,7 +323,7 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(**request)
-        assert 'state_of_birth required' in str(v)
+    assert 'state_of_birth required' in str(v)
 
 
 def test_user_update_request():

@@ -301,7 +301,8 @@ class CurpValidationRequest(BaseModel):
     @root_validator(pre=True)
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
         if (
-            values['country_of_birth'] == 'MX'
+            'country_of_birth' in values
+            and values['country_of_birth'] == 'MX'
             and 'state_of_birth' not in values
         ):
             raise ValueError('state_of_birth required')
