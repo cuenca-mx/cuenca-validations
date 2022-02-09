@@ -12,6 +12,7 @@ from .enums import (
     CardStatus,
     CardType,
     EventType,
+    KYCFileType,
     SessionType,
     TransferNetwork,
     UserStatus,
@@ -147,3 +148,8 @@ class EventQuery(QueryParams):
 
 class SessionQuery(QueryParams):
     type: SessionType
+
+
+class FileQuery(QueryParams):
+    type: KYCFileType
+    extension: Optional[str] = None

@@ -1,4 +1,5 @@
 import datetime as dt
+from io import BytesIO
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
@@ -376,3 +377,7 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[str] = None
     failure_url: Optional[str] = None
+
+
+class FileRequest(BaseRequest):
+    file: BytesIO
