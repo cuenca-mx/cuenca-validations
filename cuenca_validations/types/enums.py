@@ -111,6 +111,7 @@ class CardErrorType(str, Enum):
 class FileFormat(str, Enum):
     pdf = 'application/pdf'
     xml = 'application/xml'
+    any = '*/*'
 
 
 class TrackDataMethod(str, Enum):
