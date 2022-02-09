@@ -317,14 +317,6 @@ class UserRequest(BaseModel):
     profession: str
     address: Address
 
-    @validator('curp')
-    def validate_birth_date(cls, curp: CurpField) -> CurpField:
-        birth_date = dt.datetime.strptime(curp[4:10], '%y%m%d')
-        current_date = dt.datetime.utcnow()
-        if relativedelta(current_date, birth_date).years < 18:
-            raise ValueError('User does not meet age requirement.')
-        return curp
-
 
 class AddressUpdateRequest(BaseModel):
     street: Optional[str] = None

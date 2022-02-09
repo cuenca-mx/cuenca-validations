@@ -284,12 +284,6 @@ def test_user_request():
     )
     assert UserRequest(**request).dict() == request
 
-    # changing curp so user is underage
-    request['curp'] = 'ABCD060604HDFSRN03'
-    with pytest.raises(ValueError) as v:
-        UserRequest(**request)
-        assert 'User does not meet age requirement.' in str(v)
-
 
 @freeze_time('2022-01-01')
 def test_curp_validation_request():
