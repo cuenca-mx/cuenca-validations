@@ -1,5 +1,4 @@
 import datetime as dt
-from io import BytesIO
 from ipaddress import AddressValueError
 from typing import Dict, List, Optional, Union
 
@@ -416,4 +415,4 @@ class EndpointUpdateRequest(BaseRequest):
 
 
 class FileRequest(BaseRequest):
-    file: BytesIO
+    file: bytes
