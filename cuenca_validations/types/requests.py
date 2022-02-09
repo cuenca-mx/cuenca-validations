@@ -4,6 +4,7 @@ from typing import Dict, List, Optional, Union
 from clabe import Clabe
 from dateutil.relativedelta import relativedelta
 from pydantic import (
+    AnyUrl,
     BaseModel,
     EmailStr,
     Extra,
@@ -376,5 +377,5 @@ class UserUpdateRequest(BaseModel):
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
-    success_url: Optional[str] = None
-    failure_url: Optional[str] = None
+    success_url: Optional[AnyUrl] = None
+    failure_url: Optional[AnyUrl] = None
