@@ -1,4 +1,5 @@
 import datetime as dt
+from io import BytesIO
 from ipaddress import AddressValueError
 from typing import Dict, List, Optional, Union
 
@@ -399,3 +400,7 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
+
+
+class FileRequest(BaseRequest):
+    file: BytesIO
