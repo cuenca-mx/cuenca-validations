@@ -1,5 +1,4 @@
 import datetime as dt
-from io import BytesIO
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
@@ -380,4 +379,4 @@ class SessionRequest(BaseRequest):
 
 
 class FileRequest(BaseRequest):
-    file: BytesIO
+    file: bytes
