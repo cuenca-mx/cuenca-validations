@@ -402,5 +402,4 @@ class SessionRequest(BaseRequest):
 
 
 class FileRequest(BaseRequest):
-    user_id: str = 'me'
     file: bytes
