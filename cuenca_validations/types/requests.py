@@ -417,5 +417,4 @@ class EndpointUpdateRequest(EndpointBaseRequest):
 
 
 class FileRequest(BaseRequest):
-    user_id: str = 'me'
     file: bytes
