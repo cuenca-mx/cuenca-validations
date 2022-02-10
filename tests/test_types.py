@@ -12,10 +12,16 @@ from cuenca_validations.types import (
     JSONEncoder,
     QueryParams,
     SantizedDict,
+    SessionRequest,
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.enums import Country, EcommerceIndicator, State
+from cuenca_validations.types.enums import (
+    Country,
+    EcommerceIndicator,
+    SessionType,
+    State,
+)
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
@@ -364,3 +370,13 @@ def test_user_update_request():
         assert (
             'The total percentage of beneficiaries does not add 100.' in str(v)
         )
+
+
+def test_session_request():
+    data = dict(
+        user_id='sadsa', type=SessionType.registration, success_url='no url'
+    )
+    with pytest.raises(ValidationError):
+        SessionRequest(**data)
+    data['success_url'] = 'http://url.com'
+    assert SessionRequest(**data)
