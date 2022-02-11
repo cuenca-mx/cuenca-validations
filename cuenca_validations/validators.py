@@ -2,6 +2,8 @@ import datetime as dt
 from enum import Enum
 from typing import Any, Callable
 
+from dateutil.relativedelta import relativedelta
+
 from .errors import NotDigitError
 
 
@@ -36,3 +38,10 @@ def validate_digits(value: str) -> str:
     if not value.isdigit():
         raise NotDigitError
     return value
+
+
+def validate_age_requirement(birth_date: dt.date) -> dt.date:
+    current_date = dt.date.today()
+    if relativedelta(current_date, birth_date).years < 18:
+        raise ValueError('User does not meet age requirement.')
+    return birth_date

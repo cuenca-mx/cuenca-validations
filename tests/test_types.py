@@ -12,10 +12,16 @@ from cuenca_validations.types import (
     JSONEncoder,
     QueryParams,
     SantizedDict,
+    SessionRequest,
     TransactionStatus,
     digits,
 )
-from cuenca_validations.types.enums import EcommerceIndicator, State
+from cuenca_validations.types.enums import (
+    Country,
+    EcommerceIndicator,
+    SessionType,
+    State,
+)
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
@@ -278,7 +284,7 @@ def test_user_request():
             int_number='3',
             postal_code='09900',
             state=State.DF.value,
-            country='MEX',
+            country=Country.MX,
             city='Obrera',
         ),
     )
@@ -303,6 +309,11 @@ def test_curp_validation_request():
         manual_curp='ABCD920604HDFSRN03',
         country_of_birth='MX',
     )
+
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest()
+        assert '5 validation errors for CurpValidationRequest' in str(v)
+
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
 
@@ -318,7 +329,7 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(**request)
-        assert 'state_of_birth required' in str(v)
+    assert 'state_of_birth required' in str(v)
 
 
 def test_user_update_request():
@@ -359,3 +370,29 @@ def test_user_update_request():
         assert (
             'The total percentage of beneficiaries does not add 100.' in str(v)
         )
+
+    tos_request = dict(
+        terms_of_service=dict(
+            version='2022-01-01',
+            ip='127.0.0.1',
+            location='1111,1111',
+            type='ifpe',
+        )
+    )
+    UserUpdateRequest(**tos_request)
+
+    # chagning to invalid request
+    tos_request['terms_of_service']['ip'] = 'not valid ip'
+    with pytest.raises(ValueError) as v:
+        UserUpdateRequest(**tos_request)
+    assert 'not valid ip' in str(v.value)
+
+
+def test_session_request():
+    data = dict(
+        user_id='sadsa', type=SessionType.registration, success_url='no url'
+    )
+    with pytest.raises(ValidationError):
+        SessionRequest(**data)
+    data['success_url'] = 'http://url.com'
+    assert SessionRequest(**data)
