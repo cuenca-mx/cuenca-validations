@@ -347,7 +347,7 @@ class TOSUpdateRequest(BaseModel):
     type: Optional[str] = None
 
     @validator('ip')
-    def validate_ip(self, ip: str):
+    def validate_ip(cls, ip: str):
         # we validate ip address this way because the
         # model IPv4Address is not JSON serializable
         try:

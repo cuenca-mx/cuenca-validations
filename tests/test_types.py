@@ -371,6 +371,23 @@ def test_user_update_request():
             'The total percentage of beneficiaries does not add 100.' in str(v)
         )
 
+    tos_request = dict(
+        terms_of_service=dict(
+            version='2022-01-01',
+            ip='127.0.0.1',
+            location='1111,1111',
+            type='ifpe',
+        )
+    )
+    UserUpdateRequest(**tos_request)
+
+    # chagning to invalid request
+    tos_request['terms_of_service']['ip'] = 'not valid ip'
+    with pytest.raises(ValueError) as v:
+        UserUpdateRequest(**tos_request)
+    assert 'not valid ip' in str(v.value)
+
+
 
 def test_session_request():
     data = dict(
