@@ -2,7 +2,6 @@ import datetime as dt
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
-from dateutil.relativedelta import relativedelta
 from pydantic import (
     AnyUrl,
     BaseModel,
@@ -41,6 +40,7 @@ from ..types.enums import (
     WalletTransactionType,
 )
 from ..typing import DictStrAny
+from ..validators import check_age_requirement
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 from .identities import (
@@ -294,9 +294,7 @@ class CurpValidationRequest(BaseModel):
 
     @validator('date_of_birth')
     def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
-        current_date = dt.datetime.utcnow()
-        if relativedelta(current_date, date_of_birth).years < 18:
-            raise ValueError('User does not meet age requirement.')
+        check_age_requirement(date_of_birth)
         return date_of_birth
 
     @root_validator(pre=True)
@@ -327,8 +325,7 @@ class UserRequest(BaseModel):
             else '20'
         )
         birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-        if relativedelta(current_date, birth_date).years < 18:
-            raise ValueError('User does not meet age requirement.')
+        check_age_requirement(birth_date)
         return curp
 
 
