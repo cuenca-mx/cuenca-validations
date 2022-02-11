@@ -23,6 +23,8 @@ __all__ = [
     'DepositNetwork',
     'DepositQuery',
     'EcommerceIndicator',
+    'EndpointRequest',
+    'EndpointUpdateRequest',
     'EntryType',
     'EventQuery',
     'EventType',
@@ -73,6 +75,7 @@ __all__ = [
     'WalletTransactionType',
     'WalletQuery',
     'WalletTransactionQuery',
+    'WebhookEvent',
     'digits',
 ]
 
@@ -108,6 +111,7 @@ from .enums import (
     UserStatus,
     VerificationStatus,
     WalletTransactionType,
+    WebhookEvent,
 )
 from .general import (
     JSONEncoder,
@@ -147,6 +151,8 @@ from .requests import (
     AddressUpdateRequest,
     ApiKeyUpdateRequest,
     CurpValidationRequest,
+    EndpointRequest,
+    EndpointUpdateRequest,
     KYCFileUpdateRequest,
     SavingRequest,
     SavingUpdateRequest,
