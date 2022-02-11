@@ -41,7 +41,7 @@ from ..types.enums import (
     WalletTransactionType,
 )
 from ..typing import DictStrAny
-from ..validators import check_age_requirement
+from ..validators import validate_age_requirement
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 from .identities import (
@@ -295,7 +295,10 @@ class CurpValidationRequest(BaseModel):
 
     @validator('date_of_birth')
     def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
-        check_age_requirement(date_of_birth)
+        try:
+            validate_age_requirement(date_of_birth)
+        except ValueError:
+            raise
         return date_of_birth
 
     @root_validator(pre=True)
@@ -326,7 +329,10 @@ class UserRequest(BaseModel):
             else '20'
         )
         birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-        check_age_requirement(birth_date)
+        try:
+            validate_age_requirement(birth_date)
+        except ValueError:
+            raise
         return curp
 
 
