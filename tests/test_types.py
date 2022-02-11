@@ -388,7 +388,6 @@ def test_user_update_request():
     assert 'not valid ip' in str(v.value)
 
 
-
 def test_session_request():
     data = dict(
         user_id='sadsa', type=SessionType.registration, success_url='no url'
