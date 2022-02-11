@@ -1,4 +1,5 @@
 import datetime as dt
+from ipaddress import AddressValueError
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
@@ -341,9 +342,19 @@ class AddressUpdateRequest(BaseModel):
 
 class TOSUpdateRequest(BaseModel):
     version: Optional[str] = None
-    ip: Optional[IPv4Address] = None
+    ip: Optional[str] = None
     location: Optional[str] = None
     type: Optional[str] = None
+
+    @validator('ip')
+    def validate_ip(self, ip: str):
+        # we validate ip address this way because the
+        # model IPv4Address is not JSON serializable
+        try:
+            IPv4Address(ip)
+        except AddressValueError:
+            raise ValueError('not valid ip')
+        return ip
 
 
 class KYCFileUpdateRequest(BaseModel):
