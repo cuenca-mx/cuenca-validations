@@ -40,7 +40,8 @@ def validate_digits(value: str) -> str:
     return value
 
 
-def check_age_requirement(birth_date: dt.date):
+def check_age_requirement(birth_date: dt.date) -> dt.date:
     current_date = dt.date.today()
     if relativedelta(current_date, birth_date).years < 18:
         raise ValueError('User does not meet age requirement.')
+    return birth_date
