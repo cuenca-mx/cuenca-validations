@@ -568,8 +568,8 @@ class SessionType(str, Enum):
 
 
 class WebhookEvent(str, Enum):
-    user_created = 'user.created'
+    user_create = 'user.create'
     user_update = 'user.update'
-    user_level_update = 'user_level.update'
-    transaction_created = 'transaction.created'
+    user_delete = 'user.delete'
+    transaction_create = 'transaction.create'
     transaction_update = 'transaction.update'
