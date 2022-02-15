@@ -1,9 +1,10 @@
 import datetime as dt
+from ipaddress import AddressValueError
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
-from dateutil.relativedelta import relativedelta
 from pydantic import (
+    AnyUrl,
     BaseModel,
     EmailStr,
     Extra,
@@ -25,6 +26,7 @@ from ..types.enums import (
     CardPackaging,
     CardStatus,
     CardType,
+    Country,
     EcommerceIndicator,
     Gender,
     IssuerNetwork,
@@ -39,6 +41,7 @@ from ..types.enums import (
     WalletTransactionType,
 )
 from ..typing import DictStrAny
+from ..validators import validate_age_requirement
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 from .identities import (
@@ -279,7 +282,7 @@ class CurpValidationRequest(BaseModel):
     second_surname: Optional[str] = None
     date_of_birth: dt.date
     state_of_birth: Optional[State] = None
-    country_of_birth: str
+    country_of_birth: Country
     gender: Gender
     manual_curp: Optional[CurpField] = None
 
@@ -292,15 +295,17 @@ class CurpValidationRequest(BaseModel):
 
     @validator('date_of_birth')
     def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
-        current_date = dt.datetime.utcnow()
-        if relativedelta(current_date, date_of_birth).years < 18:
-            raise ValueError('User does not meet age requirement.')
+        try:
+            validate_age_requirement(date_of_birth)
+        except ValueError:
+            raise
         return date_of_birth
 
     @root_validator(pre=True)
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
         if (
-            values['country_of_birth'] == 'MX'
+            'country_of_birth' in values
+            and values['country_of_birth'] == 'MX'
             and 'state_of_birth' not in values
         ):
             raise ValueError('state_of_birth required')
@@ -316,10 +321,18 @@ class UserRequest(BaseModel):
 
     @validator('curp')
     def validate_birth_date(cls, curp: CurpField) -> CurpField:
-        birth_date = dt.datetime.strptime(curp[4:10], '%y%m%d')
         current_date = dt.datetime.utcnow()
-        if relativedelta(current_date, birth_date).years < 18:
-            raise ValueError('User does not meet age requirement.')
+        curp_date = curp[4:10]
+        century = (
+            '19'
+            if int(curp_date[:2]) > int(str(current_date.year)[:2])
+            else '20'
+        )
+        birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
+        try:
+            validate_age_requirement(birth_date)
+        except ValueError:
+            raise
         return curp
 
 
@@ -330,14 +343,24 @@ class AddressUpdateRequest(BaseModel):
     postal_code: Optional[str] = None
     state: Optional[State] = None
     city: Optional[str] = None
-    country: Optional[str] = None
+    country: Optional[Country] = None
 
 
 class TOSUpdateRequest(BaseModel):
     version: Optional[str] = None
-    ip: Optional[IPv4Address] = None
+    ip: Optional[str] = None
     location: Optional[str] = None
     type: Optional[str] = None
+
+    @validator('ip')
+    def validate_ip(cls, ip: str):
+        # we validate ip address this way because the
+        # model IPv4Address is not JSON serializable
+        try:
+            IPv4Address(ip)
+        except AddressValueError:
+            raise ValueError('not valid ip')
+        return ip
 
 
 class KYCFileUpdateRequest(BaseModel):
@@ -349,7 +372,7 @@ class KYCFileUpdateRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    phone_number: Optional[str] = None
+    phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
@@ -374,5 +397,5 @@ class UserUpdateRequest(BaseModel):
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
-    success_url: Optional[str] = None
-    failure_url: Optional[str] = None
+    success_url: Optional[AnyUrl] = None
+    failure_url: Optional[AnyUrl] = None
