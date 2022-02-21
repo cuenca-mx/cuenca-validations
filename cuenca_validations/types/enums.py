@@ -565,3 +565,8 @@ class UserStatus(str, Enum):
 
 class SessionType(str, Enum):
     registration = 'session.registration'
+
+
+class Currency(str, Enum):
+    mxn = 'mxn'
+    usd = 'usd'

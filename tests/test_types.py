@@ -26,6 +26,7 @@ from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
     CurpValidationRequest,
+    InternationalTransferUpdateRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
@@ -396,3 +397,11 @@ def test_session_request():
         SessionRequest(**data)
     data['success_url'] = 'http://url.com'
     assert SessionRequest(**data)
+
+
+def test_international_transfer_request():
+    data = dict(status='succeeded')
+    with pytest.raises(ValidationError):
+        InternationalTransferUpdateRequest(**data)
+    data = dict(status='failed')
+    assert InternationalTransferUpdateRequest(**data)

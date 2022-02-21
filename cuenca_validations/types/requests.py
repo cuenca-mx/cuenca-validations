@@ -17,7 +17,10 @@ from pydantic import (
 from pydantic.class_validators import validator
 from pydantic.validators import IPv4Address
 
-from ..types.enums import (
+from ..typing import DictStrAny
+from ..validators import validate_age_requirement
+from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .enums import (
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -27,6 +30,7 @@ from ..types.enums import (
     CardStatus,
     CardType,
     Country,
+    Currency,
     EcommerceIndicator,
     Gender,
     IssuerNetwork,
@@ -36,13 +40,11 @@ from ..types.enums import (
     SessionType,
     State,
     TrackDataMethod,
+    TransactionStatus,
     TransactionTokenValidationStatus,
     UserCardNotification,
     WalletTransactionType,
 )
-from ..typing import DictStrAny
-from ..validators import validate_age_requirement
-from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .general import StrictPositiveInt
 from .identities import (
     Address,
@@ -399,3 +401,26 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
+
+
+class InternationalTransferRequest(BaseRequest):
+    user_id: str
+    idempotency_key: str
+    bank_number: str
+    account_number: str
+    account_country: Country
+    account_name: str
+    received_amount: int
+    received_currency: Currency
+    sent_amount: int
+    sent_currency: Currency
+
+
+class InternationalTransferUpdateRequest(BaseRequest):
+    status: TransactionStatus
+
+    @validator('status')
+    def check_valid_status(cls, val):
+        if val not in [TransactionStatus.submitted, TransactionStatus.failed]:
+            raise ValueError('Not valid status')
+        return val

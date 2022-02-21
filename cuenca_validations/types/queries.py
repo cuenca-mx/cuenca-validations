@@ -147,3 +147,7 @@ class EventQuery(QueryParams):
 
 class SessionQuery(QueryParams):
     type: SessionType
+
+
+class InternationalTransferQuery(TransactionQuery):
+    idempotency_key: Optional[str] = None
