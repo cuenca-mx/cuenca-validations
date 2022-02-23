@@ -416,3 +416,5 @@ class EndpointUpdateRequest(BaseRequest):
 
 class FileRequest(BaseRequest):
     file: bytes
+    type: KYCFileType
+    extension: Optional[str] = None
