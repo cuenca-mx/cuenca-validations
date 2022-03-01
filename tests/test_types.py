@@ -2,6 +2,7 @@ import datetime as dt
 import json
 from dataclasses import dataclass
 from enum import Enum
+from io import BytesIO
 
 import pytest
 from freezegun import freeze_time
@@ -19,6 +20,7 @@ from cuenca_validations.types import (
 from cuenca_validations.types.enums import (
     Country,
     EcommerceIndicator,
+    KYCFileType,
     SessionType,
     State,
 )
@@ -28,6 +30,7 @@ from cuenca_validations.types.requests import (
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
+    FileUploadRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
@@ -414,3 +417,12 @@ def test_endpoint_update_request():
         EndpointUpdateRequest(**data)
     data['events'] = ['user.update']
     assert EndpointUpdateRequest(**data)
+
+
+def test_file_upload_request_properties():
+    with open('tests/data/test_file.jpeg', 'rb') as image_file:
+        file = BytesIO(image_file.read())
+    request = dict(file=file.getvalue(), extension='jpeg', type=KYCFileType.ine, user_id='US01')
+    upload_req = FileUploadRequest(**request)
+    assert isinstance(upload_req.file_bytes, bytes)
+    assert upload_req.calculated_extension != 'none'
