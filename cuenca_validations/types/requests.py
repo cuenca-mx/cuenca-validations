@@ -438,6 +438,7 @@ class FileUploadRequest(BaseRequest):
 class FileRequest(BaseModel):
     url: HttpUrl
     type: KYCFileType
+    is_back: Optional[bool]
 
 
 class FileBatchUploadRequest(BaseModel):
