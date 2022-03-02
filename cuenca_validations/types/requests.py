@@ -406,7 +406,7 @@ class SessionRequest(BaseRequest):
 
 
 class FileUploadRequest(BaseRequest):
-    is_back: Optional[bool]
+    is_back: Optional[bool] = False
     file: Union[bytes, str]
     extension: Optional[str]
     type: KYCFileType
@@ -423,7 +423,7 @@ class FileUploadRequest(BaseRequest):
 
 
 class FileRequest(BaseModel):
-    is_back: Optional[bool]
+    is_back: Optional[bool] = False
     url: HttpUrl
     type: KYCFileType
 
