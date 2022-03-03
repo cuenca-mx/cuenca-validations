@@ -6,6 +6,7 @@ __all__ = [
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
     'BalanceEntryQuery',
+    'BatchFileMetadata',
     'Beneficiary',
     'BillPaymentQuery',
     'CardErrorType',
@@ -115,6 +116,7 @@ from .enums import (
     VerificationStatus,
     WalletTransactionType,
 )
+from .files import BatchFileMetadata
 from .general import (
     JSONEncoder,
     SantizedDict,
