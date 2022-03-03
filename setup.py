@@ -29,6 +29,7 @@ setup(
         'pydantic[email]>=1.6,<1.9',
         'dataclasses>=0.6;python_version<"3.7"',
         'python-dateutil>=2.7.0',
+        'python-magic==0.4.25',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
