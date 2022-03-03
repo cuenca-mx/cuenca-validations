@@ -379,6 +379,7 @@ class UserUpdateRequest(BaseModel):
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
+    verification_id: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
     beneficiaries: Optional[List[Beneficiary]] = None
     govt_id: Optional[KYCFileUpdateRequest] = None

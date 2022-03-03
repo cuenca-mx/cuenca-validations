@@ -236,6 +236,7 @@ class TransactionTokenValidationStatus(str, Enum):
 
 
 class KYCFileType(str, Enum):
+    dni = 'dni'
     ine = 'ine'
     passport = 'passport'
     residency = 'residency'
