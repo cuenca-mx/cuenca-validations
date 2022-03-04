@@ -403,14 +403,12 @@ class SessionRequest(BaseRequest):
     failure_url: Optional[AnyUrl] = None
 
 
-class EndpointBaseRequest(BaseRequest):
+class EndpointRequest(BaseRequest):
+    url: HttpUrl
     events: Optional[List[WebhookEvent]]
 
 
-class EndpointRequest(EndpointBaseRequest):
-    url: HttpUrl
-
-
-class EndpointUpdateRequest(EndpointBaseRequest):
+class EndpointUpdateRequest(BaseRequest):
     url: Optional[HttpUrl]
     is_active: Optional[bool]
+    events: Optional[List[WebhookEvent]]
