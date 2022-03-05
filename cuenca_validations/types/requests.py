@@ -9,6 +9,7 @@ from pydantic import (
     EmailStr,
     Extra,
     Field,
+    HttpUrl,
     StrictStr,
     conint,
     constr,
@@ -39,6 +40,7 @@ from ..types.enums import (
     TransactionTokenValidationStatus,
     UserCardNotification,
     WalletTransactionType,
+    WebhookEvent,
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
@@ -399,3 +401,14 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
+
+
+class EndpointRequest(BaseRequest):
+    url: HttpUrl
+    events: Optional[List[WebhookEvent]]
+
+
+class EndpointUpdateRequest(BaseRequest):
+    url: Optional[HttpUrl]
+    is_active: Optional[bool]
+    events: Optional[List[WebhookEvent]]

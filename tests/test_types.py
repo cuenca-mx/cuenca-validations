@@ -26,6 +26,8 @@ from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     ChargeRequest,
     CurpValidationRequest,
+    EndpointRequest,
+    EndpointUpdateRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
@@ -396,3 +398,19 @@ def test_session_request():
         SessionRequest(**data)
     data['success_url'] = 'http://url.com'
     assert SessionRequest(**data)
+
+
+def test_endpoint_request():
+    data = dict(url='bad url', events=['user.create'])
+    with pytest.raises(ValidationError):
+        EndpointRequest(**data)
+    data['url'] = 'http://url.com'
+    assert EndpointRequest(**data)
+
+
+def test_endpoint_update_request():
+    data = dict(is_active=True, events=['user.read'])
+    with pytest.raises(ValidationError):
+        EndpointUpdateRequest(**data)
+    data['events'] = ['user.update']
+    assert EndpointUpdateRequest(**data)
