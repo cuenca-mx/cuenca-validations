@@ -151,4 +151,4 @@ class SessionQuery(QueryParams):
 
 
 class FileQuery(QueryParams):
-    type: KYCFileType
+    type: Optional[KYCFileType] = None

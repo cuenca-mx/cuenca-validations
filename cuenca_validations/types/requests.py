@@ -1,11 +1,8 @@
-import base64 as b64
 import datetime as dt
 from ipaddress import AddressValueError
-from mimetypes import guess_extension
 from typing import Dict, List, Optional, Union
 
 from clabe import Clabe
-from magic import from_buffer
 from pydantic import (
     AnyUrl,
     BaseModel,
@@ -423,15 +420,6 @@ class FileUploadRequest(BaseRequest):
     extension: Optional[str]
     type: KYCFileType
     user_id: str
-
-    @property
-    def file_bytes(self) -> bytes:
-        return b64.b64decode(self.file)
-
-    @property
-    def calculated_extension(self) -> str:
-        mime = from_buffer(self.file_bytes, mime=True)
-        return guess_extension(mime) or 'none'
 
 
 class FileRequest(BaseModel):
