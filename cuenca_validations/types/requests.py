@@ -412,3 +412,22 @@ class EndpointUpdateRequest(BaseRequest):
     url: Optional[HttpUrl]
     is_active: Optional[bool]
     events: Optional[List[WebhookEvent]]
+
+
+class FileUploadRequest(BaseRequest):
+    is_back: Optional[bool] = False
+    file: Union[bytes, str]
+    extension: Optional[str]
+    type: KYCFileType
+    user_id: str
+
+
+class FileRequest(BaseModel):
+    is_back: Optional[bool] = False
+    url: HttpUrl
+    type: KYCFileType
+
+
+class FileBatchUploadRequest(BaseModel):
+    files: List[FileRequest]
+    user_id: str
