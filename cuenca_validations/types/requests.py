@@ -411,7 +411,7 @@ class EndpointRequest(BaseRequest):
 
 class EndpointUpdateRequest(BaseRequest):
     url: Optional[HttpUrl]
-    is_active: Optional[bool]
+    is_enable: Optional[bool]
     events: Optional[List[WebhookEvent]]
 
 

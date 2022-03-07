@@ -409,7 +409,7 @@ def test_endpoint_request():
 
 
 def test_endpoint_update_request():
-    data = dict(is_active=True, events=['user.read'])
+    data = dict(is_enable=True, events=['user.read'])
     with pytest.raises(ValidationError):
         EndpointUpdateRequest(**data)
     data['events'] = ['user.update']
