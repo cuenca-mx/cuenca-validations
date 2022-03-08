@@ -84,6 +84,7 @@ class TooManyAttemptsError(CuencaError):
 
 class ApiError(CuencaError):
     """Internal error"""
+
     code = 500
     status_code = 500
 
