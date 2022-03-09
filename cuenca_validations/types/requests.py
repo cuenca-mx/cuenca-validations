@@ -71,7 +71,7 @@ class TransferRequest(BaseRequest):
     amount: StrictPositiveInt  # in centavos
     descriptor: StrictStr  # how it'll appear for the recipient
     idempotency_key: str  # must be unique for each transfer
-
+    user_id: Optional[str]
 
 class StrictTransferRequest(TransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
