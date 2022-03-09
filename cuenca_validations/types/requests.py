@@ -73,6 +73,7 @@ class TransferRequest(BaseRequest):
     idempotency_key: str  # must be unique for each transfer
     user_id: Optional[str]
 
+
 class StrictTransferRequest(TransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
 
