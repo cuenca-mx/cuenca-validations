@@ -1,4 +1,16 @@
-__all__ = ['CardBinValidationError', 'NotDigitError']
+__all__ = [
+    'ApiError',
+    'AuthMethodNotAllowedError',
+    'CardBinValidationError',
+    'CuencaError',
+    'ERROR_CODES',
+    'MissingAuthorizationHeaderError',
+    'NoPasswordFoundError',
+    'NotDigitError',
+    'TooManyAttemptsError',
+    'UserNotLoggedInError',
+    'WrongCredsError',
+]
 
 from pydantic.errors import (
     NotDigitError as PydanticNotDigitError,
@@ -68,6 +80,13 @@ class TooManyAttemptsError(CuencaError):
 
     code = 107
     status_code = 403
+
+
+class ApiError(CuencaError):
+    """Internal error"""
+
+    code = 500
+    status_code = 500
 
 
 ERROR_CODES = {
