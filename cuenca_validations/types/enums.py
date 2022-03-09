@@ -566,6 +566,7 @@ class UserStatus(str, Enum):
 class SessionType(str, Enum):
     registration = 'session.registration'
     international_transfers = 'session.international_transfers'
+    account_balance = 'session.account_balance'
 
 
 class Currency(str, Enum):
