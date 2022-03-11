@@ -39,6 +39,7 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    VerificationType,
     WalletTransactionType,
     WebhookEvent,
 )
@@ -432,3 +433,8 @@ class FileRequest(BaseModel):
 class FileBatchUploadRequest(BaseModel):
     files: List[FileRequest]
     user_id: str
+
+
+class VerificationRequest(BaseModel):
+    type: VerificationType
+    code: str

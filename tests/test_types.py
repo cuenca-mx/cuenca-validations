@@ -34,6 +34,7 @@ from cuenca_validations.types.requests import (
     UserCredentialUpdateRequest,
     UserRequest,
     UserUpdateRequest,
+    VerificationRequest,
 )
 
 today = dt.date.today()
@@ -414,3 +415,11 @@ def test_endpoint_update_request():
         EndpointUpdateRequest(**data)
     data['events'] = ['user.update']
     assert EndpointUpdateRequest(**data)
+
+
+def test_verification_request():
+    data = dict(code='111111', type='dni_verification')
+    with pytest.raises(ValidationError):
+        VerificationRequest(**data)
+    data['type'] = 'phone_verification'
+    assert VerificationRequest(**data)
