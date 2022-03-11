@@ -128,7 +128,7 @@ class UserCredentialUpdateRequest(BaseRequest):
 
 
 class UserCredentialRequest(BaseRequest):
-    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+    password: str = Field(..., max_length=30, min_length=6, regex=r'\w{6,30}')
 
 
 class CardValidationRequest(BaseModel):
