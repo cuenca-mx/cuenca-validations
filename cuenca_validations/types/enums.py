@@ -575,3 +575,8 @@ class WebhookEvent(str, Enum):
     user_delete = 'user.delete'
     transaction_create = 'transaction.create'
     transaction_update = 'transaction.update'
+
+
+class VerificationType(str, Enum):
+    phone_verification = 'phone_verification'
+    email_verification = 'email_verification'
