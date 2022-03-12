@@ -76,6 +76,7 @@ __all__ = [
     'UserUpdateRequest',
     'UserRequest',
     'UserStatus',
+    'VerificationAttemptRequest',
     'VerificationRequest',
     'VerificationStatus',
     'VerificationType',
@@ -179,6 +180,7 @@ from .requests import (
     UserCredentialUpdateRequest,
     UserRequest,
     UserUpdateRequest,
+    VerificationAttemptRequest,
     VerificationRequest,
     WalletTransactionRequest,
 )
