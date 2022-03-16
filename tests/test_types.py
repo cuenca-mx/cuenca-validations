@@ -419,7 +419,7 @@ def test_endpoint_update_request():
 
 
 def test_email_verification_request():
-    data = dict(sender='mail@cuenca.com', type='email')
+    data = dict(sender='mail@cuenca.com', type='email', platform_id='PL01')
     with pytest.raises(ValidationError):
         VerificationRequest(**data)
     data['type'] = 'email_verification'
@@ -427,7 +427,7 @@ def test_email_verification_request():
 
 
 def test_phone_verification_request():
-    data = dict(sender='+525555555555', type='phone')
+    data = dict(sender='+525555555555', type='phone', platform_id='PL01')
     with pytest.raises(ValidationError):
         VerificationRequest(**data)
     data['type'] = 'phone_verification'
