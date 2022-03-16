@@ -438,6 +438,7 @@ class FileBatchUploadRequest(BaseModel):
 class VerificationRequest(BaseModel):
     type: VerificationType
     sender: Union[EmailStr, PhoneNumber]
+    platform_id: str
 
     class Config:
         anystr_strip_whitespace = True
