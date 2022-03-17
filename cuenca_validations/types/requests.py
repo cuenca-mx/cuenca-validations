@@ -437,18 +437,18 @@ class FileBatchUploadRequest(BaseModel):
 
 class VerificationRequest(BaseModel):
     type: VerificationType
-    sender: Union[EmailStr, PhoneNumber]
+    recipient: Union[EmailStr, PhoneNumber]
     platform_id: str
 
     class Config:
         anystr_strip_whitespace = True
 
-    @validator('sender')
-    def validate_sender(cls, sender: str, values):
+    @validator('recipient')
+    def validate_sender(cls, recipient: str, values):
         return (
-            EmailStr(sender)
+            EmailStr(recipient)
             if type == VerificationType.email_verification
-            else PhoneNumber(sender)
+            else PhoneNumber(recipient)
         )
 
 
