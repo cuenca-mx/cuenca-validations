@@ -453,4 +453,4 @@ class VerificationRequest(BaseModel):
 
 
 class VerificationAttemptRequest(BaseModel):
-    code: str
+    code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
