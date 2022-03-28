@@ -55,4 +55,4 @@ class KYCFile(BaseModel):
 class TOSAgreement(BaseModel):
     version: str
     ip: IPv4Address
-    location: str
+    location: Optional[str]

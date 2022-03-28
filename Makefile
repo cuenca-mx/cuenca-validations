@@ -3,7 +3,7 @@ PATH := ./venv/bin:${PATH}
 PYTHON = python3.7
 PROJECT = cuenca_validations
 isort = isort $(PROJECT) tests setup.py
-black = black -S -l 79 --target-version py38 $(PROJECT) tests setup.py
+black = black -S -l 79 --target-version py37 $(PROJECT) tests setup.py
 
 
 all: test
