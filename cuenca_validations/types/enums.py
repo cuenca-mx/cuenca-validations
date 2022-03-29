@@ -578,5 +578,5 @@ class WebhookEvent(str, Enum):
 
 
 class VerificationType(str, Enum):
-    phone_verification = 'phone_verification'
-    email_verification = 'email_verification'
+    phone = 'phone'
+    email = 'email'

@@ -447,7 +447,7 @@ class VerificationRequest(BaseModel):
     def validate_sender(cls, recipient: str, values):
         return (
             EmailStr(recipient)
-            if type == VerificationType.email_verification
+            if type == VerificationType.email
             else PhoneNumber(recipient)
         )
 
