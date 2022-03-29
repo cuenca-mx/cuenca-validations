@@ -76,7 +76,10 @@ __all__ = [
     'UserUpdateRequest',
     'UserRequest',
     'UserStatus',
+    'VerificationAttemptRequest',
+    'VerificationRequest',
     'VerificationStatus',
+    'VerificationType',
     'WalletTransactionRequest',
     'WalletTransactionType',
     'WalletQuery',
@@ -117,6 +120,7 @@ from .enums import (
     UserCardNotification,
     UserStatus,
     VerificationStatus,
+    VerificationType,
     WalletTransactionType,
     WebhookEvent,
 )
@@ -176,5 +180,7 @@ from .requests import (
     UserCredentialUpdateRequest,
     UserRequest,
     UserUpdateRequest,
+    VerificationAttemptRequest,
+    VerificationRequest,
     WalletTransactionRequest,
 )

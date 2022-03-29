@@ -39,6 +39,7 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    VerificationType,
     WalletTransactionType,
     WebhookEvent,
 )
@@ -432,3 +433,24 @@ class FileRequest(BaseModel):
 class FileBatchUploadRequest(BaseModel):
     files: List[FileRequest]
     user_id: str
+
+
+class VerificationRequest(BaseModel):
+    type: VerificationType
+    recipient: Union[EmailStr, PhoneNumber]
+    platform_id: str
+
+    class Config:
+        anystr_strip_whitespace = True
+
+    @validator('recipient')
+    def validate_sender(cls, recipient: str, values):
+        return (
+            EmailStr(recipient)
+            if type == VerificationType.email
+            else PhoneNumber(recipient)
+        )
+
+
+class VerificationAttemptRequest(BaseModel):
+    code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
