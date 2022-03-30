@@ -315,7 +315,7 @@ class CurpValidationRequest(BaseModel):
 
 
 class UserRequest(BaseModel):
-    curp: Optional[CurpField] = None
+    curp: CurpField
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
