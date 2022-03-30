@@ -322,7 +322,9 @@ class UserRequest(BaseModel):
     address: Optional[Address] = None
 
     @validator('curp')
-    def validate_birth_date(cls, curp: Optional[CurpField]) -> CurpField:
+    def validate_birth_date(
+        cls, curp: Optional[CurpField]
+    ) -> Optional[CurpField]:
         if curp:
             current_date = dt.datetime.utcnow()
             curp_date = curp[4:10]
