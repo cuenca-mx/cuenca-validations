@@ -388,6 +388,8 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
+    phone_verification_id: Optional[str] = None
+    email_verification_id: Optional[str] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(
