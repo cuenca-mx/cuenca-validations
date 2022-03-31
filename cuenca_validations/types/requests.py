@@ -317,25 +317,28 @@ class CurpValidationRequest(BaseModel):
 
 class UserRequest(BaseModel):
     curp: CurpField
-    phone_number: PhoneNumber
-    email_address: EmailStr
-    profession: str
-    address: Address
+    phone_number: Optional[PhoneNumber] = None
+    email_address: Optional[EmailStr] = None
+    profession: Optional[str] = None
+    address: Optional[Address] = None
 
     @validator('curp')
-    def validate_birth_date(cls, curp: CurpField) -> CurpField:
-        current_date = dt.datetime.utcnow()
-        curp_date = curp[4:10]
-        century = (
-            '19'
-            if int(curp_date[:2]) > int(str(current_date.year)[:2])
-            else '20'
-        )
-        birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-        try:
-            validate_age_requirement(birth_date)
-        except ValueError:
-            raise
+    def validate_birth_date(
+        cls, curp: Optional[CurpField]
+    ) -> Optional[CurpField]:
+        if curp:
+            current_date = dt.datetime.utcnow()
+            curp_date = curp[4:10]
+            century = (
+                '19'
+                if int(curp_date[:2]) > int(str(current_date.year)[:2])
+                else '20'
+            )
+            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
+            try:
+                validate_age_requirement(birth_date)
+            except ValueError:
+                raise
         return curp
 
 
@@ -386,6 +389,8 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
+    phone_verification_id: Optional[str] = None
+    email_verification_id: Optional[str] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(
