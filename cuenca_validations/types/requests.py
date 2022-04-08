@@ -52,6 +52,7 @@ from .identities import (
     Beneficiary,
     CurpField,
     PhoneNumber,
+    Rfc,
     TOSAgreement,
 )
 
@@ -317,25 +318,30 @@ class CurpValidationRequest(BaseModel):
 
 class UserRequest(BaseModel):
     curp: CurpField
-    phone_number: PhoneNumber
-    email_address: EmailStr
-    profession: str
-    address: Address
+    phone_number: Optional[PhoneNumber] = None
+    email_address: Optional[EmailStr] = None
+    profession: Optional[str] = None
+    address: Optional[Address] = None
+    phone_verification_id: Optional[str] = None
+    email_verification_id: Optional[str] = None
 
     @validator('curp')
-    def validate_birth_date(cls, curp: CurpField) -> CurpField:
-        current_date = dt.datetime.utcnow()
-        curp_date = curp[4:10]
-        century = (
-            '19'
-            if int(curp_date[:2]) > int(str(current_date.year)[:2])
-            else '20'
-        )
-        birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-        try:
-            validate_age_requirement(birth_date)
-        except ValueError:
-            raise
+    def validate_birth_date(
+        cls, curp: Optional[CurpField]
+    ) -> Optional[CurpField]:
+        if curp:
+            current_date = dt.datetime.utcnow()
+            curp_date = curp[4:10]
+            century = (
+                '19'
+                if int(curp_date[:2]) > int(str(current_date.year)[:2])
+                else '20'
+            )
+            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
+            try:
+                validate_age_requirement(birth_date)
+            except ValueError:
+                raise
         return curp
 
 
@@ -454,3 +460,15 @@ class VerificationRequest(BaseModel):
 
 class VerificationAttemptRequest(BaseModel):
     code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
+
+
+class LimitedWalletRequest(BaseRequest):
+    allowed_curp: CurpField
+    allowed_rfc: Optional[Rfc]
+
+    @validator('allowed_rfc')
+    def validate_rfc(cls, allowed_rfc: str, values):
+        prefix_curp = values['allowed_curp'][:10]
+        if allowed_rfc and allowed_rfc[:10] != prefix_curp:
+            raise ValueError('RFC does not match with CURP')
+        return allowed_rfc

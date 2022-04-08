@@ -28,6 +28,7 @@ from cuenca_validations.types.requests import (
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
+    LimitedWalletRequest,
     SavingRequest,
     SavingUpdateRequest,
     UserCardNotificationRequest,
@@ -291,6 +292,8 @@ def test_user_request():
             country=Country.MX,
             city='Obrera',
         ),
+        phone_verification_id='VE12345678',
+        email_verification_id='VE0987654321',
     )
     assert UserRequest(**request).dict() == request
 
@@ -444,3 +447,17 @@ def test_phone_verification_request():
 
 def test_verification_attempt_request():
     assert VerificationAttemptRequest(**dict(code='111111'))
+
+
+def test_limited_wallet_request():
+    curp = 'TAXM840916HNEMXT02'
+    rfc = 'TAXM840916123'
+    # Not valid format
+    with pytest.raises(ValidationError):
+        LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
+
+    # Prefix curp and rfc not match
+    with pytest.raises(ValidationError):
+        LimitedWalletRequest(allowed_curp=curp, allowed_rfc='TAXM900101123')
+
+    assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)

@@ -580,3 +580,8 @@ class WebhookEvent(str, Enum):
 class VerificationType(str, Enum):
     phone = 'phone'
     email = 'email'
+
+
+class Language(str, Enum):
+    en = 'en'
+    es = 'es'
