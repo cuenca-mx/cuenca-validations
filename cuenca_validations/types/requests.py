@@ -465,10 +465,3 @@ class VerificationAttemptRequest(BaseModel):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: CurpField
     allowed_rfc: Optional[Rfc]
-
-    @validator('allowed_rfc')
-    def validate_rfc(cls, allowed_rfc: str, values):
-        prefix_curp = values['allowed_curp'][:10]
-        if allowed_rfc and allowed_rfc[:10] != prefix_curp:
-            raise ValueError('RFC does not match with CURP')
-        return allowed_rfc

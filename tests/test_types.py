@@ -456,8 +456,4 @@ def test_limited_wallet_request():
     with pytest.raises(ValidationError):
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
 
-    # Prefix curp and rfc not match
-    with pytest.raises(ValidationError):
-        LimitedWalletRequest(allowed_curp=curp, allowed_rfc='TAXM900101123')
-
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
