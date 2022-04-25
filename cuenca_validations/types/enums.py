@@ -88,6 +88,7 @@ class CommissionType(str, Enum):
     card_request = 'card_request'
     cash_deposit = 'cash_deposit'
     outgoing_spei = 'outgoing_spei'
+    card_shipping = 'card_shipping'
 
 
 class EntryType(str, Enum):
