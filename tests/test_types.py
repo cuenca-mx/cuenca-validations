@@ -28,6 +28,7 @@ from cuenca_validations.types.requests import (
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
+    IdentityUpdateRequest,
     LimitedWalletRequest,
     SavingRequest,
     SavingUpdateRequest,
@@ -457,3 +458,10 @@ def test_limited_wallet_request():
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
 
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
+
+
+def test_identity_update_request():
+    rfc_file = b'this is an example'
+    user_id = 'US01'
+
+    assert IdentityUpdateRequest(user_id=user_id, rfc_file=rfc_file)
