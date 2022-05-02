@@ -463,5 +463,8 @@ def test_limited_wallet_request():
 def test_identity_update_request():
     rfc_file = b'this is an example'
     user_id = 'US01'
+    extension = 'pdf'
 
-    assert IdentityUpdateRequest(user_id=user_id, rfc_file=rfc_file)
+    assert IdentityUpdateRequest(
+        user_id=user_id, rfc_file=rfc_file, extension=extension
+    )
