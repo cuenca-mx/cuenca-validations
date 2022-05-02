@@ -468,5 +468,5 @@ class LimitedWalletRequest(BaseRequest):
 
 
 class IdentityUpdateRequest(BaseRequest):
-    rfc_file: Union[bytes, str]
+    rfc_file: bytes
     user_id: str
