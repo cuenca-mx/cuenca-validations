@@ -465,3 +465,9 @@ class VerificationAttemptRequest(BaseModel):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: CurpField
     allowed_rfc: Optional[Rfc]
+
+
+class IdentityUpdateRequest(BaseRequest):
+    rfc_file: bytes
+    user_id: str
+    extension: str
