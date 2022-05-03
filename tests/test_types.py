@@ -314,7 +314,7 @@ def test_curp_validation_request():
         date_of_birth=dt.date(1917, 5, 17),
         state_of_birth=State.DF.value,
         gender='male',
-        manual_curp='ABCD920604HDFSRN03',
+        manual_curp=None,
         country_of_birth='MX',
     )
 
@@ -325,11 +325,18 @@ def test_curp_validation_request():
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
 
+    # add manual_curp to raise error
+    request['manual_curp'] = 'ABCD920604HDFSRN03'
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(**request)
+    assert 'manual_curp must be the only param if passed' in str(v)
+    del request['manual_curp']
+
     request['date_of_birth'] = dt.date(2006, 5, 17)
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(**request)
-        assert 'User does not meet age requirement.' in str(v)
+        assert 'User does not meet age requirementf.' in str(v)
 
     # changing date of birth so user is underage
     request['date_of_birth'] = dt.date(1917, 5, 17)
