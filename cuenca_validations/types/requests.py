@@ -319,22 +319,16 @@ class CurpValidationRequest(BaseModel):
 
     @root_validator(pre=True)
     def validate_manual_curp(cls, values: DictStrAny) -> DictStrAny:
-        names = values.get('names')
-        first_surname = values.get('first_surname')
-        date_of_birth = values.get('date_of_birth')
-        country_of_birth = values.get('country_of_birth')
-        gender = values.get('gender')
         manual_curp = values.get('manual_curp')
-        required_without_manual = [
-            names,
-            first_surname,
-            date_of_birth,
-            country_of_birth,
-            gender,
+        required = [
+            'names',
+            ' first_surname',
+            'date_of_birth',
+            'country_of_birth',
+            'gender',
         ]
-        skippable = ['second_surname', 'state_of_birth', 'manual_curp']
-        missing = [k for k in cls.__fields__.keys() if k not in skippable]
-        if not manual_curp and not all(required_without_manual):
+        missing = [r for r in required if r not in values.keys()]
+        if not manual_curp and missing:
             raise ValueError(f'values required {missing}')
         return values
 
