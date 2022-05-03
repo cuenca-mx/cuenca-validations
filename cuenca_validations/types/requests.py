@@ -332,8 +332,6 @@ class CurpValidationRequest(BaseModel):
             country_of_birth,
             gender,
         ]
-        if manual_curp and any(required_without_manual):
-            raise ValueError('manual_curp must be the only param if passed')
         if not manual_curp and not all(required_without_manual):
             raise ValueError('some values required')
         return values
