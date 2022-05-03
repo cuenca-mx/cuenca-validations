@@ -332,8 +332,10 @@ class CurpValidationRequest(BaseModel):
             country_of_birth,
             gender,
         ]
+        skippable = ['second_surname', 'state_of_birth', 'manual_curp']
+        missing = [k for k in cls.__fields__.keys() if k not in skippable]
         if not manual_curp and not all(required_without_manual):
-            raise ValueError('some values required')
+            raise ValueError(f'values required {missing}')
         return values
 
 
