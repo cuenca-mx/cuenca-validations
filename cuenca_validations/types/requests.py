@@ -322,7 +322,7 @@ class CurpValidationRequest(BaseModel):
         manual_curp = values.get('manual_curp')
         required = [
             'names',
-            ' first_surname',
+            'first_surname',
             'date_of_birth',
             'country_of_birth',
             'gender',
