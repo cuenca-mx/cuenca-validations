@@ -1,8 +1,9 @@
 import datetime as dt
 import re
-from typing import Optional
+from typing import Optional, Dict, Any
 
 from pydantic import BaseModel
+from pydantic.class_validators import root_validator
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
@@ -27,13 +28,26 @@ class Rfc(StrictStr):
 
 
 class Address(BaseModel):
-    street: str
-    ext_number: str
-    postal_code: str
-    state: State
-    country: Country
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    postal_code: Optional[str] = None
+    state: Optional[State] = None
+    country: Optional[Country] = None
     city: Optional[str] = None
     int_number: Optional[str] = None
+    full_name: Optional[str] = None
+
+    @root_validator()
+    def name_must_contain_space(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+        if not values.get('full_name') and not values.get('street'):
+            raise ValueError('require street')
+        if not values.get('full_name') and not values.get('ext_number'):
+            raise ValueError('require ext_number')
+        if not values.get('full_name') and not values.get('state'):
+            raise ValueError('require state')
+        if not values.get('full_name') and not values.get('country'):
+            raise ValueError('require country')
+        return values
 
 
 class Beneficiary(BaseModel):
