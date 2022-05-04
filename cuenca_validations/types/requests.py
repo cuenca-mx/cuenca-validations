@@ -458,7 +458,11 @@ class FileBatchUploadRequest(BaseModel):
     user_id: str
 
 
-class VerificationRequest(BaseModel):
+class BaseVerificationRequest(BaseModel):
+    platform_id: str
+
+
+class VerificationRequest(BaseVerificationRequest):
     type: VerificationType
     recipient: Union[EmailStr, PhoneNumber]
     platform_id: str
