@@ -1,6 +1,6 @@
 import datetime as dt
 import re
-from typing import Optional, Dict, Any
+from typing import Any, Dict, Optional
 
 from pydantic import BaseModel
 from pydantic.class_validators import root_validator
