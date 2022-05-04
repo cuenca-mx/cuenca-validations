@@ -292,6 +292,7 @@ def test_user_request():
             state=State.DF.value,
             country=Country.MX,
             city='Obrera',
+            full_name=None,
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
