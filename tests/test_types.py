@@ -321,8 +321,8 @@ def test_curp_validation_request():
     with pytest.raises(ValueError) as v:
         CurpValidationRequest()
     assert (
-        "values required ['names', 'first_surname', 'date_of_birth', "
-        "'country_of_birth', 'gender']" in str(v)
+        'values required: names,first_surname,date_of_birth,'
+        'country_of_birth,gender' in str(v)
     )
 
     req_curp = CurpValidationRequest(**request)
