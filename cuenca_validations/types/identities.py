@@ -38,7 +38,7 @@ class Address(BaseModel):
     full_name: Optional[str] = None
 
     @root_validator()
-    def name_must_contain_space(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+    def full_name_complete(cls, values: Dict[str, Any]) -> Dict[str, Any]:
         if not values.get('full_name') and not values.get('street'):
             raise ValueError('required street')
         if not values.get('full_name') and not values.get('ext_number'):

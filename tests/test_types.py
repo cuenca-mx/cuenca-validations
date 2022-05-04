@@ -8,6 +8,7 @@ from freezegun import freeze_time
 from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
+    Address,
     CardQuery,
     JSONEncoder,
     QueryParams,
@@ -275,6 +276,35 @@ def test_saving_update_request():
     data['goal_date'] = dt.datetime(2000, 1, 1)
     with pytest.raises(ValidationError):
         SavingUpdateRequest(**data)
+
+
+def test_address_validation():
+    data = dict(
+        full_name='Varsovia 36, Col Cuahutemoc',
+    )
+    assert Address(**data)
+    data = dict(street='somestreet')
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+        assert 'required ext_number' in str(v)
+
+    data = dict(street='varsovia', ext_number='36')
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+        assert 'required state' in str(v)
+
+    data = dict(street='varsovia', ext_number='36', state=State.DF)
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+        assert 'required country' in str(v)
+
+    data = dict(
+        street='varsovia',
+        ext_number='36',
+        state=State.DF,
+        country=Country.MX,
+    )
+    assert Address(**data)
 
 
 @freeze_time('2022-01-01')
