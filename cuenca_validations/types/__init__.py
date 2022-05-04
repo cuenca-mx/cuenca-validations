@@ -6,7 +6,6 @@ __all__ = [
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
     'BalanceEntryQuery',
-    'BaseVerificationRequest',
     'BatchFileMetadata',
     'Beneficiary',
     'BillPaymentQuery',
@@ -172,7 +171,6 @@ from .queries import (
 from .requests import (
     AddressUpdateRequest,
     ApiKeyUpdateRequest,
-    BaseVerificationRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
