@@ -329,7 +329,7 @@ class CurpValidationRequest(BaseModel):
         ]
         missing = [r for r in required if r not in values.keys()]
         if not manual_curp and missing:
-            raise ValueError(f'values required: {",".join(map(str, missing))}')
+            raise ValueError(f'values required: {",".join(missing)}')
         return values
 
 
