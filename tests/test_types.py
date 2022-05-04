@@ -285,22 +285,19 @@ def test_address_validation():
     assert Address(**data)
     with pytest.raises(ValueError) as v:
         Address(**dict())
-        assert 'required street' in str(v)
+    assert 'required street' in str(v)
     data = dict(street='somestreet')
     with pytest.raises(ValueError) as v:
         Address(**data)
-        assert 'required ext_number' in str(v)
-
+    assert 'required ext_number' in str(v)
     data = dict(street='varsovia', ext_number='36')
     with pytest.raises(ValueError) as v:
         Address(**data)
-        assert 'required state' in str(v)
-
+    assert 'required state' in str(v)
     data = dict(street='varsovia', ext_number='36', state=State.DF)
     with pytest.raises(ValueError) as v:
         Address(**data)
-        assert 'required country' in str(v)
-
+    assert 'required country' in str(v)
     data = dict(
         street='varsovia',
         ext_number='36',
