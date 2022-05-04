@@ -8,6 +8,7 @@ from freezegun import freeze_time
 from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
+    Address,
     CardQuery,
     JSONEncoder,
     QueryParams,
@@ -277,6 +278,35 @@ def test_saving_update_request():
         SavingUpdateRequest(**data)
 
 
+def test_address_validation():
+    data = dict(
+        full_name='Varsovia 36, Col Cuahutemoc',
+    )
+    assert Address(**data)
+    with pytest.raises(ValueError) as v:
+        Address(**dict())
+    assert 'required street' in str(v)
+    data = dict(street='somestreet')
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+    assert 'required ext_number' in str(v)
+    data = dict(street='varsovia', ext_number='36')
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+    assert 'required state' in str(v)
+    data = dict(street='varsovia', ext_number='36', state=State.DF)
+    with pytest.raises(ValueError) as v:
+        Address(**data)
+    assert 'required country' in str(v)
+    data = dict(
+        street='varsovia',
+        ext_number='36',
+        state=State.DF,
+        country=Country.MX,
+    )
+    assert Address(**data)
+
+
 @freeze_time('2022-01-01')
 def test_user_request():
     request = dict(
@@ -292,6 +322,7 @@ def test_user_request():
             state=State.DF.value,
             country=Country.MX,
             city='Obrera',
+            full_name=None,
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
@@ -320,7 +351,10 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest()
-        assert '5 validation errors for CurpValidationRequest' in str(v)
+    assert (
+        'values required: names,first_surname,date_of_birth,'
+        'country_of_birth,gender' in str(v)
+    )
 
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
@@ -329,7 +363,7 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(**request)
-        assert 'User does not meet age requirement.' in str(v)
+    assert 'User does not meet age requirement.' in str(v)
 
     # changing date of birth so user is underage
     request['date_of_birth'] = dt.date(1917, 5, 17)

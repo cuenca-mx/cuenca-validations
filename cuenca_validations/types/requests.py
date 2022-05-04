@@ -281,13 +281,13 @@ class UserPldRiskLevelRequest(BaseModel):
 
 
 class CurpValidationRequest(BaseModel):
-    names: str
-    first_surname: str
+    names: Optional[str] = None
+    first_surname: Optional[str] = None
     second_surname: Optional[str] = None
-    date_of_birth: dt.date
+    date_of_birth: Optional[dt.date] = None
     state_of_birth: Optional[State] = None
-    country_of_birth: Country
-    gender: Gender
+    country_of_birth: Optional[Country] = None
+    gender: Optional[Gender] = None
     manual_curp: Optional[CurpField] = None
 
     class Config:
@@ -298,9 +298,11 @@ class CurpValidationRequest(BaseModel):
         return value if value else None  # Empty strings as None
 
     @validator('date_of_birth')
-    def validate_birth_date(cls, date_of_birth: dt.date) -> dt.date:
+    def validate_birth_date(
+        cls, date_of_birth: Optional[dt.date]
+    ) -> Optional[dt.date]:
         try:
-            validate_age_requirement(date_of_birth)
+            validate_age_requirement(date_of_birth) if date_of_birth else None
         except ValueError:
             raise
         return date_of_birth
@@ -313,6 +315,21 @@ class CurpValidationRequest(BaseModel):
             and 'state_of_birth' not in values
         ):
             raise ValueError('state_of_birth required')
+        return values
+
+    @root_validator(pre=True)
+    def validate_manual_curp(cls, values: DictStrAny) -> DictStrAny:
+        manual_curp = values.get('manual_curp')
+        required = [
+            'names',
+            'first_surname',
+            'date_of_birth',
+            'country_of_birth',
+            'gender',
+        ]
+        missing = [r for r in required if r not in values.keys()]
+        if not manual_curp and missing:
+            raise ValueError(f'values required: {",".join(missing)}')
         return values
 
 
