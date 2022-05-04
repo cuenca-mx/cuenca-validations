@@ -320,7 +320,10 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest()
-        assert '5 validation errors for CurpValidationRequest' in str(v)
+    assert (
+        "values required ['names', 'first_surname', 'date_of_birth', "
+        "'country_of_birth', 'gender']" in str(v)
+    )
 
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
@@ -329,7 +332,7 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(**request)
-        assert 'User does not meet age requirement.' in str(v)
+    assert 'User does not meet age requirement.' in str(v)
 
     # changing date of birth so user is underage
     request['date_of_birth'] = dt.date(1917, 5, 17)
