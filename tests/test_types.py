@@ -283,6 +283,9 @@ def test_address_validation():
         full_name='Varsovia 36, Col Cuahutemoc',
     )
     assert Address(**data)
+    with pytest.raises(ValueError) as v:
+        Address(**dict())
+        assert 'required street' in str(v)
     data = dict(street='somestreet')
     with pytest.raises(ValueError) as v:
         Address(**data)
