@@ -490,6 +490,6 @@ class IdentityUpdateRequest(BaseRequest):
     extension: str
 
 
-class KYCUpdateRequest(BaseRequest):
+class KYCVerificationUpdateRequest(BaseRequest):
     curp: Optional[CurpField]
     rfc: Optional[Rfc]
