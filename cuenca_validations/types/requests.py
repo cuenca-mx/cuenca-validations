@@ -389,11 +389,6 @@ class TOSUpdateRequest(BaseModel):
         return ip
 
 
-class KYCUpdateRequest(SavingBaseRequest):
-    curp: Optional[CurpField]
-    rfc: Optional[Rfc]
-
-
 class KYCFileUpdateRequest(BaseModel):
     type: Optional[KYCFileType] = None
     uri_front: Optional[str] = None
@@ -493,3 +488,8 @@ class IdentityUpdateRequest(BaseRequest):
     rfc_file: bytes
     user_id: str
     extension: str
+
+
+class KYCUpdateRequest(BaseRequest):
+    curp: Optional[CurpField]
+    rfc: Optional[Rfc]
