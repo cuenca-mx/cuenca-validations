@@ -491,4 +491,4 @@ class IdentityUpdateRequest(BaseRequest):
 
 
 class KYCVerificationUpdateRequest(BaseRequest):
-    curp: Optional[CurpField]
+    curp: CurpField
