@@ -488,3 +488,7 @@ class IdentityUpdateRequest(BaseRequest):
     rfc_file: bytes
     user_id: str
     extension: str
+
+
+class KYCVerificationUpdateRequest(BaseRequest):
+    curp: CurpField
