@@ -69,10 +69,22 @@ class BaseRequest(BaseModel):
 
 class TransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber]
-    amount: StrictPositiveInt  # in centavos
-    descriptor: StrictStr  # how it'll appear for the recipient
-    idempotency_key: str  # must be unique for each transfer
+    account_number: Union[Clabe, PaymentCardNumber] = Field(
+        ...,
+        description='Destination Clabe or Card number to receive the money',
+    )
+    amount: StrictPositiveInt = Field(
+        ...,
+        description='Always in cents, not in MXN pesos',
+    )
+    descriptor: StrictStr = Field(
+        ...,
+        description="Short description how it'll appear for the recipient",
+    )
+    idempotency_key: str = Field(
+        ...,
+        description='Custom identifier, must be unique for each transfer',
+    )
 
 
 class StrictTransferRequest(TransferRequest):
