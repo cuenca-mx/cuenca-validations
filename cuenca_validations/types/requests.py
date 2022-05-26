@@ -5,6 +5,7 @@ from typing import Dict, List, Optional, Union
 from clabe import Clabe
 from pydantic import (
     AnyUrl,
+    BaseConfig,
     BaseModel,
     EmailStr,
     Extra,
@@ -58,7 +59,7 @@ from .identities import (
 
 
 class BaseRequest(BaseModel):
-    class Config:
+    class Config(BaseConfig):
         extra = Extra.forbid
 
     def dict(self, *args, **kwargs) -> DictStrAny:
@@ -85,6 +86,17 @@ class TransferRequest(BaseRequest):
         ...,
         description='Custom identifier, must be unique for each transfer',
     )
+
+    class Config(BaseConfig):
+        schema_extra = {
+            "example": {
+                "recipient_name": 'Doroteo Arango',
+                "account_number": "646180157034181180",
+                "amount": 10000,  # 100.00 MXN Pesos
+                "descriptor": "Mezcal, pulque y tequila",
+                "idempotency_key": "UNIQUE-KEY-003",
+            }
+        }
 
 
 class StrictTransferRequest(TransferRequest):
