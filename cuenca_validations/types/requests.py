@@ -5,7 +5,6 @@ from typing import Dict, List, Optional, Union
 from clabe import Clabe
 from pydantic import (
     AnyUrl,
-    BaseConfig,
     BaseModel,
     EmailStr,
     Extra,
@@ -59,7 +58,7 @@ from .identities import (
 
 
 class BaseRequest(BaseModel):
-    class Config(BaseConfig):
+    class Config:
         extra = Extra.forbid
 
     def dict(self, *args, **kwargs) -> DictStrAny:
@@ -70,24 +69,24 @@ class BaseRequest(BaseModel):
 
 class TransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber] = Field(
-        ...,
-        description='Destination Clabe or Card number to receive the money',
-    )
-    amount: StrictPositiveInt = Field(
-        ...,
-        description='Always in cents, not in MXN pesos',
-    )
-    descriptor: StrictStr = Field(
-        ...,
-        description="Short description how it'll appear for the recipient",
-    )
-    idempotency_key: str = Field(
-        ...,
-        description='Custom identifier, must be unique for each transfer',
-    )
+    account_number: Union[Clabe, PaymentCardNumber]
+    amount: StrictPositiveInt
+    descriptor: StrictStr
+    idempotency_key: str
 
-    class Config(BaseConfig):
+    class Config:
+        fields = {
+            'account_number': {
+                'description': 'Destination Clabe or Card number'
+            },
+            'amount': {'description': 'Always in cents, not in MXN pesos'},
+            'descriptor': {
+                'description': "Short description for the recipient"
+            },
+            'idempotency_key': {
+                'description': 'Custom Id, must be unique for each transfer'
+            },
+        }
         schema_extra = {
             "example": {
                 "recipient_name": 'Doroteo Arango',
@@ -305,27 +304,27 @@ class UserPldRiskLevelRequest(BaseModel):
 
 
 class CurpValidationRequest(BaseModel):
-    names: Optional[str] = Field(None, description='Name or names')
+    names: Optional[str] = None
     first_surname: Optional[str] = None
-    second_surname: Optional[str] = Field(
-        None, description='Not neccessary for foreigners'
-    )
+    second_surname: Optional[str] = None
     date_of_birth: Optional[dt.date] = None
-    state_of_birth: Optional[State] = Field(
-        None,
-        description='In forma ISO 3166:MX Alpha-2.'
-        'Use NE for people born outside of MX',
-    )
-    country_of_birth: Optional[Country] = Field(
-        None, description='In forma ISO 3166 Alpha-2'
-    )
+    state_of_birth: Optional[State] = None
+    country_of_birth: Optional[Country] = None
     gender: Optional[Gender] = None
-    manual_curp: Optional[CurpField] = Field(
-        None, description='Calculate the rest of data providing a CURP'
-    )
+    manual_curp: Optional[CurpField] = None
 
-    class Config(BaseConfig):
+    class Config:
         anystr_strip_whitespace = True
+        fields = {
+            'second_surname': {'description': 'Not neccessary for foreigners'},
+            'country_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
+            'state_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
+            'nationality': {'description': 'In format ISO 3166 Alpha-2'},
+            'manual_curp': {
+                'description': 'Force to validate this curp instead of use '
+                'the one we calculate'
+            },
+        }
         schema_extra = {
             "example": {
                 "names": "Guillermo",
@@ -386,6 +385,32 @@ class UserRequest(BaseModel):
     address: Optional[Address] = None
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
+
+    class Config:
+        fields = {
+            'curp': {
+                'description': 'Previously validated in curp_validations'
+            },
+            'phone_number': {'description': 'Validated for you'},
+            'email_address': {'description': 'Validated for you'},
+            'phone_verification_id': {
+                'description': 'Only if you validate phone with resource '
+                'verifications'
+            },
+            'email_verification_id': {
+                'description': 'Only if you validate email with resource '
+                'verifications'
+            },
+        }
+        schema_extra = {
+            "example": {
+                "curp": "GOCG650418HVZNML08",
+                "phone_number": "+525511223344",
+                "email_address": "user@example.com",
+                "profession": "engineer",
+                "address": Address.schema().get('example'),
+            }
+        }
 
     @validator('curp')
     def validate_birth_date(
