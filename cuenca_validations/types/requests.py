@@ -305,17 +305,38 @@ class UserPldRiskLevelRequest(BaseModel):
 
 
 class CurpValidationRequest(BaseModel):
-    names: Optional[str] = None
+    names: Optional[str] = Field(None, description='Name or names')
     first_surname: Optional[str] = None
-    second_surname: Optional[str] = None
+    second_surname: Optional[str] = Field(
+        None, description='Not neccessary for foreigners'
+    )
     date_of_birth: Optional[dt.date] = None
-    state_of_birth: Optional[State] = None
-    country_of_birth: Optional[Country] = None
+    state_of_birth: Optional[State] = Field(
+        None,
+        description='In forma ISO 3166:MX Alpha-2.'
+        'Use NE for people born outside of MX',
+    )
+    country_of_birth: Optional[Country] = Field(
+        None, description='In forma ISO 3166 Alpha-2'
+    )
     gender: Optional[Gender] = None
-    manual_curp: Optional[CurpField] = None
+    manual_curp: Optional[CurpField] = Field(
+        None, description='Calculate the rest of data providing a CURP'
+    )
 
-    class Config:
+    class Config(BaseConfig):
         anystr_strip_whitespace = True
+        schema_extra = {
+            "example": {
+                "names": "Guillermo",
+                "first_surname": "Gonzales",
+                "second_surname": "Camarena",
+                "date_of_birth": "1965-04-18",
+                "state_of_birth": "VZ",
+                "country_of_birth": "MX",
+                "gender": "male",
+            }
+        }
 
     @validator('second_surname')
     def validate_surname(cls, value: Optional[str]) -> Optional[str]:
