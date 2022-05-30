@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Optional
 
-from pydantic import BaseModel, EmailStr, Extra, Field, validator
+from pydantic import BaseModel, EmailStr, Extra, validator
 from pydantic.types import ConstrainedInt, PositiveInt
 
 from ..typing import DictStrAny
@@ -28,32 +28,33 @@ class PageSize(ConstrainedInt):
 
 
 class QueryParams(BaseModel):
-    count: bool = Field(
-        False,
-        description='If value is true, query  result will be only a counter',
-    )
-    page_size: PageSize = Field(
-        PageSize(MAX_PAGE_SIZE),
-        description='Number of items per page',
-    )
-    limit: Optional[PositiveInt] = Field(
-        None,
-        description='Limit of items to query',
-    )
+    count: bool = False
+    page_size: PageSize = PageSize(MAX_PAGE_SIZE)
+    limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
-    created_before: Optional[dt.datetime] = Field(
-        None,
-        description='Max created date of items',
-    )
-    created_after: Optional[dt.datetime] = Field(
-        None,
-        description='Min created date of items',
-    )
+    created_before: Optional[dt.datetime] = None
+    created_after: Optional[dt.datetime] = None
     related_transaction: Optional[str] = None
     platform_id: Optional[str] = None
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
+        fields = {
+            'count': {'description': 'Set `true` value to get only a counter'},
+            'page_size': {'description': 'Number of items per page'},
+            'limit': {'description': 'Limit of items to query'},
+            'created_before': {'description': 'Max created date of items'},
+            'created_after': {'description': 'Min created date of items'},
+        }
+        schema_extra = {
+            "example": {
+                "count": False,
+                "page_size": 10,
+                "limit": 20,
+                "created_before": "2020-08-01",
+                "created_after": "2020-07-01",
+            }
+        }
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
@@ -91,6 +92,9 @@ class CardTransactionQuery(TransactionQuery):
 
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
+
+    class Config:
+        schema_extra = {"example": {"active": "supersecret"}}
 
 
 class CardQuery(QueryParams):

@@ -491,11 +491,29 @@ class UserUpdateRequest(BaseModel):
         return beneficiaries
 
 
+class UserLoginRequest(BaseRequest):
+    password: str
+
+    class Config:
+        fields = {'password': {'description': 'Customer password'}}
+        schema_extra = {"example": {"password": "supersecret"}}
+
+
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": "US-123",
+                "type": "session.registration",
+                "success_url": "http://example_success.com",
+                "failure_url": "http://example_failure.com",
+            }
+        }
 
 
 class EndpointRequest(BaseRequest):
