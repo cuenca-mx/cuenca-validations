@@ -46,15 +46,6 @@ class QueryParams(BaseModel):
             'created_before': {'description': 'Max created date of items'},
             'created_after': {'description': 'Min created date of items'},
         }
-        schema_extra = {
-            "example": {
-                "count": False,
-                "page_size": 10,
-                "limit": 20,
-                "created_before": "2020-08-01",
-                "created_after": "2020-07-01",
-            }
-        }
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
