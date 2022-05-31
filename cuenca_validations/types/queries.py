@@ -93,8 +93,14 @@ class CardTransactionQuery(TransactionQuery):
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
 
-    class Config:
-        schema_extra = {"example": {"active": "supersecret"}}
+    class Config(QueryParams.Config):
+        fields = {
+            **QueryParams.Config.fields,
+            'active': {
+                'description': 'Set `true` value to fetch active keys or '
+                '`false` to fetch deactivated keys'
+            },
+        }
 
 
 class CardQuery(QueryParams):

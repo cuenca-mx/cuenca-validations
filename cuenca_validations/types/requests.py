@@ -389,7 +389,7 @@ class UserRequest(BaseModel):
     class Config:
         fields = {
             'curp': {
-                'description': 'Previously validated in curp_validations'
+                'description': 'Previously validated in `curp_validations`'
             },
             'phone_number': {'description': 'Validated for you'},
             'email_address': {'description': 'Validated for you'},
@@ -553,6 +553,14 @@ class VerificationRequest(BaseModel):
 
     class Config:
         anystr_strip_whitespace = True
+        fields = {'recipient': {'description': 'Phone or email to validate'}}
+        schema_extra = {
+            "example": {
+                "type": "email",
+                "recipient": "user@example.com",
+                "platform_id": "PT-123",
+            }
+        }
 
     @validator('recipient')
     def validate_sender(cls, recipient: str, values):
@@ -565,6 +573,12 @@ class VerificationRequest(BaseModel):
 
 class VerificationAttemptRequest(BaseModel):
     code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
+
+    class Config:
+        fields = {
+            'code': {'description': 'Code sent to user via email or phone'}
+        }
+        schema_extra = {"example": {"code": "123456"}}
 
 
 class LimitedWalletRequest(BaseRequest):
