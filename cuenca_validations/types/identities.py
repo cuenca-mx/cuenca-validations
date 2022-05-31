@@ -73,10 +73,10 @@ class Beneficiary(BaseModel):
     class Config:
         schema_extra = {
             "example": {
-                "name": "Frida Khalo",
+                "name": "Juan Perez",
                 "birth_date": "1907-07-06",
                 "phone_number": "+525500998877",
-                "user_relationship": "mother",
+                "user_relationship": "friend",
                 "percentage": 100,
             }
         }
