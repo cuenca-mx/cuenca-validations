@@ -391,15 +391,19 @@ class UserRequest(BaseModel):
             'curp': {
                 'description': 'Previously validated in `curp_validations`'
             },
-            'phone_number': {'description': 'Validated for you'},
-            'email_address': {'description': 'Validated for you'},
+            'phone_number': {
+                'description': 'Only if you validated previously on your side'
+            },
+            'email_address': {
+                'description': 'Only if you validated previously on your side'
+            },
             'phone_verification_id': {
-                'description': 'Only if you validate phone with resource '
-                'verifications'
+                'description': 'Only if you validated it previously with the '
+                'resource `verifications`'
             },
             'email_verification_id': {
-                'description': 'Only if you validate email with resource '
-                'verifications'
+                'description': 'Only if you validated it previously with the '
+                'resource `verifications`'
             },
         }
         schema_extra = {
