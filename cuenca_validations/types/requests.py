@@ -91,7 +91,7 @@ class TransferRequest(BaseRequest):
             "example": {
                 "recipient_name": 'Doroteo Arango',
                 "account_number": "646180157034181180",
-                "amount": 10000,  # 100.00 MXN Pesos
+                "amount": 100_00,  # 100.00 MXN Pesos
                 "descriptor": "Mezcal, pulque y tequila",
                 "idempotency_key": "UNIQUE-KEY-003",
             }
@@ -512,7 +512,7 @@ class SessionRequest(BaseRequest):
     class Config:
         schema_extra = {
             "example": {
-                "user_id": "US-123",
+                "user_id": "USWqY5cvkISJOxHyEKjAKf8w",
                 "type": "session.registration",
                 "success_url": "http://example_success.com",
                 "failure_url": "http://example_failure.com",
@@ -562,7 +562,7 @@ class VerificationRequest(BaseModel):
             "example": {
                 "type": "email",
                 "recipient": "user@example.com",
-                "platform_id": "PT-123",
+                "platform_id": "PT8UEv02zBTcymd4Kd3MO6pg",
             }
         }
 
