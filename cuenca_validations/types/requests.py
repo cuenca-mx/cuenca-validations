@@ -495,7 +495,7 @@ class UserLoginRequest(BaseRequest):
     password: str
 
     class Config:
-        fields = {'password': {'description': 'Customer password'}}
+        fields = {'password': {'description': 'User password'}}
         schema_extra = {"example": {"password": "supersecret"}}
 
 
