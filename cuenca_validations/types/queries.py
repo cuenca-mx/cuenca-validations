@@ -43,8 +43,16 @@ class QueryParams(BaseModel):
             'count': {'description': 'Set `true` value to get only a counter'},
             'page_size': {'description': 'Number of items per page'},
             'limit': {'description': 'Limit of items to query'},
-            'created_before': {'description': 'Max created date of items'},
-            'created_after': {'description': 'Min created date of items'},
+            'created_before': {
+                'description': 'Filtered items have a `created_at` date equal '
+                'or lower than this value, this field represents the max '
+                'creation date.'
+            },
+            'created_after': {
+                'description': 'Filtered items have a `created_at` date equal '
+                'or greater than this value, this field represents the min '
+                'creation date.'
+            },
         }
 
     def dict(self, *args, **kwargs) -> DictStrAny:
