@@ -39,6 +39,21 @@ class QueryParams(BaseModel):
 
     class Config:
         extra = Extra.forbid  # raise ValidationError if there are extra fields
+        fields = {
+            'count': {'description': 'Set `true` value to get only a counter'},
+            'page_size': {'description': 'Number of items per page'},
+            'limit': {'description': 'Limit of items to query'},
+            'created_before': {
+                'description': 'Filtered items have a `created_at` date equal '
+                'or lower than this value, this field represents the max '
+                'creation date.'
+            },
+            'created_after': {
+                'description': 'Filtered items have a `created_at` date equal '
+                'or greater than this value, this field represents the min '
+                'creation date.'
+            },
+        }
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
@@ -76,6 +91,15 @@ class CardTransactionQuery(TransactionQuery):
 
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
+
+    class Config(QueryParams.Config):
+        fields = {
+            **QueryParams.Config.fields,
+            'active': {
+                'description': 'Set `true` value to fetch active keys or '
+                '`false` to fetch deactivated keys'
+            },
+        }
 
 
 class CardQuery(QueryParams):

@@ -70,9 +70,32 @@ class BaseRequest(BaseModel):
 class TransferRequest(BaseRequest):
     recipient_name: StrictStr
     account_number: Union[Clabe, PaymentCardNumber]
-    amount: StrictPositiveInt  # in centavos
-    descriptor: StrictStr  # how it'll appear for the recipient
-    idempotency_key: str  # must be unique for each transfer
+    amount: StrictPositiveInt
+    descriptor: StrictStr
+    idempotency_key: str
+
+    class Config:
+        fields = {
+            'account_number': {
+                'description': 'Destination Clabe or Card number'
+            },
+            'amount': {'description': 'Always in cents, not in MXN pesos'},
+            'descriptor': {
+                'description': "Short description for the recipient"
+            },
+            'idempotency_key': {
+                'description': 'Custom Id, must be unique for each transfer'
+            },
+        }
+        schema_extra = {
+            "example": {
+                "recipient_name": 'Doroteo Arango',
+                "account_number": "646180157034181180",
+                "amount": 100_00,  # 100.00 MXN Pesos
+                "descriptor": "Mezcal, pulque y tequila",
+                "idempotency_key": "UNIQUE-KEY-003",
+            }
+        }
 
 
 class StrictTransferRequest(TransferRequest):
@@ -292,6 +315,27 @@ class CurpValidationRequest(BaseModel):
 
     class Config:
         anystr_strip_whitespace = True
+        fields = {
+            'second_surname': {'description': 'Not neccessary for foreigners'},
+            'country_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
+            'state_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
+            'nationality': {'description': 'In format ISO 3166 Alpha-2'},
+            'manual_curp': {
+                'description': 'Force to validate this curp instead of use '
+                'the one we calculate'
+            },
+        }
+        schema_extra = {
+            "example": {
+                "names": "Guillermo",
+                "first_surname": "Gonzales",
+                "second_surname": "Camarena",
+                "date_of_birth": "1965-04-18",
+                "state_of_birth": "VZ",
+                "country_of_birth": "MX",
+                "gender": "male",
+            }
+        }
 
     @validator('second_surname')
     def validate_surname(cls, value: Optional[str]) -> Optional[str]:
@@ -341,6 +385,36 @@ class UserRequest(BaseModel):
     address: Optional[Address] = None
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
+
+    class Config:
+        fields = {
+            'curp': {
+                'description': 'Previously validated in `curp_validations`'
+            },
+            'phone_number': {
+                'description': 'Only if you validated previously on your side'
+            },
+            'email_address': {
+                'description': 'Only if you validated previously on your side'
+            },
+            'phone_verification_id': {
+                'description': 'Only if you validated it previously with the '
+                'resource `verifications`'
+            },
+            'email_verification_id': {
+                'description': 'Only if you validated it previously with the '
+                'resource `verifications`'
+            },
+        }
+        schema_extra = {
+            "example": {
+                "curp": "GOCG650418HVZNML08",
+                "phone_number": "+525511223344",
+                "email_address": "user@example.com",
+                "profession": "engineer",
+                "address": Address.schema().get('example'),
+            }
+        }
 
     @validator('curp')
     def validate_birth_date(
@@ -421,11 +495,29 @@ class UserUpdateRequest(BaseModel):
         return beneficiaries
 
 
+class UserLoginRequest(BaseRequest):
+    password: str
+
+    class Config:
+        fields = {'password': {'description': 'User password'}}
+        schema_extra = {"example": {"password": "supersecret"}}
+
+
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
+
+    class Config:
+        schema_extra = {
+            "example": {
+                "user_id": "USWqY5cvkISJOxHyEKjAKf8w",
+                "type": "session.registration",
+                "success_url": "http://example_success.com",
+                "failure_url": "http://example_failure.com",
+            }
+        }
 
 
 class EndpointRequest(BaseRequest):
@@ -465,6 +557,14 @@ class VerificationRequest(BaseModel):
 
     class Config:
         anystr_strip_whitespace = True
+        fields = {'recipient': {'description': 'Phone or email to validate'}}
+        schema_extra = {
+            "example": {
+                "type": "email",
+                "recipient": "user@example.com",
+                "platform_id": "PT8UEv02zBTcymd4Kd3MO6pg",
+            }
+        }
 
     @validator('recipient')
     def validate_sender(cls, recipient: str, values):
@@ -477,6 +577,12 @@ class VerificationRequest(BaseModel):
 
 class VerificationAttemptRequest(BaseModel):
     code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
+
+    class Config:
+        fields = {
+            'code': {'description': 'Code sent to user via email or phone'}
+        }
+        schema_extra = {"example": {"code": "123456"}}
 
 
 class LimitedWalletRequest(BaseRequest):
