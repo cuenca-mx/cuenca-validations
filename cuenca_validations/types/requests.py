@@ -602,3 +602,7 @@ class IdentityUpdateRequest(BaseRequest):
 
 class KYCVerificationUpdateRequest(BaseRequest):
     curp: CurpField
+
+
+class PlatformRequest(BaseModel):
+    name: str
