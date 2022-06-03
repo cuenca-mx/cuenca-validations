@@ -502,7 +502,7 @@ class UserLoginRequest(BaseRequest):
     class Config:
         fields = {
             'password': {'description': 'User password'},
-            'user_id': {'description': 'Deprecated field'}
+            'user_id': {'description': 'Deprecated field'},
         }
         schema_extra = {"example": {"password": "supersecret"}}
 
