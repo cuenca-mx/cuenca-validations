@@ -496,7 +496,7 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+    password: str
     user_id: Optional[str]
 
     class Config:
