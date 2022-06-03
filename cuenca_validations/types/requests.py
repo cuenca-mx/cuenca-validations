@@ -496,10 +496,14 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: str
+    password: str = Field(..., max_length=6, min_length=6, regex=r'\d{6}')
+    user_id: Optional[str]
 
     class Config:
-        fields = {'password': {'description': 'User password'}}
+        fields = {
+            'password': {'description': 'User password'},
+            'user_id': {'description': 'Deprecated field'}
+        }
         schema_extra = {"example": {"password": "supersecret"}}
 
 
