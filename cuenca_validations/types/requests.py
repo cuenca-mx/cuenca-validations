@@ -602,3 +602,8 @@ class KYCVerificationUpdateRequest(BaseRequest):
 
 class PlatformRequest(BaseModel):
     name: str
+    rfc_curp: Optional[str]
+    establishment_date: Optional[str]
+    country: Optional[Country]
+    state: Optional[State]
+    economic_activity: Optional[str]
