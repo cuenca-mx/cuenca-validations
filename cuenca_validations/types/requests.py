@@ -611,3 +611,5 @@ class PlatformRequest(BaseModel):
     country: Optional[Country]
     state: Optional[State]
     economic_activity: Optional[str]
+    phone_number: Optional[str]
+    email_address: Optional[str]
