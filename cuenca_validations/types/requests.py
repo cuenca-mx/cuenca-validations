@@ -73,6 +73,7 @@ class TransferRequest(BaseRequest):
     amount: StrictPositiveInt
     descriptor: StrictStr
     idempotency_key: str
+    user_id: Optional[str]
 
     class Config:
         fields = {
@@ -81,19 +82,21 @@ class TransferRequest(BaseRequest):
             },
             'amount': {'description': 'Always in cents, not in MXN pesos'},
             'descriptor': {
-                'description': "Short description for the recipient"
+                'description': 'Short description for the recipient'
             },
             'idempotency_key': {
                 'description': 'Custom Id, must be unique for each transfer'
             },
+            'user_id': {'description': 'source user to take the funds'},
         }
         schema_extra = {
-            "example": {
-                "recipient_name": 'Doroteo Arango',
-                "account_number": "646180157034181180",
-                "amount": 100_00,  # 100.00 MXN Pesos
-                "descriptor": "Mezcal, pulque y tequila",
-                "idempotency_key": "UNIQUE-KEY-003",
+            'example': {
+                'recipient_name': 'Doroteo Arango',
+                'account_number': '646180157034181180',
+                'amount': 100_00,  # 100.00 MXN Pesos
+                'descriptor': 'Mezcal, pulque y tequila',
+                'idempotency_key': 'UNIQUE-KEY-003',
+                'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
             }
         }
 
@@ -326,14 +329,14 @@ class CurpValidationRequest(BaseModel):
             },
         }
         schema_extra = {
-            "example": {
-                "names": "Guillermo",
-                "first_surname": "Gonzales",
-                "second_surname": "Camarena",
-                "date_of_birth": "1965-04-18",
-                "state_of_birth": "VZ",
-                "country_of_birth": "MX",
-                "gender": "male",
+            'example': {
+                'names': 'Guillermo',
+                'first_surname': 'Gonzales',
+                'second_surname': 'Camarena',
+                'date_of_birth': '1965-04-18',
+                'state_of_birth': 'VZ',
+                'country_of_birth': 'MX',
+                'gender': 'male',
             }
         }
 
@@ -412,12 +415,12 @@ class UserRequest(BaseModel):
             },
         }
         schema_extra = {
-            "example": {
-                "curp": "GOCG650418HVZNML08",
-                "phone_number": "+525511223344",
-                "email_address": "user@example.com",
-                "profession": "engineer",
-                "address": Address.schema().get('example'),
+            'example': {
+                'curp': 'GOCG650418HVZNML08',
+                'phone_number': '+525511223344',
+                'email_address': 'user@example.com',
+                'profession': 'engineer',
+                'address': Address.schema().get('example'),
             }
         }
 
@@ -509,7 +512,7 @@ class UserLoginRequest(BaseRequest):
             'password': {'description': 'User password'},
             'user_id': {'description': 'Deprecated field'},
         }
-        schema_extra = {"example": {"password": "supersecret"}}
+        schema_extra = {'example': {'password': 'supersecret'}}
 
 
 class SessionRequest(BaseRequest):
@@ -520,11 +523,11 @@ class SessionRequest(BaseRequest):
 
     class Config:
         schema_extra = {
-            "example": {
-                "user_id": "USWqY5cvkISJOxHyEKjAKf8w",
-                "type": "session.registration",
-                "success_url": "http://example_success.com",
-                "failure_url": "http://example_failure.com",
+            'example': {
+                'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'type': 'session.registration',
+                'success_url': 'http://example_success.com',
+                'failure_url': 'http://example_failure.com',
             }
         }
 
@@ -568,10 +571,10 @@ class VerificationRequest(BaseModel):
         anystr_strip_whitespace = True
         fields = {'recipient': {'description': 'Phone or email to validate'}}
         schema_extra = {
-            "example": {
-                "type": "email",
-                "recipient": "user@example.com",
-                "platform_id": "PT8UEv02zBTcymd4Kd3MO6pg",
+            'example': {
+                'type': 'email',
+                'recipient': 'user@example.com',
+                'platform_id': 'PT8UEv02zBTcymd4Kd3MO6pg',
             }
         }
 
@@ -591,7 +594,7 @@ class VerificationAttemptRequest(BaseModel):
         fields = {
             'code': {'description': 'Code sent to user via email or phone'}
         }
-        schema_extra = {"example": {"code": "123456"}}
+        schema_extra = {'example': {'code': '123456'}}
 
 
 class LimitedWalletRequest(BaseRequest):
