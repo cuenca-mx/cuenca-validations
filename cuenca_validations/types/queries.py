@@ -157,6 +157,7 @@ class UserQuery(QueryParams):
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
     status: Optional[UserStatus] = None
+    identity_uri: Optional[str] = None
 
 
 class IdentityQuery(QueryParams):
