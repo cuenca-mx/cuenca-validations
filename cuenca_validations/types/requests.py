@@ -383,7 +383,7 @@ class UserRequest(BaseModel):
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[Address] = None
-    required_level: Optional[str] = None
+    required_level: Optional[int] = None
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
 
@@ -399,7 +399,8 @@ class UserRequest(BaseModel):
                 'description': 'Only if you validated previously on your side'
             },
             'required_level': {
-                'description': 'Maximum level a User can reach. Defined by platform'
+                'description': 'Maximum level a User can reach. '
+                'Defined by platform'
             },
             'phone_verification_id': {
                 'description': 'Only if you validated it previously with the '
