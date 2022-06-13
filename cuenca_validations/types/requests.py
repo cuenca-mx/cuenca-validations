@@ -602,3 +602,14 @@ class IdentityUpdateRequest(BaseRequest):
 
 class KYCVerificationUpdateRequest(BaseRequest):
     curp: CurpField
+
+
+class PlatformRequest(BaseModel):
+    name: str
+    rfc_curp: Optional[str]
+    establishment_date: Optional[dt.date]
+    country: Optional[Country]
+    state: Optional[State]
+    economic_activity: Optional[str]
+    phone_number: Optional[str]
+    email_address: Optional[str]
