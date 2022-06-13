@@ -326,6 +326,7 @@ def test_user_request():
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
+        required_level=3,
     )
     assert UserRequest(**request).dict() == request
 
