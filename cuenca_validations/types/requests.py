@@ -383,7 +383,7 @@ class UserRequest(BaseModel):
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[Address] = None
-    required_level: Optional[int] = None
+    required_level: Optional[conint(ge=-1, le=4)] = None
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
 
