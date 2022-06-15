@@ -564,6 +564,7 @@ class UserStatus(str, Enum):
     active = 'active'
     deactivated = 'deactivated'
     fraud = 'fraud'
+    in_review = 'in_review'
     pld_blocked = 'pld_blocked'
 
 

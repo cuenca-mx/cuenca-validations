@@ -39,6 +39,7 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    UserStatus,
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
@@ -383,6 +384,7 @@ class UserRequest(BaseModel):
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[Address] = None
+    status: Optional[UserStatus] = None
     required_level: Optional[conint(ge=-1, le=4)] = None  # type: ignore
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
@@ -400,6 +402,10 @@ class UserRequest(BaseModel):
             },
             'required_level': {
                 'description': 'Maximum level a User can reach. '
+                'Defined by platform'
+            },
+            'status': {
+                'description': 'Status that the user will have when created. '
                 'Defined by platform'
             },
             'phone_verification_id': {
@@ -486,6 +492,7 @@ class UserUpdateRequest(BaseModel):
     govt_id: Optional[KYCFileUpdateRequest] = None
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
+    status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
 
