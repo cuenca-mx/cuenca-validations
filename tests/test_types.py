@@ -314,6 +314,7 @@ def test_user_request():
         phone_number='+525555555555',
         email_address='email@email.com',
         profession='worker',
+        status='active',
         address=dict(
             street='calle 1',
             ext_number='2',
