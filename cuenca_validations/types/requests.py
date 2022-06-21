@@ -13,7 +13,7 @@ from pydantic import (
     StrictStr,
     conint,
     constr,
-    root_validator,
+    root_validator, ConstrainedInt, NonNegativeInt,
 )
 from pydantic.class_validators import validator
 from pydantic.validators import IPv4Address
@@ -629,3 +629,7 @@ class PlatformRequest(BaseModel):
     economic_activity: Optional[str]
     phone_number: Optional[str]
     email_address: Optional[str]
+
+
+class ApiKeyDeleteRequest(BaseModel):
+    minutes: NonNegativeInt = 0
