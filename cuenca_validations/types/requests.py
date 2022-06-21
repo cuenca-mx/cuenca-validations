@@ -43,6 +43,8 @@ from ..types.enums import (
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
+    WebhookEventType,
+    WebhookObject,
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
@@ -629,3 +631,10 @@ class PlatformRequest(BaseModel):
     economic_activity: Optional[str]
     phone_number: Optional[str]
     email_address: Optional[str]
+
+
+class WebhookRequest(BaseModel):
+    id: str
+    event: WebhookEventType
+    object_type: WebhookObject
+    data: DictStrAny

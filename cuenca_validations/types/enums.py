@@ -572,6 +572,17 @@ class SessionType(str, Enum):
     registration = 'session.registration'
 
 
+class WebhookObject(str, Enum):
+    user = 'user'
+    transaction = 'transaction'
+
+
+class WebhookEventType(str, Enum):
+    create = 'create'
+    update = 'update'
+    delete = 'delete'
+
+
 class WebhookEvent(str, Enum):
     user_create = 'user.create'
     user_update = 'user.update'
