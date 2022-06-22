@@ -39,7 +39,6 @@ from cuenca_validations.types.requests import (
     UserUpdateRequest,
     VerificationAttemptRequest,
     VerificationRequest,
-    WebhookRequest,
 )
 
 today = dt.date.today()
