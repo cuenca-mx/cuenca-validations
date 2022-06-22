@@ -39,6 +39,7 @@ from cuenca_validations.types.requests import (
     UserUpdateRequest,
     VerificationAttemptRequest,
     VerificationRequest,
+    WebhookRequest,
 )
 
 today = dt.date.today()
@@ -503,4 +504,14 @@ def test_identity_update_request():
 
     assert IdentityUpdateRequest(
         user_id=user_id, rfc_file=rfc_file, extension=extension
+    )
+
+
+def test_webhook_request():
+    event = 'create'
+    object_type = 'user'
+    data = dict()
+
+    assert WebhookRequest(
+        id='WE123', event=event, object_type=object_type, data=data
     )
