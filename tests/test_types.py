@@ -505,4 +505,3 @@ def test_identity_update_request():
     assert IdentityUpdateRequest(
         user_id=user_id, rfc_file=rfc_file, extension=extension
     )
-
