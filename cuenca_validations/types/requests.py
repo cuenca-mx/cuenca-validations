@@ -1,6 +1,6 @@
 import datetime as dt
 from ipaddress import AddressValueError
-from typing import Dict, List, Optional, Union
+from typing import List, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -480,14 +480,6 @@ class TOSUpdateRequest(BaseModel):
         return ip
 
 
-class KYCFileUpdateRequest(BaseModel):
-    type: Optional[KYCFileType] = None
-    uri_front: Optional[str] = None
-    uri_back: Optional[str] = None
-    is_mx: Optional[bool] = None
-    data: Optional[Dict] = None
-
-
 class UserUpdateRequest(BaseModel):
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
@@ -495,9 +487,6 @@ class UserUpdateRequest(BaseModel):
     verification_id: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
     beneficiaries: Optional[List[Beneficiary]] = None
-    govt_id: Optional[KYCFileUpdateRequest] = None
-    proof_of_address: Optional[KYCFileUpdateRequest] = None
-    proof_of_life: Optional[KYCFileUpdateRequest] = None
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSUpdateRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
