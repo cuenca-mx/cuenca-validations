@@ -384,6 +384,41 @@ class CurpValidationRequest(BaseModel):
         return values
 
 
+class AddressUpdateRequest(BaseModel):
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    postal_code: Optional[str] = None
+    state: Optional[State] = None
+    city: Optional[str] = None
+    country: Optional[Country] = None
+
+
+class TOSRequestBase(BaseModel):
+    version: Optional[str] = None
+    ip: Optional[str] = None
+    location: Optional[str] = None
+    type: Optional[str] = None
+
+    @validator('ip')
+    def validate_ip(cls, ip: str):
+        # we validate ip address this way because the
+        # model IPv4Address is not JSON serializable
+        try:
+            IPv4Address(ip)
+        except AddressValueError:
+            raise ValueError('not valid ip')
+        return ip
+
+
+class TOSUpdateRequest(TOSRequestBase):
+    ...
+
+
+class TOSRequest(TOSRequestBase):
+    ...
+
+
 class UserRequest(BaseModel):
     id: Optional[str] = None
     curp: CurpField
@@ -395,9 +430,11 @@ class UserRequest(BaseModel):
     required_level: Optional[conint(ge=-1, le=4)] = None  # type: ignore
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
+    terms_of_service: Optional[TOSRequest] = None
 
     class Config:
         fields = {
+            'id': {'description': 'if you want to create with specific `id`'},
             'curp': {
                 'description': 'Previously validated in `curp_validations`'
             },
@@ -452,33 +489,6 @@ class UserRequest(BaseModel):
             except ValueError:
                 raise
         return curp
-
-
-class AddressUpdateRequest(BaseModel):
-    street: Optional[str] = None
-    ext_number: Optional[str] = None
-    int_number: Optional[str] = None
-    postal_code: Optional[str] = None
-    state: Optional[State] = None
-    city: Optional[str] = None
-    country: Optional[Country] = None
-
-
-class TOSUpdateRequest(BaseModel):
-    version: Optional[str] = None
-    ip: Optional[str] = None
-    location: Optional[str] = None
-    type: Optional[str] = None
-
-    @validator('ip')
-    def validate_ip(cls, ip: str):
-        # we validate ip address this way because the
-        # model IPv4Address is not JSON serializable
-        try:
-            IPv4Address(ip)
-        except AddressValueError:
-            raise ValueError('not valid ip')
-        return ip
 
 
 class KYCFileUpdateRequest(BaseModel):
