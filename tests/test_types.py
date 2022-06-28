@@ -294,10 +294,6 @@ def test_address_validation():
     with pytest.raises(ValueError) as v:
         Address(**data)
     assert 'required state' in str(v)
-    data = dict(street='varsovia', ext_number='36', state=State.DF)
-    with pytest.raises(ValueError) as v:
-        Address(**data)
-    assert 'required country' in str(v)
     data = dict(
         street='varsovia',
         ext_number='36',
