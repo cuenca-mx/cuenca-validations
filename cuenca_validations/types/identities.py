@@ -58,8 +58,6 @@ class Address(BaseModel):
             raise ValueError('required ext_number')
         if not values.get('full_name') and not values.get('state'):
             raise ValueError('required state')
-        if not values.get('full_name') and not values.get('country'):
-            raise ValueError('required country')
         return values
 
 
