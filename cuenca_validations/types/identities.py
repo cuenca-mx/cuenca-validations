@@ -52,11 +52,13 @@ class Address(BaseModel):
 
     @root_validator()
     def full_name_complete(cls, values: Dict[str, Any]) -> Dict[str, Any]:
-        if not values.get('full_name') and not values.get('street'):
+        if values.get('full_name'):
+            return values
+        if not values.get('street'):
             raise ValueError('required street')
-        if not values.get('full_name') and not values.get('ext_number'):
+        if not values.get('ext_number'):
             raise ValueError('required ext_number')
-        if not values.get('full_name') and not values.get('state'):
+        if not values.get('state'):
             raise ValueError('required state')
         return values
 
