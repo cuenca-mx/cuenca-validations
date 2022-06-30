@@ -394,7 +394,7 @@ class AddressUpdateRequest(BaseModel):
     country: Optional[Country] = None
 
 
-class TOSRequestBase(BaseModel):
+class TOSRequest(BaseModel):
     version: Optional[str] = None
     ip: Optional[str] = None
     location: Optional[str] = None
@@ -409,14 +409,6 @@ class TOSRequestBase(BaseModel):
         except AddressValueError:
             raise ValueError('not valid ip')
         return ip
-
-
-class TOSUpdateRequest(TOSRequestBase):
-    ...
-
-
-class TOSRequest(TOSRequestBase):
-    ...
 
 
 class UserRequest(BaseModel):
@@ -512,7 +504,7 @@ class UserUpdateRequest(BaseModel):
     proof_of_address: Optional[KYCFileUpdateRequest] = None
     proof_of_life: Optional[KYCFileUpdateRequest] = None
     status: Optional[UserStatus] = None
-    terms_of_service: Optional[TOSUpdateRequest] = None
+    terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
 
     @validator('beneficiaries')
