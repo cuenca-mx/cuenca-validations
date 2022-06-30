@@ -294,10 +294,6 @@ def test_address_validation():
     with pytest.raises(ValueError) as v:
         Address(**data)
     assert 'required state' in str(v)
-    data = dict(street='varsovia', ext_number='36', state=State.DF)
-    with pytest.raises(ValueError) as v:
-        Address(**data)
-    assert 'required country' in str(v)
     data = dict(
         street='varsovia',
         ext_number='36',
@@ -310,6 +306,7 @@ def test_address_validation():
 @freeze_time('2022-01-01')
 def test_user_request():
     request = dict(
+        id=None,
         curp='ABCD920604HDFSRN03',
         phone_number='+525555555555',
         email_address='email@email.com',
@@ -328,6 +325,7 @@ def test_user_request():
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
         required_level=3,
+        terms_of_service=None,
     )
     assert UserRequest(**request).dict() == request
 
