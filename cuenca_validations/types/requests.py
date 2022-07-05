@@ -77,6 +77,7 @@ class TransferRequest(BaseRequest):
     descriptor: StrictStr
     idempotency_key: str
     user_id: Optional[str]
+    platform_id: Optional[str]
 
     class Config:
         fields = {
@@ -91,6 +92,7 @@ class TransferRequest(BaseRequest):
                 'description': 'Custom Id, must be unique for each transfer'
             },
             'user_id': {'description': 'source user to take the funds'},
+            'platform_id': {'description': 'platform id to take the funds'},
         }
         schema_extra = {
             'example': {
@@ -100,6 +102,7 @@ class TransferRequest(BaseRequest):
                 'descriptor': 'Mezcal, pulque y tequila',
                 'idempotency_key': 'UNIQUE-KEY-003',
                 'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'platform_id': 'PTZbBlk__kQt-wfwzP5nwA9A',
             }
         }
 
