@@ -79,8 +79,16 @@ def test_dict_with_exclude_unset():
 
 def test_sanitized_dict():
     assert SantizedDict(
-        status=TransactionStatus.succeeded, time=now, hello='there'
-    ) == dict(status='succeeded', time=utcnow.isoformat(), hello='there')
+        status=TransactionStatus.succeeded,
+        time=now,
+        hello='there',
+        dates=[now],
+    ) == dict(
+        status='succeeded',
+        time=utcnow.isoformat(),
+        hello='there',
+        dates=[utcnow.isoformat()],
+    )
 
 
 @pytest.mark.parametrize(

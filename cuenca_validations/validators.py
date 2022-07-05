@@ -1,6 +1,6 @@
 import datetime as dt
 from enum import Enum
-from typing import Any, Callable
+from typing import Any, Callable, List, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -18,11 +18,17 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
     :param default: Optional function to be used when there is no case
     for this type of item, default `None` it returns the item as is.
     """
+    rv: Union[str, List[Any]]
     if isinstance(item, dt.date):
         if isinstance(item, dt.datetime) and not item.tzinfo:
             rv = item.astimezone(dt.timezone.utc).isoformat()
         else:
             rv = item.isoformat()
+    elif isinstance(item, list):
+        rv = [
+            sanitize_dict(e) if isinstance(e, dict) else sanitize_item(e)
+            for e in item
+        ]
     elif isinstance(item, Enum):
         rv = item.value
     elif hasattr(item, 'to_dict'):
