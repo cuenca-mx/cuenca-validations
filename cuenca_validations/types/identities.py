@@ -82,9 +82,9 @@ class Beneficiary(BaseModel):
 
 class KYCFile(BaseModel):
     type: KYCFileType
+    is_mx: bool
     uri_front: str
     uri_back: Optional[str] = None
-    is_mx: Optional[bool] = None
     data: Optional[dict] = None
 
     class Config:
