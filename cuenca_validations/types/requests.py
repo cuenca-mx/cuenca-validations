@@ -142,7 +142,9 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 class UserCredentialUpdateRequest(BaseRequest):
     is_active: Optional[bool]
-    password: Optional[str] = Field(None, min_length=6, regex=r'\w')
+    password: Optional[str] = Field(
+        None, min_length=6, description='Any str with at least 6 characters'
+    )
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
@@ -157,7 +159,9 @@ class UserCredentialUpdateRequest(BaseRequest):
 
 
 class UserCredentialRequest(BaseRequest):
-    password: str = Field(..., min_length=6, regex=r'\w')
+    password: str = Field(
+        ..., min_length=6, description='Any str with at least 6 characters'
+    )
     user_id: Optional[str]
 
 
