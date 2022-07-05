@@ -570,6 +570,7 @@ class UserStatus(str, Enum):
 
 class SessionType(str, Enum):
     registration = 'session.registration'
+    show_card = 'session.show_card'
 
 
 class WebhookObject(str, Enum):
