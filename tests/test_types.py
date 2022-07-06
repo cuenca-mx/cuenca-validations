@@ -79,8 +79,16 @@ def test_dict_with_exclude_unset():
 
 def test_sanitized_dict():
     assert SantizedDict(
-        status=TransactionStatus.succeeded, time=now, hello='there'
-    ) == dict(status='succeeded', time=utcnow.isoformat(), hello='there')
+        status=TransactionStatus.succeeded,
+        time=now,
+        hello='there',
+        dates=[now],
+    ) == dict(
+        status='succeeded',
+        time=utcnow.isoformat(),
+        hello='there',
+        dates=[utcnow.isoformat()],
+    )
 
 
 @pytest.mark.parametrize(
@@ -379,14 +387,14 @@ def test_user_update_request():
         beneficiaries=[
             dict(
                 name='Pedro Pérez',
-                birth_date=dt.datetime(2020, 1, 1),
+                birth_date=dt.date(2020, 1, 1),
                 phone_number='+525555555555',
                 user_relationship='brother',
                 percentage=50,
             ),
             dict(
                 name='José Pérez',
-                birth_date=dt.datetime(2020, 1, 2),
+                birth_date=dt.date(2020, 1, 2),
                 phone_number='+525544444444',
                 user_relationship='brother',
                 percentage=50,
@@ -400,7 +408,7 @@ def test_user_update_request():
     request['beneficiaries'] = [
         dict(
             name='Pedro Pérez',
-            birth_date=dt.datetime(2020, 1, 1).isoformat(),
+            birth_date=dt.date(2020, 1, 1).isoformat(),
             phone_number='+525555555555',
             user_relationship='brother',
             percentage=50,

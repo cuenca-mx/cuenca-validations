@@ -65,7 +65,7 @@ class Address(BaseModel):
 
 class Beneficiary(BaseModel):
     name: str
-    birth_date: dt.datetime
+    birth_date: dt.date
     phone_number: PhoneNumber
     user_relationship: str
     percentage: int
