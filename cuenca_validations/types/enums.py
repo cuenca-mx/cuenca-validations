@@ -585,6 +585,8 @@ class WebhookEventType(str, Enum):
 
 
 class WebhookEvent(str, Enum):
+    card_transaction_create = 'card_transaction_create'
+    card_transaction_update = 'card_transaction_update'
     user_create = 'user.create'
     user_update = 'user.update'
     user_delete = 'user.delete'
