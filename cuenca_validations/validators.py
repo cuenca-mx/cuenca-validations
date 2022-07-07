@@ -7,9 +7,10 @@ from dateutil.relativedelta import relativedelta
 from .errors import NotDigitError
 
 
-def sanitize_dict(d: dict):
+def sanitize_dict(d: dict) -> dict:
     for k, v in d.items():
         d[k] = sanitize_item(v)
+    return d
 
 
 def sanitize_item(item: Any, default: Callable = None) -> Any:
