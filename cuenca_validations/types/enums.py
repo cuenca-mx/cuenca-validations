@@ -149,6 +149,7 @@ class AuthorizerTransaction(str, Enum):
     card_validation = 'card_validation'
     check_out = 'check_out'
     re_authorization = 're_authorization'
+    re_returns = 're_returns'
     fast_funds = 'fast_funds'
     fast_funds_reverse = 'fast_funds_reverse'
 
