@@ -410,12 +410,20 @@ def test_user_update_request():
             percentage=50,
         ),
     ]
+    assert UserUpdateRequest(**request)
 
+    request['beneficiaries'] = [
+        dict(
+            name='Pedro Pérez',
+            birth_date=dt.date(2020, 1, 1).isoformat(),
+            phone_number='+525555555555',
+            user_relationship='brother',
+            percentage=101,
+        ),
+    ]
     with pytest.raises(ValueError) as v:
         UserUpdateRequest(**request)
-        assert (
-            'The total percentage of beneficiaries does not add 100.' in str(v)
-        )
+        assert 'The total percentage is more than 100.' in str(v)
 
     tos_request = dict(
         terms_of_service=dict(
