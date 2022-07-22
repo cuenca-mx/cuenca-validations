@@ -424,6 +424,7 @@ class UserRequest(BaseModel):
     required_level: Optional[conint(ge=-1, le=4)] = None  # type: ignore
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
+    clabe: Optional[str] = None
     terms_of_service: Optional[TOSRequest] = None
 
     class Config:
@@ -453,6 +454,9 @@ class UserRequest(BaseModel):
             'email_verification_id': {
                 'description': 'Only if you validated it previously with the '
                 'resource `verifications`'
+            },
+            'clabe': {
+                'description': 'Only if clabe value is known'
             },
         }
         schema_extra = {
@@ -508,6 +512,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
+    clabe: Optional[str] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(

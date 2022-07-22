@@ -330,6 +330,7 @@ def test_user_request():
         email_verification_id='VE0987654321',
         required_level=3,
         terms_of_service=None,
+        clabe=None,
     )
     assert UserRequest(**request).dict() == request
 
