@@ -455,9 +455,7 @@ class UserRequest(BaseModel):
                 'description': 'Only if you validated it previously with the '
                 'resource `verifications`'
             },
-            'clabe': {
-                'description': 'Only if clabe value is known'
-            },
+            'clabe': {'description': 'Only if clabe value is known'},
         }
         schema_extra = {
             'example': {
