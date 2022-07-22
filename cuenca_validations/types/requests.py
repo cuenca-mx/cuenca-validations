@@ -117,6 +117,7 @@ class CardRequest(BaseRequest):
     user_id: str = 'me'
     issuer: CardIssuer
     funding_type: CardFundingType
+    is_dynamic_cvv: Optional[bool] = None
 
 
 class CardActivationRequest(BaseModel):
