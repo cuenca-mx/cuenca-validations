@@ -604,3 +604,8 @@ class VerificationType(str, Enum):
 class Language(str, Enum):
     en = 'en'
     es = 'es'
+
+
+class PlatformType(str, Enum):
+    bridge = 'bridge'
+    connect = 'connect'

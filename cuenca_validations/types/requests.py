@@ -32,6 +32,7 @@ from ..types.enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
+    PlatformType,
     PosCapability,
     SavingCategory,
     SessionType,
@@ -637,6 +638,7 @@ class PlatformRequest(BaseModel):
     economic_activity: Optional[str]
     phone_number: Optional[str]
     email_address: Optional[str]
+    type: PlatformType = PlatformType.connect
 
 
 class WebhookRequest(BaseModel):
