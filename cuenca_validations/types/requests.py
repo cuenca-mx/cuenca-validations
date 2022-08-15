@@ -111,6 +111,7 @@ class StrictTransferRequest(TransferRequest):
 class CardUpdateRequest(BaseRequest):
     status: Optional[CardStatus]
     pin_block: Optional[str]
+    is_dynamic_cvv: Optional[bool]
 
 
 class CardRequest(BaseRequest):
