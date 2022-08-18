@@ -551,7 +551,8 @@ class SessionRequest(BaseRequest):
 
 class EndpointRequest(BaseRequest):
     url: HttpUrl
-    events: Optional[List[WebhookEvent]]
+    events: Optional[List[WebhookEvent]] = None
+    user_id: Optional[str] = None
 
 
 class EndpointUpdateRequest(BaseRequest):
