@@ -594,6 +594,8 @@ class WebhookEvent(str, Enum):
     user_delete = 'user.delete'
     transaction_create = 'transaction.create'
     transaction_update = 'transaction.update'
+    cash_deposit_create = 'cash_deposit.create'
+    cash_deposit_update = 'cash_deposit.update'
 
 
 class VerificationType(str, Enum):
