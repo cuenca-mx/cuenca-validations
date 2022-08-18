@@ -148,7 +148,9 @@ class UserCredentialUpdateRequest(BaseRequest):
         None,
         min_length=6,
         max_length=128,
-        description='Any str with at least 6 characters',
+        description=(
+            'Any str with at least 6 characters, maximum 128 characters'
+        ),
     )
 
     def dict(self, *args, **kwargs) -> DictStrAny:
@@ -168,7 +170,9 @@ class UserCredentialRequest(BaseRequest):
         ...,
         min_length=6,
         max_length=128,
-        description='Any str with at least 6 characters',
+        description=(
+            'Any str with at least 6 characters, maximum 128 characters'
+        ),
     )
     user_id: Optional[str]
 
@@ -531,7 +535,9 @@ class UserLoginRequest(BaseRequest):
         ...,
         min_length=6,
         max_length=128,
-        description='Any str with at least 6 characters',
+        description=(
+            'Any str with at least 6 characters, maximum 128 characters'
+        ),
     )
     user_id: Optional[str]
 
