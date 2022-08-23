@@ -611,3 +611,4 @@ class Language(str, Enum):
 class PlatformType(str, Enum):
     bridge = 'bridge'
     connect = 'connect'
+    spei = 'spei'
