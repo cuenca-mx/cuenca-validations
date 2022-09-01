@@ -498,10 +498,10 @@ class UserRequest(BaseModel):
 
 
 class KYCFileUpdateRequest(BaseModel):
-    type: Optional[KYCFileType] = None
-    uri_front: Optional[str] = None
-    uri_back: Optional[str] = None
-    is_mx: Optional[bool] = None
+    type: KYCFileType
+    id_file_front: str
+    id_file_back: Optional[str] = None
+    is_mx: bool = False
     data: Optional[Dict] = None
 
 
