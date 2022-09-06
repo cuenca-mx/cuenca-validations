@@ -1,7 +1,6 @@
 __all__ = [
     'AccountQuery',
     'Address',
-    'AddressUpdateRequest',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
@@ -43,7 +42,6 @@ __all__ = [
     'JSONEncoder',
     'KYCFile',
     'KYCFileType',
-    'KYCFileUpdateRequest',
     'KYCVerificationUpdateRequest',
     'Language',
     'LimitedWalletRequest',
@@ -174,7 +172,6 @@ from .queries import (
     WalletTransactionQuery,
 )
 from .requests import (
-    AddressUpdateRequest,
     ApiKeyUpdateRequest,
     CurpValidationRequest,
     EndpointRequest,
@@ -183,7 +180,6 @@ from .requests import (
     FileRequest,
     FileUploadRequest,
     IdentityUpdateRequest,
-    KYCFileUpdateRequest,
     KYCVerificationUpdateRequest,
     LimitedWalletRequest,
     PlatformRequest,

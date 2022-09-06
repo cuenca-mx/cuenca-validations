@@ -1,6 +1,6 @@
 import datetime as dt
 from ipaddress import AddressValueError
-from typing import Dict, List, Optional, Union
+from typing import List, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -55,6 +55,7 @@ from .identities import (
     Address,
     Beneficiary,
     CurpField,
+    KYCFile,
     PhoneNumber,
     Rfc,
     TOSAgreement,
@@ -398,16 +399,6 @@ class CurpValidationRequest(BaseModel):
         return values
 
 
-class AddressUpdateRequest(BaseModel):
-    street: Optional[str] = None
-    ext_number: Optional[str] = None
-    int_number: Optional[str] = None
-    postal_code: Optional[str] = None
-    state: Optional[State] = None
-    city: Optional[str] = None
-    country: Optional[Country] = None
-
-
 class TOSRequest(BaseModel):
     version: Optional[str] = None
     ip: Optional[str] = None
@@ -497,14 +488,6 @@ class UserRequest(BaseModel):
         return curp
 
 
-class KYCFileUpdateRequest(BaseModel):
-    type: KYCFileType
-    id_file_front: str
-    id_file_back: Optional[str] = None
-    is_mx: bool = False
-    data: Optional[Dict] = None
-
-
 class UserUpdateRequest(BaseModel):
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
@@ -512,11 +495,11 @@ class UserUpdateRequest(BaseModel):
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
-    address: Optional[AddressUpdateRequest] = None
+    address: Optional[Address] = None
     beneficiaries: Optional[List[Beneficiary]] = None
-    govt_id: Optional[KYCFileUpdateRequest] = None
-    proof_of_address: Optional[KYCFileUpdateRequest] = None
-    proof_of_life: Optional[KYCFileUpdateRequest] = None
+    govt_id: Optional[KYCFile] = None
+    proof_of_address: Optional[KYCFile] = None
+    proof_of_life: Optional[KYCFile] = None
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
