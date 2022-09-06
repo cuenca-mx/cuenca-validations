@@ -32,6 +32,7 @@ from ..types.enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
+    KYCProvider,
     PlatformType,
     PosCapability,
     SavingCategory,
@@ -510,6 +511,7 @@ class UserUpdateRequest(BaseModel):
     email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     verification_id: Optional[str] = None
+    verification_provider: Optional[KYCProvider] = KYCProvider.metamap
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[AddressUpdateRequest] = None
@@ -523,7 +525,7 @@ class UserUpdateRequest(BaseModel):
 
     @validator('beneficiaries')
     def beneficiary_percentage(
-        cls, beneficiaries: Optional[List[Beneficiary]] = None
+        self, beneficiaries: Optional[List[Beneficiary]] = None
     ):
         if beneficiaries and sum(b.percentage for b in beneficiaries) > 100:
             raise ValueError('The total percentage is more than 100.')

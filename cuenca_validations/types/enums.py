@@ -612,3 +612,9 @@ class PlatformType(str, Enum):
     bridge = 'bridge'
     connect = 'connect'
     spei = 'spei'
+
+
+class KYCProvider(str, Enum):
+    metamap = 'metamap'
+    jumio = 'jumio'
+    incode = 'incode'

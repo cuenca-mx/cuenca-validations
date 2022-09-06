@@ -118,6 +118,7 @@ from .enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
+    KYCProvider,
     Language,
     PlatformType,
     PosCapability,
