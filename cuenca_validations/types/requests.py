@@ -663,7 +663,7 @@ class BankAccountValidationRequest(BaseRequest):
         anystr_strip_whitespace = True
         fields = {
             'account_number': {
-                'description': 'Mandatory field for account validation, can be CARD_NUMBER or CLABE'
+                'description': 'Account number for validation, can be CARD_NUMBER or CLABE'
             },
             'bank_code': {
                 'description': 'Code of the bank according to https://es.wikipedia.org/wiki/CLABE, this can '

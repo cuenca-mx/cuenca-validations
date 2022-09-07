@@ -25,6 +25,7 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
+    BankAccountValidationRequest,
     ChargeRequest,
     CurpValidationRequest,
     EndpointRequest,
@@ -513,4 +514,16 @@ def test_identity_update_request():
 
     assert IdentityUpdateRequest(
         user_id=user_id, rfc_file=rfc_file, extension=extension
+    )
+
+
+def test_bank_account_validation_clabe_request():
+    assert BankAccountValidationRequest(
+        account_number='646180157098510917', bank_code='90646'
+    )
+
+
+def test_bank_account_validation_card_number_request():
+    assert BankAccountValidationRequest(
+        account_number='4050000000000001', bank_code='40012'
     )

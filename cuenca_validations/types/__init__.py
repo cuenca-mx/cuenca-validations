@@ -4,6 +4,7 @@ __all__ = [
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
+    'BankAccountValidationRequest',
     'BalanceEntryQuery',
     'BatchFileMetadata',
     'Beneficiary',
