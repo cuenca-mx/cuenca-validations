@@ -647,3 +647,32 @@ class WebhookRequest(BaseModel):
     event: WebhookEventType
     object_type: WebhookObject
     data: DictStrAny
+
+
+class BankAccountValidationRequest(BaseRequest):
+    account_number: Union[Clabe, PaymentCardNumber]
+    bank_code: str = Field(
+        ...,
+        strip_whitespace=True,
+        min_length=5,
+        max_length=5,
+        regex=r'\d{5}',
+    )
+
+    class Config:
+        anystr_strip_whitespace = True
+        fields = {
+            'account_number': {
+                'description': 'Mandatory field for account validation, can be CARD_NUMBER or CLABE'
+            },
+            'bank_code': {
+                'description': 'Code of the bank according to https://es.wikipedia.org/wiki/CLABE, this can '
+                'be retrived from our library https://github.com/cuenca-mx/clabe-python'
+            },
+        }
+        schema_extra = {
+            'example': {
+                'account_number': '646180157098510917',
+                'bank_code': '90646',
+            }
+        }
