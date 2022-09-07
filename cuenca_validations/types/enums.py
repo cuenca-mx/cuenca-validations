@@ -612,3 +612,9 @@ class PlatformType(str, Enum):
     bridge = 'bridge'
     connect = 'connect'
     spei = 'spei'
+
+
+class BankAccountStatus(str, Enum):
+    submitted = 'submitted'
+    succeeded = 'succeeded'
+    failed = 'failed'
