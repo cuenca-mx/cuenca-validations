@@ -25,6 +25,7 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
+    BillPaymentRequest,
     ChargeRequest,
     CurpValidationRequest,
     EndpointRequest,
@@ -513,4 +514,20 @@ def test_identity_update_request():
 
     assert IdentityUpdateRequest(
         user_id=user_id, rfc_file=rfc_file, extension=extension
+    )
+
+
+def test_bill_payment_request():
+    amount = 100
+    field_type = 'barcode'
+    account_number = '1234567890'
+    provider_id = 'PR01'
+    accountholder_name = 'Frida Khalo'
+
+    assert BillPaymentRequest(
+        amount=amount,
+        field_type=field_type,
+        account_number=account_number,
+        provider_id=provider_id,
+        accountholder_name=accountholder_name,
     )

@@ -35,6 +35,7 @@ from ..types.enums import (
     PlatformType,
     PosCapability,
     SavingCategory,
+    ServiceProviderFieldType,
     SessionType,
     State,
     TrackDataMethod,
@@ -647,3 +648,11 @@ class WebhookRequest(BaseModel):
     event: WebhookEventType
     object_type: WebhookObject
     data: DictStrAny
+
+
+class BillPaymentRequest(BaseRequest):
+    amount: int
+    field_type: ServiceProviderFieldType
+    account_number: str
+    provider_id: str
+    accountholder_name: Optional[str]

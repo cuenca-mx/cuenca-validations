@@ -612,3 +612,10 @@ class PlatformType(str, Enum):
     bridge = 'bridge'
     connect = 'connect'
     spei = 'spei'
+
+
+class ServiceProviderFieldType(str, Enum):
+    barcode = 'barcode'
+    account_number = 'account_number'
+    credit_card_number = 'credit_card_number'
+    phone_number = 'phone_number'
