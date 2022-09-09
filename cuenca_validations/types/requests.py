@@ -656,3 +656,4 @@ class BillPaymentRequest(BaseRequest):
     account_number: str
     provider_id: str
     accountholder_name: Optional[str]
+    user_id: Optional[str]
