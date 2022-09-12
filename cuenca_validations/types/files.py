@@ -2,7 +2,7 @@ from typing import List, Optional
 
 from pydantic import BaseModel, HttpUrl
 
-from .enums import KYCFileType
+from .enums import KYCFileType, ServiceProviderFieldType
 
 
 class BatchFileMetadata(BaseModel):
