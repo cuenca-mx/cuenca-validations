@@ -651,7 +651,7 @@ class WebhookRequest(BaseModel):
 
 
 class BillPaymentRequest(BaseRequest):
-    amount: int
+    amount: StrictPositiveInt
     field_type: ServiceProviderFieldType
     account_number: str
     provider_id: str
