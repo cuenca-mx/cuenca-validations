@@ -8,6 +8,7 @@ __all__ = [
     'BatchFileMetadata',
     'Beneficiary',
     'BillPaymentQuery',
+    'BillPaymentRequest',
     'CardErrorType',
     'CardFundingType',
     'CardholderVerificationMethod',
@@ -58,6 +59,9 @@ __all__ = [
     'SavingRequest',
     'SavingUpdateRequest',
     'ServiceProviderCategory',
+    'ServiceProviderField',
+    'ServiceProviderFieldType',
+    'ServiceProviderQuery',
     'SessionQuery',
     'SessionRequest',
     'SessionType',
@@ -121,6 +125,7 @@ from .enums import (
     PosCapability,
     SavingCategory,
     ServiceProviderCategory,
+    ServiceProviderFieldType,
     SessionType,
     State,
     TrackDataMethod,
@@ -133,7 +138,7 @@ from .enums import (
     WalletTransactionType,
     WebhookEvent,
 )
-from .files import BatchFileMetadata
+from .files import BatchFileMetadata, ServiceProviderField
 from .general import (
     JSONEncoder,
     SantizedDict,
@@ -163,6 +168,7 @@ from .queries import (
     IdentityQuery,
     PageSize,
     QueryParams,
+    ServiceProviderQuery,
     SessionQuery,
     StatementQuery,
     TransactionQuery,
@@ -173,6 +179,7 @@ from .queries import (
 )
 from .requests import (
     ApiKeyUpdateRequest,
+    BillPaymentRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,

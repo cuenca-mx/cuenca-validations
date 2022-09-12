@@ -177,3 +177,7 @@ class SessionQuery(QueryParams):
 
 class FileQuery(QueryParams):
     type: Optional[KYCFileType] = None
+
+
+class ServiceProviderQuery(QueryParams):
+    categories: Optional[str] = None
