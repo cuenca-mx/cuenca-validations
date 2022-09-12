@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import List, Optional
 
 from pydantic import BaseModel, HttpUrl
 
@@ -10,3 +10,11 @@ class BatchFileMetadata(BaseModel):
     is_back: bool
     type: KYCFileType
     url: HttpUrl
+
+
+class ServiceProviderField(BaseModel):
+    is_active: bool
+    requires_accountholder_name: bool
+    mask: str
+    topup_amounts: List[int]
+    type: ServiceProviderFieldType

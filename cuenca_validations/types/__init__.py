@@ -59,6 +59,7 @@ __all__ = [
     'SavingRequest',
     'SavingUpdateRequest',
     'ServiceProviderCategory',
+    'ServiceProviderField',
     'ServiceProviderFieldType',
     'ServiceProviderQuery',
     'SessionQuery',
@@ -137,7 +138,7 @@ from .enums import (
     WalletTransactionType,
     WebhookEvent,
 )
-from .files import BatchFileMetadata
+from .files import BatchFileMetadata, ServiceProviderField
 from .general import (
     JSONEncoder,
     SantizedDict,
