@@ -612,3 +612,9 @@ class PlatformType(str, Enum):
     bridge = 'bridge'
     connect = 'connect'
     spei = 'spei'
+
+
+class TermsOfService(str, Enum):
+    arteria = 'arteria'
+    ifpe = 'ifpe'
+    tarjetas_cuenca = 'tarjetas_cuenca'
