@@ -37,6 +37,7 @@ from ..types.enums import (
     SavingCategory,
     SessionType,
     State,
+    TermsOfService,
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
@@ -120,6 +121,7 @@ class CardRequest(BaseRequest):
     issuer: CardIssuer
     funding_type: CardFundingType
     is_dynamic_cvv: Optional[bool] = None
+    card_holder_user_id: Optional[str] = None
 
 
 class CardActivationRequest(BaseModel):
@@ -400,10 +402,10 @@ class CurpValidationRequest(BaseModel):
 
 
 class TOSRequest(BaseModel):
-    version: Optional[str] = None
+    type: TermsOfService
+    version: str
+    location: Optional[str]
     ip: Optional[str] = None
-    location: Optional[str] = None
-    type: Optional[str] = None
 
     @validator('ip')
     def validate_ip(cls, ip: str):
