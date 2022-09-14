@@ -82,23 +82,23 @@ class Beneficiary(BaseModel):
 
 class KYCFile(BaseModel):
     type: KYCFileType
-    file_id_front: str
-    file_id_back: Optional[str] = None
+    uri_front: str
+    uri_back: Optional[str] = None
     is_mx: bool = True
     data: Optional[dict] = None
 
     class Config:
         fields = {
-            'file_id_front': {'description': 'File id created previously'},
-            'file_id_back': {'description': 'File id created previously'},
+            'uri_front': {'description': 'API uri to fetch the file'},
+            'uri_back': {'description': 'API uri to fetch the file'},
         }
 
         schema_extra = {
             "example": {
                 "type": "ine",
                 "is_mx": True,
-                "file_id_front": "FILE-01",
-                "file_id_back": "FILE-02",
+                "uri_front": "/files/FILE-01",
+                "uri_back": "/files/FILE-02",
                 "data": {},
             }
         }
