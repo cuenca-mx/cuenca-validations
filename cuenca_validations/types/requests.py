@@ -56,7 +56,7 @@ from .identities import (
     Address,
     Beneficiary,
     CurpField,
-    KYCFileUpdate,
+    KYCFile,
     PhoneNumber,
     Rfc,
     TOSAgreement,
@@ -499,9 +499,9 @@ class UserUpdateRequest(BaseModel):
     phone_verification_id: Optional[str] = None
     address: Optional[Address] = None
     beneficiaries: Optional[List[Beneficiary]] = None
-    govt_id: Optional[KYCFileUpdate] = None
-    proof_of_address: Optional[KYCFileUpdate] = None
-    proof_of_life: Optional[KYCFileUpdate] = None
+    govt_id: Optional[KYCFile] = None
+    proof_of_address: Optional[KYCFile] = None
+    proof_of_life: Optional[KYCFile] = None
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None

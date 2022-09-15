@@ -438,8 +438,8 @@ def test_user_update_request():
     kyc_request = dict(
         govt_id=dict(
             type='ine',
-            file_id_front='FI-123',
-            file_id_back='FI-456',
+            uri_front='/files/FI-123',
+            uri_back='/files/FI-456',
         )
     )
     UserUpdateRequest(**kyc_request)
