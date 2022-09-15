@@ -435,6 +435,15 @@ def test_user_update_request():
     )
     UserUpdateRequest(**tos_request)
 
+    kyc_request = dict(
+        govt_id=dict(
+            type='ine',
+            uri_front='/files/FI-123',
+            uri_back='/files/FI-456',
+        )
+    )
+    UserUpdateRequest(**kyc_request)
+
     # chagning to invalid request
     tos_request['terms_of_service']['ip'] = 'not valid ip'
     with pytest.raises(ValueError) as v:
