@@ -649,3 +649,7 @@ class WebhookRequest(BaseModel):
     event: WebhookEventType
     object_type: WebhookObject
     data: DictStrAny
+
+
+class KYCValidationRequest(BaseRequest):
+    user_id: str
