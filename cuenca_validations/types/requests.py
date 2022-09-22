@@ -285,6 +285,7 @@ class SavingBaseRequest(BaseRequest):
 class SavingRequest(SavingBaseRequest):
     name: str
     category: SavingCategory
+    user_id: Optional[str] = None
 
 
 class SavingUpdateRequest(SavingBaseRequest):
@@ -296,6 +297,7 @@ class WalletTransactionRequest(BaseRequest):
     wallet_uri: str
     transaction_type: WalletTransactionType
     amount: StrictPositiveInt
+    user_id: Optional[str] = None
 
 
 class FraudValidationRequest(BaseModel):
