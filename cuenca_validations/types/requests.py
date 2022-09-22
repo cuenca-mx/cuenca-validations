@@ -285,6 +285,7 @@ class SavingBaseRequest(BaseRequest):
 class SavingRequest(SavingBaseRequest):
     name: str
     category: SavingCategory
+    user_id: Optional[str] = None
 
 
 class SavingUpdateRequest(SavingBaseRequest):
