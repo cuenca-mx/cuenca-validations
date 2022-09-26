@@ -90,11 +90,13 @@ class VerificationErrors(BaseModel):
 class KYCFile(BaseModel):
     type: KYCFileType
     uri_front: str
+    attempt: int
     uri_back: Optional[str] = None
     is_mx: bool = True
     data: Optional[dict] = None
     status: Optional[VerificationStatus] = None
     errors: Optional[List[VerificationErrors]]
+    verification_id: Optional[str]
 
     class Config:
         fields = {
@@ -107,6 +109,14 @@ class KYCFile(BaseModel):
             'errors': {
                 'description': 'In case we have some errors we '
                 'list them inside this array'
+            },
+            'attempt': {
+                'description': 'The number of kyc_validation '
+                'intents for this docuemnt'
+            },
+            'verification_id': {
+                'description': 'The provider identifier of the '
+                'validation result'
             },
         }
 
