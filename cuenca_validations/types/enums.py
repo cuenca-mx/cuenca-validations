@@ -546,6 +546,7 @@ class Country(str, Enum):
 
 class VerificationStatus(str, Enum):
     not_verified = 'not_verified'
+    created = 'created'
     submitted = 'submitted'
     rejected = 'rejected'
     succeeded = 'succeeded'
