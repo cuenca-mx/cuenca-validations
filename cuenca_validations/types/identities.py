@@ -90,13 +90,13 @@ class VerificationErrors(BaseModel):
 class KYCFile(BaseModel):
     type: KYCFileType
     uri_front: str
-    attempt: int
     uri_back: Optional[str] = None
     is_mx: bool = True
     data: Optional[dict] = None
     status: Optional[VerificationStatus] = None
     errors: Optional[List[VerificationErrors]]
     verification_id: Optional[str]
+    attempt: Optional[int]
 
     class Config:
         fields = {
