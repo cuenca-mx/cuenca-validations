@@ -1,6 +1,6 @@
 import datetime as dt
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 from pydantic.class_validators import root_validator
@@ -80,6 +80,13 @@ class Beneficiary(BaseModel):
         }
 
 
+class VerificationErrors(BaseModel):
+    id: str
+    error: str
+    code: str
+    message: Optional[str]
+
+
 class KYCFile(BaseModel):
     type: KYCFileType
     uri_front: str
@@ -87,6 +94,7 @@ class KYCFile(BaseModel):
     is_mx: bool = True
     data: Optional[dict] = None
     status: Optional[VerificationStatus] = None
+    errors: Optional[List[VerificationErrors]]
 
     class Config:
         fields = {
@@ -94,6 +102,9 @@ class KYCFile(BaseModel):
             'uri_back': {'description': 'API uri to fetch the file'},
             'status': {
                 'description': 'The status of the file depends on KYCValidation'
+            },
+            'errors': {
+                'description': 'In case we have some errors we list them inside this array'
             },
         }
 
@@ -105,6 +116,7 @@ class KYCFile(BaseModel):
                 "uri_back": "/files/FILE-02",
                 "data": {},
                 "status": "created",
+                "errors": [],
             }
         }
 
