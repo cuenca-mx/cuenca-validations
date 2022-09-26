@@ -86,6 +86,31 @@ class VerificationErrors(BaseModel):
     code: str
     message: Optional[str]
 
+    class Config:
+        fields = {
+            'identifier': {
+                'description': 'Unique identifier for ' 'the step validation'
+            },
+            'error': {
+                'description': 'Error throwed on validation,'
+                ' can be StepError or SystemError in case of '
+                'KYCProvider intermittence'
+            },
+            'code': {
+                'description': 'Specific code of the failure in the step.'
+            },
+            'message': {'description': 'Message for error description'},
+        }
+
+        schema_extra = {
+            "example": {
+                "identifier": "age-check",
+                "error": 'StepError',
+                "code": "underage.noDOB",
+                "message": "The date of birth could not be obtained",
+            }
+        }
+
 
 class KYCFile(BaseModel):
     type: KYCFileType
@@ -107,8 +132,8 @@ class KYCFile(BaseModel):
                 'on KYCValidation'
             },
             'errors': {
-                'description': 'In case we have some errors we '
-                'list them inside this array'
+                'description': 'List of document errors found '
+                'during kyc validation'
             },
             'attempt': {
                 'description': 'The number of kyc_validation '
