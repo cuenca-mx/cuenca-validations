@@ -89,7 +89,7 @@ class VerificationErrors(BaseModel):
     class Config:
         fields = {
             'identifier': {
-                'description': 'Unique identifier for ' 'the step validation'
+                'description': 'Unique identifier for the step validation'
             },
             'error': {
                 'description': 'Error throwed on validation,'
@@ -99,7 +99,7 @@ class VerificationErrors(BaseModel):
             'code': {
                 'description': 'Specific code of the failure in the step.'
             },
-            'message': {'description': 'Message for error description'},
+            'message': {'description': 'Error description'},
         }
 
         schema_extra = {
