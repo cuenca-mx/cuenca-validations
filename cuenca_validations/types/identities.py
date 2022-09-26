@@ -7,7 +7,7 @@ from pydantic.class_validators import root_validator
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
-from .enums import Country, KYCFileType, State
+from .enums import Country, KYCFileType, State, VerificationStatus
 
 
 class PhoneNumber(StrictStr):
@@ -86,11 +86,15 @@ class KYCFile(BaseModel):
     uri_back: Optional[str] = None
     is_mx: bool = True
     data: Optional[dict] = None
+    status: Optional[VerificationStatus] = None
 
     class Config:
         fields = {
             'uri_front': {'description': 'API uri to fetch the file'},
             'uri_back': {'description': 'API uri to fetch the file'},
+            'status': {
+                'description': 'The status of the file depends on KYCValidation'
+            },
         }
 
         schema_extra = {
@@ -100,6 +104,7 @@ class KYCFile(BaseModel):
                 "uri_front": "/files/FILE-01",
                 "uri_back": "/files/FILE-02",
                 "data": {},
+                "status": "submitted",
             }
         }
 
