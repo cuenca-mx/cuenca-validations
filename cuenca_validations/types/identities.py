@@ -101,10 +101,12 @@ class KYCFile(BaseModel):
             'uri_front': {'description': 'API uri to fetch the file'},
             'uri_back': {'description': 'API uri to fetch the file'},
             'status': {
-                'description': 'The status of the file depends on KYCValidation'
+                'description': 'The status of the file depends '
+                'on KYCValidation'
             },
             'errors': {
-                'description': 'In case we have some errors we list them inside this array'
+                'description': 'In case we have some errors we '
+                'list them inside this array'
             },
         }
 
