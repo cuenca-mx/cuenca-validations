@@ -81,7 +81,7 @@ class Beneficiary(BaseModel):
 
 
 class VerificationErrors(BaseModel):
-    id: str
+    identifier: str
     error: str
     code: str
     message: Optional[str]
