@@ -42,6 +42,7 @@ __all__ = [
     'JSONEncoder',
     'KYCFile',
     'KYCFileType',
+    'KYCValidationRequest',
     'KYCVerificationUpdateRequest',
     'Language',
     'LimitedWalletRequest',
@@ -85,6 +86,7 @@ __all__ = [
     'UserRequest',
     'UserStatus',
     'VerificationAttemptRequest',
+    'VerificationErrors',
     'VerificationRequest',
     'VerificationStatus',
     'VerificationType',
@@ -151,6 +153,7 @@ from .identities import (
     PhoneNumber,
     Rfc,
     TOSAgreement,
+    VerificationErrors,
 )
 from .queries import (
     AccountQuery,
@@ -182,6 +185,7 @@ from .requests import (
     FileRequest,
     FileUploadRequest,
     IdentityUpdateRequest,
+    KYCValidationRequest,
     KYCVerificationUpdateRequest,
     LimitedWalletRequest,
     PlatformRequest,

@@ -1,13 +1,13 @@
 import datetime as dt
 import re
-from typing import Any, Dict, Optional
+from typing import Any, Dict, List, Optional
 
 from pydantic import BaseModel
 from pydantic.class_validators import root_validator
 from pydantic.types import StrictStr
 from pydantic.validators import IPv4Address
 
-from .enums import Country, KYCFileType, State
+from .enums import Country, KYCFileType, State, VerificationStatus
 
 
 class PhoneNumber(StrictStr):
@@ -80,17 +80,69 @@ class Beneficiary(BaseModel):
         }
 
 
+class VerificationErrors(BaseModel):
+    identifier: str
+    error: str
+    code: str
+    message: Optional[str]
+
+    class Config:
+        fields = {
+            'identifier': {
+                'description': 'Unique identifier for the step validation'
+            },
+            'error': {
+                'description': 'Error throwed on validation,'
+                ' can be StepError or SystemError in case of '
+                'KYCProvider intermittence'
+            },
+            'code': {
+                'description': 'Specific code of the failure in the step.'
+            },
+            'message': {'description': 'Error description'},
+        }
+
+        schema_extra = {
+            "example": {
+                "identifier": "age-check",
+                "error": 'StepError',
+                "code": "underage.noDOB",
+                "message": "The date of birth could not be obtained",
+            }
+        }
+
+
 class KYCFile(BaseModel):
     type: KYCFileType
     uri_front: str
     uri_back: Optional[str] = None
     is_mx: bool = True
     data: Optional[dict] = None
+    status: Optional[VerificationStatus] = None
+    errors: Optional[List[VerificationErrors]]
+    verification_id: Optional[str]
+    attempt: Optional[int]
 
     class Config:
         fields = {
             'uri_front': {'description': 'API uri to fetch the file'},
             'uri_back': {'description': 'API uri to fetch the file'},
+            'status': {
+                'description': 'The status of the file depends '
+                'on KYCValidation'
+            },
+            'errors': {
+                'description': 'List of document errors found '
+                'during kyc validation'
+            },
+            'attempt': {
+                'description': 'The number of kyc_validation '
+                'intents for this docuemnt'
+            },
+            'verification_id': {
+                'description': 'The provider identifier of the '
+                'validation result'
+            },
         }
 
         schema_extra = {
@@ -100,6 +152,8 @@ class KYCFile(BaseModel):
                 "uri_front": "/files/FILE-01",
                 "uri_back": "/files/FILE-02",
                 "data": {},
+                "status": "created",
+                "errors": [],
             }
         }
 
