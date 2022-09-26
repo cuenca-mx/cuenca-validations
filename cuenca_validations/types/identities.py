@@ -104,7 +104,7 @@ class KYCFile(BaseModel):
                 "uri_front": "/files/FILE-01",
                 "uri_back": "/files/FILE-02",
                 "data": {},
-                "status": "submitted",
+                "status": "created",
             }
         }
 
