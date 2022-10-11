@@ -628,3 +628,4 @@ class FileExtension(str, Enum):
     jpg = 'jpg'
     jpeg = 'jpeg'
     png = 'png'
+    pdf = 'pdf'
