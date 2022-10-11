@@ -619,3 +619,12 @@ class TermsOfService(str, Enum):
     arteria = 'arteria'
     ifpe = 'ifpe'
     tarjetas_cuenca = 'tarjetas_cuenca'
+
+
+class FileExtension(str, Enum):
+    mp4 = 'mp4'
+    mov = 'mov'
+    v_3gpp = '3gpp'  # 3GPP
+    jpg = 'jpg'
+    jpeg = 'jpeg'
+    png = 'png'
