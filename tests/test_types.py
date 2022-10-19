@@ -320,6 +320,7 @@ def test_user_request():
             street='calle 1',
             ext_number='2',
             int_number='3',
+            colonia='Juarez',
             postal_code='09900',
             state=State.DF.value,
             country=Country.MX,
