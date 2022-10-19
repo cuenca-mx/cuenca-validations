@@ -29,6 +29,7 @@ from ..types.enums import (
     CardType,
     Country,
     EcommerceIndicator,
+    FileExtension,
     Gender,
     IssuerNetwork,
     KYCFileType,
@@ -567,7 +568,7 @@ class EndpointUpdateRequest(BaseRequest):
 class FileUploadRequest(BaseRequest):
     is_back: Optional[bool] = False
     file: Union[bytes, str]
-    extension: Optional[str]
+    extension: Optional[FileExtension]
     type: KYCFileType
     user_id: str
 
