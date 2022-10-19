@@ -97,6 +97,7 @@ __all__ = [
     'WalletTransactionQuery',
     'WebhookEvent',
     'digits',
+    'get_state_name',
 ]
 
 from .card import PaymentCardNumber, StrictPaymentCardNumber
@@ -146,6 +147,7 @@ from .general import (
     StrictPositiveFloat,
     StrictPositiveInt,
     digits,
+    get_state_name,
 )
 from .identities import (
     Address,
