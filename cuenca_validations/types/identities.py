@@ -43,12 +43,12 @@ class Address(BaseModel):
             "example": {
                 "street": "Reforma",
                 "ext_number": "265",
-                "int_number": "6",
+                "int_number": "5",
                 "colonia": "Cuauhtémoc",
                 "postal_code": "06500",
                 "state": "DF",
                 "country": "MX",
-                "city": "Ciudad de México",
+                "city": "Cuauhtémoc",
             }
         }
 
