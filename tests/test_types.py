@@ -16,6 +16,7 @@ from cuenca_validations.types import (
     SessionRequest,
     TransactionStatus,
     digits,
+    get_state_name,
 )
 from cuenca_validations.types.enums import (
     Country,
@@ -320,6 +321,7 @@ def test_user_request():
             street='calle 1',
             ext_number='2',
             int_number='3',
+            colonia='Juarez',
             postal_code='09900',
             state=State.DF.value,
             country=Country.MX,
@@ -523,3 +525,7 @@ def test_identity_update_request():
     assert IdentityUpdateRequest(
         user_id=user_id, rfc_file=rfc_file, extension=extension
     )
+
+
+def test_get_state_name():
+    assert get_state_name(State.VZ) == 'Veracruz'

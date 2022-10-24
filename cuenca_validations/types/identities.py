@@ -30,11 +30,12 @@ class Rfc(StrictStr):
 class Address(BaseModel):
     street: Optional[str] = None
     ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    colonia: Optional[str] = None
     postal_code: Optional[str] = None
     state: Optional[State] = None
     country: Optional[Country] = None
     city: Optional[str] = None
-    int_number: Optional[str] = None
     full_name: Optional[str] = None
 
     class Config:
@@ -42,11 +43,12 @@ class Address(BaseModel):
             "example": {
                 "street": "Reforma",
                 "ext_number": "265",
+                "int_number": "5",
+                "colonia": "Cuauhtémoc",
                 "postal_code": "06500",
                 "state": "DF",
                 "country": "MX",
-                "city": "Ciudad de México",
-                "int_number": "6",
+                "city": "Cuauhtémoc",
             }
         }
 
