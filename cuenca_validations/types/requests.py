@@ -655,4 +655,4 @@ class WebhookRequest(BaseModel):
 
 class KYCValidationRequest(BaseRequest):
     user_id: str
-    force: Optional[bool] = False
+    force: bool = False
