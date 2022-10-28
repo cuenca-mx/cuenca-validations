@@ -437,6 +437,16 @@ def test_user_update_request():
     )
     UserUpdateRequest(**tos_request)
 
+    tos_request = dict(
+        terms_of_service=dict(
+            version='2022-01-01',
+            ip='2001:0db8:0000:0000:0000:ff00:0042:8329',
+            location='1111,1111',
+            type='ifpe',
+        )
+    )
+    UserUpdateRequest(**tos_request)
+
     kyc_request = dict(
         govt_id=dict(
             type='ine',
