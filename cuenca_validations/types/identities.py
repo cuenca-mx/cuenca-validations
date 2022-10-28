@@ -1,11 +1,11 @@
 import datetime as dt
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Union
 
 from pydantic import BaseModel
 from pydantic.class_validators import root_validator
 from pydantic.types import StrictStr
-from pydantic.validators import IPv4Address
+from pydantic import IPvAnyAddress
 
 from .enums import Country, KYCFileType, State, VerificationStatus
 
@@ -162,7 +162,7 @@ class KYCFile(BaseModel):
 
 class TOSAgreement(BaseModel):
     version: str
-    ip: IPv4Address
+    ip: IPvAnyAddress
     location: Optional[str]
 
     class Config:

@@ -1,5 +1,5 @@
 import datetime as dt
-from ipaddress import AddressValueError
+from ipaddress import AddressValueError, IPv6Address
 from typing import List, Optional, Union
 
 from clabe import Clabe
@@ -16,6 +16,7 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
+from pydantic.networks import IPvAnyAddress
 from pydantic.validators import IPv4Address
 
 from ..types.enums import (
@@ -413,9 +414,18 @@ class TOSRequest(BaseModel):
     def validate_ip(cls, ip: str):
         # we validate ip address this way because the
         # model IPv4Address is not JSON serializable
+        valid = False
         try:
             IPv4Address(ip)
+            valid = True
         except AddressValueError:
+            ...
+        try:
+            IPv6Address(ip)
+            valid = True
+        except AddressValueError:
+            ...
+        if not valid:
             raise ValueError('not valid ip')
         return ip
 
