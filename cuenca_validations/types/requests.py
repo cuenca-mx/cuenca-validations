@@ -1,5 +1,5 @@
 import datetime as dt
-from ipaddress import AddressValueError, IPv6Address
+from ipaddress import AddressValueError
 from typing import List, Optional, Union
 
 from clabe import Clabe
@@ -16,8 +16,7 @@ from pydantic import (
     root_validator,
 )
 from pydantic.class_validators import validator
-from pydantic.networks import IPvAnyAddress
-from pydantic.validators import IPv4Address
+from pydantic.validators import IPv4Address, IPv6Address
 
 from ..types.enums import (
     AuthorizerTransaction,

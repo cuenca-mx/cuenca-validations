@@ -1,11 +1,10 @@
 import datetime as dt
 import re
-from typing import Any, Dict, List, Optional, Union
+from typing import Any, Dict, List, Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, IPvAnyAddress
 from pydantic.class_validators import root_validator
 from pydantic.types import StrictStr
-from pydantic import IPvAnyAddress
 
 from .enums import Country, KYCFileType, State, VerificationStatus
 
