@@ -656,3 +656,4 @@ class WebhookRequest(BaseModel):
 class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
+    documents: List[KYCFile] = []
