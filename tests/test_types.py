@@ -26,6 +26,7 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
+    BankAccountValidationRequest,
     ChargeRequest,
     CurpValidationRequest,
     EndpointRequest,
@@ -539,3 +540,7 @@ def test_identity_update_request():
 
 def test_get_state_name():
     assert get_state_name(State.VZ) == 'Veracruz'
+
+
+def test_bank_account_validation_clabe_request():
+    assert BankAccountValidationRequest(clabe='646180157098510917')

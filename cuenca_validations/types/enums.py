@@ -599,6 +599,8 @@ class WebhookEvent(str, Enum):
     transaction_update = 'transaction.update'
     cash_deposit_create = 'cash_deposit.create'
     cash_deposit_update = 'cash_deposit.update'
+    bank_account_create = 'bank_account.create'
+    bank_account_update = 'bank_account.update'
 
 
 class VerificationType(str, Enum):
@@ -631,3 +633,9 @@ class FileExtension(str, Enum):
     jpeg = 'jpeg'
     png = 'png'
     pdf = 'pdf'
+
+
+class BankAccountStatus(str, Enum):
+    created = 'created'
+    succeeded = 'succeeded'
+    failed = 'failed'
