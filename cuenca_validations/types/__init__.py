@@ -5,6 +5,8 @@ __all__ = [
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
     'BalanceEntryQuery',
+    'BankAccountValidationRequest',
+    'BankAccountStatus',
     'BatchFileMetadata',
     'Beneficiary',
     'BillPaymentQuery',
@@ -103,6 +105,7 @@ __all__ = [
 from .card import PaymentCardNumber, StrictPaymentCardNumber
 from .enums import (
     AuthorizerTransaction,
+    BankAccountStatus,
     CardErrorType,
     CardFundingType,
     CardholderVerificationMethod,
@@ -182,6 +185,7 @@ from .queries import (
 )
 from .requests import (
     ApiKeyUpdateRequest,
+    BankAccountValidationRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
