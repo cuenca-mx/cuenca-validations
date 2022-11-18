@@ -574,6 +574,8 @@ class SessionType(str, Enum):
     registration = 'session.registration'
     show_card = 'session.show_card'
     account_entries = 'session.account_entries'
+    download_file = 'session.download_file'
+    upload_file = 'session.upload_file'
 
 
 class WebhookObject(str, Enum):
