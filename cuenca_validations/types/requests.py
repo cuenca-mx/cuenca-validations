@@ -660,4 +660,4 @@ class KYCValidationRequest(BaseRequest):
 
 
 class BankAccountValidationRequest(BaseModel):
-    clabe: Clabe
+    account_number: Union[Clabe, PaymentCardNumber]

@@ -181,5 +181,5 @@ class FileQuery(QueryParams):
 
 
 class BankAccountValidationQuery(QueryParams):
-    clabe: Optional[str] = None
+    account_number: Optional[str] = None
     status: Optional[BankAccountStatus] = None
