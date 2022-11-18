@@ -543,4 +543,4 @@ def test_get_state_name():
 
 
 def test_bank_account_validation_clabe_request():
-    assert BankAccountValidationRequest(clabe='646180157098510917')
+    assert BankAccountValidationRequest(account_number='646180157098510917')
