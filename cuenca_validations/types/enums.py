@@ -89,8 +89,8 @@ class CommissionType(str, Enum):
     cash_deposit = 'cash_deposit'
     outgoing_spei = 'outgoing_spei'
     card_shipping = 'card_shipping'
-    arteria_collection = 'arteria_collection'
-    connect_collection = 'connect_collection'
+    arteria = 'arteria'
+    connect = 'connect'
 
 
 class EntryType(str, Enum):
