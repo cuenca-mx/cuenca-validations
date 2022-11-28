@@ -621,6 +621,7 @@ class TermsOfService(str, Enum):
     arteria = 'arteria'
     ifpe = 'ifpe'
     tarjetas_cuenca = 'tarjetas_cuenca'
+    portal = 'portal'
 
 
 class FileExtension(str, Enum):
