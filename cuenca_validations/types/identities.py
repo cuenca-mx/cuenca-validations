@@ -59,10 +59,9 @@ class Address(BaseModel):
             raise ValueError('required street')
         if not values.get('ext_number'):
             raise ValueError('required ext_number')
-        if (
-            values.get('colonia')
-            and not values.get('colonia').lower().startswith('col')
-        ):
+        if values.get('colonia') and not values.get(
+            'colonia'
+        ).lower().startswith('col'):
             colonia = values['colonia']
             values['colonia'] = f'Col {colonia}'
         return values
