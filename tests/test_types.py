@@ -321,7 +321,7 @@ def test_user_request():
             street='calle 1',
             ext_number='2',
             int_number='3',
-            colonia='Juarez',
+            colonia='Col Juarez',
             postal_code='09900',
             state=State.DF.value,
             country=Country.MX,
@@ -539,3 +539,31 @@ def test_identity_update_request():
 
 def test_get_state_name():
     assert get_state_name(State.VZ) == 'Veracruz'
+
+
+@freeze_time('2022-01-01')
+def test_address_add_col():
+    request = dict(
+        id=None,
+        curp='ABCD920604HDFSRN03',
+        phone_number='+525555555555',
+        email_address='email@email.com',
+        profession='worker',
+        status='active',
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            colonia='Juarez',
+            postal_code='09900',
+            state=State.DF.value,
+            country=Country.MX,
+            city='Obrera',
+            full_name=None,
+        ),
+        phone_verification_id='VE12345678',
+        email_verification_id='VE0987654321',
+        required_level=3,
+        terms_of_service=None,
+    )
+    assert UserRequest(**request).dict()['address']['colonia'] == 'Col Juarez'
