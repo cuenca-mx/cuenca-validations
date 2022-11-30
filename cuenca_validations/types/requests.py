@@ -657,3 +657,7 @@ class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
     documents: List[KYCFile] = []
+
+
+class BankAccountValidationRequest(BaseModel):
+    account_number: Union[Clabe, PaymentCardNumber]

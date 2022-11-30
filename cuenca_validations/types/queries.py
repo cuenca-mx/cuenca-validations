@@ -7,6 +7,7 @@ from pydantic.types import ConstrainedInt, PositiveInt
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
 from .enums import (
+    BankAccountStatus,
     CardFundingType,
     CardIssuer,
     CardStatus,
@@ -177,3 +178,8 @@ class SessionQuery(QueryParams):
 
 class FileQuery(QueryParams):
     type: Optional[KYCFileType] = None
+
+
+class BankAccountValidationQuery(QueryParams):
+    account_number: Optional[str] = None
+    status: Optional[BankAccountStatus] = None
