@@ -625,9 +625,21 @@ class LimitedWalletRequest(BaseRequest):
 
 
 class IdentityUpdateRequest(BaseRequest):
-    rfc_file: bytes
-    user_id: str
-    extension: str
+    curp_url: HttpUrl
+
+    class Config:
+        anystr_strip_whitespace = True
+        fields = {
+            'curp_url': {
+                'description': "Cuenca's url for curp document "
+                'previously uploaded'
+            },
+        }
+        schema_extra = {
+            'example': {
+                'curp_url': 'https://api.cuenca.com/files/EF123',
+            }
+        }
 
 
 class KYCVerificationUpdateRequest(BaseRequest):

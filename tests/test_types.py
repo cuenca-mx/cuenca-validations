@@ -529,13 +529,9 @@ def test_limited_wallet_request():
 
 
 def test_identity_update_request():
-    rfc_file = b'this is an example'
-    user_id = 'US01'
-    extension = 'pdf'
+    curp_url = 'https://api.cuenca.com/files/EF123'
 
-    assert IdentityUpdateRequest(
-        user_id=user_id, rfc_file=rfc_file, extension=extension
-    )
+    assert IdentityUpdateRequest(curp_url=curp_url)
 
 
 def test_get_state_name():
