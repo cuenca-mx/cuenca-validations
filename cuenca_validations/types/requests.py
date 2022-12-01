@@ -432,7 +432,6 @@ class UserRequest(BaseModel):
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     terms_of_service: Optional[TOSRequest] = None
-    curp_document: Optional[HttpUrl] = None
 
     class Config:
         fields = {
@@ -461,10 +460,6 @@ class UserRequest(BaseModel):
             'email_verification_id': {
                 'description': 'Only if you validated it previously with the '
                 'resource `verifications`'
-            },
-            'curp_document': {
-                'description': "Cuenca's url for curp previously uploaded "
-                'document'
             },
         }
         schema_extra = {
@@ -512,6 +507,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
+    curp_document: Optional[HttpUrl] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(

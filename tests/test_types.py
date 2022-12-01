@@ -332,7 +332,6 @@ def test_user_request():
         email_verification_id='VE0987654321',
         required_level=3,
         terms_of_service=None,
-        curp_document=None,
     )
     assert UserRequest(**request).dict() == request
 
@@ -398,11 +397,13 @@ def test_user_update_request():
                 user_relationship='brother',
                 percentage=50,
             ),
-        ]
+        ],
+        curp_document='https://sandbox.cuenca.com/files/EF123',
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.dict() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
+    assert update_req.curp_document == request['curp_document']
 
     request['beneficiaries'] = [
         dict(
