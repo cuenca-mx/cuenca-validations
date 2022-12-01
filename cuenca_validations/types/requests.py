@@ -432,7 +432,7 @@ class UserRequest(BaseModel):
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     terms_of_service: Optional[TOSRequest] = None
-    curp_url: Optional[HttpUrl] = None
+    curp_document: Optional[HttpUrl] = None
 
     class Config:
         fields = {
@@ -462,7 +462,7 @@ class UserRequest(BaseModel):
                 'description': 'Only if you validated it previously with the '
                 'resource `verifications`'
             },
-            'curp_url': {
+            'curp_document': {
                 'description': "Cuenca's url for curp previously uploaded "
                 'document'
             },

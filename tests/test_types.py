@@ -332,7 +332,7 @@ def test_user_request():
         email_verification_id='VE0987654321',
         required_level=3,
         terms_of_service=None,
-        curp_url=None,
+        curp_document=None,
     )
     assert UserRequest(**request).dict() == request
 
