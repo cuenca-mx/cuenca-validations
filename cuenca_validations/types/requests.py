@@ -432,6 +432,7 @@ class UserRequest(BaseModel):
     phone_verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     terms_of_service: Optional[TOSRequest] = None
+    curp_url: Optional[HttpUrl] = None
 
     class Config:
         fields = {
@@ -460,6 +461,10 @@ class UserRequest(BaseModel):
             'email_verification_id': {
                 'description': 'Only if you validated it previously with the '
                 'resource `verifications`'
+            },
+            'curp_url': {
+                'description': "Cuenca's url for curp previously uploaded "
+                'document'
             },
         }
         schema_extra = {
@@ -622,24 +627,6 @@ class VerificationAttemptRequest(BaseModel):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: CurpField
     allowed_rfc: Optional[Rfc]
-
-
-class IdentityUpdateRequest(BaseRequest):
-    curp_url: HttpUrl
-
-    class Config:
-        anystr_strip_whitespace = True
-        fields = {
-            'curp_url': {
-                'description': "Cuenca's url for curp document "
-                'previously uploaded'
-            },
-        }
-        schema_extra = {
-            'example': {
-                'curp_url': 'https://api.cuenca.com/files/EF123',
-            }
-        }
 
 
 class KYCVerificationUpdateRequest(BaseRequest):

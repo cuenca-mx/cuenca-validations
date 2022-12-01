@@ -31,7 +31,6 @@ from cuenca_validations.types.requests import (
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
-    IdentityUpdateRequest,
     LimitedWalletRequest,
     SavingRequest,
     SavingUpdateRequest,
@@ -333,6 +332,7 @@ def test_user_request():
         email_verification_id='VE0987654321',
         required_level=3,
         terms_of_service=None,
+        curp_url=None,
     )
     assert UserRequest(**request).dict() == request
 
@@ -526,12 +526,6 @@ def test_limited_wallet_request():
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
 
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
-
-
-def test_identity_update_request():
-    curp_url = 'https://api.cuenca.com/files/EF123'
-
-    assert IdentityUpdateRequest(curp_url=curp_url)
 
 
 def test_get_state_name():
