@@ -507,7 +507,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
-    curp_document: Optional[HttpUrl] = None
+    curp_document_uri: Optional[HttpUrl] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(

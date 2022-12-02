@@ -398,12 +398,12 @@ def test_user_update_request():
                 percentage=50,
             ),
         ],
-        curp_document='https://sandbox.cuenca.com/files/EF123',
+        curp_document_uri='https://sandbox.cuenca.com/files/EF123',
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.dict() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert update_req.curp_document == request['curp_document']
+    assert update_req.curp_document_uri == request['curp_document_uri']
 
     request['beneficiaries'] = [
         dict(
