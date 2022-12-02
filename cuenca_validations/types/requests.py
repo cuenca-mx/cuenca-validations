@@ -507,6 +507,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
+    curp_document_uri: Optional[HttpUrl] = None
 
     @validator('beneficiaries')
     def beneficiary_percentage(
@@ -622,12 +623,6 @@ class VerificationAttemptRequest(BaseModel):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: CurpField
     allowed_rfc: Optional[Rfc]
-
-
-class IdentityUpdateRequest(BaseRequest):
-    rfc_file: bytes
-    user_id: str
-    extension: str
 
 
 class KYCVerificationUpdateRequest(BaseRequest):

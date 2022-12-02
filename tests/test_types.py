@@ -31,7 +31,6 @@ from cuenca_validations.types.requests import (
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
-    IdentityUpdateRequest,
     LimitedWalletRequest,
     SavingRequest,
     SavingUpdateRequest,
@@ -398,11 +397,13 @@ def test_user_update_request():
                 user_relationship='brother',
                 percentage=50,
             ),
-        ]
+        ],
+        curp_document_uri='https://sandbox.cuenca.com/files/EF123',
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.dict() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
+    assert update_req.curp_document_uri == request['curp_document_uri']
 
     request['beneficiaries'] = [
         dict(
@@ -526,16 +527,6 @@ def test_limited_wallet_request():
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
 
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
-
-
-def test_identity_update_request():
-    rfc_file = b'this is an example'
-    user_id = 'US01'
-    extension = 'pdf'
-
-    assert IdentityUpdateRequest(
-        user_id=user_id, rfc_file=rfc_file, extension=extension
-    )
 
 
 def test_get_state_name():

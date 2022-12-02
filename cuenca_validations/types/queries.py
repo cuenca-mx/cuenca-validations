@@ -159,6 +159,7 @@ class UserQuery(QueryParams):
     email_address: Optional[EmailStr] = None
     status: Optional[UserStatus] = None
     identity_uri: Optional[str] = None
+    has_curp_document: Optional[bool] = None
 
 
 class IdentityQuery(QueryParams):
