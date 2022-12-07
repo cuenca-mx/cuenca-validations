@@ -25,6 +25,12 @@ class Rfc(StrictStr):
     min_length = 12
     max_length = 13
 
+    @classmethod
+    def validate(cls, rfc: str):
+        if len(rfc) < cls.min_length or len(rfc) > cls.max_length:
+            raise ValueError('Not a valid RFC.')
+        return cls(rfc)
+
 
 class Address(BaseModel):
     street: Optional[str] = None
