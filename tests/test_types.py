@@ -12,6 +12,7 @@ from cuenca_validations.types import (
     CardQuery,
     JSONEncoder,
     QueryParams,
+    Rfc,
     SantizedDict,
     SessionRequest,
     TransactionStatus,
@@ -535,3 +536,12 @@ def test_get_state_name():
 
 def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
+
+
+def test_rfc_field():
+    with pytest.raises(ValueError):
+        Rfc.validate('')
+        Rfc.validate('invalid')
+        Rfc.validate('ThisValueIsTooLongForRFC')
+
+    assert Rfc.validate('TAXM840916123')
