@@ -203,6 +203,7 @@ class CardValidationRequest(BaseModel):
     ]
     pin_block: Optional[constr(strip_whitespace=True)] = None  # type: ignore
     pin_attempts_exceeded: Optional[bool] = None
+    transaction_id: Optional[str] = None
 
 
 class ARPCRequest(BaseModel):
