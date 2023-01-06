@@ -674,6 +674,6 @@ class CardRequestRequest(BaseRequest):
     full_address: str
 
 
-class CardRequestUpdate(BaseRequest):
+class CardRequestUpdateRequest(BaseRequest):
     status: Optional[DeliveryStatus]
     delivery_type: Optional[DeliveryType]
