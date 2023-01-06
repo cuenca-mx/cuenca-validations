@@ -672,6 +672,9 @@ class CardRequestRequest(BaseRequest):
     colonia: str
     postal_code: str
     full_address: str
+    phone: str
+    name: str
+    email: str
 
 
 class CardRequestUpdateRequest(BaseRequest):
