@@ -12,6 +12,8 @@ from .enums import (
     CardIssuer,
     CardStatus,
     CardType,
+    DeliveryStatus,
+    DeliveryType,
     EventType,
     KYCFileType,
     SessionType,
@@ -184,3 +186,8 @@ class FileQuery(QueryParams):
 class BankAccountValidationQuery(QueryParams):
     account_number: Optional[str] = None
     status: Optional[BankAccountStatus] = None
+
+
+class CardRequestQuery(QueryParams):
+    status: Optional[DeliveryStatus] = None
+    delivery_type: Optional[DeliveryType] = None
