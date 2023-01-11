@@ -660,5 +660,6 @@ class DeliveryStatus(str, Enum):
     in_process = 'in_process'
     not_requested = 'not_requested'
     on_the_way = 'on_the_way'
+    ready_to_order = 'ready_to_order'
     visited = 'visited'
-    unknown = 'unknown'
+    # unknown = 'unknown'
