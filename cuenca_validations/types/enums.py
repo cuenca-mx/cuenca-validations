@@ -640,3 +640,26 @@ class BankAccountStatus(str, Enum):
     created = 'created'
     succeeded = 'succeeded'
     failed = 'failed'
+
+
+class DeliveryType(str, Enum):
+    # domestic = 'domestic'
+    # local = 'local'
+    local_next_day = 'local_next_day'
+    # domestic_apl = 'domestic_apl'
+    local_minutes = 'local_99_minutes'
+    domestic_estafeta = 'estafeta'
+
+
+class DeliveryStatus(str, Enum):
+    arriving = 'arriving'
+    cancelled = 'cancelled'
+    confirmed = 'confirmed'
+    created = 'created'
+    delivered = 'delivered'
+    in_process = 'in_process'
+    not_requested = 'not_requested'
+    on_the_way = 'on_the_way'
+    ready_to_order = 'ready_to_order'
+    visited = 'visited'
+    # unknown = 'unknown'

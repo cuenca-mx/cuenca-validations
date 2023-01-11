@@ -28,6 +28,8 @@ from ..types.enums import (
     CardStatus,
     CardType,
     Country,
+    DeliveryStatus,
+    DeliveryType,
     EcommerceIndicator,
     FileExtension,
     Gender,
@@ -656,3 +658,25 @@ class KYCValidationRequest(BaseRequest):
 
 class BankAccountValidationRequest(BaseModel):
     account_number: Union[Clabe, PaymentCardNumber]
+
+
+class CardRequestRequest(BaseRequest):
+    user_id: str
+    delivery_type: DeliveryType
+    latitude: str
+    longitude: str
+    external_number: str
+    internal_number: Optional[str]
+    street: str
+    city: str
+    colonia: str
+    postal_code: str
+    full_address: str
+    recipient_phone: str
+    recipient_name: str
+    recipient_email: str
+
+
+class CardRequestUpdateRequest(BaseRequest):
+    status: Optional[DeliveryStatus]
+    delivery_type: Optional[DeliveryType]
