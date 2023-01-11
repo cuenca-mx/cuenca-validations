@@ -83,7 +83,7 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
-    'UserListsRequest'
+    'UserListsRequest',
     'UserLoginRequest',
     'UserQuery',
     'UserUpdateRequest',
