@@ -83,6 +83,7 @@ __all__ = [
     'UserCardNotification',
     'UserCredentialRequest',
     'UserCredentialUpdateRequest',
+    'UserListsRequest'
     'UserLoginRequest',
     'UserQuery',
     'UserUpdateRequest',
@@ -205,6 +206,7 @@ from .requests import (
     TransferRequest,
     UserCredentialRequest,
     UserCredentialUpdateRequest,
+    UserListsRequest,
     UserLoginRequest,
     UserRequest,
     UserUpdateRequest,

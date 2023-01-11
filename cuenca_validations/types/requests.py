@@ -656,3 +656,11 @@ class KYCValidationRequest(BaseRequest):
 
 class BankAccountValidationRequest(BaseModel):
     account_number: Union[Clabe, PaymentCardNumber]
+
+
+class UserListsRequest(BaseModel):
+    curp: Optional[CurpField]
+    account_number: Optional[Union[Clabe, PaymentCardNumber]]
+    names: Optional[str]
+    first_surname: Optional[str]
+    second_surname: Optional[str]
