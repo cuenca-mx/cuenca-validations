@@ -664,3 +664,9 @@ class UserListsRequest(BaseModel):
     names: Optional[str]
     first_surname: Optional[str]
     second_surname: Optional[str]
+
+    @root_validator('pre')
+    def check_curp_or_account(cls, values: DictStrAny):
+        if not values.get('curp') and not values.get('account_number'):
+            raise ValueError('Either curp or account_number must be valid')
+        return values
