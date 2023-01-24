@@ -37,6 +37,7 @@ from cuenca_validations.types.requests import (
     SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
+    UserListsRequest,
     UserRequest,
     UserUpdateRequest,
     VerificationAttemptRequest,

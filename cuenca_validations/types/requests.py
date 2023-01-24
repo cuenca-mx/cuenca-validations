@@ -17,6 +17,7 @@ from pydantic import (
 )
 from pydantic.class_validators import validator
 from pydantic.errors import IPvAnyAddressError
+from pydantic.validators import constr_strip_whitespace, str_validator
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -665,8 +666,31 @@ class UserListsRequest(BaseModel):
     first_surname: Optional[str]
     second_surname: Optional[str]
 
-    @root_validator(pre=True)
-    def check_curp_or_account(cls, values: DictStrAny):
-        if not values.get('curp') and not values.get('account_number'):
-            raise ValueError('Either curp or account_number must be valid')
-        return values
+    class Config:
+        anystr_strip_whitespace = True
+
+        fields = {
+            'curp': {'description': 'Curp to review on lists'},
+            'account_number': {'description': 'Account to review on lists'},
+            'names': {'description': 'Names of the user to review on lists'},
+            'first_surname': {
+                'description': 'first_surname of the user to review on lists'
+            },
+            'second_surname': {
+                'description': 'second_surname of the user to review on lists if exists'
+            },
+        }
+        schema_extra = {
+            'example': {
+                'curp': 'GOCG650418HVZNML08',
+                'account_number': '9203929392939292392',
+                'names': 'Pedrito',
+                'first_surname': 'Sola',
+                'second_surname': 'Sola',
+            }
+        }
+
+    def has_names(self) -> bool:
+        if self.names and self.first_surname:
+            return True
+        return False
