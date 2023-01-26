@@ -17,7 +17,6 @@ from pydantic import (
 )
 from pydantic.class_validators import validator
 from pydantic.errors import IPvAnyAddressError
-from pydantic.validators import constr_strip_whitespace, str_validator
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -677,7 +676,8 @@ class UserListsRequest(BaseModel):
                 'description': 'first_surname of the user to review on lists'
             },
             'second_surname': {
-                'description': 'second_surname of the user to review on lists if exists'
+                'description': 'second_surname of the user to review '
+                'on lists if exists'
             },
         }
         schema_extra = {
