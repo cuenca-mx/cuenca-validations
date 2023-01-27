@@ -37,6 +37,7 @@ from cuenca_validations.types.requests import (
     SavingUpdateRequest,
     UserCardNotificationRequest,
     UserCredentialUpdateRequest,
+    UserListsRequest,
     UserRequest,
     UserUpdateRequest,
     VerificationAttemptRequest,
@@ -545,3 +546,10 @@ def test_rfc_field():
         Rfc.validate('ThisValueIsTooLongForRFC')
 
     assert Rfc.validate('TAXM840916123')
+
+
+def test_user_lists_request():
+    request = UserListsRequest(names='Pedro', first_surname='Paramo')
+    assert request.has_names()
+    request = UserListsRequest()
+    assert not request.has_names()

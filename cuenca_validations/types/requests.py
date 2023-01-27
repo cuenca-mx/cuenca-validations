@@ -656,3 +656,41 @@ class KYCValidationRequest(BaseRequest):
 
 class BankAccountValidationRequest(BaseModel):
     account_number: Union[Clabe, PaymentCardNumber]
+
+
+class UserListsRequest(BaseModel):
+    curp: Optional[CurpField]
+    account_number: Optional[Union[Clabe, PaymentCardNumber]]
+    names: Optional[str]
+    first_surname: Optional[str]
+    second_surname: Optional[str]
+
+    class Config:
+        anystr_strip_whitespace = True
+
+        fields = {
+            'curp': {'description': 'Curp to review on lists'},
+            'account_number': {'description': 'Account to review on lists'},
+            'names': {'description': 'Names of the user to review on lists'},
+            'first_surname': {
+                'description': 'first_surname of the user to review on lists'
+            },
+            'second_surname': {
+                'description': 'second_surname of the user to review '
+                'on lists if exists'
+            },
+        }
+        schema_extra = {
+            'example': {
+                'curp': 'GOCG650418HVZNML08',
+                'account_number': '9203929392939292392',
+                'names': 'Pedrito',
+                'first_surname': 'Sola',
+                'second_surname': 'Sola',
+            }
+        }
+
+    def has_names(self) -> bool:
+        if self.names and self.first_surname:
+            return True
+        return False
