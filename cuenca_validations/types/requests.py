@@ -141,6 +141,14 @@ class CardActivationRequest(BaseModel):
     )
     card_holder_user_id: Optional[str] = None
 
+    def to_dict(self):
+        return dict(
+            number=self.number,
+            exp_month=self.exp_month,
+            exp_year=self.exp_year,
+            cvv2=self.cvv2,
+        )
+
 
 class ApiKeyUpdateRequest(BaseRequest):
     user_id: Optional[str] = None
