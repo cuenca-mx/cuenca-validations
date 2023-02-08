@@ -139,6 +139,7 @@ class CardActivationRequest(BaseModel):
     cvv2: str = Field(
         ..., strip_whitespace=True, min_length=3, max_length=3, regex=r'\d{3}'
     )
+    card_holder_user_id: Optional[str] = None
 
 
 class ApiKeyUpdateRequest(BaseRequest):
