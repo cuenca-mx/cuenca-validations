@@ -1,3 +1,4 @@
+import base64
 import datetime as dt
 from enum import Enum
 from typing import Any, Callable, List, Union
@@ -30,6 +31,8 @@ def sanitize_item(item: Any, default: Callable = None) -> Any:
             sanitize_dict(e) if isinstance(e, dict) else sanitize_item(e)
             for e in item
         ]
+    elif isinstance(item, bytes):
+        rv = base64.b64encode(item).decode('utf-8')
     elif isinstance(item, Enum):
         rv = item.value
     elif hasattr(item, 'to_dict'):
