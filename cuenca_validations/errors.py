@@ -82,6 +82,13 @@ class TooManyAttemptsError(CuencaError):
     status_code = 403
 
 
+class UserLocationError(CuencaError):
+    """User not in the same location from which they logged in."""
+
+    code = 108
+    status_code = 401
+
+
 class ApiError(CuencaError):
     """Internal error"""
 
