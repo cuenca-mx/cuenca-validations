@@ -8,6 +8,7 @@ __all__ = [
     'NoPasswordFoundError',
     'NotDigitError',
     'TooManyAttemptsError',
+    'UserLocationError',
     'UserNotLoggedInError',
     'WrongCredsError',
 ]
@@ -105,5 +106,6 @@ ERROR_CODES = {
         NoPasswordFoundError,
         AuthMethodNotAllowedError,
         TooManyAttemptsError,
+        UserLocationError,
     ]
 }
