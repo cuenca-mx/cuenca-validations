@@ -1,6 +1,7 @@
 __all__ = [
     'ApiError',
     'AuthMethodNotAllowedError',
+    'BadRequest',
     'CardBinValidationError',
     'CuencaError',
     'ERROR_CODES',
@@ -90,6 +91,13 @@ class UserLocationError(CuencaError):
     status_code = 401
 
 
+class BadRequest(CuencaError):
+    """Commonly used for a malformed request"""
+
+    code = 400
+    status_code = 400
+
+
 class ApiError(CuencaError):
     """Internal error"""
 
@@ -107,5 +115,6 @@ ERROR_CODES = {
         AuthMethodNotAllowedError,
         TooManyAttemptsError,
         UserLocationError,
+        BadRequest,
     ]
 }
