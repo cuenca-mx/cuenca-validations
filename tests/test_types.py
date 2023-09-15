@@ -117,6 +117,7 @@ def test_count(count, truth):
         (today, today.isoformat()),
         (now, utcnow.isoformat()),
         (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
+        (b'test', 'dGVzdA==')  # b64 encode
     ],
 )
 def test_json_encoder(value, result):
