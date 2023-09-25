@@ -21,6 +21,7 @@ __all__ = [
     'CardTransactionQuery',
     'CardTransactionType',
     'CardType',
+    'ClabeRequest',
     'Country',
     'CurpField',
     'CurpValidationRequest',
@@ -190,6 +191,7 @@ from .queries import (
 from .requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
+    ClabeRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,
