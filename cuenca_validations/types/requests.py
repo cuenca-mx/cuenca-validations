@@ -658,6 +658,10 @@ class BankAccountValidationRequest(BaseModel):
     account_number: Union[Clabe, PaymentCardNumber]
 
 
+class ClabeRequest(BaseModel):
+    user_id: Optional[str]
+
+
 class UserListsRequest(BaseModel):
     curp: Optional[CurpField]
     account_number: Optional[Union[Clabe, PaymentCardNumber]]
