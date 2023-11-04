@@ -45,7 +45,7 @@ jobs:
       - name: Generate coverage report
         run: pytest --cov-report=xml
       - name: Upload coverage to Codecov
-        uses: codecov/codecov-action@v2.1.0
+        uses: codecov/codecov-action@v3.1.1
         with:
           CODECOV_TOKEN: c319bd98-a046-4b41-bdea-86847d6446b3
           file: ./coverage.xml
