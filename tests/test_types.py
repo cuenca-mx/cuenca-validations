@@ -550,7 +550,6 @@ def test_rfc_field():
 
 
 def test_user_lists_request():
-    request = UserListsRequest(names='Pedro', first_surname='Paramo')
-    assert request.has_names()
-    request = UserListsRequest()
-    assert not request.has_names()
+    UserListsRequest(names='Pedro', first_surname='Paramo')
+    with pytest.raises(ValueError) as ex:
+        UserListsRequest()
