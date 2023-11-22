@@ -550,5 +550,5 @@ def test_rfc_field():
 
 def test_user_lists_request():
     UserListsRequest(names='Pedro', first_surname='Paramo')
-    with pytest.raises(ValueError) as ex:
+    with pytest.raises(ValueError):
         UserListsRequest()
