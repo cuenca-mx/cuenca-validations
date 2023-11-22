@@ -659,11 +659,19 @@ class BankAccountValidationRequest(BaseModel):
 
 
 class UserListsRequest(BaseModel):
-    curp: Optional[CurpField]
-    account_number: Optional[Union[Clabe, PaymentCardNumber]]
-    names: Optional[str]
-    first_surname: Optional[str]
-    second_surname: Optional[str]
+    curp: Optional[CurpField] = None
+    account_number: Optional[Union[Clabe, PaymentCardNumber]] = None
+    names: Optional[str] = None
+    first_surname: Optional[str] = None
+    second_surname: Optional[str] = None
+
+    @root_validator()
+    def check_request(cls, values):
+        has_name = all(values.get(f) for f in ['names', 'first_surname'])
+        curp, account = values.get('curp'), values.get('account_number')
+        if not any([curp, account, has_name]):
+            raise ValueError("At least 1 param is required")
+        return values
 
     class Config:
         anystr_strip_whitespace = True
@@ -689,8 +697,3 @@ class UserListsRequest(BaseModel):
                 'second_surname': 'Sola',
             }
         }
-
-    def has_names(self) -> bool:
-        if self.names and self.first_surname:
-            return True
-        return False
