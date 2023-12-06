@@ -77,6 +77,7 @@ class TransactionStatus(str, Enum):
     in_review = 'in_review'
     succeeded = 'succeeded'
     failed = 'failed'
+    duplicated = 'duplicated'
 
 
 class TransferNetwork(str, Enum):
