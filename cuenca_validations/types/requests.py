@@ -697,3 +697,14 @@ class UserListsRequest(BaseModel):
                 'second_surname': 'Sola',
             }
         }
+
+    def has_names(self) -> bool:
+        if self.names and self.first_surname:
+            return True
+        return False
+
+
+class QuestionnairesRequest(BaseModel):
+    user_id: str
+    token: str
+    alert_id: str
