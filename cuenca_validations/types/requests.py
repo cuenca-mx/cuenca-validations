@@ -694,3 +694,9 @@ class UserListsRequest(BaseModel):
         if self.names and self.first_surname:
             return True
         return False
+
+
+class QuestionnairesRequest(BaseModel):
+    user_id: str
+    token: str
+    alert_id: str
