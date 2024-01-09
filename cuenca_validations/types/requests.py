@@ -698,11 +698,6 @@ class UserListsRequest(BaseModel):
             }
         }
 
-    def has_names(self) -> bool:
-        if self.names and self.first_surname:
-            return True
-        return False
-
 
 class QuestionnairesRequest(BaseModel):
     user_id: str
