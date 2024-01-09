@@ -697,3 +697,9 @@ class UserListsRequest(BaseModel):
                 'second_surname': 'Sola',
             }
         }
+
+
+class QuestionnairesRequest(BaseModel):
+    user_id: str
+    token: str
+    form_id: str
