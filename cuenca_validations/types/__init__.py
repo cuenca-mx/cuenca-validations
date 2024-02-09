@@ -50,6 +50,8 @@ __all__ = [
     'Language',
     'LimitedWalletRequest',
     'PageSize',
+    'PartnerRequest',
+    'PartnerUpdateRequest',
     'PaymentCardNumber',
     'PhoneNumber',
     'PlatformRequest',
