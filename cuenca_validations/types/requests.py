@@ -62,6 +62,15 @@ from .identities import (
     Rfc,
     TOSAgreement,
 )
+from .morals import (
+    AuditDetails,
+    BusinessDetails,
+    LegalRepresentative,
+    LicenseDetails,
+    Shareholder,
+    TransactionalProfile,
+    VulnerableActivityDetails,
+)
 
 
 class BaseRequest(BaseModel):
@@ -703,3 +712,39 @@ class QuestionnairesRequest(BaseModel):
     user_id: str
     token: str
     form_id: str
+
+
+class PartnerRequest(BaseRequest):
+    legal_name: str
+    business_name: str
+    nationality: Country
+    incorporation_date: dt.date
+    folio: str
+    rfc: Rfc
+    documentation_url: str
+    web_site: str
+    phone_number: PhoneNumber
+    email_address: EmailStr
+    address: Address
+
+
+class PartnerUpdateRequest(BaseRequest):
+    legal_name: Optional[str] = None
+    business_name: Optional[str] = None
+    nationality: Optional[Country] = None
+    incorporation_date: Optional[dt.date] = None
+    folio: Optional[str] = None
+    rfc: Optional[Rfc] = None
+    documentation_url: Optional[str] = None
+    web_site: Optional[str] = None
+    phone_number: Optional[PhoneNumber] = None
+    email_address: Optional[EmailStr] = None
+    address: Optional[Address] = None
+    business_details: Optional[BusinessDetails] = None
+    transactional_profile: Optional[TransactionalProfile] = None
+    external_account: Optional[Clabe] = None
+    license: Optional[LicenseDetails] = None
+    audit: Optional[AuditDetails] = None
+    vulnerable_activity: Optional[VulnerableActivityDetails] = None
+    legal_representatives: Optional[List[LegalRepresentative]] = None
+    shareholders: Optional[List[Shareholder]] = None
