@@ -608,6 +608,11 @@ class WebhookEvent(str, Enum):
     bank_account_update = 'bank_account.update'
 
 
+class UserType(str, Enum):
+    physical = 'physical'
+    moral = 'moral'
+
+
 class VerificationType(str, Enum):
     phone = 'phone'
     email = 'email'
