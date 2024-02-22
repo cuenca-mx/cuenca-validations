@@ -28,7 +28,7 @@ class StrictPositiveInt(ConstrainedInt):
     """
 
     strict = True
-    ge = 0
+    gt = 0
     le = 21_474_836_47  # Max value in DB
 
     ...
