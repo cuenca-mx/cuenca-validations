@@ -572,6 +572,7 @@ class UserStatus(str, Enum):
 
 
 class SessionType(str, Enum):
+    curp_validation = 'session.curp_validation'
     registration = 'session.registration'
     show_card = 'session.show_card'
     account_entries = 'session.account_entries'
