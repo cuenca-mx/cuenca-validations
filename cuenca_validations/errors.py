@@ -4,6 +4,7 @@ __all__ = [
     'CardBinValidationError',
     'CuencaError',
     'ERROR_CODES',
+    'InvalidOTPCodeError',
     'MissingAuthorizationHeaderError',
     'NoPasswordFoundError',
     'NotDigitError',
@@ -90,6 +91,12 @@ class UserLocationError(CuencaError):
     status_code = 401
 
 
+class InvalidOTPCodeError(CuencaError):
+    """OTP sent is invalid."""
+
+    code = 109
+    status_code = 401
+
 class ApiError(CuencaError):
     """Internal error"""
 
@@ -107,5 +114,6 @@ ERROR_CODES = {
         AuthMethodNotAllowedError,
         TooManyAttemptsError,
         UserLocationError,
+        InvalidOTPCodeError,
     ]
 }
