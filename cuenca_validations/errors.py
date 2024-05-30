@@ -97,6 +97,7 @@ class InvalidOTPCodeError(CuencaError):
     code = 109
     status_code = 401
 
+
 class ApiError(CuencaError):
     """Internal error"""
 
