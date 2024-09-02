@@ -243,7 +243,8 @@ class CardBatchRequest(BaseRequest):
 class CardTransactionRequest(BaseModel):
     card_id: str
     user_id: str
-    amount: StrictPositiveInt
+    # In some card_validations amount is equal to 0
+    amount: conint(strict=True, ge=0)  # type: ignore
     merchant_name: str
     merchant_type: str
     merchant_data: str

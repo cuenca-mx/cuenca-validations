@@ -245,6 +245,11 @@ def test_card_transaction_requests():
     data['atm_fee'] = 1800
     request = ChargeRequest(**data)
     assert request.ecommerce_indicator is EcommerceIndicator.not_ecommerce
+
+    # Validate amount = 0
+    data['amount'] = 0
+    assert ChargeRequest(**data)
+
     # missing fields
     with pytest.raises(ValidationError):
         UserCardNotificationRequest(**data)
