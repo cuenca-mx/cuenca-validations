@@ -24,7 +24,7 @@ class JSONEncoder(json.JSONEncoder):
 class StrictPositiveInt(ConstrainedInt):
     """
     - strict: ensures a float isn't passed in by accident
-    - gt (greater than or equal): ensures the value is above 0
+    - gt (greater than): ensures the value is strictly above 0
     """
 
     strict = True
