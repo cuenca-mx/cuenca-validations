@@ -26,7 +26,7 @@ setup(
     python_requires='>=3.6',
     install_requires=[
         'clabe>=1.2,<1.3',
-        'pydantic[email]>=1.6,<2.0',
+        'pydantic[email]>=1.10,<2.0',
         'dataclasses>=0.6;python_version<"3.7"',
         'python-dateutil>=2.7.0',
     ],
