@@ -570,6 +570,7 @@ class UserStatus(str, Enum):
     in_review = 'in_review'
     pld_blocked = 'pld_blocked'
     inactive = 'inactive'
+    user_blocked = 'user_blocked'
 
 
 class SessionType(str, Enum):
