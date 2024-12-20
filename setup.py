@@ -25,7 +25,7 @@ setup(
     package_data=dict(cuenca_validations=['py.typed']),
     python_requires='>=3.8',
     install_requires=[
-        'clabe>=2.0.0',
+        'clabe>=2.0.0.dev0',
         'pydantic[email]>=2.0',
         'dataclasses>=0.6;python_version<"3.7"',
         'python-dateutil>=2.7.0',
