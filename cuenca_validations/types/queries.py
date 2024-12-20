@@ -31,7 +31,7 @@ MAX_PAGE_SIZE = 100
 
 class QueryParams(BaseModel):
     count: bool = False
-    page_size: conint(
+    page_size: conint(  # type: ignore[valid-type]
         gt=0, le=MAX_PAGE_SIZE
     ) = MAX_PAGE_SIZE  # Add default value
     limit: Optional[PositiveInt] = None

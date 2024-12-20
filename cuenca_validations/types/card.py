@@ -19,8 +19,8 @@ class StrictPaymentCardNumber(BaseModel):
 
     @property
     def brand(self) -> PaymentCardBrand:
-        return self.number.brand
+        return self.card_number.brand
 
     @property
     def bank_code(self) -> str:
-        return CARD_BINS.get(self.card_number.bin)
+        return CARD_BINS[self.card_number.bin]

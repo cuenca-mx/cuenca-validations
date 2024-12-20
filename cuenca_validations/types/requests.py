@@ -112,7 +112,7 @@ class TransferRequest(BaseRequest):
     )
 
 
-class StrictTransferRequest(TransferRequest):
+class StrictTransferRequest(BaseRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber]
 
 
@@ -131,22 +131,26 @@ class CardRequest(BaseRequest):
 
 
 class CardActivationRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        pattern=r'\d{16}',
-    )
+    number: Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=16,
+            max_length=16,
+            pattern=r'\d{16}',
+        ),
+    ]
     exp_month: Annotated[int, Field(strict=True, ge=1, le=12)]  # type: ignore
     exp_year: Annotated[int, Field(strict=True, ge=18, le=99)]  # type: ignore
-    cvv2: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=3,
-        max_length=3,
-        pattern=r'\d{3}',
-    )
+    cvv2: Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=3,
+            max_length=3,
+            pattern=r'\d{3}',
+        ),
+    ]
 
 
 class ApiKeyUpdateRequest(BaseRequest):
@@ -192,13 +196,15 @@ class UserCredentialRequest(BaseRequest):
 
 
 class CardValidationRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        pattern=r'\d{16}',
-    )
+    number: Annotated[
+        str,
+        StringConstraints(
+            min_length=16,
+            max_length=16,
+            pattern=r'\d{16}',
+            strip_whitespace=True,
+        ),
+    ]
     exp_month: Optional[Annotated[int, Field(strict=True, ge=1, le=12)]] = None
     exp_year: Optional[Annotated[int, Field(strict=True, ge=18, le=99)]] = None
     cvv: Optional[  # type: ignore
@@ -232,13 +238,15 @@ class CardValidationRequest(BaseModel):
 
 
 class ARPCRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        pattern=r'\d{16}',
-    )
+    number: Annotated[
+        str,
+        StringConstraints(
+            min_length=16,
+            max_length=16,
+            pattern=r'\d{16}',
+            strip_whitespace=True,
+        ),
+    ]
     arqc: StrictStr
     arpc_method: Annotated[
         str,
@@ -446,18 +454,7 @@ class TOSRequest(BaseModel):
     type: TermsOfService
     version: str
     location: Optional[str] = None
-    ip: Optional[str] = None
-
-    @field_validator('ip')
-    @classmethod
-    def validate_ip(cls, ip: str):
-        # we validate ip address this way because the
-        # model IPv4Address or IPv6Address is not JSON serializable
-        try:
-            IPvAnyAddress(ip)
-        except ValueError:
-            raise ValueError('not valid ip')
-        return ip
+    ip: Optional[IPvAnyAddress] = None
 
 
 class UserRequest(BaseModel):
