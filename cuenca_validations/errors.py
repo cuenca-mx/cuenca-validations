@@ -1,4 +1,3 @@
-'''
 __all__ = [
     'ApiError',
     'AuthMethodNotAllowedError',
@@ -110,5 +109,3 @@ ERROR_CODES = {
         InvalidOTPCodeError,
     ]
 }
-
-'''
