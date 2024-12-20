@@ -15,6 +15,7 @@ __all__ = [
 
 from pydantic_core import PydanticCustomError
 
+
 class CardBinValidationError(PydanticCustomError):
     code = 'payment_card_number.bin'
     msg_template = (
@@ -23,7 +24,6 @@ class CardBinValidationError(PydanticCustomError):
         'please file an issue:'
         'https://github.com/cuenca-mx/cuenca-validations/issues'
     )
-
 
 
 class CuencaError(Exception):
