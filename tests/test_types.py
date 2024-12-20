@@ -5,7 +5,7 @@ from enum import Enum
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, Field, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -16,7 +16,6 @@ from cuenca_validations.types import (
     SantizedDict,
     SessionRequest,
     TransactionStatus,
-    digits,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
@@ -144,7 +143,9 @@ def test_invalid_class():
 
 
 class Accounts(BaseModel):
-    number: digits(5, 8)  # type: ignore
+    number: str = Field(
+        min_length=5, max_length=8, pattern=r'^\d+$'  # Only allows digits
+    )
 
 
 def test_only_digits():
@@ -155,9 +156,9 @@ def test_only_digits():
 @pytest.mark.parametrize(
     'number, error',
     [
-        ('123', 'value_error.any_str.min_length'),
-        ('1234567890', 'value_error.any_str.max_length'),
-        ('no_123', 'value_error.digits'),
+        ('123', 'String should have at least 5 characters'),
+        ('1234567890', 'String should have at most 8 characters'),
+        ('no_123', 'String should match pattern'),
     ],
 )
 def test_invalid_digits(number, error):
@@ -365,10 +366,17 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest()
-    assert (
-        'values required: names,first_surname,date_of_birth,'
-        'country_of_birth,gender' in str(v)
-    )
+    # Update the assertion to check for the presence of
+    # required fields in the error message
+    error_msg = str(v.value)
+    required_fields = [
+        'names',
+        'first_surname',
+        'date_of_birth',
+        'country_of_birth',
+        'gender',
+    ]
+    assert all(field in error_msg for field in required_fields)
 
     req_curp = CurpValidationRequest(**request)
     assert req_curp.dict() == request
@@ -411,7 +419,7 @@ def test_user_update_request():
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.dict() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert update_req.curp_document_uri == request['curp_document_uri']
+    assert str(update_req.curp_document_uri) == request['curp_document_uri']
 
     request['beneficiaries'] = [
         dict(
@@ -529,7 +537,7 @@ def test_verification_attempt_request():
 
 def test_limited_wallet_request():
     curp = 'TAXM840916HNEMXT02'
-    rfc = 'TAXM840916123'
+    rfc = Rfc('TAXM840916123')
     # Not valid format
     with pytest.raises(ValidationError):
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')

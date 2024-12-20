@@ -1,13 +1,11 @@
 import json
-from typing import TYPE_CHECKING, Optional, Type
+from typing import Generator, Optional
 
-from pydantic import ConstrainedFloat, ConstrainedInt, ConstrainedStr
+from pydantic import BeforeValidator, Field
+from typing_extensions import Annotated
 
-from ..validators import sanitize_dict, sanitize_item, validate_digits
+from ..validators import sanitize_dict, sanitize_item
 from .enums import State
-
-if TYPE_CHECKING:
-    from pydantic.typing import CallableGenerator
 
 
 class SantizedDict(dict):
@@ -21,43 +19,63 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-class StrictPositiveInt(ConstrainedInt):
-    """
-    - strict: ensures a float isn't passed in by accident
-    - gt (greater than): ensures the value is strictly above 0
-    """
-
-    strict = True
-    gt = 0
-    le = 21_474_836_47  # Max value in DB
-
-    ...
+def validate_strict_positive_int(value: int) -> int:
+    if not isinstance(value, int):
+        raise ValueError("Value must be an integer")
+    if value <= 0:
+        raise ValueError("Value must be greater than 0")
+    if value > 21_474_836_47:
+        raise ValueError("Value must be less than 21_474_836_47")
+    return value
 
 
-class StrictPositiveFloat(ConstrainedFloat):
-    """
-    - strict: ensures an integer isn't passed in by accident
-    - ge (greater than or equal): ensures the value is above 0
-    """
-
-    strict = True
-    ge = 0
-
-    ...
+StrictPositiveInt = Annotated[
+    int, BeforeValidator(validate_strict_positive_int)
+]
 
 
-def digits(
-    min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Type[str]:
-    namespace = dict(min_length=min_length, max_length=max_length)
-    return type('DigitsValue', (Digits,), namespace)
+def validate_strict_positive_float(value: float) -> float:
+    if not isinstance(value, float):
+        raise ValueError("Value must be a float")
+    if value <= 0:
+        raise ValueError("Value must be greater than 0")
+    return value
 
 
-class Digits(ConstrainedStr):
+StrictPositiveFloat = Annotated[
+    float, BeforeValidator(validate_strict_positive_float)
+]
+
+
+# Clase base para validación
+class Digits:
+    min_length: Optional[int] = None
+    max_length: Optional[int] = None
+
     @classmethod
-    def __get_validators__(cls) -> 'CallableGenerator':
-        yield from ConstrainedStr.__get_validators__()
-        yield validate_digits
+    def __get_validators__(cls) -> Generator:
+        yield cls.validate_digits
+
+    @classmethod
+    def validate_digits(cls, value: str) -> str:
+        if not value.isdigit():
+            raise ValueError("Value must contain only digits.")
+        if cls.min_length is not None and len(value) < cls.min_length:
+            raise ValueError(
+                f"Value must have at least {cls.min_length} characters."
+            )
+        if cls.max_length is not None and len(value) > cls.max_length:
+            raise ValueError(
+                f"Value must have at most {cls.max_length} characters."
+            )
+        return value
+
+
+# Función para crear tipos personalizados
+def digits(min_length: Optional[int] = None, max_length: Optional[int] = None):
+    return Annotated[
+        str, Field(min_length=min_length, max_length=max_length), Digits
+    ]
 
 
 names_state = {

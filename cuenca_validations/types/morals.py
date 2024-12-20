@@ -49,6 +49,8 @@ class VulnerableActivityDetails(BaseModel):
 
 
 class PhysicalPerson(BaseModel):
+    model_config = dict(arbitrary_types_allowed=True)
+
     names: str
     first_surname: str
     second_surname: Optional[str] = None

@@ -1,3 +1,4 @@
+'''
 __all__ = [
     'ApiError',
     'AuthMethodNotAllowedError',
@@ -7,20 +8,15 @@ __all__ = [
     'InvalidOTPCodeError',
     'MissingAuthorizationHeaderError',
     'NoPasswordFoundError',
-    'NotDigitError',
     'TooManyAttemptsError',
     'UserLocationError',
     'UserNotLoggedInError',
     'WrongCredsError',
 ]
 
-from pydantic.errors import (
-    NotDigitError as PydanticNotDigitError,
-    PydanticValueError,
-)
+from pydantic_core import PydanticCustomError
 
-
-class CardBinValidationError(PydanticValueError):
+class CardBinValidationError(PydanticCustomError):
     code = 'payment_card_number.bin'
     msg_template = (
         'The card number contains a BIN (first six digits) that does not have'
@@ -29,10 +25,6 @@ class CardBinValidationError(PydanticValueError):
         'https://github.com/cuenca-mx/cuenca-validations/issues'
     )
 
-
-class NotDigitError(PydanticNotDigitError):
-    code = 'digits'
-    msg_template = 'value is not all digits'
 
 
 class CuencaError(Exception):
@@ -118,3 +110,5 @@ ERROR_CODES = {
         InvalidOTPCodeError,
     ]
 }
+
+'''

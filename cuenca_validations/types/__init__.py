@@ -52,7 +52,6 @@ __all__ = [
     'PageSize',
     'PartnerRequest',
     'PartnerUpdateRequest',
-    'PaymentCardNumber',
     'PhoneNumber',
     'PlatformRequest',
     'PlatformType',
@@ -108,7 +107,7 @@ __all__ = [
     'get_state_name',
 ]
 
-from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .card import StrictPaymentCardNumber
 from .enums import (
     AuthorizerTransaction,
     BankAccountStatus,
@@ -182,7 +181,6 @@ from .queries import (
     EventQuery,
     FileQuery,
     IdentityQuery,
-    PageSize,
     QueryParams,
     SessionQuery,
     StatementQuery,
