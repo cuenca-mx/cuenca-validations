@@ -1,7 +1,6 @@
 __all__ = [
     'ApiError',
     'AuthMethodNotAllowedError',
-    'CardBinValidationError',
     'CuencaError',
     'ERROR_CODES',
     'InvalidOTPCodeError',
@@ -12,18 +11,6 @@ __all__ = [
     'UserNotLoggedInError',
     'WrongCredsError',
 ]
-
-from pydantic_core import PydanticCustomError
-
-
-class CardBinValidationError(PydanticCustomError):
-    code = 'payment_card_number.bin'
-    msg_template = (
-        'The card number contains a BIN (first six digits) that does not have'
-        'a known association with a Mexican bank. To add the association,'
-        'please file an issue:'
-        'https://github.com/cuenca-mx/cuenca-validations/issues'
-    )
 
 
 class CuencaError(Exception):
