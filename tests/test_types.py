@@ -16,6 +16,7 @@ from cuenca_validations.types import (
     SantizedDict,
     SessionRequest,
     TransactionStatus,
+    digits,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
@@ -147,9 +148,7 @@ def test_invalid_class():
 
 
 class Accounts(BaseModel):
-    number: str = Field(
-        min_length=5, max_length=8, pattern=r'^\d+$'  # Only allows digits
-    )
+    number: digits(5, 8)  # type: ignore
 
 
 def test_only_digits():
@@ -160,15 +159,16 @@ def test_only_digits():
 @pytest.mark.parametrize(
     'number, error',
     [
-        ('123', 'String should have at least 5 characters'),
-        ('1234567890', 'String should have at most 8 characters'),
-        ('no_123', 'String should match pattern'),
+        ('123', 'Value should have at least 5 items after validation'),
+        ('1234567890', 'Value should have at most 8 items after validation'),
+        ('no_123', 'Value must contain only digits'),
     ],
 )
 def test_invalid_digits(number, error):
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ValidationError) as exception:
         Accounts(number=number)
-    assert error in str(exception)
+    print(str(exception))
+    assert error in str(exception.value)
 
 
 def test_card_query_exp_cvv_if_number_set():

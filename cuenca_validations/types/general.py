@@ -1,5 +1,5 @@
 import json
-from typing import Generator, Optional
+from typing import Generator, Optional, Type
 
 from pydantic import BeforeValidator, Field
 from typing_extensions import Annotated
@@ -47,34 +47,19 @@ StrictPositiveFloat = Annotated[
 ]
 
 
-# Clase base para validación
-class Digits:
-    min_length: Optional[int] = None
-    max_length: Optional[int] = None
-
-    @classmethod
-    def __get_validators__(cls) -> Generator:
-        yield cls.validate_digits
-
-    @classmethod
-    def validate_digits(cls, value: str) -> str:
-        if not value.isdigit():
-            raise ValueError("Value must contain only digits.")
-        if cls.min_length is not None and len(value) < cls.min_length:
-            raise ValueError(
-                f"Value must have at least {cls.min_length} characters."
-            )
-        if cls.max_length is not None and len(value) > cls.max_length:
-            raise ValueError(
-                f"Value must have at most {cls.max_length} characters."
-            )
-        return value
+def validate_only_digits(value: str) -> str:
+    if not value.isdigit():
+        raise ValueError("Value must contain only digits")
+    return value
 
 
-# Función para crear tipos personalizados
-def digits(min_length: Optional[int] = None, max_length: Optional[int] = None):
+def digits(
+    min_length: Optional[int] = None, max_length: Optional[int] = None
+) -> Type[str]:
     return Annotated[
-        str, Field(min_length=min_length, max_length=max_length), Digits
+        str,
+        BeforeValidator(validate_only_digits),
+        Field(min_length=min_length, max_length=max_length),
     ]
 
 
