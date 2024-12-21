@@ -22,5 +22,17 @@ class StrictPaymentCardNumber(BaseModel):
         return self.card_number.brand
 
     @property
+    def last4(self) -> str:
+        return self.card_number.last4
+
+    @property
+    def masked(self) -> str:
+        return self.card_number.masked
+
+    @property
+    def bin(self) -> str:
+        return self.card_number.bin
+
+    @property
     def bank_code(self) -> str:
         return CARD_BINS[self.card_number.bin]

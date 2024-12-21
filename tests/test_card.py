@@ -17,8 +17,8 @@ def test_invalid_bin_strict_payment():
 
 def test_valid_bin_strict_payment():
     card = StrictPaymentCardNumber(card_number=VALID_BBVA)
-    assert card.card_number.brand == PaymentCardBrand.visa
-    assert card.card_number.bin == '477213'
-    assert card.card_number.last4 == '0003'
-    assert card.card_number.masked == '477213******0003'
+    assert card.brand == PaymentCardBrand.visa
+    assert card.bin == '477213'
+    assert card.last4 == '0003'
+    assert card.masked == '477213******0003'
     assert card.bank_code == '40012'
