@@ -10,8 +10,7 @@ INVALID_BIN = '4050000000000001'
 
 def test_invalid_bin_strict_payment():
     with pytest.raises(ValidationError) as exc_info:
-        card = StrictPaymentCardNumber(card_number=INVALID_BIN)
-        print(card.card_number.bin)
+        StrictPaymentCardNumber(card_number=INVALID_BIN)
     assert 'Invalid BIN: Bank code not found.' in str(exc_info.value)
 
 

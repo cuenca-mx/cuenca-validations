@@ -1,5 +1,5 @@
 import json
-from typing import Generator, Optional, Type
+from typing import Any, Optional
 
 from pydantic import BeforeValidator, Field
 from typing_extensions import Annotated
@@ -55,7 +55,7 @@ def validate_only_digits(value: str) -> str:
 
 def digits(
     min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Type[str]:
+) -> Any:
     return Annotated[
         str,
         BeforeValidator(validate_only_digits),

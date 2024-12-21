@@ -5,7 +5,7 @@ from enum import Enum
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, Field, ValidationError
+from pydantic import AnyUrl, BaseModel, HttpUrl, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -132,6 +132,17 @@ def test_json_encoder(value, result):
     assert decoded['value'] == result
 
 
+def test_sanitized_dict_with_urls():
+    data = SantizedDict(
+        api_url=HttpUrl('https://api.cuenca.com/v1'),
+        ftp_url=AnyUrl('ftp://files.example.com/'),
+    )
+    assert data == {
+        'api_url': 'https://api.cuenca.com/v1',
+        'ftp_url': 'ftp://files.example.com/',
+    }
+
+
 def test_invalid_class():
     """
     For a class that doesn't have a `to_dict` method and it is not a type of
@@ -167,7 +178,6 @@ def test_only_digits():
 def test_invalid_digits(number, error):
     with pytest.raises(ValidationError) as exception:
         Accounts(number=number)
-    print(str(exception))
     assert error in str(exception.value)
 
 
