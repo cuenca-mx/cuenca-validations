@@ -24,6 +24,10 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
+from cuenca_validations.types.general import (
+    StrictPositiveFloat,
+    StrictPositiveInt,
+)
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -566,3 +570,59 @@ def test_user_lists_request():
     UserListsRequest(names='Pedro', first_surname='Paramo')
     with pytest.raises(ValueError):
         UserListsRequest()
+
+
+class TestFloatModel(BaseModel):
+    value: StrictPositiveFloat
+
+
+def test_strict_positive_float_valid():
+    model = TestFloatModel(value=10.5)
+    assert model.value == 10.5
+    model = TestFloatModel(value=0.000001)
+    assert model.value == 0.000001
+
+
+def test_strict_positive_float_invalid():
+    with pytest.raises(ValueError, match="Value must be greater than 0"):
+        TestFloatModel(value=0.0)
+    with pytest.raises(ValueError, match="Value must be greater than 0"):
+        TestFloatModel(value=-1.5)
+    with pytest.raises(ValueError, match="Value must be a float"):
+        TestFloatModel(value=5)
+    with pytest.raises(ValueError, match="Value must be a float"):
+        TestFloatModel(value="10.5")
+
+
+class TestIntModel(BaseModel):
+    value: StrictPositiveInt
+
+
+def test_strict_positive_int_valid():
+    model = TestIntModel(value=100)
+    assert model.value == 100
+
+    model = TestIntModel(value=1)
+    assert model.value == 1
+
+    model = TestIntModel(value=21_474_836_47)
+    assert model.value == 21_474_836_47
+
+
+def test_strict_positive_int_invalid():
+    with pytest.raises(ValueError, match="Value must be greater than 0"):
+        TestIntModel(value=0)
+
+    with pytest.raises(ValueError, match="Value must be greater than 0"):
+        TestIntModel(value=-5)
+
+    with pytest.raises(
+        ValueError, match="Value must be less than 21_474_836_47"
+    ):
+        TestIntModel(value=21_474_836_48)
+
+    with pytest.raises(ValueError, match="Value must be an integer"):
+        TestIntModel(value=5.5)
+
+    with pytest.raises(ValueError, match="Value must be an integer"):
+        TestIntModel(value="10")
