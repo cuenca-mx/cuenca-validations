@@ -4,6 +4,7 @@ from enum import Enum
 from typing import Any, Callable, List, Optional, Union
 
 from dateutil.relativedelta import relativedelta
+from pydantic import AnyUrl, HttpUrl
 
 
 def sanitize_dict(d: dict) -> dict:
@@ -26,6 +27,10 @@ def sanitize_item(
             rv = item.astimezone(dt.timezone.utc).isoformat()
         else:
             rv = item.isoformat()
+    elif isinstance(item, HttpUrl):
+        rv = str(item)
+    elif isinstance(item, AnyUrl):
+        rv = str(item)
     elif isinstance(item, list):
         rv = [
             sanitize_dict(e) if isinstance(e, dict) else sanitize_item(e)

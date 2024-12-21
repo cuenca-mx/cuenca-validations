@@ -58,6 +58,16 @@ class Rfc(StrictStr):
             raise ValueError('Not a valid RFC.')
         return cls(rfc)
 
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, source_type: Any, handler: Any
+    ) -> Dict[str, Any]:
+        return {
+            'type': 'str',
+            'min_length': cls.min_length,
+            'max_length': cls.max_length,
+        }
+
 
 class Address(BaseModel):
     street: Optional[str] = None
