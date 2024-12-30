@@ -1,12 +1,12 @@
 import datetime as dt
-from typing import Optional
+from typing import Annotated, Optional
 
 from pydantic import (
     BaseModel,
     ConfigDict,
     EmailStr,
+    Field,
     PositiveInt,
-    conint,
     field_validator,
 )
 
@@ -31,9 +31,9 @@ MAX_PAGE_SIZE = 100
 
 class QueryParams(BaseModel):
     count: bool = False
-    page_size: conint(  # type: ignore[valid-type]
-        gt=0, le=MAX_PAGE_SIZE
-    ) = MAX_PAGE_SIZE  # Add default value
+    page_size: Annotated[
+        int, Field(strict=True, gt=0, le=MAX_PAGE_SIZE, default=MAX_PAGE_SIZE)
+    ]
     limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
@@ -105,21 +105,6 @@ class ApiKeyQuery(QueryParams):
                     'description': 'Set `true` value to fetch active keys or '
                     '`false` to fetch deactivated keys'
                 },
-                'count': {
-                    'description': 'Set `true` value to get only a counter'
-                },
-                'page_size': {'description': 'Number of items per page'},
-                'limit': {'description': 'Limit of items to query'},
-                'created_before': {
-                    'description': 'Filtered items have a `created_at` '
-                    'date equal or lower than this value, this field '
-                    'represents the max creation date.'
-                },
-                'created_after': {
-                    'description': 'Filtered items have a `created_at` '
-                    'date equal or greater than this value, this field '
-                    'represents the min creation date.'
-                },
             }
         },
     )
@@ -139,14 +124,9 @@ class CardQuery(QueryParams):
     type: Optional[CardType] = None
 
     @field_validator('exp_month', 'exp_year', 'cvv2', 'cvv')
-    def query_by_exp_cvv_if_number_set(cls, v, info):
-        if not info.data.get('number'):
-            raise ValueError(
-                '''
-                exp_month, exp_year, cvv and cvv2 can
-                only be set when number is provided
-                '''
-            )
+    def query_by_exp_cvv_if_number_set(cls, v, values):
+        if not values.data.get('number'):
+            raise ValueError('Number must be set to query by exp or cvv')
         return v
 
 
@@ -155,8 +135,8 @@ class StatementQuery(QueryParams):
     month: int
 
     @field_validator('month')
-    def validate_year_month(cls, month, info):
-        year = info.data['year']
+    def validate_year_month(cls, month, values):
+        year = values.data['year']
         month_now = dt.date.today().replace(day=1)
         month_set = dt.date(year, month, 1)
         if month_set >= month_now:
@@ -190,8 +170,6 @@ class UserQuery(QueryParams):
 
 
 class IdentityQuery(QueryParams):
-    model_config = dict(arbitrary_types_allowed=True)
-
     curp: Optional[CurpField] = None
     rfc: Optional[str] = None
     status: Optional[UserStatus] = None
