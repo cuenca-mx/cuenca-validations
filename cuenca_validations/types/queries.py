@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Optional
+from typing import Optional
 
 from pydantic import (
     BaseModel,
@@ -9,6 +9,7 @@ from pydantic import (
     PositiveInt,
     field_validator,
 )
+from typing_extensions import Annotated
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
