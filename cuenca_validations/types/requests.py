@@ -112,8 +112,8 @@ class TransferRequest(BaseRequest):
     )
 
 
-class StrictTransferRequest(BaseRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber]
+class StrictTransferRequest(TransferRequest):
+    account_number: Union[Clabe, StrictPaymentCardNumber]  # type: ignore
 
 
 class CardUpdateRequest(BaseRequest):
@@ -140,8 +140,8 @@ class CardActivationRequest(BaseModel):
             pattern=r'\d{16}',
         ),
     ]
-    exp_month: Annotated[int, Field(strict=True, ge=1, le=12)]  # type: ignore
-    exp_year: Annotated[int, Field(strict=True, ge=18, le=99)]  # type: ignore
+    exp_month: Annotated[int, Field(strict=True, ge=1, le=12)]
+    exp_year: Annotated[int, Field(strict=True, ge=18, le=99)]
     cvv2: Annotated[
         str,
         StringConstraints(
@@ -207,7 +207,7 @@ class CardValidationRequest(BaseModel):
     ]
     exp_month: Optional[Annotated[int, Field(strict=True, ge=1, le=12)]] = None
     exp_year: Optional[Annotated[int, Field(strict=True, ge=18, le=99)]] = None
-    cvv: Optional[  # type: ignore
+    cvv: Optional[
         Annotated[
             str,
             StringConstraints(
@@ -215,7 +215,7 @@ class CardValidationRequest(BaseModel):
             ),
         ]
     ] = None
-    cvv2: Optional[  # type: ignore
+    cvv2: Optional[
         Annotated[
             str,
             StringConstraints(
@@ -223,7 +223,7 @@ class CardValidationRequest(BaseModel):
             ),
         ]
     ] = None
-    icvv: Optional[  # type: ignore
+    icvv: Optional[
         Annotated[
             str,
             StringConstraints(
@@ -272,7 +272,7 @@ class CardTransactionRequest(BaseModel):
     card_id: str
     user_id: str
     # In some card_validations amount is equal to 0
-    amount: Annotated[int, Field(strict=True, ge=0)]  # type: ignore
+    amount: Annotated[int, Field(strict=True, ge=0)]
     merchant_name: str
     merchant_type: str
     merchant_data: str

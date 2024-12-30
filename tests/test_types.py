@@ -551,7 +551,7 @@ def test_verification_attempt_request():
 
 def test_limited_wallet_request():
     curp = 'TAXM840916HNEMXT02'
-    rfc = Rfc('TAXM840916123')
+    rfc = 'TAXM840916123'
     # Not valid format
     with pytest.raises(ValidationError):
         LimitedWalletRequest(allowed_curp='123', allowed_rfc='123')
