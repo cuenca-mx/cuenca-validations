@@ -19,32 +19,10 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-def validate_strict_positive_int(value: int) -> int:
-    if not isinstance(value, int):
-        raise ValueError("Value must be an integer")
-    if value <= 0:
-        raise ValueError("Value must be greater than 0")
-    if value > 21_474_836_47:
-        raise ValueError("Value must be less than 21_474_836_47")
-    return value
+StrictPositiveInt = Annotated[int, Field(strict=True, gt=0, le=21_474_836_47)]
 
 
-StrictPositiveInt = Annotated[
-    int, BeforeValidator(validate_strict_positive_int)
-]
-
-
-def validate_strict_positive_float(value: float) -> float:
-    if not isinstance(value, float):
-        raise ValueError("Value must be a float")
-    if value <= 0:
-        raise ValueError("Value must be greater than 0")
-    return value
-
-
-StrictPositiveFloat = Annotated[
-    float, BeforeValidator(validate_strict_positive_float)
-]
+StrictPositiveFloat = Annotated[float, Field(strict=True, gt=0)]
 
 
 def validate_only_digits(value: str) -> str:

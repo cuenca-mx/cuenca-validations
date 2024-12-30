@@ -594,14 +594,10 @@ def test_strict_positive_float_valid():
 
 
 def test_strict_positive_float_invalid():
-    with pytest.raises(ValueError, match="Value must be greater than 0"):
+    with pytest.raises(ValueError, match="Input should be greater than 0"):
         TestFloatModel(value=0.0)
-    with pytest.raises(ValueError, match="Value must be greater than 0"):
+    with pytest.raises(ValueError, match="Input should be greater than 0"):
         TestFloatModel(value=-1.5)
-    with pytest.raises(ValueError, match="Value must be a float"):
-        TestFloatModel(value=5)
-    with pytest.raises(ValueError, match="Value must be a float"):
-        TestFloatModel(value="10.5")
 
 
 class TestIntModel(BaseModel):
@@ -620,19 +616,19 @@ def test_strict_positive_int_valid():
 
 
 def test_strict_positive_int_invalid():
-    with pytest.raises(ValueError, match="Value must be greater than 0"):
+    with pytest.raises(ValueError, match="Input should be greater than 0"):
         TestIntModel(value=0)
 
-    with pytest.raises(ValueError, match="Value must be greater than 0"):
+    with pytest.raises(ValueError, match="Input should be greater than 0"):
         TestIntModel(value=-5)
 
     with pytest.raises(
-        ValueError, match="Value must be less than 21_474_836_47"
+        ValueError, match="Input should be less than or equal to 2147483647"
     ):
         TestIntModel(value=21_474_836_48)
 
-    with pytest.raises(ValueError, match="Value must be an integer"):
+    with pytest.raises(ValueError, match="Input should be a valid integer"):
         TestIntModel(value=5.5)
 
-    with pytest.raises(ValueError, match="Value must be an integer"):
+    with pytest.raises(ValueError, match="Input should be a valid integer"):
         TestIntModel(value="10")

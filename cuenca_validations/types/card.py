@@ -13,7 +13,11 @@ class StrictPaymentCardNumber(BaseModel):
     def validate_bin(cls, card_number: PaymentCardNumber) -> PaymentCardNumber:
         if card_number.bin not in CARD_BINS:
             raise PydanticCustomError(
-                'payment_card_number.bin', 'Invalid BIN: Bank code not found.'
+                'payment_card_number.bin',
+                'The card number contains a BIN (first six digits) '
+                'that does not have a known association with a Mexican bank.'
+                'To add the association, please file an issue:'
+                'https://github.com/cuenca-mx/cuenca-validations/issues',
             )
         return card_number
 
