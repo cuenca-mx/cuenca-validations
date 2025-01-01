@@ -33,7 +33,7 @@ MAX_PAGE_SIZE = 100
 class QueryParams(BaseModel):
     count: bool = False
     page_size: Annotated[
-        int, Field(strict=True, gt=0, le=MAX_PAGE_SIZE, default=MAX_PAGE_SIZE)
+        int, Field(gt=0, le=MAX_PAGE_SIZE, default=MAX_PAGE_SIZE)
     ]
     limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
