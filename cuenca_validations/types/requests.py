@@ -285,8 +285,7 @@ class CardTransactionRequest(BaseModel):
     authorizer_number: Optional[str] = None
 
 
-class ReverseRequest(CardTransactionRequest):
-    ...
+class ReverseRequest(CardTransactionRequest): ...  # noqa: E701
 
 
 class CardNotificationRequest(CardTransactionRequest):
@@ -300,9 +299,9 @@ class ChargeRequest(CardNotificationRequest):
     get_balance: Optional[bool] = False
     atm_fee: Optional[StrictPositiveInt] = None
     issuer: IssuerNetwork
-    cardholder_verification_method: Optional[
-        CardholderVerificationMethod
-    ] = None
+    cardholder_verification_method: Optional[CardholderVerificationMethod] = (
+        None
+    )
     ecommerce_indicator: Optional[EcommerceIndicator] = None
     fraud_validation_id: Optional[str] = None
 
@@ -353,9 +352,9 @@ class FraudValidationRequest(BaseModel):
     logical_network: Optional[str] = None
     is_cvv: Optional[bool] = False
     issuer: IssuerNetwork
-    cardholder_verification_method: Optional[
-        CardholderVerificationMethod
-    ] = None
+    cardholder_verification_method: Optional[CardholderVerificationMethod] = (
+        None
+    )
     ecommerce_indicator: Optional[EcommerceIndicator] = None
     card_id: Optional[str] = None  # type: ignore
     user_id: Optional[str] = None  # type: ignore
