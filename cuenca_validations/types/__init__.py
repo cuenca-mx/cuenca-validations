@@ -49,7 +49,6 @@ __all__ = [
     'KYCVerificationUpdateRequest',
     'Language',
     'LimitedWalletRequest',
-    'PageSize',
     'PartnerRequest',
     'PartnerUpdateRequest',
     'PhoneNumber',
