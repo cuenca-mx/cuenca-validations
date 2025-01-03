@@ -19,7 +19,11 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-StrictPositiveInt = Annotated[int, Field(strict=True, gt=0, le=21_474_836_47)]
+MAX_VALUE_IN_DB = 21_474_836_47
+
+StrictPositiveInt = Annotated[
+    int, Field(strict=True, gt=0, le=MAX_VALUE_IN_DB)
+]
 
 
 StrictPositiveFloat = Annotated[float, Field(strict=True, gt=0)]
