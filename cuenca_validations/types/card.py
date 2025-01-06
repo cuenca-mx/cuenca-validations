@@ -6,6 +6,18 @@ from ..card_bins import CARD_BINS
 
 
 class StrictPaymentCardNumber(BaseModel):
+    """
+    Refactored `StrictPaymentCardNumber` to leverage Pydantic v2's
+    `PaymentCardNumber`, which now natively includes attributes such as
+    brand, bin, last4, and masked.
+
+    Previously, these attributes were manually computed in a custom
+    `PaymentCardNumber` class.
+
+    The `StrictPaymentCardNumber` class now wraps `PaymentCardNumber`
+    as a field, with additional validation to ensure the BIN is associated
+    with a known Mexican bank.
+    """
 
     card_number: PaymentCardNumber
 
