@@ -652,8 +652,6 @@ class VerificationAttemptRequest(BaseModel):
 
 
 class LimitedWalletRequest(BaseRequest):
-    model_config = dict(arbitrary_types_allowed=True)
-
     allowed_curp: CurpField
     allowed_rfc: Optional[Rfc] = None
 
@@ -663,7 +661,6 @@ class KYCVerificationUpdateRequest(BaseRequest):
 
 
 class PlatformRequest(BaseModel):
-    model_config = dict(arbitrary_types_allowed=True)
     name: str
     rfc: Optional[str] = None
     establishment_date: Optional[dt.date] = None
@@ -739,8 +736,6 @@ class QuestionnairesRequest(BaseModel):
 
 
 class PartnerRequest(BaseRequest):
-    model_config = dict(arbitrary_types_allowed=True)
-
     legal_name: str
     business_name: str
     nationality: Country
@@ -755,8 +750,6 @@ class PartnerRequest(BaseRequest):
 
 
 class PartnerUpdateRequest(BaseRequest):
-    model_config = dict(arbitrary_types_allowed=True)
-
     legal_name: Optional[str] = None
     business_name: Optional[str] = None
     nationality: Optional[Country] = None
