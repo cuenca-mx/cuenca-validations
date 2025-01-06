@@ -585,49 +585,42 @@ class TestFloatModel(BaseModel):
     value: StrictPositiveFloat
 
 
-def test_strict_positive_float_valid():
-    model = TestFloatModel(value=10.5)
-    assert model.value == 10.5
-    model = TestFloatModel(value=0.000001)
-    assert model.value == 0.000001
+@pytest.mark.parametrize("value", [10.5, 0.000001])
+def test_strict_positive_float_valid(value):
+    model = TestFloatModel(value=value)
+    assert model.value == value
 
 
-def test_strict_positive_float_invalid():
+@pytest.mark.parametrize("value", [0.0, -1.5])
+def test_strict_positive_float_invalid(value):
     with pytest.raises(ValueError, match="Input should be greater than 0"):
-        TestFloatModel(value=0.0)
-    with pytest.raises(ValueError, match="Input should be greater than 0"):
-        TestFloatModel(value=-1.5)
+        TestFloatModel(value=value)
 
 
 class TestIntModel(BaseModel):
     value: StrictPositiveInt
 
 
-def test_strict_positive_int_valid():
-    model = TestIntModel(value=100)
-    assert model.value == 100
-
-    model = TestIntModel(value=1)
-    assert model.value == 1
-
-    model = TestIntModel(value=21_474_836_47)
-    assert model.value == 21_474_836_47
+@pytest.mark.parametrize("value", [100, 1, 21_474_836_47])
+def test_strict_positive_int_valid(value):
+    model = TestIntModel(value=value)
+    assert model.value == value
 
 
-def test_strict_positive_int_invalid():
-    with pytest.raises(ValueError, match="Input should be greater than 0"):
-        TestIntModel(value=0)
-
-    with pytest.raises(ValueError, match="Input should be greater than 0"):
-        TestIntModel(value=-5)
-
-    with pytest.raises(
-        ValueError, match="Input should be less than or equal to 2147483647"
-    ):
-        TestIntModel(value=21_474_836_48)
-
-    with pytest.raises(ValueError, match="Input should be a valid integer"):
-        TestIntModel(value=5.5)
-
-    with pytest.raises(ValueError, match="Input should be a valid integer"):
-        TestIntModel(value="10")
+@pytest.mark.parametrize(
+    "value, expected_error, expected_message",
+    [
+        (0, ValueError, "Input should be greater than 0"),
+        (-5, ValueError, "Input should be greater than 0"),
+        (
+            21_474_836_48,
+            ValueError,
+            "Input should be less than or equal to 2147483647",
+        ),
+        (5.5, ValueError, "Input should be a valid integer"),
+        ("10", ValueError, "Input should be a valid integer"),
+    ],
+)
+def test_strict_positive_int_invalid(value, expected_error, expected_message):
+    with pytest.raises(expected_error, match=expected_message):
+        TestIntModel(value=value)
