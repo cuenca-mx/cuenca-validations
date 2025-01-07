@@ -110,7 +110,7 @@ class TransferRequest(BaseRequest):
 
 
 class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber]  # type: ignore
+    account_number: Union[Clabe, StrictPaymentCardNumber]
 
 
 class CardUpdateRequest(BaseRequest):
@@ -239,9 +239,7 @@ class ARPCRequest(BaseModel):
     arqc: StrictStr
     arpc_method: Annotated[
         str,
-        StringConstraints(  # type: ignore
-            strict=True, min_length=1, max_length=1
-        ),
+        StringConstraints(strict=True, min_length=1, max_length=1),
     ]
     transaction_data: StrictStr
     response_code: StrictStr
@@ -345,10 +343,10 @@ class FraudValidationRequest(BaseModel):
         None
     )
     ecommerce_indicator: Optional[EcommerceIndicator] = None
-    card_id: Optional[str] = None  # type: ignore
-    user_id: Optional[str] = None  # type: ignore
-    card_type: Optional[CardType] = None  # type: ignore
-    card_status: Optional[CardStatus] = None  # type: ignore
+    card_id: Optional[str] = None
+    user_id: Optional[str] = None
+    card_type: Optional[CardType] = None
+    card_status: Optional[CardStatus] = None
 
 
 class TransactionTokenValidationUpdateRequest(BaseRequest):
