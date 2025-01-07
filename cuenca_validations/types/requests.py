@@ -128,15 +128,7 @@ class CardRequest(BaseRequest):
 
 
 class CardActivationRequest(BaseModel):
-    number: Annotated[
-        str,
-        StringConstraints(
-            strip_whitespace=True,
-            min_length=16,
-            max_length=16,
-            pattern=r'\d{16}',
-        ),
-    ]
+    number: PaymentCardNumber
     exp_month: Annotated[int, Field(strict=True, ge=1, le=12)]
     exp_year: Annotated[int, Field(strict=True, ge=18, le=99)]
     cvv2: Annotated[
