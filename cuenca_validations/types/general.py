@@ -37,10 +37,11 @@ StrictPositiveInt = Annotated[
 StrictPositiveFloat = Annotated[float, Field(strict=True, gt=0)]
 
 
-def validate_only_digits(value: str) -> str:
-    if not value.isdigit():
+def validate_only_digits(value: Any) -> str:
+    v_str = str(value)
+    if not v_str.isdigit():
         raise ValueError("Value must contain only digits")
-    return value
+    return v_str
 
 
 def digits(

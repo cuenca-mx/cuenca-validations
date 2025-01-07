@@ -150,9 +150,17 @@ class Accounts(BaseModel):
     number: digits(5, 8)  # type: ignore
 
 
-def test_only_digits():
-    acc = Accounts(number='123456')
-    assert acc.number == '123456'
+@pytest.mark.parametrize(
+    "input_number, expected",
+    [
+        ('123456', '123456'),
+        (123456, '123456'),
+        ('0012312', '0012312'),
+    ],
+)
+def test_only_digits(input_number, expected):
+    acc = Accounts(number=input_number)
+    assert acc.number == expected
 
 
 @pytest.mark.parametrize(
