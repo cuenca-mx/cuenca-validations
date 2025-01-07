@@ -1,11 +1,19 @@
 import json
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
-from pydantic import BeforeValidator, Field
-from typing_extensions import Annotated
+from pydantic import AfterValidator, AnyUrl, BeforeValidator, Field, HttpUrl
 
 from ..validators import sanitize_dict, sanitize_item
 from .enums import State
+
+# In Pydantic v2, URL fields like `HttpUrl` are stored as internal objects
+# instead of `str`, which can break compatibility with code expecting str.
+# Using `HttpUrlString` ensures the field is validated as a URL but stored as
+# a `str` for compatibility.
+# https://github.com/pydantic/pydantic/discussions/6395
+
+HttpUrlString = Annotated[HttpUrl, AfterValidator(str)]
+AnyUrlString = Annotated[AnyUrl, AfterValidator(str)]
 
 
 class SantizedDict(dict):

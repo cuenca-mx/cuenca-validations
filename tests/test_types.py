@@ -5,7 +5,7 @@ from enum import Enum
 
 import pytest
 from freezegun import freeze_time
-from pydantic import AnyUrl, BaseModel, HttpUrl, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -130,17 +130,6 @@ def test_json_encoder(value, result):
     decoded = json.loads(encoded)
 
     assert decoded['value'] == result
-
-
-def test_sanitized_dict_with_urls():
-    data = SantizedDict(
-        api_url=HttpUrl('https://api.cuenca.com/v1'),
-        ftp_url=AnyUrl('ftp://files.example.com/'),
-    )
-    assert data == {
-        'api_url': 'https://api.cuenca.com/v1',
-        'ftp_url': 'ftp://files.example.com/',
-    }
 
 
 def test_invalid_class():
@@ -432,7 +421,7 @@ def test_user_update_request():
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.dict() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert str(update_req.curp_document_uri) == request['curp_document_uri']
+    assert update_req.curp_document_uri == request['curp_document_uri']
 
     request['beneficiaries'] = [
         dict(

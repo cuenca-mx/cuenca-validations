@@ -1,21 +1,18 @@
 import datetime as dt
-from typing import List, Optional, Union
+from typing import Annotated, List, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
-    AnyUrl,
     BaseModel,
     ConfigDict,
     EmailStr,
     Field,
-    HttpUrl,
     StrictStr,
     StringConstraints,
     field_validator,
     model_validator,
 )
 from pydantic.networks import IPvAnyAddress
-from typing_extensions import Annotated
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -51,7 +48,7 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
 from .card import PaymentCardNumber, StrictPaymentCardNumber
-from .general import StrictPositiveInt
+from .general import AnyUrlString, HttpUrlString, StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
@@ -539,7 +536,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
-    curp_document_uri: Optional[HttpUrl] = None
+    curp_document_uri: Optional[HttpUrlString] = None
 
     @field_validator('beneficiaries')
     @classmethod
@@ -569,8 +566,8 @@ class UserLoginRequest(BaseRequest):
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
-    success_url: Optional[AnyUrl] = None
-    failure_url: Optional[AnyUrl] = None
+    success_url: Optional[AnyUrlString] = None
+    failure_url: Optional[AnyUrlString] = None
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -584,13 +581,13 @@ class SessionRequest(BaseRequest):
 
 
 class EndpointRequest(BaseRequest):
-    url: HttpUrl
+    url: HttpUrlString
     events: Optional[List[WebhookEvent]] = None
     user_id: Optional[str] = None
 
 
 class EndpointUpdateRequest(BaseRequest):
-    url: Optional[HttpUrl] = None
+    url: Optional[HttpUrlString] = None
     is_enable: Optional[bool] = None
     events: Optional[List[WebhookEvent]] = None
 
@@ -605,7 +602,7 @@ class FileUploadRequest(BaseRequest):
 
 class FileRequest(BaseModel):
     is_back: Optional[bool] = False
-    url: HttpUrl
+    url: HttpUrlString
     type: KYCFileType
 
 
