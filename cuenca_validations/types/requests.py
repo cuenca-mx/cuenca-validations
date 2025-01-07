@@ -75,7 +75,7 @@ class BaseRequest(BaseModel):
     def dict(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
-        return super().dict(*args, **kwargs)
+        return super().model_dump(*args, **kwargs)
 
 
 class TransferRequest(BaseRequest):
@@ -169,7 +169,7 @@ class UserCredentialUpdateRequest(BaseRequest):
 
     def dict(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
-        return BaseModel.dict(self, *args, **kwargs)
+        return BaseModel.model_dump(self, *args, **kwargs)
 
     @model_validator(mode="before")
     @classmethod

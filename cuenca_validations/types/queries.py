@@ -64,7 +64,7 @@ class QueryParams(BaseModel):
     def dict(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
-        d = super().dict(*args, **kwargs)
+        d = super().model_dump(*args, **kwargs)
         if self.count:
             d['count'] = 1
         sanitize_dict(d)
