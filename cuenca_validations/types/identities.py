@@ -1,51 +1,34 @@
 import datetime as dt
-import re
-from typing import Any, Optional
+from typing import Annotated, Any, Optional
 
 from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
     IPvAnyAddress,
+    StringConstraints,
     model_validator,
 )
 from pydantic.types import StrictStr
 
 from .enums import Country, KYCFileType, State, VerificationStatus
 
-
-class PhoneNumber(StrictStr):
-    min_length = 10
-    max_length = 15
-    regex = re.compile(r'^\+?[0-9]{10,14}$')
-
-    @classmethod
-    def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: Any
-    ) -> dict[str, Any]:
-        return {
-            'type': 'str',
-            'pattern': cls.regex.pattern,
-            'min_length': cls.min_length,
-            'max_length': cls.max_length,
-        }
+PhoneNumber = Annotated[
+    str,
+    StringConstraints(
+        min_length=10, max_length=15, pattern=r'^\+?[0-9]{10,14}$'
+    ),
+]
 
 
-class CurpField(StrictStr):
-    min_length = 18
-    max_length = 18
-    regex = re.compile(r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$')
-
-    @classmethod
-    def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: Any
-    ) -> dict[str, Any]:
-        return {
-            'type': 'str',
-            'pattern': cls.regex.pattern,
-            'min_length': cls.min_length,
-            'max_length': cls.max_length,
-        }
+CurpField = Annotated[
+    str,
+    StringConstraints(
+        min_length=18,
+        max_length=18,
+        pattern=r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$',
+    ),
+]
 
 
 class Rfc(StrictStr):
