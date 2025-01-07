@@ -10,13 +10,13 @@ from pydantic import BaseModel, ValidationError
 from cuenca_validations.types import (
     Address,
     CardQuery,
+    Digits,
     JSONEncoder,
     QueryParams,
     Rfc,
     SantizedDict,
     SessionRequest,
     TransactionStatus,
-    digits,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
@@ -147,7 +147,7 @@ def test_invalid_class():
 
 
 class Accounts(BaseModel):
-    number: digits(5, 8)  # type: ignore
+    number: Digits(5, 8)  # type: ignore
 
 
 @pytest.mark.parametrize(

@@ -102,7 +102,7 @@ __all__ = [
     'WalletQuery',
     'WalletTransactionQuery',
     'WebhookEvent',
-    'digits',
+    'Digits',
     'get_state_name',
     'HttpUrlString',
     'AnyUrlString',
@@ -154,12 +154,12 @@ from .enums import (
 from .files import BatchFileMetadata
 from .general import (
     AnyUrlString,
+    Digits,
     HttpUrlString,
     JSONEncoder,
     SantizedDict,
     StrictPositiveFloat,
     StrictPositiveInt,
-    digits,
     get_state_name,
 )
 from .identities import (

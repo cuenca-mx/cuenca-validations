@@ -44,7 +44,7 @@ def validate_only_digits(value: Any) -> str:
     return v_str
 
 
-def digits(
+def Digits(
     min_length: Optional[int] = None, max_length: Optional[int] = None
 ) -> Any:
     return Annotated[
