@@ -1,6 +1,6 @@
 import datetime as dt
 import re
-from typing import Any, Dict, List, Optional
+from typing import Any, Optional
 
 from pydantic import (
     BaseModel,
@@ -22,7 +22,7 @@ class PhoneNumber(StrictStr):
     @classmethod
     def __get_pydantic_core_schema__(
         cls, source_type: Any, handler: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {
             'type': 'str',
             'pattern': cls.regex.pattern,
@@ -39,7 +39,7 @@ class CurpField(StrictStr):
     @classmethod
     def __get_pydantic_core_schema__(
         cls, source_type: Any, handler: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {
             'type': 'str',
             'pattern': cls.regex.pattern,
@@ -61,7 +61,7 @@ class Rfc(StrictStr):
     @classmethod
     def __get_pydantic_core_schema__(
         cls, source_type: Any, handler: Any
-    ) -> Dict[str, Any]:
+    ) -> dict[str, Any]:
         return {
             'type': 'str',
             'min_length': cls.min_length,
@@ -96,7 +96,7 @@ class Address(BaseModel):
 
     @model_validator(mode='before')
     @classmethod
-    def full_name_complete(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+    def full_name_complete(cls, values: dict[str, Any]) -> dict[str, Any]:
         if values.get('full_name'):
             return values
         if not values.get('street'):
@@ -162,7 +162,7 @@ class KYCFile(BaseModel):
     status: Optional[VerificationStatus] = Field(
         None, description='The status of the file depends on KYCValidation'
     )
-    errors: Optional[List[VerificationErrors]] = Field(
+    errors: Optional[list[VerificationErrors]] = Field(
         None, description='List of document errors found during kyc validation'
     )
     verification_id: Optional[str] = Field(

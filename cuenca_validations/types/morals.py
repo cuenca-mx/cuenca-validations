@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import List, Optional
+from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
@@ -70,5 +70,5 @@ class ShareholderPhysical(PhysicalPerson):
 class Shareholder(BaseModel):
     name: str
     percentage: int
-    shareholders: List[ShareholderPhysical]
-    legal_representatives: List[LegalRepresentative]
+    shareholders: list[ShareholderPhysical]
+    legal_representatives: list[LegalRepresentative]

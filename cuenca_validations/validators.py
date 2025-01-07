@@ -1,7 +1,7 @@
 import base64
 import datetime as dt
 from enum import Enum
-from typing import Any, Callable, List, Optional, Union
+from typing import Any, Callable, Optional, Union
 
 from dateutil.relativedelta import relativedelta
 
@@ -20,7 +20,7 @@ def sanitize_item(
     :param default: Optional function to be used when there is no case
     for this type of item, default `None` it returns the item as is.
     """
-    rv: Union[str, List[Any]]
+    rv: Union[str, list[Any]]
     if isinstance(item, dt.date):
         if isinstance(item, dt.datetime) and not item.tzinfo:
             rv = item.astimezone(dt.timezone.utc).isoformat()

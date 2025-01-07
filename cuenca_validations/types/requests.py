@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, List, Optional, Union
+from typing import Annotated, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -529,7 +529,7 @@ class UserUpdateRequest(BaseModel):
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[Address] = None
-    beneficiaries: Optional[List[Beneficiary]] = None
+    beneficiaries: Optional[list[Beneficiary]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
@@ -541,7 +541,7 @@ class UserUpdateRequest(BaseModel):
     @field_validator('beneficiaries')
     @classmethod
     def beneficiary_percentage(
-        cls, beneficiaries: Optional[List[Beneficiary]] = None
+        cls, beneficiaries: Optional[list[Beneficiary]] = None
     ):
         if beneficiaries and sum(b.percentage for b in beneficiaries) > 100:
             raise ValueError('The total percentage is more than 100.')
@@ -582,14 +582,14 @@ class SessionRequest(BaseRequest):
 
 class EndpointRequest(BaseRequest):
     url: HttpUrlString
-    events: Optional[List[WebhookEvent]] = None
+    events: Optional[list[WebhookEvent]] = None
     user_id: Optional[str] = None
 
 
 class EndpointUpdateRequest(BaseRequest):
     url: Optional[HttpUrlString] = None
     is_enable: Optional[bool] = None
-    events: Optional[List[WebhookEvent]] = None
+    events: Optional[list[WebhookEvent]] = None
 
 
 class FileUploadRequest(BaseRequest):
@@ -607,7 +607,7 @@ class FileRequest(BaseModel):
 
 
 class FileBatchUploadRequest(BaseModel):
-    files: List[FileRequest]
+    files: list[FileRequest]
     user_id: str
 
 
@@ -679,7 +679,7 @@ class WebhookRequest(BaseModel):
 class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
-    documents: List[KYCFile] = []
+    documents: list[KYCFile] = []
 
 
 class BankAccountValidationRequest(BaseModel):
@@ -764,5 +764,5 @@ class PartnerUpdateRequest(BaseRequest):
     license: Optional[LicenseDetails] = None
     audit: Optional[AuditDetails] = None
     vulnerable_activity: Optional[VulnerableActivityDetails] = None
-    legal_representatives: Optional[List[LegalRepresentative]] = None
-    shareholders: Optional[List[Shareholder]] = None
+    legal_representatives: Optional[list[LegalRepresentative]] = None
+    shareholders: Optional[list[Shareholder]] = None
