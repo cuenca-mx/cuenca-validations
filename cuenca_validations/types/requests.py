@@ -72,7 +72,7 @@ from .morals import (
 class BaseRequest(BaseModel):
     model_config = ConfigDict(extra="forbid")
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
         return super().model_dump(*args, **kwargs)
@@ -167,7 +167,7 @@ class UserCredentialUpdateRequest(BaseRequest):
         ),
     )
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
         return BaseModel.model_dump(self, *args, **kwargs)
 

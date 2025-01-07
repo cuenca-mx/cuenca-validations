@@ -67,19 +67,21 @@ class TestClass:
 
 def test_dict():
     model = QueryParams(count=1, created_before=now)
-    assert model.dict() == dict(count=1, created_before=utcnow.isoformat())
+    assert model.model_dump() == dict(
+        count=1, created_before=utcnow.isoformat()
+    )
 
 
 def test_dict_with_exclude():
     model = QueryParams(count=1, created_before=now, user_id='USXXXX')
-    assert model.dict(exclude={'user_id'}) == dict(
+    assert model.model_dump(exclude={'user_id'}) == dict(
         count=1, created_before=utcnow.isoformat()
     )
 
 
 def test_dict_with_exclude_unset():
     model = QueryParams(count=1, created_before=now)
-    assert model.dict(exclude_unset=False) == dict(
+    assert model.model_dump(exclude_unset=False) == dict(
         count=1, created_before=utcnow.isoformat(), page_size=100
     )
 
@@ -201,7 +203,7 @@ def test_card_query_exp_cvv_if_number_not_set(input_value):
 
 def test_exclude_none_in_dict():
     request = ApiKeyUpdateRequest(user_id='US123')
-    assert request.dict() == dict(user_id='US123')
+    assert request.model_dump() == dict(user_id='US123')
 
 
 def test_update_one_property_at_a_time_request():
@@ -225,7 +227,7 @@ def test_update_one_property_at_a_time_request():
 )
 def test_update_credential_update_request_dict(data, expected_dict):
     req = UserCredentialUpdateRequest(**data)
-    assert req.dict() == expected_dict
+    assert req.model_dump() == expected_dict
 
 
 def test_card_transaction_requests():
@@ -352,7 +354,7 @@ def test_user_request():
         required_level=3,
         terms_of_service=None,
     )
-    assert UserRequest(**request).dict() == request
+    assert UserRequest(**request).model_dump() == request
 
     # changing curp so user is underage
     request['curp'] = 'ABCD060604HDFSRN03'
@@ -389,7 +391,7 @@ def test_curp_validation_request():
     assert all(field in error_msg for field in required_fields)
 
     req_curp = CurpValidationRequest(**request)
-    assert req_curp.dict() == request
+    assert req_curp.model_dump() == request
 
     request['date_of_birth'] = dt.date(2006, 5, 17)
 
@@ -427,7 +429,7 @@ def test_user_update_request():
         curp_document_uri='https://sandbox.cuenca.com/files/EF123',
     )
     update_req = UserUpdateRequest(**request)
-    beneficiaries = [b.dict() for b in update_req.beneficiaries]
+    beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
     assert update_req.curp_document_uri == request['curp_document_uri']
 

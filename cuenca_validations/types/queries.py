@@ -60,7 +60,7 @@ class QueryParams(BaseModel):
         },
     )
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
         d = super().model_dump(*args, **kwargs)
