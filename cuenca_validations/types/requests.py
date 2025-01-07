@@ -78,11 +78,8 @@ class BaseRequest(BaseModel):
         return super().model_dump(*args, **kwargs)
 
 
-class TransferRequest(BaseRequest):
+class BaseTransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber] = Field(
-        ..., description='Destination Clabe or Card number'
-    )
     amount: StrictPositiveInt = Field(
         ..., description='Always in cents, not in MXN pesos'
     )
@@ -109,8 +106,16 @@ class TransferRequest(BaseRequest):
     )
 
 
-class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber]
+class TransferRequest(BaseTransferRequest):
+    account_number: Union[Clabe, PaymentCardNumber] = Field(
+        ..., description='Destination Clabe or Card number'
+    )
+
+
+class StrictTransferRequest(BaseTransferRequest):
+    account_number: Union[Clabe, StrictPaymentCardNumber] = Field(
+        ..., description='Destination Clabe or Card number'
+    )
 
 
 class CardUpdateRequest(BaseRequest):
