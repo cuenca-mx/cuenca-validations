@@ -28,7 +28,7 @@ setup(
         'clabe>=2.0.0',
         'pydantic[email]>=2.10.0',
         'pydantic-extra-types>=2.10.0',
-        'python-dateutil>=2.8.0',
+        'python-dateutil>=2.9.0',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
