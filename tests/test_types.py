@@ -80,7 +80,7 @@ def test_dict_with_exclude():
 
 
 def test_dict_with_exclude_unset():
-    model = QueryParams(count=1, created_before=now, page_size=100)
+    model = QueryParams(count=1, created_before=now)
     assert model.model_dump(exclude_unset=False) == dict(
         count=1, created_before=utcnow.isoformat(), page_size=100
     )
