@@ -25,10 +25,7 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
-from cuenca_validations.types.general import (
-    StrictPositiveFloat,
-    StrictPositiveInt,
-)
+from cuenca_validations.types.general import StrictPositiveInt
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -578,22 +575,6 @@ def test_user_lists_request():
     UserListsRequest(names='Pedro', first_surname='Paramo')
     with pytest.raises(ValueError):
         UserListsRequest()
-
-
-class TestFloatModel(BaseModel):
-    value: StrictPositiveFloat
-
-
-@pytest.mark.parametrize("value", [10.5, 0.000001])
-def test_strict_positive_float_valid(value):
-    model = TestFloatModel(value=value)
-    assert model.value == value
-
-
-@pytest.mark.parametrize("value", [0.0, -1.5])
-def test_strict_positive_float_invalid(value):
-    with pytest.raises(ValueError, match="Input should be greater than 0"):
-        TestFloatModel(value=value)
 
 
 class TestIntModel(BaseModel):

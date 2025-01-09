@@ -34,9 +34,6 @@ StrictPositiveInt = Annotated[
 ]
 
 
-StrictPositiveFloat = Annotated[float, Field(strict=True, gt=0)]
-
-
 def validate_only_digits(value: Any) -> str:
     v_str = str(value)
     if not v_str.isdigit():

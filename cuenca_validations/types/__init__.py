@@ -71,7 +71,6 @@ __all__ = [
     'StatementQuery',
     'StrictPaymentCardNumber',
     'StrictPositiveInt',
-    'StrictPositiveFloat',
     'StrictTransferRequest',
     'TermsOfService',
     'TOSAgreement',
@@ -158,7 +157,6 @@ from .general import (
     HttpUrlString,
     JSONEncoder,
     SantizedDict,
-    StrictPositiveFloat,
     StrictPositiveInt,
     get_state_name,
 )
