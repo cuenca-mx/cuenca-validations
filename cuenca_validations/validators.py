@@ -4,6 +4,7 @@ from enum import Enum
 from typing import Any, Callable, Optional, Union
 
 from dateutil.relativedelta import relativedelta
+from pydantic import SecretStr
 
 
 def sanitize_dict(d: dict) -> dict:
@@ -35,6 +36,8 @@ def sanitize_item(
         rv = base64.b64encode(item).decode('utf-8')
     elif isinstance(item, Enum):
         rv = item.value
+    elif isinstance(item, SecretStr):
+        rv = item.get_secret_value()
     elif hasattr(item, 'to_dict'):
         rv = item.to_dict()
     elif default:
