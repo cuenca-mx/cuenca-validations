@@ -564,13 +564,17 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
+class TestRfc(BaseModel):
+    rfc: Rfc
+
+
 def test_rfc_field():
     with pytest.raises(ValueError):
-        Rfc.validate('')
-        Rfc.validate('invalid')
-        Rfc.validate('ThisValueIsTooLongForRFC')
+        TestRfc(rfc='')
+        TestRfc(rfc='invalid')
+        TestRfc(rfc='ThisValueIsTooLongForRFC')
 
-    assert Rfc.validate('TAXM840916123')
+    assert TestRfc(rfc='TAXM840916123')
 
 
 def test_user_lists_request():

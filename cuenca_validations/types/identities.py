@@ -9,7 +9,6 @@ from pydantic import (
     StringConstraints,
     model_validator,
 )
-from pydantic.types import StrictStr
 
 from .enums import Country, KYCFileType, State, VerificationStatus
 
@@ -31,25 +30,13 @@ CurpField = Annotated[
 ]
 
 
-class Rfc(StrictStr):
-    min_length = 12
-    max_length = 13
-
-    @classmethod
-    def validate(cls, rfc: str):
-        if len(rfc) < cls.min_length or len(rfc) > cls.max_length:
-            raise ValueError('Not a valid RFC.')
-        return cls(rfc)
-
-    @classmethod
-    def __get_pydantic_core_schema__(
-        cls, source_type: Any, handler: Any
-    ) -> dict[str, Any]:
-        return {
-            'type': 'str',
-            'min_length': cls.min_length,
-            'max_length': cls.max_length,
-        }
+Rfc = Annotated[
+    str,
+    StringConstraints(
+        min_length=12,
+        max_length=13,
+    ),
+]
 
 
 class Address(BaseModel):
