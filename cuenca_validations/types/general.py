@@ -43,7 +43,7 @@ def validate_only_digits(value: Any) -> str:
 
 def Digits(
     min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Any:
+) -> Annotated[Any, BeforeValidator, Field]:
     return Annotated[
         str,
         BeforeValidator(validate_only_digits),
