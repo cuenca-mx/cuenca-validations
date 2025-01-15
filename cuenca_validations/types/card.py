@@ -8,9 +8,9 @@ class StrictPaymentCardNumber(PaymentCardNumber):
 
     @classmethod
     def validate(
-        cls, __input_value: str, _: core_schema.ValidationInfo
+        cls, card_number: str, validation_info: core_schema.ValidationInfo
     ) -> 'StrictPaymentCardNumber':
-        card = super().validate(__input_value, _)
+        card = super().validate(card_number, validation_info)
         if card.bin not in CARD_BINS:
             raise PydanticCustomError(
                 'payment_card_number.bin',
