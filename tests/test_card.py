@@ -2,6 +2,7 @@ import pytest
 from pydantic import BaseModel, ValidationError
 from pydantic_extra_types.payment import PaymentCardBrand
 
+from cuenca_validations.errors import CardBinValidationError
 from cuenca_validations.types import StrictPaymentCardNumber
 
 VALID_BBVA = '4772130000000003'
@@ -15,10 +16,11 @@ class CardModel(BaseModel):
 def test_invalid_bin_strict_payment():
     with pytest.raises(ValidationError) as exc_info:
         CardModel(card_number=INVALID_BIN)
-    print(exc_info.value)
-    assert 'payment_card_number.bin' in str(exc_info.value)
-    assert 'The card number contains a BIN (first six digits) ' in str(
-        exc_info.value
+    assert exc_info.value.errors()[0] == dict(
+        loc=('card_number',),
+        type=CardBinValidationError.code,
+        msg=CardBinValidationError.msg_template,
+        input=INVALID_BIN,
     )
 
 
