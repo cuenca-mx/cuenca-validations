@@ -9,15 +9,9 @@ from pydantic import (
     StringConstraints,
     model_validator,
 )
+from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
-
-PhoneNumber = Annotated[
-    str,
-    StringConstraints(
-        min_length=10, max_length=15, pattern=r'^\+?[0-9]{10,14}$'
-    ),
-]
 
 Password = Annotated[
     str,
