@@ -103,8 +103,6 @@ __all__ = [
     'WebhookEvent',
     'Digits',
     'get_state_name',
-    'HttpUrlString',
-    'AnyUrlString',
 ]
 
 from .card import StrictPaymentCardNumber
@@ -152,9 +150,7 @@ from .enums import (
 )
 from .files import BatchFileMetadata
 from .general import (
-    AnyUrlString,
     Digits,
-    HttpUrlString,
     JSONEncoder,
     SantizedDict,
     StrictPositiveInt,

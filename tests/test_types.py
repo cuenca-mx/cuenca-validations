@@ -428,7 +428,7 @@ def test_user_update_request():
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert update_req.curp_document_uri == request['curp_document_uri']
+    assert update_req.curp_document_uri.unicode_string() == request['curp_document_uri']
 
     request['beneficiaries'] = [
         dict(
