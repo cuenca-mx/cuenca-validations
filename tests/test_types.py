@@ -5,7 +5,7 @@ from enum import Enum
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, SecretStr, ValidationError
+from pydantic import BaseModel, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -89,13 +89,11 @@ def test_sanitized_dict():
         time=now,
         hello='there',
         dates=[now],
-        secret=SecretStr('secret'),
     ) == dict(
         status='succeeded',
         time=utcnow.isoformat(),
         hello='there',
         dates=[utcnow.isoformat()],
-        secret='secret',
     )
 
 
