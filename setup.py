@@ -29,6 +29,7 @@ setup(
         'pydantic[email]>=2.10.0',
         'pydantic-extra-types>=2.10.0',
         'python-dateutil>=2.9.0',
+        'phonenumbers>=8.13.0',
     ],
     classifiers=[
         'Programming Language :: Python :: 3',
