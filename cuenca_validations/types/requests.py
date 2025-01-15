@@ -190,15 +190,7 @@ class UserCredentialRequest(BaseRequest):
 
 
 class CardValidationRequest(BaseModel):
-    number: Annotated[
-        str,
-        StringConstraints(
-            min_length=16,
-            max_length=16,
-            pattern=r'\d{16}',
-            strip_whitespace=True,
-        ),
-    ]
+    number: PaymentCardNumber
     exp_month: Optional[Annotated[int, Field(strict=True, ge=1, le=12)]] = None
     exp_year: Optional[Annotated[int, Field(strict=True, ge=18, le=99)]] = None
     cvv: Optional[
