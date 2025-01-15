@@ -90,13 +90,13 @@ class BaseRequest(BaseModel):
 class BaseTransferRequest(BaseRequest):
     recipient_name: StrictStr
     amount: StrictPositiveInt = Field(
-        ..., description='Always in cents, not in MXN pesos'
+        description='Always in cents, not in MXN pesos'
     )
     descriptor: StrictStr = Field(
-        ..., description='Short description for the recipient'
+        description='Short description for the recipient'
     )
     idempotency_key: str = Field(
-        ..., description='Custom Id, must be unique for each transfer'
+        description='Custom Id, must be unique for each transfer'
     )
     user_id: Optional[str] = Field(
         None, description='Source user to take the funds'
@@ -117,13 +117,13 @@ class BaseTransferRequest(BaseRequest):
 
 class TransferRequest(BaseTransferRequest):
     account_number: Union[Clabe, PaymentCardNumber] = Field(
-        ..., description='Destination Clabe or Card number'
+        description='Destination Clabe or Card number'
     )
 
 
 class StrictTransferRequest(BaseTransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber] = Field(
-        ..., description='Destination Clabe or Card number'
+        description='Destination Clabe or Card number'
     )
 
 
@@ -403,7 +403,7 @@ class UserRequest(BaseModel):
         None, description='if you want to create with specific `id`'
     )
     curp: CurpField = Field(
-        ..., description='Previously validated in `curp_validations`'
+        description='Previously validated in `curp_validations`'
     )
     phone_number: Optional[PhoneNumber] = Field(
         None, description='Only if you validated previously on your side'

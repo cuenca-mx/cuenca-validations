@@ -101,17 +101,14 @@ class Beneficiary(BaseModel):
 
 class VerificationErrors(BaseModel):
     identifier: str = Field(
-        ..., description='Unique identifier for the step validation'
+        description='Unique identifier for the step validation'
     )
     error: str = Field(
-        ...,
         description='Error throwed on validation,'
         ' can be StepError or SystemError in case of '
         'KYCProvider intermittence',
     )
-    code: str = Field(
-        ..., description='Specific code of the failure in the step.'
-    )
+    code: str = Field(description='Specific code of the failure in the step.')
     message: Optional[str] = Field(None, description='Error description')
     model_config = ConfigDict(
         json_schema_extra={
@@ -127,7 +124,7 @@ class VerificationErrors(BaseModel):
 
 class KYCFile(BaseModel):
     type: KYCFileType
-    uri_front: str = Field(..., description='API uri to fetch the file')
+    uri_front: str = Field(description='API uri to fetch the file')
     uri_back: Optional[str] = Field(
         None, description='API uri to fetch the file'
     )
