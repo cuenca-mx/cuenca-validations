@@ -47,13 +47,20 @@ from ..types.enums import (
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
-from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .card import (
+    Cvv2,
+    ExpMonth,
+    ExpYear,
+    PaymentCardNumber,
+    StrictPaymentCardNumber,
+)
 from .general import AnyUrlString, HttpUrlString, StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
     CurpField,
     KYCFile,
+    Password,
     PhoneNumber,
     Rfc,
     TOSAgreement,
@@ -134,17 +141,9 @@ class CardRequest(BaseRequest):
 
 class CardActivationRequest(BaseModel):
     number: PaymentCardNumber
-    exp_month: Annotated[int, Field(strict=True, ge=1, le=12)]
-    exp_year: Annotated[int, Field(strict=True, ge=18, le=99)]
-    cvv2: Annotated[
-        str,
-        StringConstraints(
-            strip_whitespace=True,
-            min_length=3,
-            max_length=3,
-            pattern=r'\d{3}',
-        ),
-    ]
+    exp_month: ExpMonth
+    exp_year: ExpYear
+    cvv2: Cvv2
 
 
 class ApiKeyUpdateRequest(BaseRequest):
@@ -155,14 +154,7 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 class UserCredentialUpdateRequest(BaseRequest):
     is_active: Optional[bool] = None
-    password: Optional[str] = Field(
-        None,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
-    )
+    password: Optional[Password] = None
 
     def model_dump(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
@@ -178,45 +170,17 @@ class UserCredentialUpdateRequest(BaseRequest):
 
 
 class UserCredentialRequest(BaseRequest):
-    password: str = Field(
-        ...,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
-    )
+    password: Password
     user_id: Optional[str] = None
 
 
 class CardValidationRequest(BaseModel):
     number: PaymentCardNumber
-    exp_month: Optional[Annotated[int, Field(strict=True, ge=1, le=12)]] = None
-    exp_year: Optional[Annotated[int, Field(strict=True, ge=18, le=99)]] = None
-    cvv: Optional[
-        Annotated[
-            str,
-            StringConstraints(
-                strip_whitespace=True, strict=True, min_length=3, max_length=3
-            ),
-        ]
-    ] = None
-    cvv2: Optional[
-        Annotated[
-            str,
-            StringConstraints(
-                strip_whitespace=True, strict=True, min_length=3, max_length=3
-            ),
-        ]
-    ] = None
-    icvv: Optional[
-        Annotated[
-            str,
-            StringConstraints(
-                strip_whitespace=True, strict=True, min_length=3, max_length=3
-            ),
-        ]
-    ] = None
+    exp_month: Optional[ExpMonth] = None
+    exp_year: Optional[ExpYear] = None
+    cvv: Optional[Cvv2] = None
+    cvv2: Optional[Cvv2] = None
+    icvv: Optional[Cvv2] = None
     pin_block: Optional[
         Annotated[str, StringConstraints(strip_whitespace=True)]
     ] = None
@@ -224,15 +188,7 @@ class CardValidationRequest(BaseModel):
 
 
 class ARPCRequest(BaseModel):
-    number: Annotated[
-        str,
-        StringConstraints(
-            min_length=16,
-            max_length=16,
-            pattern=r'\d{16}',
-            strip_whitespace=True,
-        ),
-    ]
+    number: PaymentCardNumber
     arqc: StrictStr
     arpc_method: Annotated[
         str,
@@ -536,14 +492,7 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: str = Field(
-        ...,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
-    )
+    password: Password
     user_id: Optional[str] = Field(None, description='Deprecated field')
     model_config = ConfigDict(
         json_schema_extra={'example': {'password': 'supersecret'}},

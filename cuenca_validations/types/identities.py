@@ -19,6 +19,16 @@ PhoneNumber = Annotated[
     ),
 ]
 
+Password = Annotated[
+    str,
+    Field(
+        min_length=6,
+        max_length=128,
+        description=(
+            'Any str with at least 6 characters, maximum 128 characters'
+        ),
+    ),
+]
 
 CurpField = Annotated[
     str,
