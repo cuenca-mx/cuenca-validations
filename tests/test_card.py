@@ -2,7 +2,6 @@ import pytest
 from pydantic import BaseModel, ValidationError
 from pydantic_extra_types.payment import PaymentCardBrand
 
-from cuenca_validations.errors import CardBinValidationError
 from cuenca_validations.types import StrictPaymentCardNumber
 
 VALID_BBVA = '4772130000000003'
@@ -18,8 +17,11 @@ def test_invalid_bin_strict_payment():
         CardModel(card_number=INVALID_BIN)
     assert exc_info.value.errors()[0] == dict(
         loc=('card_number',),
-        type=CardBinValidationError.code,
-        msg=CardBinValidationError.msg_template,
+        type='payment_card_number.bin',
+        msg='The card number contains a BIN (first six digits) that does not have'
+        'a known association with a Mexican bank. To add the association,'
+        'please file an issue:'
+        'https://github.com/cuenca-mx/cuenca-validations/issues',
         input=INVALID_BIN,
     )
 
