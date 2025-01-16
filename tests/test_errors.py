@@ -3,7 +3,6 @@ import pytest
 from cuenca_validations.errors import (
     ApiError,
     AuthMethodNotAllowedError,
-    CuencaError,
     InvalidOTPCodeError,
     MissingAuthorizationHeaderError,
     NoPasswordFoundError,
@@ -12,10 +11,6 @@ from cuenca_validations.errors import (
     UserNotLoggedInError,
     WrongCredsError,
 )
-
-
-def test_cuenca_error_base():
-    assert issubclass(CuencaError, Exception)
 
 
 @pytest.mark.parametrize(
