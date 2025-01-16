@@ -24,7 +24,7 @@ Password = Annotated[
     ),
 ]
 
-CurpField = Annotated[
+Curp = Annotated[
     str,
     StringConstraints(
         min_length=18,

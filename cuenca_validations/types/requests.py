@@ -60,7 +60,7 @@ from .general import StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
-    CurpField,
+    Curp,
     KYCFile,
     Password,
     PhoneNumber,
@@ -327,7 +327,7 @@ class CurpValidationRequest(BaseModel):
         None, description='In format ISO 3166 Alpha-2'
     )
     gender: Optional[Gender] = None
-    manual_curp: Optional[CurpField] = Field(
+    manual_curp: Optional[Curp] = Field(
         None,
         description='Force to validate this curp instead of use '
         'the one we calculate',
@@ -402,7 +402,7 @@ class UserRequest(BaseModel):
     id: Optional[str] = Field(
         None, description='if you want to create with specific `id`'
     )
-    curp: CurpField = Field(
+    curp: Curp = Field(
         description='Previously validated in `curp_validations`'
     )
     phone_number: Optional[PhoneNumber] = Field(
@@ -447,9 +447,7 @@ class UserRequest(BaseModel):
 
     @field_validator('curp')
     @classmethod
-    def validate_birth_date(
-        cls, curp: Optional[CurpField]
-    ) -> Optional[CurpField]:
+    def validate_birth_date(cls, curp: Optional[Curp]) -> Optional[Curp]:
         if curp:
             current_date = dt.datetime.utcnow()
             curp_date = curp[4:10]
@@ -587,12 +585,12 @@ class VerificationAttemptRequest(BaseModel):
 
 
 class LimitedWalletRequest(BaseRequest):
-    allowed_curp: CurpField
+    allowed_curp: Curp
     allowed_rfc: Optional[Rfc] = None
 
 
 class KYCVerificationUpdateRequest(BaseRequest):
-    curp: CurpField
+    curp: Curp
 
 
 class PlatformRequest(BaseModel):
@@ -625,9 +623,7 @@ class BankAccountValidationRequest(BaseModel):
 
 
 class UserListsRequest(BaseModel):
-    curp: Optional[CurpField] = Field(
-        None, description='Curp to review on lists'
-    )
+    curp: Optional[Curp] = Field(None, description='Curp to review on lists')
     account_number: Optional[Union[Clabe, PaymentCardNumber]] = Field(
         None, description='Account to review on lists'
     )

@@ -22,7 +22,7 @@ __all__ = [
     'CardTransactionType',
     'CardType',
     'Country',
-    'CurpField',
+    'Curp',
     'CurpValidationRequest',
     'CommissionType',
     'DepositNetwork',
@@ -159,7 +159,7 @@ from .general import (
 from .identities import (
     Address,
     Beneficiary,
-    CurpField,
+    Curp,
     KYCFile,
     PhoneNumber,
     Rfc,

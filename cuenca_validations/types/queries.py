@@ -24,7 +24,7 @@ from .enums import (
     TransferNetwork,
     UserStatus,
 )
-from .identities import CurpField
+from .identities import Curp
 
 MAX_PAGE_SIZE = 100
 
@@ -158,7 +158,7 @@ class UserQuery(QueryParams):
 
 
 class IdentityQuery(QueryParams):
-    curp: Optional[CurpField] = None
+    curp: Optional[Curp] = None
     rfc: Optional[str] = None
     status: Optional[UserStatus] = None
 

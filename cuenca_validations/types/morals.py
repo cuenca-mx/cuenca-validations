@@ -3,7 +3,7 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
-from cuenca_validations.types import Address, CurpField, PhoneNumber, Rfc
+from cuenca_validations.types import Address, Curp, PhoneNumber, Rfc
 
 
 class BusinessDetails(BaseModel):
@@ -52,7 +52,7 @@ class PhysicalPerson(BaseModel):
     names: str
     first_surname: str
     second_surname: Optional[str] = None
-    curp: Optional[CurpField] = None
+    curp: Optional[Curp] = None
     rfc: Optional[Rfc] = None
 
 
