@@ -1,7 +1,7 @@
 import json
 from typing import Annotated, Any, Optional
 
-from pydantic import BeforeValidator, Field
+from pydantic import Field, StringConstraints
 
 from ..validators import sanitize_dict, sanitize_item
 from .enums import State
@@ -25,20 +25,17 @@ StrictPositiveInt = Annotated[
 ]
 
 
-def validate_only_digits(value: Any) -> str:
-    v_str = str(value)
-    if not v_str.isdigit():
-        raise ValueError("Value must contain only digits")
-    return v_str
-
-
-def Digits(
+def digits(
     min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Annotated[Any, BeforeValidator, Field]:
+) -> Annotated[Any, StringConstraints]:
     return Annotated[
         str,
-        BeforeValidator(validate_only_digits),
-        Field(min_length=min_length, max_length=max_length),
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=min_length,
+            max_length=max_length,
+            pattern=r'^\d+$',
+        ),
     ]
 
 

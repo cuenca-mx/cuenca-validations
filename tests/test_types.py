@@ -10,13 +10,13 @@ from pydantic import BaseModel, ValidationError
 from cuenca_validations.types import (
     Address,
     CardQuery,
-    Digits,
     JSONEncoder,
     QueryParams,
     Rfc,
     SantizedDict,
     SessionRequest,
     TransactionStatus,
+    digits,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
@@ -146,28 +146,29 @@ def test_invalid_class():
 
 
 class Accounts(BaseModel):
-    number: Digits(5, 8)  # type: ignore
+    number: digits(5, 8)  # type: ignore
 
 
 @pytest.mark.parametrize(
     "input_number, expected",
     [
         ('123456', '123456'),
-        (123456, '123456'),
         ('0012312', '0012312'),
     ],
 )
 def test_only_digits(input_number, expected):
     acc = Accounts(number=input_number)
+    print(acc.model_dump())
     assert acc.number == expected
 
 
 @pytest.mark.parametrize(
     'number, error',
     [
-        ('123', 'Value should have at least 5 items after validation'),
-        ('1234567890', 'Value should have at most 8 items after validation'),
-        ('no_123', 'Value must contain only digits'),
+        (12345, 'Input should be a valid string'),
+        ('123', 'String should have at least 5 characters'),
+        ('1234567890', 'String should have at most 8 characters'),
+        ('no_123', "String should match pattern '^\\d+$'"),
     ],
 )
 def test_invalid_digits(number, error):
