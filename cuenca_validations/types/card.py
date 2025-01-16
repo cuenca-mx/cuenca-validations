@@ -8,7 +8,7 @@ from ..card_bins import CARD_BINS
 
 ExpMonth = Annotated[int, Field(strict=True, ge=1, le=12)]
 ExpYear = Annotated[int, Field(strict=True, ge=18, le=99)]
-Cvv2 = Annotated[
+Cvv = Annotated[
     str,
     StringConstraints(
         strip_whitespace=True,

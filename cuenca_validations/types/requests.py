@@ -50,7 +50,7 @@ from ..types.enums import (
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
 from .card import (
-    Cvv2,
+    Cvv,
     ExpMonth,
     ExpYear,
     PaymentCardNumber,
@@ -145,7 +145,7 @@ class CardActivationRequest(BaseModel):
     number: PaymentCardNumber
     exp_month: ExpMonth
     exp_year: ExpYear
-    cvv2: Cvv2
+    cvv2: Cvv
 
 
 class ApiKeyUpdateRequest(BaseRequest):
@@ -180,9 +180,9 @@ class CardValidationRequest(BaseModel):
     number: PaymentCardNumber
     exp_month: Optional[ExpMonth] = None
     exp_year: Optional[ExpYear] = None
-    cvv: Optional[Cvv2] = None
-    cvv2: Optional[Cvv2] = None
-    icvv: Optional[Cvv2] = None
+    cvv: Optional[Cvv] = None
+    cvv2: Optional[Cvv] = None
+    icvv: Optional[Cvv] = None
     pin_block: Optional[
         Annotated[str, StringConstraints(strip_whitespace=True)]
     ] = None
