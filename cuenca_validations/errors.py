@@ -1,7 +1,6 @@
 __all__ = [
     'ApiError',
     'AuthMethodNotAllowedError',
-    'CardBinValidationError',
     'CuencaError',
     'ERROR_CODES',
     'InvalidOTPCodeError',

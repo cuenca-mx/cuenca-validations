@@ -18,9 +18,9 @@ def test_invalid_bin_strict_payment():
     assert exc_info.value.errors()[0] == dict(
         loc=('card_number',),
         type='payment_card_number.bin',
-        msg='The card number contains a BIN (first six digits) that does not have'
-        'a known association with a Mexican bank. To add the association,'
-        'please file an issue:'
+        msg='The card number contains a BIN (first six digits) that does '
+        'not have a known association with a Mexican bank. To add the '
+        'association, please file an issue: '
         'https://github.com/cuenca-mx/cuenca-validations/issues',
         input=INVALID_BIN,
     )
