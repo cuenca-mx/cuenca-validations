@@ -157,7 +157,6 @@ class Accounts(BaseModel):
 )
 def test_only_digits(input_number, expected):
     acc = Accounts(number=input_number)
-    print(acc.model_dump())
     assert acc.number == expected
 
 
