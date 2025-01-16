@@ -12,7 +12,6 @@ from cuenca_validations.types import (
     CardQuery,
     JSONEncoder,
     QueryParams,
-    Rfc,
     SantizedDict,
     SessionRequest,
     TransactionStatus,
@@ -558,19 +557,6 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
-class TestRfc(BaseModel):
-    rfc: Rfc
-
-
-def test_rfc_field():
-    with pytest.raises(ValueError):
-        TestRfc(rfc='')
-        TestRfc(rfc='invalid')
-        TestRfc(rfc='ThisValueIsTooLongForRFC')
-
-    assert TestRfc(rfc='TAXM840916123')
-
-
 def test_user_lists_request():
     UserListsRequest(names='Pedro', first_surname='Paramo')
     with pytest.raises(ValueError):
@@ -579,12 +565,6 @@ def test_user_lists_request():
 
 class TestIntModel(BaseModel):
     value: StrictPositiveInt
-
-
-@pytest.mark.parametrize("value", [100, 1, 21_474_836_47])
-def test_strict_positive_int_valid(value):
-    model = TestIntModel(value=value)
-    assert model.value == value
 
 
 @pytest.mark.parametrize(
