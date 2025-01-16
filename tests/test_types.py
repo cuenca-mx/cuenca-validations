@@ -177,14 +177,6 @@ def test_invalid_digits(number, error):
     assert error in str(exception.value)
 
 
-def test_card_query_exp_cvv_if_number_set():
-    values = dict(number='123456', exp_month=1, exp_year=2026)
-    card_query = CardQuery(**values)
-    assert all(
-        getattr(card_query, key) == value for key, value in values.items()
-    )
-
-
 @pytest.mark.parametrize(
     'input_value',
     [

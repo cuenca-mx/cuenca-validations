@@ -112,22 +112,10 @@ class ApiKeyQuery(QueryParams):
 
 class CardQuery(QueryParams):
     number: Optional[str] = None
-    exp_month: Optional[int] = None
-    exp_year: Optional[int] = None
-    cvv: Optional[str] = None
-    cvv2: Optional[str] = None
-    icvv: Optional[str] = None
-    pin_block: Optional[str] = None
     issuer: Optional[CardIssuer] = None
     funding_type: Optional[CardFundingType] = None
     status: Optional[CardStatus] = None
     type: Optional[CardType] = None
-
-    @field_validator('exp_month', 'exp_year', 'cvv2', 'cvv')
-    def query_by_exp_cvv_if_number_set(cls, v, values):
-        if not values.data.get('number'):
-            raise ValueError('Number must be set to query by exp or cvv')
-        return v
 
 
 class StatementQuery(QueryParams):
