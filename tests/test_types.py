@@ -49,12 +49,12 @@ now = dt.datetime.now()
 utcnow = now.astimezone(dt.timezone.utc)
 
 
-class TestEnum(Enum):
+class EnumModel(Enum):
     zero = 0
 
 
 @dataclass
-class TestClass:
+class DictModel:
     uno: str
 
     def to_dict(self):
@@ -115,10 +115,10 @@ def test_count(count, truth):
 @pytest.mark.parametrize(
     'value, result',
     [
-        (TestEnum.zero, 0),
+        (EnumModel.zero, 0),
         (today, today.isoformat()),
         (now, utcnow.isoformat()),
-        (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
+        (DictModel(uno='uno'), dict(uno='uno', dos='dos')),
         (b'test', 'dGVzdA=='),  # b64 encode
     ],
 )
@@ -562,7 +562,7 @@ def test_user_lists_request():
         UserListsRequest()
 
 
-class TestIntModel(BaseModel):
+class IntModel(BaseModel):
     value: StrictPositiveInt
 
 
@@ -582,4 +582,4 @@ class TestIntModel(BaseModel):
 )
 def test_strict_positive_int_invalid(value, expected_error, expected_message):
     with pytest.raises(expected_error, match=expected_message):
-        TestIntModel(value=value)
+        IntModel(value=value)
