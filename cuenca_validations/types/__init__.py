@@ -22,7 +22,7 @@ __all__ = [
     'CardTransactionType',
     'CardType',
     'Country',
-    'CurpField',
+    'Curp',
     'CurpValidationRequest',
     'CommissionType',
     'DepositNetwork',
@@ -49,10 +49,8 @@ __all__ = [
     'KYCVerificationUpdateRequest',
     'Language',
     'LimitedWalletRequest',
-    'PageSize',
     'PartnerRequest',
     'PartnerUpdateRequest',
-    'PaymentCardNumber',
     'PhoneNumber',
     'PlatformRequest',
     'PlatformType',
@@ -73,7 +71,6 @@ __all__ = [
     'StatementQuery',
     'StrictPaymentCardNumber',
     'StrictPositiveInt',
-    'StrictPositiveFloat',
     'StrictTransferRequest',
     'TermsOfService',
     'TOSAgreement',
@@ -108,7 +105,7 @@ __all__ = [
     'get_state_name',
 ]
 
-from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .card import StrictPaymentCardNumber
 from .enums import (
     AuthorizerTransaction,
     BankAccountStatus,
@@ -155,7 +152,6 @@ from .files import BatchFileMetadata
 from .general import (
     JSONEncoder,
     SantizedDict,
-    StrictPositiveFloat,
     StrictPositiveInt,
     digits,
     get_state_name,
@@ -163,7 +159,7 @@ from .general import (
 from .identities import (
     Address,
     Beneficiary,
-    CurpField,
+    Curp,
     KYCFile,
     PhoneNumber,
     Rfc,
@@ -182,7 +178,6 @@ from .queries import (
     EventQuery,
     FileQuery,
     IdentityQuery,
-    PageSize,
     QueryParams,
     SessionQuery,
     StatementQuery,

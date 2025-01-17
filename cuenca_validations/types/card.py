@@ -1,53 +1,41 @@
-from typing import TYPE_CHECKING, ClassVar
+from typing import Annotated
 
-from pydantic.types import PaymentCardNumber as PydanticPaymentCardNumber
-from pydantic.validators import (
-    constr_length_validator,
-    constr_strip_whitespace,
-    str_validator,
-)
+from pydantic import Field, StringConstraints
+from pydantic_core import PydanticCustomError, core_schema
+from pydantic_extra_types.payment import PaymentCardNumber
 
 from ..card_bins import CARD_BINS
-from ..errors import CardBinValidationError
 
-if TYPE_CHECKING:
-    from pydantic.typing import CallableGenerator
-
-
-class PaymentCardNumber(PydanticPaymentCardNumber):
-    min_length: ClassVar[int] = 16
-    max_length: ClassVar[int] = 16
-
-    def __init__(self, card_number: str):
-        self.bin = card_number[:6]
-        self.last4 = card_number[-4:]
-        self.brand = self._get_brand(card_number)
-        self.bank_code = CARD_BINS.get(self.bin)
-
-    @classmethod
-    def __get_validators__(cls) -> 'CallableGenerator':
-        yield str_validator
-        yield constr_strip_whitespace
-        yield constr_length_validator
-        yield cls.validate_digits
-        yield cls.validate_luhn_check_digit
-        yield cls
+ExpMonth = Annotated[int, Field(strict=True, ge=1, le=12)]
+ExpYear = Annotated[int, Field(strict=True, ge=1, le=99)]
+Cvv = Annotated[
+    str,
+    StringConstraints(
+        strip_whitespace=True,
+        min_length=3,
+        max_length=3,
+        pattern=r'\d{3}',
+    ),
+]
 
 
 class StrictPaymentCardNumber(PaymentCardNumber):
-    """
-    requires that the BIN be associated to a known BIN for a Mexican bank
-    """
-
-    bank_code: str
 
     @classmethod
-    def __get_validators__(cls) -> 'CallableGenerator':
-        yield from PaymentCardNumber.__get_validators__()
-        yield cls.validate_bin
+    def validate(
+        cls, card_number: str, validation_info: core_schema.ValidationInfo
+    ) -> 'StrictPaymentCardNumber':
+        card = super().validate(card_number, validation_info)
+        if card.bin not in CARD_BINS:
+            raise PydanticCustomError(
+                'payment_card_number.bin',
+                'The card number contains a BIN (first six digits) that '
+                'does not have a known association with a Mexican bank. '
+                'To add the association, please file an issue: '
+                'https://github.com/cuenca-mx/cuenca-validations/issues',
+            )
+        return cls(card)
 
-    @classmethod
-    def validate_bin(cls, card_number: PaymentCardNumber) -> PaymentCardNumber:
-        if card_number.bank_code is None:
-            raise CardBinValidationError
-        return card_number
+    @property
+    def bank_code(self) -> str:
+        return CARD_BINS[self.bin]

@@ -1,3 +1,5 @@
-clabe==1.2.12
-pydantic[email]==1.10.18
-python-dateutil==2.8.2
+clabe==2.0.0
+pydantic-extra-types==2.10.2
+pydantic[email]==2.10.5
+python-dateutil==2.9.0
+phonenumbers==8.13.52

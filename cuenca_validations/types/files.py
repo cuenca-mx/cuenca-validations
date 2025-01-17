@@ -6,7 +6,7 @@ from .enums import KYCFileType
 
 
 class BatchFileMetadata(BaseModel):
-    id: Optional[str]
+    id: Optional[str] = None
     is_back: bool
     type: KYCFileType
     url: HttpUrl

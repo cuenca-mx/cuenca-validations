@@ -1,35 +1,46 @@
 import datetime as dt
-import re
-from typing import Any, Dict, List, Optional
+from typing import Annotated, Any, Optional
 
-from pydantic import BaseModel, IPvAnyAddress
-from pydantic.class_validators import root_validator
-from pydantic.types import StrictStr
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    Field,
+    IPvAnyAddress,
+    StringConstraints,
+    model_validator,
+)
+from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
 
+Password = Annotated[
+    str,
+    Field(
+        min_length=6,
+        max_length=128,
+        description=(
+            'Any str with at least 6 characters, maximum 128 characters'
+        ),
+    ),
+]
 
-class PhoneNumber(StrictStr):
-    min_length = 10
-    max_length = 15
-    regex = re.compile(r'^\+?[0-9]{10,14}$')
+Curp = Annotated[
+    str,
+    StringConstraints(
+        min_length=18,
+        max_length=18,
+        pattern=r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$',
+    ),
+]
 
 
-class CurpField(StrictStr):
-    min_length = 18
-    max_length = 18
-    regex = re.compile(r'^[A-Z]{4}[0-9]{6}[A-Z]{6}[A-Z|0-9][0-9]$')
-
-
-class Rfc(StrictStr):
-    min_length = 12
-    max_length = 13
-
-    @classmethod
-    def validate(cls, rfc: str):
-        if len(rfc) < cls.min_length or len(rfc) > cls.max_length:
-            raise ValueError('Not a valid RFC.')
-        return cls(rfc)
+Rfc = Annotated[
+    str,
+    StringConstraints(
+        min_length=12,
+        max_length=13,
+    ),
+]
 
 
 class Address(BaseModel):
@@ -42,9 +53,8 @@ class Address(BaseModel):
     country: Optional[Country] = None
     city: Optional[str] = None
     full_name: Optional[str] = None
-
-    class Config:
-        schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "street": "Reforma",
                 "ext_number": "265",
@@ -56,9 +66,11 @@ class Address(BaseModel):
                 "city": "Cuauhtémoc",
             }
         }
+    )
 
-    @root_validator()
-    def full_name_complete(cls, values: Dict[str, Any]) -> Dict[str, Any]:
+    @model_validator(mode='before')
+    @classmethod
+    def full_name_complete(cls, values: dict[str, Any]) -> dict[str, Any]:
         if values.get('full_name'):
             return values
         if not values.get('street'):
@@ -74,9 +86,8 @@ class Beneficiary(BaseModel):
     phone_number: PhoneNumber
     user_relationship: str
     percentage: int
-
-    class Config:
-        schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "name": "Juan Perez",
                 "birth_date": "1907-07-06",
@@ -85,74 +96,55 @@ class Beneficiary(BaseModel):
                 "percentage": 100,
             }
         }
+    )
 
 
 class VerificationErrors(BaseModel):
-    identifier: str
-    error: str
-    code: str
-    message: Optional[str]
-
-    class Config:
-        fields = {
-            'identifier': {
-                'description': 'Unique identifier for the step validation'
-            },
-            'error': {
-                'description': 'Error throwed on validation,'
-                ' can be StepError or SystemError in case of '
-                'KYCProvider intermittence'
-            },
-            'code': {
-                'description': 'Specific code of the failure in the step.'
-            },
-            'message': {'description': 'Error description'},
-        }
-
-        schema_extra = {
+    identifier: str = Field(
+        description='Unique identifier for the step validation'
+    )
+    error: str = Field(
+        description='Error throwed on validation,'
+        ' can be StepError or SystemError in case of '
+        'KYCProvider intermittence',
+    )
+    code: str = Field(description='Specific code of the failure in the step.')
+    message: Optional[str] = Field(None, description='Error description')
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "identifier": "age-check",
                 "error": 'StepError',
                 "code": "underage.noDOB",
                 "message": "The date of birth could not be obtained",
             }
-        }
+        },
+    )
 
 
 class KYCFile(BaseModel):
     type: KYCFileType
-    uri_front: str
-    uri_back: Optional[str] = None
+    uri_front: str = Field(description='API uri to fetch the file')
+    uri_back: Optional[str] = Field(
+        None, description='API uri to fetch the file'
+    )
     is_mx: bool = True
     data: Optional[dict] = None
-    status: Optional[VerificationStatus] = None
-    errors: Optional[List[VerificationErrors]]
-    verification_id: Optional[str]
-    attempt: Optional[int]
-
-    class Config:
-        fields = {
-            'uri_front': {'description': 'API uri to fetch the file'},
-            'uri_back': {'description': 'API uri to fetch the file'},
-            'status': {
-                'description': 'The status of the file depends '
-                'on KYCValidation'
-            },
-            'errors': {
-                'description': 'List of document errors found '
-                'during kyc validation'
-            },
-            'attempt': {
-                'description': 'The number of kyc_validation '
-                'intents for this docuemnt'
-            },
-            'verification_id': {
-                'description': 'The provider identifier of the '
-                'validation result'
-            },
-        }
-
-        schema_extra = {
+    status: Optional[VerificationStatus] = Field(
+        None, description='The status of the file depends on KYCValidation'
+    )
+    errors: Optional[list[VerificationErrors]] = Field(
+        None, description='List of document errors found during kyc validation'
+    )
+    verification_id: Optional[str] = Field(
+        None, description='The provider identifier of the validation result'
+    )
+    attempt: Optional[int] = Field(
+        None,
+        description='The number of kyc_validation intents for this document',
+    )
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "type": "ine",
                 "is_mx": True,
@@ -162,19 +154,20 @@ class KYCFile(BaseModel):
                 "status": "created",
                 "errors": [],
             }
-        }
+        },
+    )
 
 
 class TOSAgreement(BaseModel):
     version: str
     ip: IPvAnyAddress
-    location: Optional[str]
-
-    class Config:
-        schema_extra = {
+    location: Optional[str] = None
+    model_config = ConfigDict(
+        json_schema_extra={
             "example": {
                 "version": "2022-01-01",
                 "ip": "192.168.0.1",
                 "location": "19.427224, -99.168082",
             }
         }
+    )

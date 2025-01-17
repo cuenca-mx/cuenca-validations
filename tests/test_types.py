@@ -12,7 +12,6 @@ from cuenca_validations.types import (
     CardQuery,
     JSONEncoder,
     QueryParams,
-    Rfc,
     SantizedDict,
     SessionRequest,
     TransactionStatus,
@@ -25,6 +24,7 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
+from cuenca_validations.types.general import StrictPositiveInt
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -49,12 +49,12 @@ now = dt.datetime.now()
 utcnow = now.astimezone(dt.timezone.utc)
 
 
-class TestEnum(Enum):
+class EnumModel(Enum):
     zero = 0
 
 
 @dataclass
-class TestClass:
+class DictModel:
     uno: str
 
     def to_dict(self):
@@ -63,19 +63,21 @@ class TestClass:
 
 def test_dict():
     model = QueryParams(count=1, created_before=now)
-    assert model.dict() == dict(count=1, created_before=utcnow.isoformat())
+    assert model.model_dump() == dict(
+        count=1, created_before=utcnow.isoformat()
+    )
 
 
 def test_dict_with_exclude():
     model = QueryParams(count=1, created_before=now, user_id='USXXXX')
-    assert model.dict(exclude={'user_id'}) == dict(
+    assert model.model_dump(exclude={'user_id'}) == dict(
         count=1, created_before=utcnow.isoformat()
     )
 
 
 def test_dict_with_exclude_unset():
     model = QueryParams(count=1, created_before=now)
-    assert model.dict(exclude_unset=False) == dict(
+    assert model.model_dump(exclude_unset=False) == dict(
         count=1, created_before=utcnow.isoformat(), page_size=100
     )
 
@@ -113,10 +115,10 @@ def test_count(count, truth):
 @pytest.mark.parametrize(
     'value, result',
     [
-        (TestEnum.zero, 0),
+        (EnumModel.zero, 0),
         (today, today.isoformat()),
         (now, utcnow.isoformat()),
-        (TestClass(uno='uno'), dict(uno='uno', dos='dos')),
+        (DictModel(uno='uno'), dict(uno='uno', dos='dos')),
         (b'test', 'dGVzdA=='),  # b64 encode
     ],
 )
@@ -135,8 +137,7 @@ def test_invalid_class():
     raises a `TypeError`.
     """
 
-    class ClassWithoutToDict:
-        ...
+    class ClassWithoutToDict: ...  # noqa: E701
 
     invalid_class = ClassWithoutToDict()
     with pytest.raises(TypeError):
@@ -147,31 +148,31 @@ class Accounts(BaseModel):
     number: digits(5, 8)  # type: ignore
 
 
-def test_only_digits():
-    acc = Accounts(number='123456')
-    assert acc.number == '123456'
+@pytest.mark.parametrize(
+    "input_number, expected",
+    [
+        ('123456', '123456'),
+        ('0012312', '0012312'),
+    ],
+)
+def test_only_digits(input_number, expected):
+    acc = Accounts(number=input_number)
+    assert acc.number == expected
 
 
 @pytest.mark.parametrize(
     'number, error',
     [
-        ('123', 'value_error.any_str.min_length'),
-        ('1234567890', 'value_error.any_str.max_length'),
-        ('no_123', 'value_error.digits'),
+        (12345, 'Input should be a valid string'),
+        ('123', 'String should have at least 5 characters'),
+        ('1234567890', 'String should have at most 8 characters'),
+        ('no_123', "String should match pattern '^\\d+$'"),
     ],
 )
 def test_invalid_digits(number, error):
-    with pytest.raises(ValueError) as exception:
+    with pytest.raises(ValidationError) as exception:
         Accounts(number=number)
-    assert error in str(exception)
-
-
-def test_card_query_exp_cvv_if_number_set():
-    values = dict(number='123456', exp_month=1, exp_year=2026)
-    card_query = CardQuery(**values)
-    assert all(
-        getattr(card_query, key) == value for key, value in values.items()
-    )
+    assert error in str(exception.value)
 
 
 @pytest.mark.parametrize(
@@ -190,7 +191,7 @@ def test_card_query_exp_cvv_if_number_not_set(input_value):
 
 def test_exclude_none_in_dict():
     request = ApiKeyUpdateRequest(user_id='US123')
-    assert request.dict() == dict(user_id='US123')
+    assert request.model_dump() == dict(user_id='US123')
 
 
 def test_update_one_property_at_a_time_request():
@@ -214,7 +215,7 @@ def test_update_one_property_at_a_time_request():
 )
 def test_update_credential_update_request_dict(data, expected_dict):
     req = UserCredentialUpdateRequest(**data)
-    assert req.dict() == expected_dict
+    assert req.model_dump() == expected_dict
 
 
 def test_card_transaction_requests():
@@ -341,7 +342,7 @@ def test_user_request():
         required_level=3,
         terms_of_service=None,
     )
-    assert UserRequest(**request).dict() == request
+    assert UserRequest(**request).model_dump() == request
 
     # changing curp so user is underage
     request['curp'] = 'ABCD060604HDFSRN03'
@@ -365,13 +366,20 @@ def test_curp_validation_request():
 
     with pytest.raises(ValueError) as v:
         CurpValidationRequest()
-    assert (
-        'values required: names,first_surname,date_of_birth,'
-        'country_of_birth,gender' in str(v)
-    )
+    # Update the assertion to check for the presence of
+    # required fields in the error message
+    error_msg = str(v.value)
+    required_fields = [
+        'names',
+        'first_surname',
+        'date_of_birth',
+        'country_of_birth',
+        'gender',
+    ]
+    assert all(field in error_msg for field in required_fields)
 
     req_curp = CurpValidationRequest(**request)
-    assert req_curp.dict() == request
+    assert req_curp.model_dump() == request
 
     request['date_of_birth'] = dt.date(2006, 5, 17)
 
@@ -409,9 +417,12 @@ def test_user_update_request():
         curp_document_uri='https://sandbox.cuenca.com/files/EF123',
     )
     update_req = UserUpdateRequest(**request)
-    beneficiaries = [b.dict() for b in update_req.beneficiaries]
+    beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert update_req.curp_document_uri == request['curp_document_uri']
+    assert (
+        update_req.curp_document_uri.unicode_string()
+        == request['curp_document_uri']
+    )
 
     request['beneficiaries'] = [
         dict(
@@ -545,16 +556,30 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
-def test_rfc_field():
-    with pytest.raises(ValueError):
-        Rfc.validate('')
-        Rfc.validate('invalid')
-        Rfc.validate('ThisValueIsTooLongForRFC')
-
-    assert Rfc.validate('TAXM840916123')
-
-
 def test_user_lists_request():
     UserListsRequest(names='Pedro', first_surname='Paramo')
     with pytest.raises(ValueError):
         UserListsRequest()
+
+
+class IntModel(BaseModel):
+    value: StrictPositiveInt
+
+
+@pytest.mark.parametrize(
+    "value, expected_error, expected_message",
+    [
+        (0, ValueError, "Input should be greater than 0"),
+        (-5, ValueError, "Input should be greater than 0"),
+        (
+            21_474_836_48,
+            ValueError,
+            "Input should be less than or equal to 2147483647",
+        ),
+        (5.5, ValueError, "Input should be a valid integer"),
+        ("10", ValueError, "Input should be a valid integer"),
+    ],
+)
+def test_strict_positive_int_invalid(value, expected_error, expected_message):
+    with pytest.raises(expected_error, match=expected_message):
+        IntModel(value=value)

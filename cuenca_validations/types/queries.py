@@ -1,8 +1,14 @@
 import datetime as dt
-from typing import Optional
+from typing import Annotated, Optional
 
-from pydantic import BaseModel, EmailStr, Extra, validator
-from pydantic.types import ConstrainedInt, PositiveInt
+from pydantic import (
+    BaseModel,
+    ConfigDict,
+    EmailStr,
+    Field,
+    PositiveInt,
+    field_validator,
+)
 
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
@@ -18,19 +24,16 @@ from .enums import (
     TransferNetwork,
     UserStatus,
 )
-from .identities import CurpField
+from .identities import Curp
 
 MAX_PAGE_SIZE = 100
 
 
-class PageSize(ConstrainedInt):
-    gt = 0
-    le = MAX_PAGE_SIZE
-
-
 class QueryParams(BaseModel):
     count: bool = False
-    page_size: PageSize = PageSize(MAX_PAGE_SIZE)
+    page_size: Annotated[
+        int, Field(gt=0, le=MAX_PAGE_SIZE, default=MAX_PAGE_SIZE)
+    ]
     limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
     created_before: Optional[dt.datetime] = None
@@ -38,9 +41,9 @@ class QueryParams(BaseModel):
     related_transaction: Optional[str] = None
     platform_id: Optional[str] = None
 
-    class Config:
-        extra = Extra.forbid  # raise ValidationError if there are extra fields
-        fields = {
+    model_config = ConfigDict(
+        extra="forbid",
+        json_schema_extra={
             'count': {'description': 'Set `true` value to get only a counter'},
             'page_size': {'description': 'Number of items per page'},
             'limit': {'description': 'Limit of items to query'},
@@ -54,12 +57,13 @@ class QueryParams(BaseModel):
                 'or greater than this value, this field represents the min '
                 'creation date.'
             },
-        }
+        },
+    )
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
-        d = super().dict(*args, **kwargs)
+        d = super().model_dump(*args, **kwargs)
         if self.count:
             d['count'] = 1
         sanitize_dict(d)
@@ -93,43 +97,34 @@ class CardTransactionQuery(TransactionQuery):
 class ApiKeyQuery(QueryParams):
     active: Optional[bool] = None
 
-    class Config(QueryParams.Config):
-        fields = {
-            **QueryParams.Config.fields,
-            'active': {
-                'description': 'Set `true` value to fetch active keys or '
-                '`false` to fetch deactivated keys'
-            },
-        }
+    model_config = ConfigDict(
+        extra="forbid",
+        json_schema_extra={
+            'properties': {
+                'active': {
+                    'description': 'Set `true` value to fetch active keys or '
+                    '`false` to fetch deactivated keys'
+                },
+            }
+        },
+    )
 
 
 class CardQuery(QueryParams):
     number: Optional[str] = None
-    exp_month: Optional[int] = None
-    exp_year: Optional[int] = None
-    cvv: Optional[str] = None
-    cvv2: Optional[str] = None
-    icvv: Optional[str] = None
-    pin_block: Optional[str] = None
     issuer: Optional[CardIssuer] = None
     funding_type: Optional[CardFundingType] = None
     status: Optional[CardStatus] = None
     type: Optional[CardType] = None
-
-    @validator('exp_month', 'exp_year', 'cvv2', 'cvv')
-    def query_by_exp_cvv_if_number_set(cls, v, values):
-        if not values['number']:
-            raise ValueError('Number must be set to query by exp or cvv')
-        return v
 
 
 class StatementQuery(QueryParams):
     year: int
     month: int
 
-    @validator('month')
+    @field_validator('month')
     def validate_year_month(cls, month, values):
-        year = values['year']
+        year = values.data['year']
         month_now = dt.date.today().replace(day=1)
         month_set = dt.date(year, month, 1)
         if month_set >= month_now:
@@ -163,7 +158,7 @@ class UserQuery(QueryParams):
 
 
 class IdentityQuery(QueryParams):
-    curp: Optional[CurpField] = None
+    curp: Optional[Curp] = None
     rfc: Optional[str] = None
     status: Optional[UserStatus] = None
 

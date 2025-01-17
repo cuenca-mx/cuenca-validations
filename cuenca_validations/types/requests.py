@@ -1,22 +1,20 @@
 import datetime as dt
-from typing import List, Optional, Union
+from typing import Annotated, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
     AnyUrl,
     BaseModel,
+    ConfigDict,
     EmailStr,
-    Extra,
     Field,
     HttpUrl,
-    IPvAnyAddress,
     StrictStr,
-    conint,
-    constr,
-    root_validator,
+    StringConstraints,
+    field_validator,
+    model_validator,
 )
-from pydantic.class_validators import validator
-from pydantic.errors import IPvAnyAddressError
+from pydantic.networks import IPvAnyAddress
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -51,13 +49,20 @@ from ..types.enums import (
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
-from .card import PaymentCardNumber, StrictPaymentCardNumber
+from .card import (
+    Cvv,
+    ExpMonth,
+    ExpYear,
+    PaymentCardNumber,
+    StrictPaymentCardNumber,
+)
 from .general import StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
-    CurpField,
+    Curp,
     KYCFile,
+    Password,
     PhoneNumber,
     Rfc,
     TOSAgreement,
@@ -74,38 +79,30 @@ from .morals import (
 
 
 class BaseRequest(BaseModel):
-    class Config:
-        extra = Extra.forbid
+    model_config = ConfigDict(extra="forbid")
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
         kwargs.setdefault('exclude_unset', True)
-        return super().dict(*args, **kwargs)
+        return super().model_dump(*args, **kwargs)
 
 
-class TransferRequest(BaseRequest):
+class BaseTransferRequest(BaseRequest):
     recipient_name: StrictStr
-    account_number: Union[Clabe, PaymentCardNumber]
-    amount: StrictPositiveInt
-    descriptor: StrictStr
-    idempotency_key: str
-    user_id: Optional[str]
-
-    class Config:
-        fields = {
-            'account_number': {
-                'description': 'Destination Clabe or Card number'
-            },
-            'amount': {'description': 'Always in cents, not in MXN pesos'},
-            'descriptor': {
-                'description': 'Short description for the recipient'
-            },
-            'idempotency_key': {
-                'description': 'Custom Id, must be unique for each transfer'
-            },
-            'user_id': {'description': 'source user to take the funds'},
-        }
-        schema_extra = {
+    amount: StrictPositiveInt = Field(
+        description='Always in cents, not in MXN pesos'
+    )
+    descriptor: StrictStr = Field(
+        description='Short description for the recipient'
+    )
+    idempotency_key: str = Field(
+        description='Custom Id, must be unique for each transfer'
+    )
+    user_id: Optional[str] = Field(
+        None, description='Source user to take the funds'
+    )
+    model_config = ConfigDict(
+        json_schema_extra={
             'example': {
                 'recipient_name': 'Doroteo Arango',
                 'account_number': '646180157034181180',
@@ -114,16 +111,25 @@ class TransferRequest(BaseRequest):
                 'idempotency_key': 'UNIQUE-KEY-003',
                 'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
             }
-        }
+        },
+    )
 
 
-class StrictTransferRequest(TransferRequest):
-    account_number: Union[Clabe, StrictPaymentCardNumber]
+class TransferRequest(BaseTransferRequest):
+    account_number: Union[Clabe, PaymentCardNumber] = Field(
+        description='Destination Clabe or Card number'
+    )
+
+
+class StrictTransferRequest(BaseTransferRequest):
+    account_number: Union[Clabe, StrictPaymentCardNumber] = Field(
+        description='Destination Clabe or Card number'
+    )
 
 
 class CardUpdateRequest(BaseRequest):
-    status: Optional[CardStatus]
-    pin_block: Optional[str]
+    status: Optional[CardStatus] = None
+    pin_block: Optional[str] = None
     is_dynamic_cvv: Optional[bool] = None
 
 
@@ -136,18 +142,10 @@ class CardRequest(BaseRequest):
 
 
 class CardActivationRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        regex=r'\d{16}',
-    )
-    exp_month: conint(strict=True, ge=1, le=12)  # type: ignore
-    exp_year: conint(strict=True, ge=18, le=99)  # type: ignore
-    cvv2: str = Field(
-        ..., strip_whitespace=True, min_length=3, max_length=3, regex=r'\d{3}'
-    )
+    number: PaymentCardNumber
+    exp_month: ExpMonth
+    exp_year: ExpYear
+    cvv2: Cvv
 
 
 class ApiKeyUpdateRequest(BaseRequest):
@@ -157,21 +155,15 @@ class ApiKeyUpdateRequest(BaseRequest):
 
 
 class UserCredentialUpdateRequest(BaseRequest):
-    is_active: Optional[bool]
-    password: Optional[str] = Field(
-        None,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
-    )
+    is_active: Optional[bool] = None
+    password: Optional[Password] = None
 
-    def dict(self, *args, **kwargs) -> DictStrAny:
+    def model_dump(self, *args, **kwargs) -> DictStrAny:
         # Password can be None but BaseRequest excludes None
-        return BaseModel.dict(self, *args, **kwargs)
+        return BaseModel.model_dump(self, *args, **kwargs)
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def check_one_property_at_a_time(cls, values: DictStrAny) -> DictStrAny:
         not_none_count = sum(1 for val in values.values() if val)
         if not_none_count > 1:
@@ -180,52 +172,30 @@ class UserCredentialUpdateRequest(BaseRequest):
 
 
 class UserCredentialRequest(BaseRequest):
-    password: str = Field(
-        ...,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
-    )
-    user_id: Optional[str]
+    password: Password
+    user_id: Optional[str] = None
 
 
 class CardValidationRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        regex=r'\d{16}',
-    )
-    exp_month: Optional[conint(strict=True, ge=1, le=12)]  # type: ignore
-    exp_year: Optional[conint(strict=True, ge=18, le=99)]  # type: ignore
-    cvv: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    cvv2: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    icvv: Optional[  # type: ignore
-        constr(strip_whitespace=True, strict=True, min_length=3, max_length=3)
-    ]
-    pin_block: Optional[constr(strip_whitespace=True)] = None  # type: ignore
+    number: PaymentCardNumber
+    exp_month: Optional[ExpMonth] = None
+    exp_year: Optional[ExpYear] = None
+    cvv: Optional[Cvv] = None
+    cvv2: Optional[Cvv] = None
+    icvv: Optional[Cvv] = None
+    pin_block: Optional[
+        Annotated[str, StringConstraints(strip_whitespace=True)]
+    ] = None
     pin_attempts_exceeded: Optional[bool] = None
 
 
 class ARPCRequest(BaseModel):
-    number: str = Field(
-        ...,
-        strip_whitespace=True,
-        min_length=16,
-        max_length=16,
-        regex=r'\d{16}',
-    )
+    number: PaymentCardNumber
     arqc: StrictStr
-    arpc_method: constr(  # type: ignore
-        strict=True, min_length=1, max_length=1
-    )
+    arpc_method: Annotated[
+        str,
+        StringConstraints(strict=True, min_length=1, max_length=1),
+    ]
     transaction_data: StrictStr
     response_code: StrictStr
     transaction_counter: StrictStr
@@ -237,14 +207,14 @@ class ARPCRequest(BaseModel):
 class CardBatchRequest(BaseRequest):
     card_design: CardDesign
     card_packaging: CardPackaging
-    number_of_cards: conint(strict=True, ge=1, le=999999)  # type: ignore
+    number_of_cards: Annotated[int, Field(strict=True, ge=1, le=999999)]
 
 
 class CardTransactionRequest(BaseModel):
     card_id: str
     user_id: str
     # In some card_validations amount is equal to 0
-    amount: conint(strict=True, ge=0)  # type: ignore
+    amount: Annotated[int, Field(strict=True, ge=0)]
     merchant_name: str
     merchant_type: str
     merchant_data: str
@@ -254,27 +224,28 @@ class CardTransactionRequest(BaseModel):
     card_type: CardType
     card_status: CardStatus
     transaction_type: AuthorizerTransaction
-    authorizer_number: Optional[str]
+    authorizer_number: Optional[str] = None
 
 
-class ReverseRequest(CardTransactionRequest):
-    ...
+class ReverseRequest(CardTransactionRequest): ...  # noqa: E701
 
 
 class CardNotificationRequest(CardTransactionRequest):
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
-    logical_network: Optional[str]
+    logical_network: Optional[str] = None
 
 
 class ChargeRequest(CardNotificationRequest):
     is_cvv: Optional[bool] = False
     get_balance: Optional[bool] = False
-    atm_fee: Optional[StrictPositiveInt]
+    atm_fee: Optional[StrictPositiveInt] = None
     issuer: IssuerNetwork
-    cardholder_verification_method: Optional[CardholderVerificationMethod]
-    ecommerce_indicator: Optional[EcommerceIndicator]
-    fraud_validation_id: Optional[str]
+    cardholder_verification_method: Optional[CardholderVerificationMethod] = (
+        None
+    )
+    ecommerce_indicator: Optional[EcommerceIndicator] = None
+    fraud_validation_id: Optional[str] = None
 
 
 class UserCardNotificationRequest(CardTransactionRequest):
@@ -282,10 +253,11 @@ class UserCardNotificationRequest(CardTransactionRequest):
 
 
 class SavingBaseRequest(BaseRequest):
-    goal_amount: Optional[StrictPositiveInt]
-    goal_date: Optional[dt.datetime]
+    goal_amount: Optional[StrictPositiveInt] = None
+    goal_date: Optional[dt.datetime] = None
 
-    @validator('goal_date')
+    @field_validator('goal_date')
+    @classmethod
     def validate_goal_date(
         cls, v: Optional[dt.datetime]
     ) -> Optional[dt.datetime]:
@@ -300,8 +272,8 @@ class SavingRequest(SavingBaseRequest):
 
 
 class SavingUpdateRequest(SavingBaseRequest):
-    name: Optional[str]
-    category: Optional[SavingCategory]
+    name: Optional[str] = None
+    category: Optional[SavingCategory] = None
 
 
 class WalletTransactionRequest(BaseRequest):
@@ -319,15 +291,17 @@ class FraudValidationRequest(BaseModel):
     transaction_type: AuthorizerTransaction
     track_data_method: TrackDataMethod
     pos_capability: PosCapability
-    logical_network: Optional[str]
+    logical_network: Optional[str] = None
     is_cvv: Optional[bool] = False
     issuer: IssuerNetwork
-    cardholder_verification_method: Optional[CardholderVerificationMethod]
-    ecommerce_indicator: Optional[EcommerceIndicator]
-    card_id: Optional[str]  # type: ignore
-    user_id: Optional[str]  # type: ignore
-    card_type: Optional[CardType]  # type: ignore
-    card_status: Optional[CardStatus]  # type: ignore
+    cardholder_verification_method: Optional[CardholderVerificationMethod] = (
+        None
+    )
+    ecommerce_indicator: Optional[EcommerceIndicator] = None
+    card_id: Optional[str] = None
+    user_id: Optional[str] = None
+    card_type: Optional[CardType] = None
+    card_status: Optional[CardStatus] = None
 
 
 class TransactionTokenValidationUpdateRequest(BaseRequest):
@@ -342,26 +316,25 @@ class UserPldRiskLevelRequest(BaseModel):
 class CurpValidationRequest(BaseModel):
     names: Optional[str] = None
     first_surname: Optional[str] = None
-    second_surname: Optional[str] = None
+    second_surname: Optional[str] = Field(
+        None, description='Not necessary for foreigners'
+    )
     date_of_birth: Optional[dt.date] = None
-    state_of_birth: Optional[State] = None
-    country_of_birth: Optional[Country] = None
+    state_of_birth: Optional[State] = Field(
+        None, description='In format ISO 3166 Alpha-2'
+    )
+    country_of_birth: Optional[Country] = Field(
+        None, description='In format ISO 3166 Alpha-2'
+    )
     gender: Optional[Gender] = None
-    manual_curp: Optional[CurpField] = None
-
-    class Config:
-        anystr_strip_whitespace = True
-        fields = {
-            'second_surname': {'description': 'Not neccessary for foreigners'},
-            'country_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
-            'state_of_birth': {'description': 'In format ISO 3166 Alpha-2'},
-            'nationality': {'description': 'In format ISO 3166 Alpha-2'},
-            'manual_curp': {
-                'description': 'Force to validate this curp instead of use '
-                'the one we calculate'
-            },
-        }
-        schema_extra = {
+    manual_curp: Optional[Curp] = Field(
+        None,
+        description='Force to validate this curp instead of use '
+        'the one we calculate',
+    )
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        json_schema_extra={
             'example': {
                 'names': 'Guillermo',
                 'first_surname': 'Gonzales',
@@ -371,13 +344,16 @@ class CurpValidationRequest(BaseModel):
                 'country_of_birth': 'MX',
                 'gender': 'male',
             }
-        }
+        },
+    )
 
-    @validator('second_surname')
+    @field_validator('second_surname')
+    @classmethod
     def validate_surname(cls, value: Optional[str]) -> Optional[str]:
         return value if value else None  # Empty strings as None
 
-    @validator('date_of_birth')
+    @field_validator('date_of_birth')
+    @classmethod
     def validate_birth_date(
         cls, date_of_birth: Optional[dt.date]
     ) -> Optional[dt.date]:
@@ -387,7 +363,8 @@ class CurpValidationRequest(BaseModel):
             raise
         return date_of_birth
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
         if (
             'country_of_birth' in values
@@ -397,7 +374,8 @@ class CurpValidationRequest(BaseModel):
             raise ValueError('state_of_birth required')
         return values
 
-    @root_validator(pre=True)
+    @model_validator(mode="before")
+    @classmethod
     def validate_manual_curp(cls, values: DictStrAny) -> DictStrAny:
         manual_curp = values.get('manual_curp')
         required = [
@@ -416,63 +394,47 @@ class CurpValidationRequest(BaseModel):
 class TOSRequest(BaseModel):
     type: TermsOfService
     version: str
-    location: Optional[str]
-    ip: Optional[str] = None
-
-    @validator('ip')
-    def validate_ip(cls, ip: str):
-        # we validate ip address this way because the
-        # model IPv4Address or IPv6Address is not JSON serializable
-        try:
-            IPvAnyAddress.validate(ip)
-        except IPvAnyAddressError:
-            raise ValueError('not valid ip')
-        return ip
+    location: Optional[str] = None
+    ip: Optional[IPvAnyAddress] = None
 
 
 class UserRequest(BaseModel):
-    id: Optional[str] = None
-    curp: CurpField
-    phone_number: Optional[PhoneNumber] = None
-    email_address: Optional[EmailStr] = None
+    id: Optional[str] = Field(
+        None, description='if you want to create with specific `id`'
+    )
+    curp: Curp = Field(
+        description='Previously validated in `curp_validations`'
+    )
+    phone_number: Optional[PhoneNumber] = Field(
+        None, description='Only if you validated previously on your side'
+    )
+    email_address: Optional[EmailStr] = Field(
+        None, description='Only if you validated previously on your side'
+    )
     profession: Optional[str] = None
     address: Optional[Address] = None
-    status: Optional[UserStatus] = None
-    required_level: Optional[conint(ge=-1, le=4)] = None  # type: ignore
-    phone_verification_id: Optional[str] = None
-    email_verification_id: Optional[str] = None
+    status: Optional[UserStatus] = Field(
+        None,
+        description='Status that the user will have when created. '
+        'Defined by platform',
+    )
+    required_level: Optional[Annotated[int, Field(ge=-1, le=4)]] = Field(
+        None,
+        description='Maximum level a User can reach. ' 'Defined by platform',
+    )
+    phone_verification_id: Optional[str] = Field(
+        None,
+        description='Only if you validated it previously with the '
+        'resource `verifications`',
+    )
+    email_verification_id: Optional[str] = Field(
+        None,
+        description='Only if you validated it previously with the '
+        'resource `verifications`',
+    )
     terms_of_service: Optional[TOSRequest] = None
-
-    class Config:
-        fields = {
-            'id': {'description': 'if you want to create with specific `id`'},
-            'curp': {
-                'description': 'Previously validated in `curp_validations`'
-            },
-            'phone_number': {
-                'description': 'Only if you validated previously on your side'
-            },
-            'email_address': {
-                'description': 'Only if you validated previously on your side'
-            },
-            'required_level': {
-                'description': 'Maximum level a User can reach. '
-                'Defined by platform'
-            },
-            'status': {
-                'description': 'Status that the user will have when created. '
-                'Defined by platform'
-            },
-            'phone_verification_id': {
-                'description': 'Only if you validated it previously with the '
-                'resource `verifications`'
-            },
-            'email_verification_id': {
-                'description': 'Only if you validated it previously with the '
-                'resource `verifications`'
-            },
-        }
-        schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             'example': {
                 'curp': 'GOCG650418HVZNML08',
                 'phone_number': '+525511223344',
@@ -480,12 +442,12 @@ class UserRequest(BaseModel):
                 'profession': 'engineer',
                 'address': Address.schema().get('example'),
             }
-        }
+        },
+    )
 
-    @validator('curp')
-    def validate_birth_date(
-        cls, curp: Optional[CurpField]
-    ) -> Optional[CurpField]:
+    @field_validator('curp')
+    @classmethod
+    def validate_birth_date(cls, curp: Optional[Curp]) -> Optional[Curp]:
         if curp:
             current_date = dt.datetime.utcnow()
             curp_date = curp[4:10]
@@ -510,7 +472,7 @@ class UserUpdateRequest(BaseModel):
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[Address] = None
-    beneficiaries: Optional[List[Beneficiary]] = None
+    beneficiaries: Optional[list[Beneficiary]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
@@ -519,9 +481,10 @@ class UserUpdateRequest(BaseModel):
     platform_terms_of_service: Optional[TOSAgreement] = None
     curp_document_uri: Optional[HttpUrl] = None
 
-    @validator('beneficiaries')
+    @field_validator('beneficiaries')
+    @classmethod
     def beneficiary_percentage(
-        cls, beneficiaries: Optional[List[Beneficiary]] = None
+        cls, beneficiaries: Optional[list[Beneficiary]] = None
     ):
         if beneficiaries and sum(b.percentage for b in beneficiaries) > 100:
             raise ValueError('The total percentage is more than 100.')
@@ -529,22 +492,11 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: str = Field(
-        ...,
-        min_length=6,
-        max_length=128,
-        description=(
-            'Any str with at least 6 characters, maximum 128 characters'
-        ),
+    password: Password
+    user_id: Optional[str] = Field(None, description='Deprecated field')
+    model_config = ConfigDict(
+        json_schema_extra={'example': {'password': 'supersecret'}},
     )
-    user_id: Optional[str]
-
-    class Config:
-        fields = {
-            'password': {'description': 'User password'},
-            'user_id': {'description': 'Deprecated field'},
-        }
-        schema_extra = {'example': {'password': 'supersecret'}}
 
 
 class SessionRequest(BaseRequest):
@@ -552,9 +504,8 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[AnyUrl] = None
     failure_url: Optional[AnyUrl] = None
-
-    class Config:
-        schema_extra = {
+    model_config = ConfigDict(
+        json_schema_extra={
             'example': {
                 'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
                 'type': 'session.registration',
@@ -562,24 +513,25 @@ class SessionRequest(BaseRequest):
                 'failure_url': 'http://example_failure.com',
             }
         }
+    )
 
 
 class EndpointRequest(BaseRequest):
     url: HttpUrl
-    events: Optional[List[WebhookEvent]] = None
+    events: Optional[list[WebhookEvent]] = None
     user_id: Optional[str] = None
 
 
 class EndpointUpdateRequest(BaseRequest):
-    url: Optional[HttpUrl]
-    is_enable: Optional[bool]
-    events: Optional[List[WebhookEvent]]
+    url: Optional[HttpUrl] = None
+    is_enable: Optional[bool] = None
+    events: Optional[list[WebhookEvent]] = None
 
 
 class FileUploadRequest(BaseRequest):
     is_back: Optional[bool] = False
     file: Union[bytes, str]
-    extension: Optional[FileExtension]
+    extension: Optional[FileExtension] = None
     type: KYCFileType
     user_id: str
 
@@ -591,27 +543,28 @@ class FileRequest(BaseModel):
 
 
 class FileBatchUploadRequest(BaseModel):
-    files: List[FileRequest]
+    files: list[FileRequest]
     user_id: str
 
 
 class VerificationRequest(BaseModel):
     type: VerificationType
-    recipient: Union[EmailStr, PhoneNumber]
+    recipient: Union[EmailStr, PhoneNumber] = Field(
+        description='Phone or email to validate'
+    )
     platform_id: str
-
-    class Config:
-        anystr_strip_whitespace = True
-        fields = {'recipient': {'description': 'Phone or email to validate'}}
-        schema_extra = {
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        json_schema_extra={
             'example': {
                 'type': 'email',
                 'recipient': 'user@example.com',
                 'platform_id': 'PT8UEv02zBTcymd4Kd3MO6pg',
             }
-        }
+        },
+    )
 
-    @validator('recipient')
+    @field_validator('recipient')
     def validate_sender(cls, recipient: str, values):
         return (
             EmailStr(recipient)
@@ -621,33 +574,34 @@ class VerificationRequest(BaseModel):
 
 
 class VerificationAttemptRequest(BaseModel):
-    code: constr(strict=True, min_length=6, max_length=6)  # type: ignore
-
-    class Config:
-        fields = {
-            'code': {'description': 'Code sent to user via email or phone'}
-        }
-        schema_extra = {'example': {'code': '123456'}}
+    code: Annotated[
+        str,
+        StringConstraints(strict=True, min_length=6, max_length=6),
+        Field(description="Code sent to user via email or phone"),
+    ]
+    model_config = ConfigDict(
+        json_schema_extra={'example': {'code': '123456'}},
+    )
 
 
 class LimitedWalletRequest(BaseRequest):
-    allowed_curp: CurpField
-    allowed_rfc: Optional[Rfc]
+    allowed_curp: Curp
+    allowed_rfc: Optional[Rfc] = None
 
 
 class KYCVerificationUpdateRequest(BaseRequest):
-    curp: CurpField
+    curp: Curp
 
 
 class PlatformRequest(BaseModel):
     name: str
-    rfc: Optional[str]
-    establishment_date: Optional[dt.date]
-    country: Optional[Country]
-    state: Optional[State]
-    economic_activity: Optional[str]
-    phone_number: Optional[str]
-    email_address: Optional[str]
+    rfc: Optional[str] = None
+    establishment_date: Optional[dt.date] = None
+    country: Optional[Country] = None
+    state: Optional[State] = None
+    economic_activity: Optional[str] = None
+    phone_number: Optional[str] = None
+    email_address: Optional[str] = None
     type: PlatformType = PlatformType.connect
 
 
@@ -661,7 +615,7 @@ class WebhookRequest(BaseModel):
 class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
-    documents: List[KYCFile] = []
+    documents: list[KYCFile] = []
 
 
 class BankAccountValidationRequest(BaseModel):
@@ -669,13 +623,22 @@ class BankAccountValidationRequest(BaseModel):
 
 
 class UserListsRequest(BaseModel):
-    curp: Optional[CurpField] = None
-    account_number: Optional[Union[Clabe, PaymentCardNumber]] = None
-    names: Optional[str] = None
-    first_surname: Optional[str] = None
-    second_surname: Optional[str] = None
+    curp: Optional[Curp] = Field(None, description='Curp to review on lists')
+    account_number: Optional[Union[Clabe, PaymentCardNumber]] = Field(
+        None, description='Account to review on lists'
+    )
+    names: Optional[str] = Field(
+        None, description='Names of the user to review on lists'
+    )
+    first_surname: Optional[str] = Field(
+        None, description='first_surname of the user to review on lists'
+    )
+    second_surname: Optional[str] = Field(
+        None, description='second_surname of the user to review on lists'
+    )
 
-    @root_validator()
+    @model_validator(mode='before')
+    @classmethod
     def check_request(cls, values):
         has_name = all(values.get(f) for f in ['names', 'first_surname'])
         curp, account = values.get('curp'), values.get('account_number')
@@ -683,22 +646,9 @@ class UserListsRequest(BaseModel):
             raise ValueError("At least 1 param is required")
         return values
 
-    class Config:
-        anystr_strip_whitespace = True
-
-        fields = {
-            'curp': {'description': 'Curp to review on lists'},
-            'account_number': {'description': 'Account to review on lists'},
-            'names': {'description': 'Names of the user to review on lists'},
-            'first_surname': {
-                'description': 'first_surname of the user to review on lists'
-            },
-            'second_surname': {
-                'description': 'second_surname of the user to review '
-                'on lists if exists'
-            },
-        }
-        schema_extra = {
+    model_config = ConfigDict(
+        str_strip_whitespace=True,
+        json_schema_extra={
             'example': {
                 'curp': 'GOCG650418HVZNML08',
                 'account_number': '9203929392939292392',
@@ -706,7 +656,8 @@ class UserListsRequest(BaseModel):
                 'first_surname': 'Sola',
                 'second_surname': 'Sola',
             }
-        }
+        },
+    )
 
 
 class QuestionnairesRequest(BaseModel):
@@ -747,5 +698,5 @@ class PartnerUpdateRequest(BaseRequest):
     license: Optional[LicenseDetails] = None
     audit: Optional[AuditDetails] = None
     vulnerable_activity: Optional[VulnerableActivityDetails] = None
-    legal_representatives: Optional[List[LegalRepresentative]] = None
-    shareholders: Optional[List[Shareholder]] = None
+    legal_representatives: Optional[list[LegalRepresentative]] = None
+    shareholders: Optional[list[Shareholder]] = None

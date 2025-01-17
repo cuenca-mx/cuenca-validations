@@ -1,13 +1,10 @@
 import json
-from typing import TYPE_CHECKING, Optional, Type
+from typing import Annotated, Any, Optional
 
-from pydantic import ConstrainedFloat, ConstrainedInt, ConstrainedStr
+from pydantic import Field, StringConstraints
 
-from ..validators import sanitize_dict, sanitize_item, validate_digits
+from ..validators import sanitize_dict, sanitize_item
 from .enums import State
-
-if TYPE_CHECKING:
-    from pydantic.typing import CallableGenerator
 
 
 class SantizedDict(dict):
@@ -21,43 +18,25 @@ class JSONEncoder(json.JSONEncoder):
         return sanitize_item(o, default=super().default)
 
 
-class StrictPositiveInt(ConstrainedInt):
-    """
-    - strict: ensures a float isn't passed in by accident
-    - gt (greater than): ensures the value is strictly above 0
-    """
+MAX_VALUE_IN_DB = 21_474_836_47
 
-    strict = True
-    gt = 0
-    le = 21_474_836_47  # Max value in DB
-
-    ...
-
-
-class StrictPositiveFloat(ConstrainedFloat):
-    """
-    - strict: ensures an integer isn't passed in by accident
-    - ge (greater than or equal): ensures the value is above 0
-    """
-
-    strict = True
-    ge = 0
-
-    ...
+StrictPositiveInt = Annotated[
+    int, Field(strict=True, gt=0, le=MAX_VALUE_IN_DB)
+]
 
 
 def digits(
     min_length: Optional[int] = None, max_length: Optional[int] = None
-) -> Type[str]:
-    namespace = dict(min_length=min_length, max_length=max_length)
-    return type('DigitsValue', (Digits,), namespace)
-
-
-class Digits(ConstrainedStr):
-    @classmethod
-    def __get_validators__(cls) -> 'CallableGenerator':
-        yield from ConstrainedStr.__get_validators__()
-        yield validate_digits
+) -> Annotated[Any, StringConstraints]:
+    return Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=min_length,
+            max_length=max_length,
+            pattern=r'^\d+$',
+        ),
+    ]
 
 
 names_state = {
