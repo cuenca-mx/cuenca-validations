@@ -7,7 +7,7 @@ from pydantic_extra_types.payment import PaymentCardNumber
 from ..card_bins import CARD_BINS
 
 ExpMonth = Annotated[int, Field(strict=True, ge=1, le=12)]
-ExpYear = Annotated[int, Field(strict=True, ge=18, le=99)]
+ExpYear = Annotated[int, Field(strict=True, ge=1, le=99)]
 Cvv = Annotated[
     str,
     StringConstraints(
