@@ -5,7 +5,7 @@ from enum import Enum
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, ValidationError
+from pydantic import BaseModel, SecretStr, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -199,7 +199,7 @@ def test_update_one_property_at_a_time_request():
         UserCredentialUpdateRequest(user_id='US123', password='123456')
 
     req = UserCredentialUpdateRequest(password='123456')
-    assert not req.is_active and req.password == '123456'
+    assert not req.is_active and req.password.get_secret_value() == '123456'
 
     req = UserCredentialUpdateRequest(is_active=True)
     assert req.is_active and not req.password
@@ -208,7 +208,10 @@ def test_update_one_property_at_a_time_request():
 @pytest.mark.parametrize(
     'data,expected_dict',
     [
-        (dict(password='123456'), dict(password='123456', is_active=None)),
+        (
+            dict(password='123456'),
+            dict(password=SecretStr('123456'), is_active=None),
+        ),
         (dict(is_active=True), dict(password=None, is_active=True)),
         (dict(), dict(password=None, is_active=None)),
     ],
