@@ -6,6 +6,7 @@ from pydantic import (
     ConfigDict,
     Field,
     IPvAnyAddress,
+    SecretStr,
     StringConstraints,
     model_validator,
 )
@@ -14,7 +15,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from .enums import Country, KYCFileType, State, VerificationStatus
 
 Password = Annotated[
-    str,
+    SecretStr,
     Field(
         min_length=6,
         max_length=128,
