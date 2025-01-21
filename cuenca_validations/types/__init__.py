@@ -103,6 +103,7 @@ __all__ = [
     'WebhookEvent',
     'digits',
     'get_state_name',
+    'uuid_field',
 ]
 
 from .card import StrictPaymentCardNumber
@@ -156,6 +157,7 @@ from .general import (
     digits,
     get_state_name,
 )
+from .helpers import uuid_field
 from .identities import (
     Address,
     Beneficiary,
