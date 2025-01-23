@@ -17,10 +17,10 @@ from .enums import Country, KYCFileType, State, VerificationStatus
 Password = Annotated[
     SecretStr,
     Field(
-        min_length=6,
+        min_length=8,
         max_length=128,
         description=(
-            'Any str with at least 6 characters, maximum 128 characters'
+            'Any str with at least 8 characters, maximum 128 characters'
         ),
     ),
 ]
