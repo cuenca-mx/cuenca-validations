@@ -492,7 +492,7 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: Password
+    password: str  # Set password field to str for backward compatibility.
     user_id: Optional[str] = Field(None, description='Deprecated field')
     model_config = ConfigDict(
         json_schema_extra={'example': {'password': 'supersecret'}},
