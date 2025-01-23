@@ -196,10 +196,10 @@ def test_exclude_none_in_dict():
 
 def test_update_one_property_at_a_time_request():
     with pytest.raises(ValueError):
-        UserCredentialUpdateRequest(user_id='US123', password='123456')
+        UserCredentialUpdateRequest(user_id='US123', password='12345678')
 
-    req = UserCredentialUpdateRequest(password='123456')
-    assert not req.is_active and req.password.get_secret_value() == '123456'
+    req = UserCredentialUpdateRequest(password='12345678')
+    assert not req.is_active and req.password.get_secret_value() == '12345678'
 
     req = UserCredentialUpdateRequest(is_active=True)
     assert req.is_active and not req.password
@@ -209,8 +209,8 @@ def test_update_one_property_at_a_time_request():
     'data,expected_dict',
     [
         (
-            dict(password='123456'),
-            dict(password=SecretStr('123456'), is_active=None),
+            dict(password='12345678'),
+            dict(password=SecretStr('12345678'), is_active=None),
         ),
         (dict(is_active=True), dict(password=None, is_active=True)),
         (dict(), dict(password=None, is_active=None)),
