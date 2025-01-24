@@ -78,3 +78,9 @@ names_state = {
 
 def get_state_name(state: State):
     return names_state[state]
+
+
+class Metadata:
+    def __init__(self, sensitive: bool, log_chars: int = 0):
+        self.sensitive = sensitive
+        self.log_chars = log_chars

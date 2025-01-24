@@ -2,6 +2,7 @@ import datetime as dt
 import json
 from dataclasses import dataclass
 from enum import Enum
+from typing import Annotated
 
 import pytest
 from freezegun import freeze_time
@@ -24,7 +25,7 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
-from cuenca_validations.types.general import StrictPositiveInt
+from cuenca_validations.types.general import Metadata, StrictPositiveInt
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -586,3 +587,24 @@ class IntModel(BaseModel):
 def test_strict_positive_int_invalid(value, expected_error, expected_message):
     with pytest.raises(expected_error, match=expected_message):
         IntModel(value=value)
+
+
+class MetadataModel(BaseModel):
+    secret: Annotated[str, Metadata(sensitive=True)]
+    partial_secret: Annotated[str, Metadata(sensitive=True, log_chars=4)]
+
+
+def test_metadata():
+    model = MetadataModel(secret="super-secret", partial_secret="1234567890")
+
+    secret_field = MetadataModel.model_fields["secret"]
+    partial_field = MetadataModel.model_fields["partial_secret"]
+
+    assert secret_field.metadata[0].sensitive is True
+    assert secret_field.metadata[0].log_chars == 0
+
+    assert partial_field.metadata[0].sensitive is True
+    assert partial_field.metadata[0].log_chars == 4
+
+    assert model.secret == "super-secret"
+    assert model.partial_secret == "1234567890"
