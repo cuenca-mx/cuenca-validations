@@ -6,13 +6,9 @@ from pydantic import AnyUrl, Field, HttpUrl, PlainSerializer, StringConstraints
 from ..validators import sanitize_dict, sanitize_item
 from .enums import State
 
-SerializableHttpUrl = Annotated[
-    HttpUrl, PlainSerializer(lambda x: str(x), return_type=str)
-]
+SerializableHttpUrl = Annotated[HttpUrl, PlainSerializer(str, return_type=str)]
 
-SerializableAnyUrl = Annotated[
-    AnyUrl, PlainSerializer(lambda x: str(x), return_type=str)
-]
+SerializableAnyUrl = Annotated[AnyUrl, PlainSerializer(str, return_type=str)]
 
 
 class SantizedDict(dict):
