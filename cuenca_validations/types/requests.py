@@ -433,15 +433,15 @@ class TOSRequest(BaseModel):
 class UserRequest(BaseModel):
     id: Optional[str] = None
     curp: CurpField
-    phone_number: Optional[PhoneNumber] = None
-    email_address: Optional[EmailStr] = None
+    # phone_number: Optional[PhoneNumber] = None
+    # email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     address: Optional[Address] = None
     status: Optional[UserStatus] = None
     required_level: Optional[conint(ge=-1, le=4)] = None  # type: ignore
-    phone_verification_id: Optional[str] = None
-    email_verification_id: Optional[str] = None
-    terms_of_service: Optional[TOSRequest] = None
+    phone_verification_id: str
+    email_verification_id: str
+    terms_of_service: TOSRequest
 
     class Config:
         fields = {
