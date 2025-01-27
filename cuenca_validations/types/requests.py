@@ -3,12 +3,10 @@ from typing import Annotated, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
-    AnyUrl,
     BaseModel,
     ConfigDict,
     EmailStr,
     Field,
-    HttpUrl,
     StrictStr,
     StringConstraints,
     field_validator,
@@ -56,7 +54,7 @@ from .card import (
     PaymentCardNumber,
     StrictPaymentCardNumber,
 )
-from .general import StrictPositiveInt
+from .general import SerializableAnyUrl, SerializableHttpUrl, StrictPositiveInt
 from .identities import (
     Address,
     Beneficiary,
@@ -479,7 +477,7 @@ class UserUpdateRequest(BaseModel):
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
-    curp_document_uri: Optional[HttpUrl] = None
+    curp_document_uri: Optional[SerializableHttpUrl] = None
 
     @field_validator('beneficiaries')
     @classmethod
@@ -502,8 +500,8 @@ class UserLoginRequest(BaseRequest):
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
-    success_url: Optional[AnyUrl] = None
-    failure_url: Optional[AnyUrl] = None
+    success_url: Optional[SerializableAnyUrl] = None
+    failure_url: Optional[SerializableAnyUrl] = None
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -517,13 +515,13 @@ class SessionRequest(BaseRequest):
 
 
 class EndpointRequest(BaseRequest):
-    url: HttpUrl
+    url: SerializableHttpUrl
     events: Optional[list[WebhookEvent]] = None
     user_id: Optional[str] = None
 
 
 class EndpointUpdateRequest(BaseRequest):
-    url: Optional[HttpUrl] = None
+    url: Optional[SerializableHttpUrl] = None
     is_enable: Optional[bool] = None
     events: Optional[list[WebhookEvent]] = None
 
@@ -538,7 +536,7 @@ class FileUploadRequest(BaseRequest):
 
 class FileRequest(BaseModel):
     is_back: Optional[bool] = False
-    url: HttpUrl
+    url: SerializableHttpUrl
     type: KYCFileType
 
 

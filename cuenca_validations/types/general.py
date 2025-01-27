@@ -1,10 +1,14 @@
 import json
 from typing import Annotated, Any, Optional
 
-from pydantic import Field, StringConstraints
+from pydantic import AnyUrl, Field, HttpUrl, PlainSerializer, StringConstraints
 
 from ..validators import sanitize_dict, sanitize_item
 from .enums import State
+
+SerializableHttpUrl = Annotated[HttpUrl, PlainSerializer(str, return_type=str)]
+
+SerializableAnyUrl = Annotated[AnyUrl, PlainSerializer(str, return_type=str)]
 
 
 class SantizedDict(dict):
