@@ -54,7 +54,12 @@ from .card import (
     PaymentCardNumber,
     StrictPaymentCardNumber,
 )
-from .general import SerializableAnyUrl, SerializableHttpUrl, StrictPositiveInt
+from .general import (
+    Metadata,
+    SerializableAnyUrl,
+    SerializableHttpUrl,
+    StrictPositiveInt,
+)
 from .identities import (
     Address,
     Beneficiary,
@@ -490,7 +495,9 @@ class UserUpdateRequest(BaseModel):
 
 
 class UserLoginRequest(BaseRequest):
-    password: str  # Set password field to str for backward compatibility.
+    password: Annotated[
+        str, Metadata(sensitive=True)
+    ]  # Set password field to str for backward compatibility.
     user_id: Optional[str] = Field(None, description='Deprecated field')
     model_config = ConfigDict(
         json_schema_extra={'example': {'password': 'supersecret'}},
