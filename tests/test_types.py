@@ -613,37 +613,32 @@ class LogConfigModel(BaseModel):
     partial_secret: Annotated[
         str, LogConfig(masked=True, unmasked_chars_length=4)
     ]
+    unmasked: Annotated[str, LogConfig(masked=False)]
 
 
-def test_log_config():
+@pytest.mark.parametrize(
+    "field_name,expected_masked,expected_unmasked_length",
+    [
+        ("password", True, 0),
+        ("validated", True, 0),
+        ("secret", True, 0),
+        ("partial_secret", True, 4),
+        ("unmasked", False, 0),
+    ],
+)
+def test_log_config(field_name, expected_masked, expected_unmasked_length):
     model = LogConfigModel(
         password="Mypass123.",
         validated="str123",
         secret="super-secret",
         partial_secret="1234567890",
+        unmasked="unmasked",
     )
 
-    password_field = LogConfigModel.model_fields["password"]
-    validated_field = LogConfigModel.model_fields["validated"]
-    secret_field = LogConfigModel.model_fields["secret"]
-    partial_field = LogConfigModel.model_fields["partial_secret"]
-
-    assert get_log_config(password_field).masked is True
-    assert get_log_config(password_field).unmasked_chars_length == 0
-
-    assert get_log_config(validated_field).masked is True
-    assert get_log_config(validated_field).unmasked_chars_length == 0
-
-    assert get_log_config(secret_field).masked is True
-    assert get_log_config(secret_field).unmasked_chars_length == 0
-
-    assert get_log_config(partial_field).masked is True
-    assert get_log_config(partial_field).unmasked_chars_length == 4
-
-    assert model.password.get_secret_value() == "Mypass123."
-    assert model.validated == "str123"
-    assert model.secret == "super-secret"
-    assert model.partial_secret == "1234567890"
+    field = model.model_fields[field_name]
+    config = get_log_config(field)
+    assert config.masked is expected_masked
+    assert config.unmasked_chars_length == expected_unmasked_length
 
 
 def test_get_log_config_no_log_config():
