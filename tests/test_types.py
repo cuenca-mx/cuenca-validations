@@ -6,7 +6,7 @@ from typing import Annotated
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, SecretStr, ValidationError
+from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
 
 from cuenca_validations.types import (
     Address,
@@ -25,7 +25,8 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
-from cuenca_validations.types.general import Metadata, StrictPositiveInt
+from cuenca_validations.types.general import LogConfig, StrictPositiveInt
+from cuenca_validations.types.helpers import get_log_config
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -589,22 +590,48 @@ def test_strict_positive_int_invalid(value, expected_error, expected_message):
         IntModel(value=value)
 
 
+def validate_password(password: str) -> str:
+    """
+    Example of a custom validator
+    Check if the password contains repeated numbers
+    """
+    import re
+
+    if re.search(r'(\d).*\1', password):
+        raise ValueError("Password cannot contain repeated digits")
+    return password
+
+
 class MetadataModel(BaseModel):
-    secret: Annotated[str, Metadata(sensitive=True)]
-    partial_secret: Annotated[str, Metadata(sensitive=True, log_chars=4)]
+    password: Annotated[
+        str, AfterValidator(validate_password), LogConfig(masked=True)
+    ]
+    secret: Annotated[str, LogConfig(masked=True)]
+    partial_secret: Annotated[
+        str, LogConfig(masked=True, unmasked_chars_length=4)
+    ]
 
 
 def test_metadata():
-    model = MetadataModel(secret="super-secret", partial_secret="1234567890")
+    model = MetadataModel(
+        password="Mypass123",
+        secret="super-secret",
+        partial_secret="1234567890",
+    )
 
+    password_field = MetadataModel.model_fields["password"]
     secret_field = MetadataModel.model_fields["secret"]
     partial_field = MetadataModel.model_fields["partial_secret"]
 
-    assert secret_field.metadata[0].sensitive is True
-    assert secret_field.metadata[0].log_chars == 0
+    assert get_log_config(password_field).masked is True
+    assert get_log_config(password_field).unmasked_chars_length == 0
 
-    assert partial_field.metadata[0].sensitive is True
-    assert partial_field.metadata[0].log_chars == 4
+    assert get_log_config(secret_field).masked is True
+    assert get_log_config(secret_field).unmasked_chars_length == 0
 
+    assert get_log_config(partial_field).masked is True
+    assert get_log_config(partial_field).unmasked_chars_length == 4
+
+    assert model.password == "Mypass123"
     assert model.secret == "super-secret"
     assert model.partial_secret == "1234567890"

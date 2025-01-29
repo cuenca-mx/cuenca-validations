@@ -86,6 +86,6 @@ def get_state_name(state: State):
 
 
 @dataclass
-class Metadata:
-    sensitive: bool
-    log_chars: int = 0
+class LogConfig:
+    masked: bool = False
+    unmasked_chars_length: int = 0

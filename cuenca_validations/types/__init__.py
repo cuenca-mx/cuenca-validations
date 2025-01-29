@@ -104,7 +104,7 @@ __all__ = [
     'digits',
     'get_state_name',
     'uuid_field',
-    'Metadata',
+    'LogConfig',
 ]
 
 from .card import StrictPaymentCardNumber
@@ -153,7 +153,7 @@ from .enums import (
 from .files import BatchFileMetadata
 from .general import (
     JSONEncoder,
-    Metadata,
+    LogConfig,
     SantizedDict,
     StrictPositiveInt,
     digits,

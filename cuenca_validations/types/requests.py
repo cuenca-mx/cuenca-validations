@@ -55,7 +55,7 @@ from .card import (
     StrictPaymentCardNumber,
 )
 from .general import (
-    Metadata,
+    LogConfig,
     SerializableAnyUrl,
     SerializableHttpUrl,
     StrictPositiveInt,
@@ -496,7 +496,7 @@ class UserUpdateRequest(BaseModel):
 
 class UserLoginRequest(BaseRequest):
     password: Annotated[
-        str, Metadata(sensitive=True)
+        str, LogConfig(masked=True)
     ]  # Set password field to str for backward compatibility.
     user_id: Optional[str] = Field(None, description='Deprecated field')
     model_config = ConfigDict(
