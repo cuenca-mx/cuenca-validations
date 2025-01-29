@@ -7,6 +7,7 @@ from typing import Annotated
 import pytest
 from freezegun import freeze_time
 from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
+from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     Address,
@@ -27,6 +28,7 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.general import LogConfig, StrictPositiveInt
 from cuenca_validations.types.helpers import get_log_config
+from cuenca_validations.types.identities import Password
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -590,21 +592,22 @@ def test_strict_positive_int_invalid(value, expected_error, expected_message):
         IntModel(value=value)
 
 
-def validate_password(password: str) -> str:
+def validate_repeated_digits(password: str) -> str:
     """
     Example of a custom validator
-    Check if the password contains repeated numbers
+    Check if the str contains repeated numbers
     """
     import re
 
     if re.search(r'(\d).*\1', password):
-        raise ValueError("Password cannot contain repeated digits")
+        raise ValueError("str cannot contain repeated digits")
     return password
 
 
-class MetadataModel(BaseModel):
-    password: Annotated[
-        str, AfterValidator(validate_password), LogConfig(masked=True)
+class LogConfigModel(BaseModel):
+    password: Annotated[Password, LogConfig(masked=True)]
+    validated: Annotated[
+        str, AfterValidator(validate_repeated_digits), LogConfig(masked=True)
     ]
     secret: Annotated[str, LogConfig(masked=True)]
     partial_secret: Annotated[
@@ -612,19 +615,24 @@ class MetadataModel(BaseModel):
     ]
 
 
-def test_metadata():
-    model = MetadataModel(
-        password="Mypass123",
+def test_log_config():
+    model = LogConfigModel(
+        password="Mypass123.",
+        validated="str123",
         secret="super-secret",
         partial_secret="1234567890",
     )
 
-    password_field = MetadataModel.model_fields["password"]
-    secret_field = MetadataModel.model_fields["secret"]
-    partial_field = MetadataModel.model_fields["partial_secret"]
+    password_field = LogConfigModel.model_fields["password"]
+    validated_field = LogConfigModel.model_fields["validated"]
+    secret_field = LogConfigModel.model_fields["secret"]
+    partial_field = LogConfigModel.model_fields["partial_secret"]
 
     assert get_log_config(password_field).masked is True
     assert get_log_config(password_field).unmasked_chars_length == 0
+
+    assert get_log_config(validated_field).masked is True
+    assert get_log_config(validated_field).unmasked_chars_length == 0
 
     assert get_log_config(secret_field).masked is True
     assert get_log_config(secret_field).unmasked_chars_length == 0
@@ -632,6 +640,12 @@ def test_metadata():
     assert get_log_config(partial_field).masked is True
     assert get_log_config(partial_field).unmasked_chars_length == 4
 
-    assert model.password == "Mypass123"
+    assert model.password.get_secret_value() == "Mypass123."
+    assert model.validated == "str123"
     assert model.secret == "super-secret"
     assert model.partial_secret == "1234567890"
+
+
+def test_get_log_config_no_log_config():
+    field = FieldInfo(default=None)
+    assert get_log_config(field) is None
