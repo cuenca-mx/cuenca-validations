@@ -89,3 +89,4 @@ def get_state_name(state: State):
 class LogConfig:
     masked: bool = False
     unmasked_chars_length: int = 0
+    excluded: bool = False

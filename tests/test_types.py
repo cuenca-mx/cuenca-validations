@@ -614,31 +614,37 @@ class LogConfigModel(BaseModel):
         str, LogConfig(masked=True, unmasked_chars_length=4)
     ]
     unmasked: Annotated[str, LogConfig(masked=False)]
+    excluded: Annotated[str, LogConfig(excluded=True)]
 
 
 @pytest.mark.parametrize(
-    "field_name,expected_masked,expected_unmasked_length",
+    "field_name,expected_masked,expected_unmasked_length,expected_excluded",
     [
-        ("password", True, 0),
-        ("validated", True, 0),
-        ("secret", True, 0),
-        ("partial_secret", True, 4),
-        ("unmasked", False, 0),
+        ("password", True, 0, False),
+        ("validated", True, 0, False),
+        ("secret", True, 0, False),
+        ("partial_secret", True, 4, False),
+        ("unmasked", False, 0, False),
+        ("excluded", False, 0, True),
     ],
 )
-def test_log_config(field_name, expected_masked, expected_unmasked_length):
+def test_log_config(
+    field_name, expected_masked, expected_unmasked_length, expected_excluded
+):
     model = LogConfigModel(
         password="Mypass123.",
         validated="str123",
         secret="super-secret",
         partial_secret="1234567890",
         unmasked="unmasked",
+        excluded="excluded",
     )
 
     field = model.model_fields[field_name]
     config = get_log_config(field)
     assert config.masked is expected_masked
     assert config.unmasked_chars_length == expected_unmasked_length
+    assert config.excluded is expected_excluded
 
 
 def test_get_log_config_no_log_config():
