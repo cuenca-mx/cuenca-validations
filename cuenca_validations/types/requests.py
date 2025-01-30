@@ -503,8 +503,6 @@ class UserRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    phone_number: Optional[PhoneNumber] = None
-    email_address: Optional[EmailStr] = None
     profession: Optional[str] = None
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
