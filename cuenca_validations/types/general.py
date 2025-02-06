@@ -1,4 +1,5 @@
 import json
+from dataclasses import dataclass
 from typing import Annotated, Any, Optional
 
 from pydantic import AnyUrl, Field, HttpUrl, PlainSerializer, StringConstraints
@@ -82,3 +83,10 @@ names_state = {
 
 def get_state_name(state: State):
     return names_state[state]
+
+
+@dataclass
+class LogConfig:
+    masked: bool = False
+    unmasked_chars_length: int = 0
+    excluded: bool = False

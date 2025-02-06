@@ -2,10 +2,12 @@ import datetime as dt
 import json
 from dataclasses import dataclass
 from enum import Enum
+from typing import Annotated
 
 import pytest
 from freezegun import freeze_time
-from pydantic import BaseModel, SecretStr, ValidationError
+from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
+from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     Address,
@@ -24,7 +26,9 @@ from cuenca_validations.types.enums import (
     SessionType,
     State,
 )
-from cuenca_validations.types.general import StrictPositiveInt
+from cuenca_validations.types.general import LogConfig, StrictPositiveInt
+from cuenca_validations.types.helpers import get_log_config
+from cuenca_validations.types.identities import Password
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
@@ -586,3 +590,63 @@ class IntModel(BaseModel):
 def test_strict_positive_int_invalid(value, expected_error, expected_message):
     with pytest.raises(expected_error, match=expected_message):
         IntModel(value=value)
+
+
+def validate_repeated_digits(password: str) -> str:
+    """
+    Example of a custom validator
+    Check if the str contains repeated numbers
+    """
+    import re
+
+    if re.search(r'(\d).*\1', password):
+        raise ValueError("str cannot contain repeated digits")
+    return password
+
+
+class LogConfigModel(BaseModel):
+    password: Annotated[Password, LogConfig(masked=True)]
+    validated: Annotated[
+        str, AfterValidator(validate_repeated_digits), LogConfig(masked=True)
+    ]
+    secret: Annotated[str, LogConfig(masked=True)]
+    partial_secret: Annotated[
+        str, LogConfig(masked=True, unmasked_chars_length=4)
+    ]
+    unmasked: Annotated[str, LogConfig(masked=False)]
+    excluded: Annotated[str, LogConfig(excluded=True)]
+
+
+@pytest.mark.parametrize(
+    "field_name,expected_masked,expected_unmasked_length,expected_excluded",
+    [
+        ("password", True, 0, False),
+        ("validated", True, 0, False),
+        ("secret", True, 0, False),
+        ("partial_secret", True, 4, False),
+        ("unmasked", False, 0, False),
+        ("excluded", False, 0, True),
+    ],
+)
+def test_log_config(
+    field_name, expected_masked, expected_unmasked_length, expected_excluded
+):
+    model = LogConfigModel(
+        password="Mypass123.",
+        validated="str123",
+        secret="super-secret",
+        partial_secret="1234567890",
+        unmasked="unmasked",
+        excluded="excluded",
+    )
+
+    field = model.model_fields[field_name]
+    config = get_log_config(field)
+    assert config.masked is expected_masked
+    assert config.unmasked_chars_length == expected_unmasked_length
+    assert config.excluded is expected_excluded
+
+
+def test_get_log_config_no_log_config():
+    field = FieldInfo(default=None)
+    assert get_log_config(field) is None
