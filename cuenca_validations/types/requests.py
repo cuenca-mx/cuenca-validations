@@ -623,6 +623,7 @@ class KYCValidationRequest(BaseRequest):
     force: bool = False
     documents: list[KYCFile] = []
 
+
 class SignatureRequest(BaseRequest):
     signature: Signature
     user_id: str
