@@ -33,6 +33,7 @@ from ..types.enums import (
     PosCapability,
     SavingCategory,
     SessionType,
+    Signature,
     State,
     TermsOfService,
     TrackDataMethod,
@@ -621,6 +622,10 @@ class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
     documents: list[KYCFile] = []
+
+class SignatureRequest(BaseRequest):
+    signature: Signature
+    user_id: str
 
 
 class BankAccountValidationRequest(BaseModel):
