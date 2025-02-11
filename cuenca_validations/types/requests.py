@@ -33,7 +33,6 @@ from ..types.enums import (
     PosCapability,
     SavingCategory,
     SessionType,
-    Signature,
     State,
     TermsOfService,
     TrackDataMethod,
@@ -69,6 +68,7 @@ from .identities import (
     Password,
     PhoneNumber,
     Rfc,
+    Signature,
     TOSAgreement,
 )
 from .morals import (

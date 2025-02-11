@@ -175,18 +175,10 @@ class TOSAgreement(BaseModel):
 
 
 class Signature(BaseModel):
-    uri: str = Field(
-        description="url to fetch the signature image"
-    )
-    location: str = Field(
-        description="location of the signature"
-    )
-    ip: IPvAnyAddress = Field(
-        description="ip address of the signature"
-    )
-    hash: str = Field(
-        description="hash of the signature"
-    )
+    uri: str = Field(description="url to fetch the signature image")
+    location: str = Field(description="location of the signature")
+    ip: IPvAnyAddress = Field(description="ip address of the signature")
+    hash: str = Field(description="hash of the signature")
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
