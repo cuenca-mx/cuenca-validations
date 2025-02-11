@@ -186,7 +186,7 @@ class Signature(BaseModel):
     )
     hash: str = Field(
         description="hash of the signature"
-    )    
+    )
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
