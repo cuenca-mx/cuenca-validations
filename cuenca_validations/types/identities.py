@@ -174,7 +174,7 @@ class TOSAgreement(BaseModel):
     )
 
 
-class Signature(BaseModel):
+class SignatureFile(BaseModel):
     uri: str = Field(description="url to fetch the signature image")
     location: str = Field(description="location of the signature")
     ip: IPvAnyAddress = Field(description="ip address of the signature")

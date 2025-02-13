@@ -68,7 +68,7 @@ from .identities import (
     Password,
     PhoneNumber,
     Rfc,
-    Signature,
+    SignatureFile,
     TOSAgreement,
 )
 from .morals import (
@@ -625,7 +625,7 @@ class KYCValidationRequest(BaseRequest):
 
 
 class SignatureRequest(BaseRequest):
-    signature: Signature
+    signature: SignatureFile
     user_id: str
 
 

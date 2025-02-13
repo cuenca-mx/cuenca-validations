@@ -75,7 +75,7 @@ __all__ = [
     'StrictTransferRequest',
     'TermsOfService',
     'TOSAgreement',
-    'Signature',
+    'SignatureFile',
     'TOSRequest',
     'TrackDataMethod',
     'TransactionQuery',
@@ -169,7 +169,7 @@ from .identities import (
     KYCFile,
     PhoneNumber,
     Rfc,
-    Signature,
+    SignatureFile,
     TOSAgreement,
     VerificationErrors,
 )
