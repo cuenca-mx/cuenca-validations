@@ -179,6 +179,7 @@ class SignatureFile(BaseModel):
     location: str = Field(description="location of the signature")
     ip: IPvAnyAddress = Field(description="ip address of the signature")
     hash: str = Field(description="hash of the signature")
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -187,5 +188,6 @@ class SignatureFile(BaseModel):
                 "ip": "192.168.1.100",
                 "hash": "a1b2c3d4e5f67890abcdef1234567890",
             }
-        }
+        },
+        json_encoders={IPvAnyAddress: lambda v: str(v)}
     )
