@@ -191,7 +191,7 @@ class SignatureFile(BaseModel):
             }
         },
         json_encoders={
-            IPv4Address: lambda v: str(v),
-            IPv6Address: lambda v: str(v),
+            IPv4Address: str,
+            IPv6Address: str,
         },
     )
