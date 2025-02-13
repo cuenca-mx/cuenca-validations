@@ -1,4 +1,5 @@
 import datetime as dt
+from ipaddress import IPv4Address, IPv6Address
 from typing import Annotated, Any, Optional
 
 from pydantic import (
@@ -189,5 +190,8 @@ class SignatureFile(BaseModel):
                 "hash": "a1b2c3d4e5f67890abcdef1234567890",
             }
         },
-        json_encoders={IPvAnyAddress: lambda v: str(v)}
+        json_encoders={
+            IPv4Address: lambda v: str(v),
+            IPv6Address: lambda v: str(v),
+        },
     )
