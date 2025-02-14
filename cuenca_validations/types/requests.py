@@ -479,6 +479,7 @@ class UserUpdateRequest(BaseModel):
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
+    signature: Optional[KYCFile] = None
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
     platform_terms_of_service: Optional[TOSAgreement] = None
