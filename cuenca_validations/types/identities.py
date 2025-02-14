@@ -151,7 +151,11 @@ class KYCFile(BaseModel):
                 "is_mx": True,
                 "uri_front": "/files/FILE-01",
                 "uri_back": "/files/FILE-02",
-                "data": {},
+                "data": {
+                    "location": "19.432608, -99.133209",
+                    "ip": "192.168.1.100",
+                    "hash": "a1b2c3d4e5f67890abcdef1234567890",
+                },
                 "status": "created",
                 "errors": [],
             }
