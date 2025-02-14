@@ -1,5 +1,4 @@
 import datetime as dt
-from ipaddress import IPv4Address, IPv6Address
 from typing import Annotated, Any, Optional
 
 from pydantic import (
@@ -152,7 +151,11 @@ class KYCFile(BaseModel):
                 "is_mx": True,
                 "uri_front": "/files/FILE-01",
                 "uri_back": "/files/FILE-02",
-                "data": {},
+                "data": {
+                    "location": "19.432608, -99.133209",
+                    "ip": "192.168.1.100",
+                    "hash": "a1b2c3d4e5f67890abcdef1234567890",
+                },
                 "status": "created",
                 "errors": [],
             }
@@ -172,26 +175,4 @@ class TOSAgreement(BaseModel):
                 "location": "19.427224, -99.168082",
             }
         }
-    )
-
-
-class SignatureFile(BaseModel):
-    uri: str = Field(description="url to fetch the signature image")
-    location: str = Field(description="location of the signature")
-    ip: IPvAnyAddress = Field(description="ip address of the signature")
-    hash: str = Field(description="hash of the signature")
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "uri": "https://example.com/signature.png",
-                "location": "19.432608, -99.133209",
-                "ip": "192.168.1.100",
-                "hash": "a1b2c3d4e5f67890abcdef1234567890",
-            }
-        },
-        json_encoders={
-            IPv4Address: str,
-            IPv6Address: str,
-        },
     )

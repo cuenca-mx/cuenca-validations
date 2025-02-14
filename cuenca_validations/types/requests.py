@@ -68,7 +68,6 @@ from .identities import (
     Password,
     PhoneNumber,
     Rfc,
-    SignatureFile,
     TOSAgreement,
 )
 from .morals import (
@@ -622,11 +621,6 @@ class KYCValidationRequest(BaseRequest):
     user_id: str
     force: bool = False
     documents: list[KYCFile] = []
-
-
-class SignatureRequest(BaseRequest):
-    signature: SignatureFile
-    user_id: str
 
 
 class BankAccountValidationRequest(BaseModel):
