@@ -436,6 +436,7 @@ class UserRequest(BaseModel):
         'resource `verifications`',
     )
     terms_of_service: Optional[TOSRequest] = None
+    signature: Optional[KYCFile] = None
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
