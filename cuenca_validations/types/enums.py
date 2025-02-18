@@ -247,6 +247,7 @@ class KYCFileType(str, Enum):
     proof_of_liveness = 'proof_of_liveness'
     proof_of_address = 'proof_of_address'
     curp = 'curp'
+    signature = 'signature'
 
 
 class Gender(str, Enum):
