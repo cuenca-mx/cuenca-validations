@@ -12,7 +12,6 @@ from pydantic import (
     field_validator,
     model_validator,
 )
-from pydantic.networks import IPvAnyAddress
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -58,6 +57,7 @@ from .general import (
     LogConfig,
     SerializableAnyUrl,
     SerializableHttpUrl,
+    SerializableIPvAnyAddress,
     StrictPositiveInt,
 )
 from .identities import (
@@ -398,7 +398,7 @@ class TOSRequest(BaseModel):
     type: TermsOfService
     version: str
     location: Optional[str] = None
-    ip: Optional[IPvAnyAddress] = None
+    ip: Optional[SerializableIPvAnyAddress] = None
 
 
 class UserRequest(BaseModel):

@@ -2,14 +2,25 @@ import json
 from dataclasses import dataclass
 from typing import Annotated, Any, Optional
 
-from pydantic import AnyUrl, Field, HttpUrl, PlainSerializer, StringConstraints
+from pydantic import (
+    AnyUrl,
+    Field,
+    HttpUrl,
+    IPvAnyAddress,
+    PlainSerializer,
+    StringConstraints,
+)
 
 from ..validators import sanitize_dict, sanitize_item
 from .enums import State
 
+# We use custom serializers for IP addresses and URLs because
+# Pydantic's IPvAnyAddress, AnyUrl, HttpUrl types are not JSON serializable.
 SerializableHttpUrl = Annotated[HttpUrl, PlainSerializer(str, return_type=str)]
-
 SerializableAnyUrl = Annotated[AnyUrl, PlainSerializer(str, return_type=str)]
+SerializableIPvAnyAddress = Annotated[
+    IPvAnyAddress, PlainSerializer(str, return_type=str)
+]
 
 
 class SantizedDict(dict):

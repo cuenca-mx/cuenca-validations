@@ -5,7 +5,6 @@ from pydantic import (
     BaseModel,
     ConfigDict,
     Field,
-    IPvAnyAddress,
     SecretStr,
     StringConstraints,
     model_validator,
@@ -13,6 +12,7 @@ from pydantic import (
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
+from .general import SerializableIPvAnyAddress
 
 Password = Annotated[
     SecretStr,
@@ -165,7 +165,7 @@ class KYCFile(BaseModel):
 
 class TOSAgreement(BaseModel):
     version: str
-    ip: IPvAnyAddress
+    ip: SerializableIPvAnyAddress
     location: Optional[str] = None
     model_config = ConfigDict(
         json_schema_extra={
