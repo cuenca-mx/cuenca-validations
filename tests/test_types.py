@@ -564,10 +564,28 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
-def test_user_lists_request():
-    UserListsRequest(names='Pedro', first_surname='Paramo')
+@pytest.mark.parametrize(
+    'input_data',
+    [
+        {'names': 'Pedro', 'first_surname': 'Paramo'},
+        {'curp': 'GOCG650418HVZNML08'},
+        {'rfc': 'GOCG650418TJ1'},
+        {'account_number': '646180157034181180'},
+        {
+            'curp': 'GOCG650418HVZNML08',
+            'rfc': 'GOCG650418TJ1',
+            'names': 'Pedro',
+            'first_surname': 'Paramo',
+        },
+    ],
+)
+def test_user_lists_request_valid_params(input_data):
+    UserListsRequest(**input_data)
+
+
+def test_user_lists_request_invalid_params():
     with pytest.raises(ValueError):
-        UserListsRequest()
+        UserListsRequest(first_surname='Paramo', second_surname='Paramo')
 
 
 class IntModel(BaseModel):
