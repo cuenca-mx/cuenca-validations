@@ -55,6 +55,7 @@ from .card import (
 )
 from .general import (
     LogConfig,
+    NonEmptyStr,
     SerializableAnyUrl,
     SerializableHttpUrl,
     SerializableIPvAnyAddress,
@@ -635,16 +636,14 @@ class UserListsRequest(BaseModel):
     account_number: Optional[Union[Clabe, PaymentCardNumber]] = Field(
         None, description='Account to review on lists'
     )
-    names: Optional[
-        Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
-    ] = Field(None, description='Names of the user to review on lists')
-    first_surname: Optional[
-        Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
-    ] = Field(None, description='first_surname of the user to review on lists')
-    second_surname: Optional[
-        Annotated[str, StringConstraints(min_length=1, strip_whitespace=True)]
-    ] = Field(
-        None, description='second_surname of the user to review on lists'
+    names: Optional[NonEmptyStr] = Field(
+        None, description='Names of the user to review on lists'
+    )
+    first_surname: Optional[NonEmptyStr] = Field(
+        None, description='First surname of the user to review on lists'
+    )
+    second_surname: Optional[NonEmptyStr] = Field(
+        None, description='Second surname of the user to review on lists'
     )
 
     @model_validator(mode='before')

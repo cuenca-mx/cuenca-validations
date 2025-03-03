@@ -22,6 +22,10 @@ SerializableIPvAnyAddress = Annotated[
     IPvAnyAddress, PlainSerializer(str, return_type=str)
 ]
 
+NonEmptyStr = Annotated[
+    str, StringConstraints(strip_whitespace=True, min_length=1)
+]
+
 
 class SantizedDict(dict):
     def __init__(self, *args, **kwargs):
