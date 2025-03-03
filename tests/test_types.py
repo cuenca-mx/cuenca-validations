@@ -583,9 +583,47 @@ def test_user_lists_request_valid_params(input_data):
     UserListsRequest(**input_data)
 
 
-def test_user_lists_request_invalid_params():
-    with pytest.raises(ValueError):
-        UserListsRequest(first_surname='Paramo', second_surname='Paramo')
+@pytest.mark.parametrize(
+    'input_data,expected_error',
+    [
+        (
+            {'first_surname': 'Paramo'},
+            (
+                'names is required when first_surname or second_surname '
+                'is provided'
+            ),
+        ),
+        (
+            {'second_surname': 'Paramo'},
+            (
+                'names is required when first_surname or second_surname '
+                'is provided'
+            ),
+        ),
+        (
+            {'first_surname': 'Paramo', 'second_surname': 'Paramo'},
+            (
+                'names is required when first_surname or second_surname '
+                'is provided'
+            ),
+        ),
+        (
+            {'names': 'Juan'},
+            'first_surname is required when names is provided',
+        ),
+        (
+            {'first_surname': 'Paramo', 'curp': 'GOCG650418HVZNML08'},
+            (
+                'names is required when first_surname or second_surname '
+                'is provided'
+            ),
+        ),
+        ({}, 'At least 1 param is required'),
+    ],
+)
+def test_user_lists_request_invalid_params(input_data, expected_error):
+    with pytest.raises(ValueError, match=expected_error):
+        UserListsRequest(**input_data)
 
 
 class IntModel(BaseModel):

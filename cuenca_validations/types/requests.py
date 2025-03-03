@@ -648,6 +648,19 @@ class UserListsRequest(BaseModel):
     @model_validator(mode='before')
     @classmethod
     def check_request(cls, values):
+        if (
+            values.get('first_surname') or values.get('second_surname')
+        ) and not values.get('names'):
+            raise ValueError(
+                'names is required when first_surname or second_surname '
+                'is provided'
+            )
+
+        if values.get('names') and not values.get('first_surname'):
+            raise ValueError(
+                'first_surname is required when names is provided'
+            )
+
         has_name = all(values.get(f) for f in ['names', 'first_surname'])
         curp, account, rfc = (
             values.get('curp'),
