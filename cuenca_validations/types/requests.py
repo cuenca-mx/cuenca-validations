@@ -55,6 +55,7 @@ from .card import (
 )
 from .general import (
     LogConfig,
+    NonEmptyStr,
     SerializableAnyUrl,
     SerializableHttpUrl,
     SerializableIPvAnyAddress,
@@ -631,25 +632,43 @@ class BankAccountValidationRequest(BaseModel):
 
 class UserListsRequest(BaseModel):
     curp: Optional[Curp] = Field(None, description='Curp to review on lists')
+    rfc: Optional[Rfc] = Field(None, description='Rfc to review on lists')
     account_number: Optional[Union[Clabe, PaymentCardNumber]] = Field(
         None, description='Account to review on lists'
     )
-    names: Optional[str] = Field(
+    names: Optional[NonEmptyStr] = Field(
         None, description='Names of the user to review on lists'
     )
-    first_surname: Optional[str] = Field(
-        None, description='first_surname of the user to review on lists'
+    first_surname: Optional[NonEmptyStr] = Field(
+        None, description='First surname of the user to review on lists'
     )
-    second_surname: Optional[str] = Field(
-        None, description='second_surname of the user to review on lists'
+    second_surname: Optional[NonEmptyStr] = Field(
+        None, description='Second surname of the user to review on lists'
     )
 
     @model_validator(mode='before')
     @classmethod
     def check_request(cls, values):
+        if (
+            values.get('first_surname') or values.get('second_surname')
+        ) and not values.get('names'):
+            raise ValueError(
+                'names is required when first_surname or second_surname '
+                'is provided'
+            )
+
+        if values.get('names') and not values.get('first_surname'):
+            raise ValueError(
+                'first_surname is required when names is provided'
+            )
+
         has_name = all(values.get(f) for f in ['names', 'first_surname'])
-        curp, account = values.get('curp'), values.get('account_number')
-        if not any([curp, account, has_name]):
+        curp, account, rfc = (
+            values.get('curp'),
+            values.get('account_number'),
+            values.get('rfc'),
+        )
+        if not any([curp, account, rfc, has_name]):
             raise ValueError("At least 1 param is required")
         return values
 
@@ -658,6 +677,7 @@ class UserListsRequest(BaseModel):
         json_schema_extra={
             'example': {
                 'curp': 'GOCG650418HVZNML08',
+                'rfc': 'GOCG650418TJ1',
                 'account_number': '9203929392939292392',
                 'names': 'Pedrito',
                 'first_surname': 'Sola',
