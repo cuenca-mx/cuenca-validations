@@ -73,7 +73,6 @@ __all__ = [
     'StrictPositiveInt',
     'StrictTransferRequest',
     'TermsOfService',
-    'TOSAgreement',
     'TOSRequest',
     'TrackDataMethod',
     'TransactionQuery',
@@ -167,7 +166,6 @@ from .identities import (
     KYCFile,
     PhoneNumber,
     Rfc,
-    TOSAgreement,
     VerificationErrors,
 )
 from .queries import (
