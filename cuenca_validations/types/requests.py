@@ -70,7 +70,6 @@ from .identities import (
     Password,
     PhoneNumber,
     Rfc,
-    TOSAgreement,
 )
 from .morals import (
     AuditDetails,
@@ -398,7 +397,7 @@ class CurpValidationRequest(BaseModel):
 
 class TOSRequest(BaseModel):
     type: TermsOfService
-    version: str
+    tos_id: str
     location: Optional[str] = None
     ip: Optional[SerializableIPvAnyAddress] = None
 
@@ -487,7 +486,6 @@ class UserUpdateRequest(BaseModel):
     signature: Optional[KYCFile] = None
     status: Optional[UserStatus] = None
     terms_of_service: Optional[TOSRequest] = None
-    platform_terms_of_service: Optional[TOSAgreement] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
 
     @field_validator('beneficiaries')
