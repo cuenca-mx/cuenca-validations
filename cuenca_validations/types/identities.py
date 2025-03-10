@@ -161,18 +161,3 @@ class KYCFile(BaseModel):
             }
         },
     )
-
-
-class TOSAgreement(BaseModel):
-    version: str
-    ip: SerializableIPvAnyAddress
-    location: Optional[str] = None
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "version": "2022-01-01",
-                "ip": "192.168.0.1",
-                "location": "19.427224, -99.168082",
-            }
-        }
-    )
