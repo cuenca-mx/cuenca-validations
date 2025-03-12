@@ -28,6 +28,7 @@ from ..types.enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
+    KYCValidationType,
     PlatformType,
     PosCapability,
     SavingCategory,
@@ -422,7 +423,7 @@ class UserRequest(BaseModel):
         description='Status that the user will have when created. '
         'Defined by platform',
     )
-    required_level: Optional[Annotated[int, Field(ge=-1, le=4)]] = Field(
+    required_level: Optional[Annotated[int, Field(ge=-1, le=3)]] = Field(
         None,
         description='Maximum level a User can reach. ' 'Defined by platform',
     )
@@ -597,9 +598,6 @@ class LimitedWalletRequest(BaseRequest):
     allowed_rfc: Optional[Rfc] = None
 
 
-class KYCVerificationUpdateRequest(BaseRequest):
-    curp: Curp
-
 
 class PlatformRequest(BaseModel):
     name: str
@@ -622,6 +620,7 @@ class WebhookRequest(BaseModel):
 
 class KYCValidationRequest(BaseRequest):
     user_id: str
+    validation_type: KYCValidationType
     force: bool = False
     documents: list[KYCFile] = []
 
