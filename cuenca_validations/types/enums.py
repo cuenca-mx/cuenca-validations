@@ -249,6 +249,9 @@ class KYCFileType(str, Enum):
     curp = 'curp'
     signature = 'signature'
 
+class KYCValidationType(str, Enum):
+    client_side = 'client_side'
+    background = 'background'
 
 class Gender(str, Enum):
     female = 'female'
