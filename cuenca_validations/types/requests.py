@@ -598,7 +598,6 @@ class LimitedWalletRequest(BaseRequest):
     allowed_rfc: Optional[Rfc] = None
 
 
-
 class PlatformRequest(BaseModel):
     name: str
     rfc: Optional[str] = None
