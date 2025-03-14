@@ -621,7 +621,6 @@ class KYCValidationRequest(BaseRequest):
     user_id: str
     validation_type: KYCValidationType
     force: bool = False
-    documents: list[KYCFile] = []
 
 
 class BankAccountValidationRequest(BaseModel):
