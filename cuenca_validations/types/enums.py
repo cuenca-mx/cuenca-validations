@@ -248,6 +248,7 @@ class KYCFileType(str, Enum):
     proof_of_address = 'proof_of_address'
     curp = 'curp'
     signature = 'signature'
+    tos = 'tos'
 
 
 class Gender(str, Enum):
@@ -648,6 +649,7 @@ class FileExtension(str, Enum):
     jpeg = 'jpeg'
     png = 'png'
     pdf = 'pdf'
+    html = 'html'
 
 
 class BankAccountStatus(str, Enum):
