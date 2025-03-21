@@ -403,6 +403,7 @@ class TOSRequest(BaseModel):
 
 
 class UserTOSAgreementRequest(BaseModel):
+    user_id: str
     tos_id: str
     location: Optional[str] = None
     ip: Optional[SerializableIPvAnyAddress] = None
