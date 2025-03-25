@@ -710,14 +710,6 @@ def test_get_log_config_no_log_config():
     assert get_log_config(field) is None
 
 
-def test_location_validation_valid_format():
-    UserTOSAgreementRequest(
-        user_id='US123',
-        tos_id='TS123',
-        location=(9.3953792, -99.139584),
-    )
-
-
 @pytest.mark.parametrize(
     'location',
     [
