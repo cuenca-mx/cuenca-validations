@@ -9,11 +9,10 @@ from pydantic import (
     Field,
     StrictStr,
     StringConstraints,
-    TypeAdapter,
     field_validator,
     model_validator,
 )
-from pydantic_extra_types.coordinate import Latitude, Longitude
+from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -408,25 +407,7 @@ class TOSRequest(BaseModel):
 class UserTOSAgreementRequest(BaseModel):
     user_id: str
     tos_id: str
-    location: str
-
-    @field_validator('location')
-    @classmethod
-    def validate_location(cls, value: str) -> str:
-        values = value.split(',')
-        if len(values) != 3:
-            raise ValueError(
-                'Must provide exactly 3 values for location: lat,lon,alt'
-            )
-        try:
-            lat, lon, alt = map(float, values)
-            TypeAdapter(Latitude).validate_python(lat)
-            TypeAdapter(Longitude).validate_python(lon)
-        except ValueError:
-            raise ValueError(
-                'Invalid format. Use lat,lon,alt with float valid values.'
-            )
-        return value
+    location: Coordinate
 
 
 class UserRequest(BaseModel):
