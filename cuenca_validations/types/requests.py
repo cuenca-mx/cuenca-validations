@@ -28,7 +28,7 @@ from ..types.enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
-    KYCValidationMode,
+    KYCValidationFlow,
     PlatformType,
     PosCapability,
     SavingCategory,
@@ -619,7 +619,7 @@ class WebhookRequest(BaseModel):
 
 class KYCValidationRequest(BaseRequest):
     user_id: str
-    validation_mode: KYCValidationMode
+    validation_flow: KYCValidationFlow
     force: bool = False
 
 
