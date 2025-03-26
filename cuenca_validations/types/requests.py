@@ -28,7 +28,7 @@ from ..types.enums import (
     Gender,
     IssuerNetwork,
     KYCFileType,
-    KYCValidationType,
+    KYCValidationMode,
     PlatformType,
     PosCapability,
     SavingCategory,
@@ -423,7 +423,7 @@ class UserRequest(BaseModel):
         description='Status that the user will have when created. '
         'Defined by platform',
     )
-    required_level: Optional[Annotated[int, Field(ge=-1, le=3)]] = Field(
+    required_level: Optional[Annotated[int, Field(ge=1, le=3)]] = Field(
         None,
         description='Maximum level a User can reach. ' 'Defined by platform',
     )
@@ -619,7 +619,7 @@ class WebhookRequest(BaseModel):
 
 class KYCValidationRequest(BaseRequest):
     user_id: str
-    validation_type: KYCValidationType
+    validation_mode: KYCValidationMode
     force: bool = False
 
 

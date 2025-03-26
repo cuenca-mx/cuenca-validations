@@ -250,9 +250,9 @@ class KYCFileType(str, Enum):
     signature = 'signature'
 
 
-class KYCValidationType(str, Enum):
-    client_side = 'client_side'
-    background = 'background'
+class KYCValidationMode(str, Enum):
+    client = 'client'
+    server = 'server'
 
 
 class Gender(str, Enum):
