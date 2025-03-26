@@ -423,9 +423,11 @@ class UserRequest(BaseModel):
         description='Status that the user will have when created. '
         'Defined by platform',
     )
-    required_level: Optional[Annotated[int, Field(ge=1, le=3)]] = Field(
+    required_level: Optional[int] = Field(
         None,
-        description='Maximum level a User can reach. ' 'Defined by platform',
+        ge=1,
+        le=3,
+        description='Maximum level a User can reach. Defined by platform',
     )
     phone_verification_id: Optional[str] = Field(
         None,
