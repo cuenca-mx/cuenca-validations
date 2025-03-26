@@ -544,6 +544,7 @@ class Country(str, Enum):
     ZA = 'ZA'  # South Africa
     ZM = 'ZM'  # Zambia
     ZW = 'ZW'  # Zimbabwe
+    XA = 'XA'  # Apatrida
 
 
 class VerificationStatus(str, Enum):
