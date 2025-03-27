@@ -250,7 +250,7 @@ class KYCFileType(str, Enum):
     signature = 'signature'
 
 
-class KYCValidationFlow(str, Enum):
+class KYCValidationSource(str, Enum):
     client = 'client'
     server = 'server'
 
