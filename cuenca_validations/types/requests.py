@@ -12,6 +12,7 @@ from pydantic import (
     field_validator,
     model_validator,
 )
+from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AuthorizerTransaction,
@@ -400,6 +401,12 @@ class TOSRequest(BaseModel):
     version: str
     location: Optional[str] = None
     ip: Optional[SerializableIPvAnyAddress] = None
+
+
+class UserTOSAgreementRequest(BaseModel):
+    user_id: str
+    tos_id: str
+    location: Coordinate
 
 
 class UserRequest(BaseModel):
