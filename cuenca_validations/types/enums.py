@@ -250,6 +250,11 @@ class KYCFileType(str, Enum):
     signature = 'signature'
 
 
+class KYCValidationSource(str, Enum):
+    client = 'client'
+    server = 'server'
+
+
 class Gender(str, Enum):
     female = 'female'
     male = 'male'
