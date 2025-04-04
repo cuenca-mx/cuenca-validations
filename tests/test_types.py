@@ -43,7 +43,6 @@ from cuenca_validations.types.requests import (
     UserCredentialUpdateRequest,
     UserListsRequest,
     UserRequest,
-    UserTOSAgreementRequest,
     UserUpdateRequest,
     VerificationAttemptRequest,
     VerificationRequest,
@@ -708,24 +707,3 @@ def test_log_config(
 def test_get_log_config_no_log_config():
     field = FieldInfo(default=None)
     assert get_log_config(field) is None
-
-
-@pytest.mark.parametrize(
-    'location',
-    [
-        (1500, -99.139584),
-        (-91, 45.1),
-        (45, 181),
-        (45, -181),
-        ('abc', 45),
-        (45, 'abc'),
-        (45, 45, 45),
-    ],
-)
-def test_location_validation_invalid_format(location):
-    with pytest.raises(ValueError):
-        UserTOSAgreementRequest(
-            user_id='US123',
-            tos_id='TS123',
-            location=location,
-        )
