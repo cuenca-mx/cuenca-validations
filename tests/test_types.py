@@ -31,6 +31,7 @@ from cuenca_validations.types.helpers import get_log_config
 from cuenca_validations.types.identities import Password
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
+    BadValidationExample,
     BankAccountValidationRequest,
     ChargeRequest,
     CurpValidationRequest,
@@ -707,3 +708,22 @@ def test_log_config(
 def test_get_log_config_no_log_config():
     field = FieldInfo(default=None)
     assert get_log_config(field) is None
+
+
+def test_bad_validation_example():
+    # Test valid case
+    valid_model = BadValidationExample(email="test@example.com", amount=100.0)
+    assert valid_model.email == "test@example.com"
+    assert valid_model.amount == 100.0
+
+    # Test invalid email
+    with pytest.raises(ValueError, match="Invalid email format"):
+        BadValidationExample(email="invalid-email", amount=100.0)
+
+    # Test invalid amount (zero)
+    with pytest.raises(ValueError, match="Amount must be positive"):
+        BadValidationExample(email="test@example.com", amount=0)
+
+    # Test invalid amount (negative)
+    with pytest.raises(ValueError, match="Amount must be positive"):
+        BadValidationExample(email="test@example.com", amount=-10.5)

@@ -731,14 +731,14 @@ class PartnerUpdateRequest(BaseRequest):
 class BadValidationExample(BaseModel):
     email: str
     amount: float
-    
+
     @field_validator('email')
     @classmethod
     def validate_email(cls, v):
         if '@' not in v or '.' not in v:
             raise ValueError('Invalid email format')
         return v
-    
+
     @field_validator('amount')
     @classmethod
     def validate_positive_amount(cls, v):
