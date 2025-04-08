@@ -410,21 +410,16 @@ class UserTOSAgreementRequest(BaseModel):
 
 
 class UserRequest(BaseModel):
-    # curp: Curp = Field(
-    #     description='Previously validated in `curp_validations`'
-    # )
-    curp_verification_id: str = Field(
-        ...,
-        description='Previously validated in `curp_validations`',
+    curp: Curp = Field(
+        description='Previously validated in `curp_validations`'
     )
-    # phone_number: PhoneNumber = Field(
-    #     ..., description='Only if you validated previously on your side'
+    # curp_verification_id: str = Field(
+    #     ...,
+    #     description='Previously validated in `curp_validations`',
     # )
-    # email_address: EmailStr = Field(
-    #     ..., description='Only if you validated previously on your side'
-    # )
-    profession: Optional[str] = None
-    address: Optional[Address] = None
+
+    profession: str = None
+    address: Address = None
     # status: Optional[UserStatus] = Field(
     #     None,
     #     description='Status that the user will have when created. '
