@@ -22,6 +22,7 @@ from cuenca_validations.types import (
 from cuenca_validations.types.enums import (
     Country,
     EcommerceIndicator,
+    Profession,
     SessionType,
     State,
 )
@@ -306,7 +307,7 @@ def test_saving_update_request():
 def test_user_request():
     request = dict(
         curp='ABCD920604HDFSRN03',
-        profession='worker',
+        profession=Profession.employee,
         address=dict(
             street='calle 1',
             ext_number='2',
