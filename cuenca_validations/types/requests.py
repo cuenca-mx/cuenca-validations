@@ -32,6 +32,7 @@ from ..types.enums import (
     KYCValidationSource,
     PlatformType,
     PosCapability,
+    Profession,
     SavingCategory,
     SessionType,
     State,
@@ -411,38 +412,24 @@ class UserTOSAgreementRequest(BaseModel):
 
 class UserRequest(BaseModel):
     curp: Curp = Field(
-        description='Previously validated in `curp_validations`'
+        description=(
+            'Mexican government ID (18 characters). ' 'Must be pre-validated.'
+        )
     )
-    # curp_verification_id: str = Field(
-    #     ...,
-    #     description='Previously validated in `curp_validations`',
-    # )
 
-    profession: str = None
-    address: Address = None
-    # status: Optional[UserStatus] = Field(
-    #     None,
-    #     description='Status that the user will have when created. '
-    #     'Defined by platform',
-    # )
-    # required_level: Optional[int] = Field(
-    #     None,
-    #     ge=1,
-    #     le=3,
-    #     description='Maximum level a User can reach. Defined by platform',
-    # )
+    profession: Profession = Field(description='User profession or occupation')
+    address: Address = Field(
+        description='User residential address information'
+    )
     phone_verification_id: str = Field(
         ...,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
+        description='ID of previously validated phone verification',
     )
     email_verification_id: str = Field(
         ...,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
+        description='ID of previously validated email verification',
     )
-    # terms_of_service: Optional[TOSRequest] = None
-    # signature: Optional[KYCFile] = None
+
     model_config = ConfigDict(
         json_schema_extra={
             'example': {

@@ -10,7 +10,6 @@ from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
 from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
-    Address,
     CardQuery,
     JSONEncoder,
     QueryParams,

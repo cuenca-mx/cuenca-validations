@@ -1,14 +1,7 @@
 import datetime as dt
-from typing import Annotated, Any, Optional
+from typing import Annotated, Optional
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    SecretStr,
-    StringConstraints,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
