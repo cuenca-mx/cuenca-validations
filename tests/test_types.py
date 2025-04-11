@@ -10,7 +10,6 @@ from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
 from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
-    Address,
     CardQuery,
     JSONEncoder,
     QueryParams,
@@ -23,6 +22,7 @@ from cuenca_validations.types import (
 from cuenca_validations.types.enums import (
     Country,
     EcommerceIndicator,
+    Profession,
     SessionType,
     State,
 )
@@ -303,60 +303,50 @@ def test_saving_update_request():
         SavingUpdateRequest(**data)
 
 
-def test_address_validation():
-    data = dict(
-        full_name='Varsovia 36, Col Cuahutemoc',
-    )
-    assert Address(**data)
-    with pytest.raises(ValueError) as v:
-        Address(**dict())
-    assert 'required street' in str(v)
-    data = dict(street='somestreet')
-    with pytest.raises(ValueError) as v:
-        Address(**data)
-    assert 'required ext_number' in str(v)
-    data = dict(
-        street='varsovia',
-        ext_number='36',
-        state=State.DF,
-        country=Country.MX,
-    )
-    assert Address(**data)
-
-
 @freeze_time('2022-01-01')
 def test_user_request():
     request = dict(
-        id=None,
         curp='ABCD920604HDFSRN03',
-        phone_number='+525555555555',
-        email_address='email@email.com',
-        profession='worker',
-        status='active',
+        profession=Profession.employee,
         address=dict(
             street='calle 1',
             ext_number='2',
             int_number='3',
             colonia='Juarez',
             postal_code='09900',
-            state=State.DF.value,
+            state=State.DF,
             country=Country.MX,
             city='Obrera',
-            full_name=None,
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
-        required_level=3,
-        terms_of_service=None,
-        signature=None,
     )
     assert UserRequest(**request).model_dump() == request
 
-    # changing curp so user is underage
-    request['curp'] = 'ABCD060604HDFSRN03'
+
+@freeze_time('2022-01-01')
+def test_user_request_underage():
+    request = dict(
+        curp='ABCD060604HDFSRN03',  # underage CURP
+        profession='worker',
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            colonia='Juarez',
+            postal_code='09900',
+            state=State.DF,
+            country=Country.MX,
+            city='Obrera',
+        ),
+        phone_verification_id='VE12345678',
+        email_verification_id='VE0987654321',
+    )
+
     with pytest.raises(ValueError) as v:
         UserRequest(**request)
-        assert 'User does not meet age requirement.' in str(v)
+
+    assert 'User does not meet age requirement.' in str(v)
 
 
 @freeze_time('2022-01-01')
@@ -449,12 +439,20 @@ def test_user_update_request():
             birth_date=dt.date(2020, 1, 1).isoformat(),
             phone_number='+525555555555',
             user_relationship='brother',
-            percentage=101,
+            percentage=50,
+        ),
+        dict(
+            name='José Pérez',
+            birth_date=dt.date(2020, 1, 2).isoformat(),
+            phone_number='+525544444444',
+            user_relationship='brother',
+            percentage=51,
         ),
     ]
     with pytest.raises(ValueError) as v:
         UserUpdateRequest(**request)
-        assert 'The total percentage is more than 100.' in str(v)
+
+    assert 'The total percentage is more than 100.' in str(v)
 
     tos_request = dict(
         terms_of_service=dict(

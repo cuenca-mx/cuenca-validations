@@ -32,6 +32,7 @@ from ..types.enums import (
     KYCValidationSource,
     PlatformType,
     PosCapability,
+    Profession,
     SavingCategory,
     SessionType,
     State,
@@ -410,43 +411,25 @@ class UserTOSAgreementRequest(BaseModel):
 
 
 class UserRequest(BaseModel):
-    id: Optional[str] = Field(
-        None, description='if you want to create with specific `id`'
-    )
     curp: Curp = Field(
-        description='Previously validated in `curp_validations`'
+        description=(
+            'Mexican government ID (18 characters). ' 'Must be pre-validated.'
+        )
     )
-    phone_number: Optional[PhoneNumber] = Field(
-        None, description='Only if you validated previously on your side'
+
+    profession: Profession = Field(description='User profession or occupation')
+    address: Address = Field(
+        description='User residential address information'
     )
-    email_address: Optional[EmailStr] = Field(
-        None, description='Only if you validated previously on your side'
+    phone_verification_id: str = Field(
+        ...,
+        description='ID of previously validated phone verification',
     )
-    profession: Optional[str] = None
-    address: Optional[Address] = None
-    status: Optional[UserStatus] = Field(
-        None,
-        description='Status that the user will have when created. '
-        'Defined by platform',
+    email_verification_id: str = Field(
+        ...,
+        description='ID of previously validated email verification',
     )
-    required_level: Optional[int] = Field(
-        None,
-        ge=1,
-        le=3,
-        description='Maximum level a User can reach. Defined by platform',
-    )
-    phone_verification_id: Optional[str] = Field(
-        None,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
-    )
-    email_verification_id: Optional[str] = Field(
-        None,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
-    )
-    terms_of_service: Optional[TOSRequest] = None
-    signature: Optional[KYCFile] = None
+
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -454,7 +437,7 @@ class UserRequest(BaseModel):
                 'phone_number': '+525511223344',
                 'email_address': 'user@example.com',
                 'profession': 'engineer',
-                'address': Address.schema().get('example'),
+                'address': Address.model_json_schema().get('example'),
             }
         },
     )

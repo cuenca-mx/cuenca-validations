@@ -688,3 +688,19 @@ class SATRegimeCode(str, Enum):
     ING_PREM = "615"  # Régimen de los ingresos por obtención de premios
     AE_PLAT_TEC = "625"  # Régimen de las Actividades Empresariales con ingresos a través de Plataformas Tecnológicas # noqa: E501
     RS_CONF = "626"  # Régimen Simplificado de Confianza
+
+
+class Profession(str, Enum):
+    arts = 'arts'
+    agriculture = 'agriculture'
+    commerce = 'commerce'
+    student = 'student'
+    employee = 'employee'
+    entrepreneur = 'entrepreneur'
+    homemaker = 'homemaker'
+    teacher = 'teacher'
+    professional = 'professional'
+    public_servant = 'public_servant'
+    it_communications = 'it_communications'
+    freelancer = 'freelancer'
+    skilled_trades = 'skilled_trades'
