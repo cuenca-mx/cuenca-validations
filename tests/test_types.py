@@ -439,12 +439,20 @@ def test_user_update_request():
             birth_date=dt.date(2020, 1, 1).isoformat(),
             phone_number='+525555555555',
             user_relationship='brother',
-            percentage=101,
+            percentage=50,
+        ),
+        dict(
+            name='José Pérez',
+            birth_date=dt.date(2020, 1, 2).isoformat(),
+            phone_number='+525544444444',
+            user_relationship='brother',
+            percentage=51,
         ),
     ]
     with pytest.raises(ValueError) as v:
         UserUpdateRequest(**request)
-        assert 'The total percentage is more than 100.' in str(v)
+
+    assert 'The total percentage is more than 100.' in str(v)
 
     tos_request = dict(
         terms_of_service=dict(
