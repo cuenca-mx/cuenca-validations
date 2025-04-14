@@ -462,9 +462,7 @@ class UserRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    phone_number: Optional[PhoneNumber] = None
-    email_address: Optional[EmailStr] = None
-    profession: Optional[str] = None
+    profession: Optional[Profession] = None
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
@@ -474,9 +472,6 @@ class UserUpdateRequest(BaseModel):
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
     signature: Optional[KYCFile] = None
-    status: Optional[UserStatus] = None
-    terms_of_service: Optional[TOSRequest] = None
-    platform_terms_of_service: Optional[TOSAgreement] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
 
     @field_validator('beneficiaries')
