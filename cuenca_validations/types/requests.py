@@ -40,7 +40,6 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
-    UserStatus,
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
@@ -72,7 +71,6 @@ from .identities import (
     Password,
     PhoneNumber,
     Rfc,
-    TOSAgreement,
 )
 from .morals import (
     AuditDetails,
@@ -430,8 +428,7 @@ class UserRequest(BaseModel):
         description='ID of previously validated email verification',
     )
     tos_agreement: UserTOSAgreementRequest = Field(
-        ...,
-        description='TOS agreement for the user'
+        ..., description='TOS agreement for the user'
     )
 
     model_config = ConfigDict(
