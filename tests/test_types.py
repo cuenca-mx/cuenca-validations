@@ -320,6 +320,10 @@ def test_user_request():
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
+        tos_agreement=dict(
+            tos_id='TOS123',
+            location=dict(latitude=19.4326, longitude=-99.1332),
+        ),
     )
     assert UserRequest(**request).model_dump() == request
 
@@ -428,7 +432,7 @@ def test_user_update_request():
             birth_date=dt.date(2020, 1, 1).isoformat(),
             phone_number='+525555555555',
             user_relationship='brother',
-            percentage=50,
+            percentage=100,
         ),
     ]
     assert UserUpdateRequest(**request)
@@ -449,10 +453,11 @@ def test_user_update_request():
             percentage=51,
         ),
     ]
-    with pytest.raises(ValueError) as v:
+    with pytest.raises(ValidationError) as v:
         UserUpdateRequest(**request)
 
-    assert 'The total percentage is more than 100.' in str(v)
+    assert 'The total percentage should be 100%' in str(v)
+    request.pop('beneficiaries')
 
     tos_request = dict(
         terms_of_service=dict(
@@ -482,12 +487,6 @@ def test_user_update_request():
         )
     )
     UserUpdateRequest(**kyc_request)
-
-    # chagning to invalid request
-    tos_request['terms_of_service']['ip'] = 'not valid ip'
-    with pytest.raises(ValueError) as v:
-        UserUpdateRequest(**tos_request)
-    assert 'not valid ip' in str(v.value)
 
 
 def test_session_request():

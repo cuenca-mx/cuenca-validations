@@ -480,8 +480,8 @@ class UserUpdateRequest(BaseModel):
     def beneficiary_percentage(
         cls, beneficiaries: Optional[list[Beneficiary]] = None
     ):
-        if beneficiaries and sum(b.percentage for b in beneficiaries) > 100:
-            raise ValueError('The total percentage is more than 100.')
+        if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
+            raise ValueError('The total percentage should be 100%')
         return beneficiaries
 
 
