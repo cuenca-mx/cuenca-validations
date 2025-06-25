@@ -45,15 +45,14 @@ Rfc = Annotated[
 
 
 class Address(BaseModel):
-    street: Optional[str] = None
-    ext_number: Optional[str] = None
-    int_number: Optional[str] = None
-    colonia: Optional[str] = None
-    postal_code: Optional[str] = None
-    state: Optional[State] = None
-    country: Optional[Country] = None
-    city: Optional[str] = None
-    full_name: Optional[str] = None
+    street: NonEmptyStr
+    ext_number: NonEmptyStr
+    int_number: Optional[NonEmptyStr] = None
+    colonia: NonEmptyStr
+    postal_code: NonEmptyStr
+    state: State
+    country: Country
+    city: NonEmptyStr
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
