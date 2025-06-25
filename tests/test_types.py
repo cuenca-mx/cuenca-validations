@@ -320,10 +320,6 @@ def test_user_request():
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
-        tos_agreement=dict(
-            tos_id='TOS123',
-            location=dict(latitude=19.4326, longitude=-99.1332),
-        ),
     )
     assert UserRequest(**request).model_dump() == request
 
