@@ -1,18 +1,11 @@
 import datetime as dt
-from typing import Annotated, Any, Optional
+from typing import Annotated, Optional
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    SecretStr,
-    StringConstraints,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
-from .general import SerializableIPvAnyAddress
+from .general import NonEmptyStr, SerializableIPvAnyAddress
 
 Password = Annotated[
     SecretStr,
@@ -45,15 +38,14 @@ Rfc = Annotated[
 
 
 class Address(BaseModel):
-    street: Optional[str] = None
-    ext_number: Optional[str] = None
-    int_number: Optional[str] = None
-    colonia: Optional[str] = None
-    postal_code: Optional[str] = None
-    state: Optional[State] = None
-    country: Optional[Country] = None
-    city: Optional[str] = None
-    full_name: Optional[str] = None
+    street: NonEmptyStr
+    ext_number: NonEmptyStr
+    int_number: Optional[NonEmptyStr] = None
+    colonia: NonEmptyStr
+    postal_code: NonEmptyStr
+    state: State
+    country: Country
+    city: NonEmptyStr
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -68,17 +60,6 @@ class Address(BaseModel):
             }
         }
     )
-
-    @model_validator(mode='before')
-    @classmethod
-    def full_name_complete(cls, values: dict[str, Any]) -> dict[str, Any]:
-        if values.get('full_name'):
-            return values
-        if not values.get('street'):
-            raise ValueError('required street')
-        if not values.get('ext_number'):
-            raise ValueError('required ext_number')
-        return values
 
 
 class Beneficiary(BaseModel):

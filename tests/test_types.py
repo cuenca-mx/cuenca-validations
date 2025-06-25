@@ -10,7 +10,6 @@ from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
 from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
-    Address,
     CardQuery,
     JSONEncoder,
     QueryParams,
@@ -303,27 +302,6 @@ def test_saving_update_request():
         SavingUpdateRequest(**data)
 
 
-def test_address_validation():
-    data = dict(
-        full_name='Varsovia 36, Col Cuahutemoc',
-    )
-    assert Address(**data)
-    with pytest.raises(ValueError) as v:
-        Address(**dict())
-    assert 'required street' in str(v)
-    data = dict(street='somestreet')
-    with pytest.raises(ValueError) as v:
-        Address(**data)
-    assert 'required ext_number' in str(v)
-    data = dict(
-        street='varsovia',
-        ext_number='36',
-        state=State.DF,
-        country=Country.MX,
-    )
-    assert Address(**data)
-
-
 @freeze_time('2022-01-01')
 def test_user_request():
     request = dict(
@@ -339,10 +317,9 @@ def test_user_request():
             int_number='3',
             colonia='Juarez',
             postal_code='09900',
-            state=State.DF.value,
+            state=State.DF,
             country=Country.MX,
             city='Obrera',
-            full_name=None,
         ),
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
