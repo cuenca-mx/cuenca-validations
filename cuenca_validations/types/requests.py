@@ -427,9 +427,6 @@ class UserRequest(BaseModel):
         ...,
         description='ID of previously validated email verification',
     )
-    tos_agreement: UserTOSAgreementRequest = Field(
-        ..., description='TOS agreement for the user'
-    )
 
     model_config = ConfigDict(
         json_schema_extra={
