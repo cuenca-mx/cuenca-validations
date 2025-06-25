@@ -180,5 +180,6 @@ class BankAccountValidationQuery(QueryParams):
     account_number: Optional[str] = None
     status: Optional[BankAccountStatus] = None
 
+
 class PostalCodeQuery(QueryParams):
     postal_code: str
