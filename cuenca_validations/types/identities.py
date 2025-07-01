@@ -4,7 +4,7 @@ from typing import Annotated, Optional
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from .enums import Country, KYCFileType, State, VerificationStatus
+from .enums import KYCFileType, VerificationStatus
 from .general import NonEmptyStr, SerializableIPvAnyAddress
 
 Password = Annotated[
@@ -48,22 +48,15 @@ class Address(BaseModel):
     street: NonEmptyStr
     ext_number: NonEmptyStr
     int_number: Optional[NonEmptyStr] = None
-    colonia: NonEmptyStr
-    postal_code: NonEmptyStr
-    state: State
-    country: Country
-    city: NonEmptyStr
+    postal_code_id: NonEmptyStr
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
                 "street": "Reforma",
                 "ext_number": "265",
                 "int_number": "5",
-                "colonia": "Cuauhtémoc",
-                "postal_code": "06500",
-                "state": "DF",
-                "country": "MX",
-                "city": "Cuauhtémoc",
+                "postal_code_id": "PC2ygq9j2bS9-9tsuVawzErA",
             }
         }
     )
