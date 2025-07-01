@@ -423,7 +423,7 @@ class UserRequest(BaseModel):
         None, description='Only if you validated previously on your side'
     )
     profession: Optional[str] = None
-    address: Optional[Address] = None
+    address: Address
     status: Optional[UserStatus] = Field(
         None,
         description='Status that the user will have when created. '
