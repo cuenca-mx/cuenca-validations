@@ -64,7 +64,6 @@ from .general import (
     StrictPositiveInt,
 )
 from .identities import (
-    Address,
     Beneficiary,
     Curp,
     KYCFile,
@@ -82,6 +81,24 @@ from .morals import (
     TransactionalProfile,
     VulnerableActivityDetails,
 )
+
+
+class AddressRequest(BaseModel):
+    street: NonEmptyStr
+    ext_number: NonEmptyStr
+    int_number: Optional[NonEmptyStr] = None
+    postal_code_id: NonEmptyStr
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "street": "Reforma",
+                "ext_number": "265",
+                "int_number": "5",
+                "postal_code_id": "PC2ygq9j2bS9-9tsuVawzErA",
+            }
+        }
+    )
 
 
 class BaseRequest(BaseModel):
@@ -423,7 +440,7 @@ class UserRequest(BaseModel):
         None, description='Only if you validated previously on your side'
     )
     profession: Optional[str] = None
-    address: Address
+    address: AddressRequest
     status: Optional[UserStatus] = Field(
         None,
         description='Status that the user will have when created. '
@@ -454,7 +471,7 @@ class UserRequest(BaseModel):
                 'phone_number': '+525511223344',
                 'email_address': 'user@example.com',
                 'profession': 'engineer',
-                'address': Address.schema().get('example'),
+                'address': AddressRequest.model_json_schema().get('example'),
             }
         },
     )
@@ -485,7 +502,7 @@ class UserUpdateRequest(BaseModel):
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     beneficiaries: Optional[list[Beneficiary]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
@@ -709,7 +726,7 @@ class PartnerRequest(BaseRequest):
     web_site: str
     phone_number: PhoneNumber
     email_address: EmailStr
-    address: Address
+    address: AddressRequest
 
 
 class PartnerUpdateRequest(BaseRequest):
@@ -723,7 +740,7 @@ class PartnerUpdateRequest(BaseRequest):
     web_site: Optional[str] = None
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     business_details: Optional[BusinessDetails] = None
     transactional_profile: Optional[TransactionalProfile] = None
     external_account: Optional[Clabe] = None
