@@ -522,7 +522,6 @@ def test_email_verification_request():
     data = dict(
         recipient='mail@cuenca.com',
         type='email_verification',
-        platform_id='PL01',
     )
     with pytest.raises(ValidationError):
         VerificationRequest(**data)
@@ -534,7 +533,6 @@ def test_phone_verification_request():
     data = dict(
         recipient='+525555555555',
         type='phone_verification',
-        platform_id='PL01',
     )
     with pytest.raises(ValidationError):
         VerificationRequest(**data)

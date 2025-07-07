@@ -569,14 +569,12 @@ class VerificationRequest(BaseModel):
     recipient: Union[EmailStr, PhoneNumber] = Field(
         description='Phone or email to validate'
     )
-    platform_id: str
     model_config = ConfigDict(
         str_strip_whitespace=True,
         json_schema_extra={
             'example': {
                 'type': 'email',
                 'recipient': 'user@example.com',
-                'platform_id': 'PT8UEv02zBTcymd4Kd3MO6pg',
             }
         },
     )
