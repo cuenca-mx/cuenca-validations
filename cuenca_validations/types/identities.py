@@ -45,14 +45,15 @@ Rfc = Annotated[
 
 
 class Address(BaseModel):
-    street: NonEmptyStr
-    ext_number: NonEmptyStr
-    int_number: Optional[NonEmptyStr] = None
-    colonia: Optional[NonEmptyStr] = None
-    postal_code: Optional[NonEmptyStr] = None
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    colonia: Optional[str] = None
+    postal_code: Optional[str] = None
     state: Optional[State] = None
     country: Optional[Country] = None
-    city: Optional[NonEmptyStr] = None
+    city: Optional[str] = None
+    full_name: Optional[str] = None
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -74,11 +75,7 @@ class AddressRequest(BaseModel):
     street: NonEmptyStr
     ext_number: NonEmptyStr
     int_number: Optional[NonEmptyStr] = None
-    colonia: NonEmptyStr
-    postal_code: NonEmptyStr
-    state: Optional[State] = None
-    country: Country
-    city: NonEmptyStr
+    postal_code_id: NonEmptyStr
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -86,11 +83,7 @@ class AddressRequest(BaseModel):
                 "street": "Reforma",
                 "ext_number": "265",
                 "int_number": "5",
-                "colonia": "Cuauhtémoc",
-                "postal_code": "06500",
-                "state": "DF",
-                "country": "MX",
-                "city": "Cuauhtémoc",
+                "postal_code_id": "PC2ygq9j2bS9-9tsuVawzErA",
             }
         }
     )
