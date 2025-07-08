@@ -43,6 +43,7 @@ Rfc = Annotated[
 # For new request validation, use AddressRequest, which enforces required
 # fields and is intended for validating incoming data.
 
+
 class Address(BaseModel):
     street: Optional[str] = None
     ext_number: Optional[str] = None
