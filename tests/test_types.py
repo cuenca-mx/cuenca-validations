@@ -307,7 +307,7 @@ def test_saving_update_request():
 def test_user_request():
     request = dict(
         curp='ABCD920604HDFSRN03',
-        profession=Profession.employee,
+        profession=Profession.empleado,
         address=dict(
             street='calle 1',
             ext_number='2',
