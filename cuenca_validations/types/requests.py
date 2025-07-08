@@ -406,7 +406,7 @@ class TOSRequest(BaseModel):
 class UserTOSAgreementRequest(BaseModel):
     tos_id: str
     location: Coordinate
-    signature: SerializableHttpUrl | None = None
+    signature: Optional[SerializableHttpUrl] = None
 
 
 class UserRequest(BaseModel):
