@@ -64,7 +64,7 @@ from .general import (
     StrictPositiveInt,
 )
 from .identities import (
-    Address,
+    AddressRequest,
     Beneficiary,
     Curp,
     KYCFile,
@@ -416,7 +416,7 @@ class UserRequest(BaseModel):
     )
 
     profession: Profession = Field(description='User profession or occupation')
-    address: Address = Field(
+    address: AddressRequest = Field(
         description='User residential address information'
     )
     phone_verification_id: str = Field(
@@ -435,7 +435,7 @@ class UserRequest(BaseModel):
                 'phone_number': '+525511223344',
                 'email_address': 'user@example.com',
                 'profession': 'engineer',
-                'address': Address.model_json_schema().get('example'),
+                'address': AddressRequest.model_json_schema().get('example'),
             }
         },
     )
@@ -464,7 +464,7 @@ class UserUpdateRequest(BaseModel):
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     beneficiaries: Optional[list[Beneficiary]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
@@ -685,7 +685,7 @@ class PartnerRequest(BaseRequest):
     web_site: str
     phone_number: PhoneNumber
     email_address: EmailStr
-    address: Address
+    address: AddressRequest
 
 
 class PartnerUpdateRequest(BaseRequest):
@@ -699,7 +699,7 @@ class PartnerUpdateRequest(BaseRequest):
     web_site: Optional[str] = None
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     business_details: Optional[BusinessDetails] = None
     transactional_profile: Optional[TransactionalProfile] = None
     external_account: Optional[Clabe] = None

@@ -36,8 +36,41 @@ Rfc = Annotated[
     ),
 ]
 
+# NOTE:
+# The Address model is kept for compatibility with legacy models and data
+# that expect all address fields to be optional. This allows older systems
+# or stored data using Address to continue working without breaking changes.
+# For new request validation, use AddressRequest, which enforces required
+# fields and is intended for validating incoming data.
 
 class Address(BaseModel):
+    street: Optional[str] = None
+    ext_number: Optional[str] = None
+    int_number: Optional[str] = None
+    colonia: Optional[str] = None
+    postal_code: Optional[str] = None
+    state: Optional[State] = None
+    country: Optional[Country] = None
+    city: Optional[str] = None
+    full_name: Optional[str] = None
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "street": "Reforma",
+                "ext_number": "265",
+                "int_number": "5",
+                "colonia": "Cuauhtémoc",
+                "postal_code": "06500",
+                "state": "DF",
+                "country": "MX",
+                "city": "Cuauhtémoc",
+            }
+        }
+    )
+
+
+class AddressRequest(BaseModel):
+    # This model is mainly for request validation, enforcing required fields.
     street: NonEmptyStr
     ext_number: NonEmptyStr
     int_number: Optional[NonEmptyStr] = None
