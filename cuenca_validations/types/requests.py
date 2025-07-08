@@ -32,6 +32,7 @@ from ..types.enums import (
     KYCValidationSource,
     PlatformType,
     PosCapability,
+    Profession,
     SavingCategory,
     SessionType,
     State,
@@ -39,7 +40,6 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
-    UserStatus,
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
@@ -64,14 +64,13 @@ from .general import (
     StrictPositiveInt,
 )
 from .identities import (
-    Address,
+    AddressRequest,
     Beneficiary,
     Curp,
     KYCFile,
     Password,
     PhoneNumber,
     Rfc,
-    TOSAgreement,
 )
 from .morals import (
     AuditDetails,
@@ -410,43 +409,25 @@ class UserTOSAgreementRequest(BaseModel):
 
 
 class UserRequest(BaseModel):
-    id: Optional[str] = Field(
-        None, description='if you want to create with specific `id`'
-    )
     curp: Curp = Field(
-        description='Previously validated in `curp_validations`'
+        description=(
+            'Mexican government ID (18 characters). ' 'Must be pre-validated.'
+        )
     )
-    phone_number: Optional[PhoneNumber] = Field(
-        None, description='Only if you validated previously on your side'
+
+    profession: Profession = Field(description='User profession or occupation')
+    address: AddressRequest = Field(
+        description='User residential address information'
     )
-    email_address: Optional[EmailStr] = Field(
-        None, description='Only if you validated previously on your side'
+    phone_verification_id: str = Field(
+        ...,
+        description='ID of previously validated phone verification',
     )
-    profession: Optional[str] = None
-    address: Optional[Address] = None
-    status: Optional[UserStatus] = Field(
-        None,
-        description='Status that the user will have when created. '
-        'Defined by platform',
+    email_verification_id: str = Field(
+        ...,
+        description='ID of previously validated email verification',
     )
-    required_level: Optional[int] = Field(
-        None,
-        ge=1,
-        le=3,
-        description='Maximum level a User can reach. Defined by platform',
-    )
-    phone_verification_id: Optional[str] = Field(
-        None,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
-    )
-    email_verification_id: Optional[str] = Field(
-        None,
-        description='Only if you validated it previously with the '
-        'resource `verifications`',
-    )
-    terms_of_service: Optional[TOSRequest] = None
-    signature: Optional[KYCFile] = None
+
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -454,7 +435,7 @@ class UserRequest(BaseModel):
                 'phone_number': '+525511223344',
                 'email_address': 'user@example.com',
                 'profession': 'engineer',
-                'address': Address.schema().get('example'),
+                'address': AddressRequest.model_json_schema().get('example'),
             }
         },
     )
@@ -479,21 +460,16 @@ class UserRequest(BaseModel):
 
 
 class UserUpdateRequest(BaseModel):
-    phone_number: Optional[PhoneNumber] = None
-    email_address: Optional[EmailStr] = None
-    profession: Optional[str] = None
+    profession: Optional[Profession] = None
     verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     beneficiaries: Optional[list[Beneficiary]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
     signature: Optional[KYCFile] = None
-    status: Optional[UserStatus] = None
-    terms_of_service: Optional[TOSRequest] = None
-    platform_terms_of_service: Optional[TOSAgreement] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
 
     @field_validator('beneficiaries')
@@ -501,8 +477,8 @@ class UserUpdateRequest(BaseModel):
     def beneficiary_percentage(
         cls, beneficiaries: Optional[list[Beneficiary]] = None
     ):
-        if beneficiaries and sum(b.percentage for b in beneficiaries) > 100:
-            raise ValueError('The total percentage is more than 100.')
+        if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
+            raise ValueError('The total percentage should be 100%')
         return beneficiaries
 
 
@@ -709,7 +685,7 @@ class PartnerRequest(BaseRequest):
     web_site: str
     phone_number: PhoneNumber
     email_address: EmailStr
-    address: Address
+    address: AddressRequest
 
 
 class PartnerUpdateRequest(BaseRequest):
@@ -723,7 +699,7 @@ class PartnerUpdateRequest(BaseRequest):
     web_site: Optional[str] = None
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
-    address: Optional[Address] = None
+    address: Optional[AddressRequest] = None
     business_details: Optional[BusinessDetails] = None
     transactional_profile: Optional[TransactionalProfile] = None
     external_account: Optional[Clabe] = None

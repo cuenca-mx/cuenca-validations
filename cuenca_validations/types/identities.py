@@ -1,18 +1,11 @@
 import datetime as dt
-from typing import Annotated, Any, Optional
+from typing import Annotated, Optional
 
-from pydantic import (
-    BaseModel,
-    ConfigDict,
-    Field,
-    SecretStr,
-    StringConstraints,
-    model_validator,
-)
+from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from .enums import Country, KYCFileType, State, VerificationStatus
-from .general import SerializableIPvAnyAddress
+from .general import NonEmptyStr, SerializableIPvAnyAddress
 
 Password = Annotated[
     SecretStr,
@@ -43,6 +36,13 @@ Rfc = Annotated[
     ),
 ]
 
+# NOTE:
+# The Address model is kept for compatibility with legacy models and data
+# that expect all address fields to be optional. This allows older systems
+# or stored data using Address to continue working without breaking changes.
+# For new request validation, use AddressRequest, which enforces required
+# fields and is intended for validating incoming data.
+
 
 class Address(BaseModel):
     street: Optional[str] = None
@@ -69,16 +69,32 @@ class Address(BaseModel):
         }
     )
 
-    @model_validator(mode='before')
-    @classmethod
-    def full_name_complete(cls, values: dict[str, Any]) -> dict[str, Any]:
-        if values.get('full_name'):
-            return values
-        if not values.get('street'):
-            raise ValueError('required street')
-        if not values.get('ext_number'):
-            raise ValueError('required ext_number')
-        return values
+
+class AddressRequest(BaseModel):
+    # This model is mainly for request validation, enforcing required fields.
+    street: NonEmptyStr
+    ext_number: NonEmptyStr
+    int_number: Optional[NonEmptyStr] = None
+    colonia: NonEmptyStr
+    postal_code: NonEmptyStr
+    state: Optional[State] = None
+    country: Country
+    city: NonEmptyStr
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "street": "Reforma",
+                "ext_number": "265",
+                "int_number": "5",
+                "colonia": "Cuauhtémoc",
+                "postal_code": "06500",
+                "state": "DF",
+                "country": "MX",
+                "city": "Cuauhtémoc",
+            }
+        }
+    )
 
 
 class Beneficiary(BaseModel):
@@ -86,7 +102,7 @@ class Beneficiary(BaseModel):
     birth_date: dt.date
     phone_number: PhoneNumber
     user_relationship: str
-    percentage: int
+    percentage: Annotated[int, Field(ge=1, le=100)]
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
