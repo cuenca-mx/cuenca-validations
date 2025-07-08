@@ -24,6 +24,7 @@ from .enums import (
     TransferNetwork,
     UserStatus,
 )
+from .general import digits
 from .identities import Curp
 
 MAX_PAGE_SIZE = 100
@@ -182,4 +183,4 @@ class BankAccountValidationQuery(QueryParams):
 
 
 class PostalCodeQuery(QueryParams):
-    postal_code: str
+    postal_code: digits(5, 5)  # type: ignore
