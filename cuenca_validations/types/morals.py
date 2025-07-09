@@ -3,7 +3,8 @@ from typing import Optional
 
 from pydantic import BaseModel, EmailStr
 
-from cuenca_validations.types import Address, Curp, PhoneNumber, Rfc
+from ..types import Curp, PhoneNumber, Rfc
+from .identities import AddressRequest
 
 
 class BusinessDetails(BaseModel):
@@ -60,7 +61,7 @@ class LegalRepresentative(PhysicalPerson):
     job: str
     phone_number: PhoneNumber
     email_address: EmailStr
-    address: Address
+    address: AddressRequest
 
 
 class ShareholderPhysical(PhysicalPerson):
