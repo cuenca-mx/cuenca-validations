@@ -7,6 +7,7 @@ from pydantic import (
     EmailStr,
     Field,
     PositiveInt,
+    StringConstraints,
     field_validator,
 )
 
@@ -24,7 +25,6 @@ from .enums import (
     TransferNetwork,
     UserStatus,
 )
-from .general import digits
 from .identities import Curp
 
 MAX_PAGE_SIZE = 100
@@ -183,4 +183,12 @@ class BankAccountValidationQuery(QueryParams):
 
 
 class PostalCodeQuery(QueryParams):
-    postal_code: digits(5, 5)  # type: ignore
+    postal_code: Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=5,
+            max_length=5,
+            pattern=r'^\d+$',
+        ),
+    ]
