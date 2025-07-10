@@ -7,6 +7,7 @@ from pydantic import (
     EmailStr,
     Field,
     PositiveInt,
+    StringConstraints,
     field_validator,
 )
 
@@ -179,3 +180,15 @@ class FileQuery(QueryParams):
 class BankAccountValidationQuery(QueryParams):
     account_number: Optional[str] = None
     status: Optional[BankAccountStatus] = None
+
+
+class PostalCodeQuery(QueryParams):
+    postal_code: Annotated[
+        str,
+        StringConstraints(
+            strip_whitespace=True,
+            min_length=5,
+            max_length=5,
+            pattern=r'^\d+$',
+        ),
+    ]
