@@ -84,7 +84,7 @@ from .morals import (
     VulnerableActivityDetails,
 )
 
-PATZCUARO_PATTERN = (
+CUENCA_FILE_URL = (
     r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-]+)$'
 )
 
@@ -419,15 +419,9 @@ class FileCuencaUrl(str):
     def __get_pydantic_core_schema__(
         cls, _source_type: Any, _handler: GetCoreSchemaHandler
     ) -> core_schema.CoreSchema:
-        return core_schema.with_info_after_validator_function(
-            cls._validate, core_schema.str_schema(pattern=PATZCUARO_PATTERN)
+        return core_schema.no_info_after_validator_function(
+            cls, core_schema.str_schema(pattern=CUENCA_FILE_URL)
         )
-
-    @classmethod
-    def _validate(
-        cls, value: str, _info: core_schema.ValidationInfo
-    ) -> 'FileCuencaUrl':
-        return cls(value)
 
 
 class UserTOSAgreementRequest(BaseModel):
