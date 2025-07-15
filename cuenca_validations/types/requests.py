@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -7,11 +7,13 @@ from pydantic import (
     ConfigDict,
     EmailStr,
     Field,
+    GetCoreSchemaHandler,
     StrictStr,
     StringConstraints,
     field_validator,
     model_validator,
 )
+from pydantic_core import core_schema
 from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
@@ -80,6 +82,10 @@ from .morals import (
     Shareholder,
     TransactionalProfile,
     VulnerableActivityDetails,
+)
+
+CUENCA_FILE_URL = (
+    r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-]+)$'
 )
 
 
@@ -403,9 +409,25 @@ class TOSRequest(BaseModel):
     ip: Optional[SerializableIPvAnyAddress] = None
 
 
+class FileCuencaUrl(str):
+
+    @property
+    def file_id(self) -> str:
+        return self.split('/')[-1]
+
+    @classmethod
+    def __get_pydantic_core_schema__(
+        cls, _source_type: Any, _handler: GetCoreSchemaHandler
+    ) -> core_schema.CoreSchema:
+        return core_schema.no_info_after_validator_function(
+            cls, core_schema.str_schema(pattern=CUENCA_FILE_URL)
+        )
+
+
 class UserTOSAgreementRequest(BaseModel):
     tos_id: str
     location: Coordinate
+    signature_image_url: Optional[FileCuencaUrl] = None
 
 
 class UserRequest(BaseModel):

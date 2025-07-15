@@ -175,6 +175,8 @@ class SessionQuery(QueryParams):
 
 class FileQuery(QueryParams):
     type: Optional[KYCFileType] = None
+    id: Optional[str] = None
+    user_id: Optional[str] = None
 
 
 class BankAccountValidationQuery(QueryParams):
