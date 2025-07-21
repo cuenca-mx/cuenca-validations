@@ -728,3 +728,7 @@ class PartnerUpdateRequest(BaseRequest):
     vulnerable_activity: Optional[VulnerableActivityDetails] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
     shareholders: Optional[list[Shareholder]] = None
+
+
+class PhoneVerificationAssociationRequest(BaseModel):
+    verification_id: str
