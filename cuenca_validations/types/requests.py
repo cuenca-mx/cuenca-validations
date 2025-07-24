@@ -47,6 +47,7 @@ from ..types.enums import (
     WebhookEvent,
     WebhookEventType,
     WebhookObject,
+    SATRegimeCode
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
@@ -493,6 +494,7 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFile] = None
     signature: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
+    fiscal_regime_code: Optional[SATRegimeCode] = None
 
     @field_validator('beneficiaries')
     @classmethod
