@@ -35,6 +35,7 @@ from ..types.enums import (
     PlatformType,
     PosCapability,
     Profession,
+    SATRegimeCode,
     SavingCategory,
     SessionType,
     State,
@@ -47,7 +48,6 @@ from ..types.enums import (
     WebhookEvent,
     WebhookEventType,
     WebhookObject,
-    SATRegimeCode
 )
 from ..typing import DictStrAny
 from ..validators import validate_age_requirement
