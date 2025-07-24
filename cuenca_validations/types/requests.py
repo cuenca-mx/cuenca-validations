@@ -35,6 +35,7 @@ from ..types.enums import (
     PlatformType,
     PosCapability,
     Profession,
+    SATRegimeCode,
     SavingCategory,
     SessionType,
     State,
@@ -493,6 +494,7 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFile] = None
     signature: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
+    fiscal_regime_code: Optional[SATRegimeCode] = None
 
     @field_validator('beneficiaries')
     @classmethod
