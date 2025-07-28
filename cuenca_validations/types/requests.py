@@ -484,7 +484,6 @@ class UserRequest(BaseModel):
 
 class UserUpdateRequest(BaseModel):
     profession: Optional[Profession] = None
-    verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[AddressRequest] = None
@@ -492,9 +491,9 @@ class UserUpdateRequest(BaseModel):
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
-    signature: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
+    pronouns: Optional[str] = None
 
     @field_validator('beneficiaries')
     @classmethod
