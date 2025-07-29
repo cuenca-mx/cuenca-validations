@@ -385,10 +385,9 @@ def test_curp_validation_request():
     assert 'state_of_birth required' in str(v)
 
 
-@freeze_time('2022-01-01')
 def test_curp_validation_request_underage():
     request = dict(
-        manual_curp='ABCD060604HDFSRN03',  # underage CURP
+        manual_curp='ABCD240614HDFSRN03',  # underage CURP
     )
 
     with pytest.raises(ValueError) as v:
