@@ -375,6 +375,26 @@ class CurpValidationRequest(BaseModel):
             raise
         return date_of_birth
 
+    @field_validator('manual_curp')
+    @classmethod
+    def validate_manual_curp_birth_date(
+        cls, manual_curp: Optional[Curp]
+    ) -> Optional[Curp]:
+        if manual_curp:
+            current_date = dt.datetime.utcnow()
+            curp_date = manual_curp[4:10]
+            century = (
+                '19'
+                if int(curp_date[:2]) > int(str(current_date.year)[:2])
+                else '20'
+            )
+            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
+            try:
+                validate_age_requirement(birth_date)
+            except ValueError:
+                raise
+        return manual_curp
+
     @model_validator(mode="before")
     @classmethod
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
