@@ -50,7 +50,6 @@ from ..types.enums import (
     WebhookObject,
 )
 from ..typing import DictStrAny
-from ..validators import validate_age_requirement
 from .card import (
     Cvv,
     ExpMonth,
@@ -66,6 +65,7 @@ from .general import (
     SerializableIPvAnyAddress,
     StrictPositiveInt,
 )
+from .helpers import validate_age_requirement
 from .identities import (
     AddressRequest,
     Beneficiary,
