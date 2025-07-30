@@ -381,16 +381,7 @@ class CurpValidationRequest(BaseModel):
         cls, manual_curp: Optional[Curp]
     ) -> Optional[Curp]:
         if manual_curp:
-            current_date = dt.datetime.utcnow()
-            curp_date = manual_curp[4:10]
-            yy = int(curp_date[:2])
-            current_yy = current_date.year % 100
-            century = '19' if yy > current_yy else '20'
-            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-            try:
-                validate_age_requirement(birth_date)
-            except ValueError:
-                raise
+            validate_age_requirement(manual_curp)
         return manual_curp
 
     @model_validator(mode="before")
@@ -485,16 +476,7 @@ class UserRequest(BaseModel):
     @classmethod
     def validate_birth_date(cls, curp: Optional[Curp]) -> Optional[Curp]:
         if curp:
-            current_date = dt.datetime.utcnow()
-            curp_date = curp[4:10]
-            yy = int(curp_date[:2])
-            current_yy = current_date.year % 100
-            century = '19' if yy > current_yy else '20'
-            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-            try:
-                validate_age_requirement(birth_date)
-            except ValueError:
-                raise
+            validate_age_requirement(curp)
         return curp
 
 

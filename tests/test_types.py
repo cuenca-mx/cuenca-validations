@@ -385,14 +385,14 @@ def test_curp_validation_request():
     assert 'state_of_birth required' in str(v)
 
 
-def test_curp_validation_request_underage():
-    request = dict(
-        manual_curp='ABCD240614HDFSRN03',  # underage CURP
-    )
-
+def test_curp_validation_request_underage() -> None:
     with pytest.raises(ValueError) as v:
-        CurpValidationRequest(**request)
-
+        CurpValidationRequest(
+            manual_curp='ABCD240614HDFSRN03',
+            second_surname=None,
+            state_of_birth=None,
+            country_of_birth=None,
+        )
     assert 'User does not meet age requirement.' in str(v)
 
 
