@@ -387,12 +387,7 @@ def test_curp_validation_request():
 
 def test_curp_validation_request_underage() -> None:
     with pytest.raises(ValueError) as v:
-        CurpValidationRequest(
-            manual_curp='ABCD240614HDFSRN03',
-            second_surname=None,
-            state_of_birth=None,
-            country_of_birth=None,
-        )
+        CurpValidationRequest(manual_curp='ABCD240614HDFSRN03')
     assert 'User does not meet age requirement.' in str(v)
 
 

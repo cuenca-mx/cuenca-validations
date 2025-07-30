@@ -329,14 +329,14 @@ class CurpValidationRequest(BaseModel):
     names: Optional[str] = None
     first_surname: Optional[str] = None
     second_surname: Optional[str] = Field(
-        None, description='Not necessary for foreigners'
+        default=None, description='Not necessary for foreigners'
     )
     date_of_birth: Optional[dt.date] = None
     state_of_birth: Optional[State] = Field(
-        None, description='In format ISO 3166 Alpha-2'
+        default=None, description='In format ISO 3166 Alpha-2'
     )
     country_of_birth: Optional[Country] = Field(
-        None, description='In format ISO 3166 Alpha-2'
+        default=None, description='In format ISO 3166 Alpha-2'
     )
     gender: Optional[Gender] = None
     manual_curp: Optional[Curp] = Field(
