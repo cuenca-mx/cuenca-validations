@@ -385,6 +385,12 @@ def test_curp_validation_request():
     assert 'state_of_birth required' in str(v)
 
 
+def test_curp_validation_request_underage() -> None:
+    with pytest.raises(ValueError) as v:
+        CurpValidationRequest(manual_curp='ABCD240614HDFSRN03')
+    assert 'User does not meet age requirement.' in str(v)
+
+
 def test_user_update_request():
     request = dict(
         beneficiaries=[

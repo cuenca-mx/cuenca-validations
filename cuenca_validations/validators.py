@@ -3,8 +3,6 @@ import datetime as dt
 from enum import Enum
 from typing import Any, Callable, Optional, Union
 
-from dateutil.relativedelta import relativedelta
-
 
 def sanitize_dict(d: dict) -> dict:
     for k, v in d.items():
@@ -42,10 +40,3 @@ def sanitize_item(
     else:
         rv = item
     return rv
-
-
-def validate_age_requirement(birth_date: dt.date) -> dt.date:
-    current_date = dt.date.today()
-    if relativedelta(current_date, birth_date).years < 18:
-        raise ValueError('User does not meet age requirement.')
-    return birth_date

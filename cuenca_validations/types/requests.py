@@ -50,7 +50,6 @@ from ..types.enums import (
     WebhookObject,
 )
 from ..typing import DictStrAny
-from ..validators import validate_age_requirement
 from .card import (
     Cvv,
     ExpMonth,
@@ -66,6 +65,7 @@ from .general import (
     SerializableIPvAnyAddress,
     StrictPositiveInt,
 )
+from .helpers import validate_age_requirement
 from .identities import (
     AddressRequest,
     Beneficiary,
@@ -86,7 +86,7 @@ from .morals import (
 )
 
 CUENCA_FILE_URL = (
-    r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-]+)$'
+    r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-_]+)$'
 )
 
 
@@ -329,14 +329,14 @@ class CurpValidationRequest(BaseModel):
     names: Optional[str] = None
     first_surname: Optional[str] = None
     second_surname: Optional[str] = Field(
-        None, description='Not necessary for foreigners'
+        default=None, description='Not necessary for foreigners'
     )
     date_of_birth: Optional[dt.date] = None
     state_of_birth: Optional[State] = Field(
-        None, description='In format ISO 3166 Alpha-2'
+        default=None, description='In format ISO 3166 Alpha-2'
     )
     country_of_birth: Optional[Country] = Field(
-        None, description='In format ISO 3166 Alpha-2'
+        default=None, description='In format ISO 3166 Alpha-2'
     )
     gender: Optional[Gender] = None
     manual_curp: Optional[Curp] = Field(
@@ -374,6 +374,15 @@ class CurpValidationRequest(BaseModel):
         except ValueError:
             raise
         return date_of_birth
+
+    @field_validator('manual_curp')
+    @classmethod
+    def validate_manual_curp_birth_date(
+        cls, manual_curp: Optional[Curp]
+    ) -> Optional[Curp]:
+        if manual_curp:
+            validate_age_requirement(manual_curp)
+        return manual_curp
 
     @model_validator(mode="before")
     @classmethod
@@ -467,24 +476,12 @@ class UserRequest(BaseModel):
     @classmethod
     def validate_birth_date(cls, curp: Optional[Curp]) -> Optional[Curp]:
         if curp:
-            current_date = dt.datetime.utcnow()
-            curp_date = curp[4:10]
-            century = (
-                '19'
-                if int(curp_date[:2]) > int(str(current_date.year)[:2])
-                else '20'
-            )
-            birth_date = dt.datetime.strptime(century + curp_date, '%Y%m%d')
-            try:
-                validate_age_requirement(birth_date)
-            except ValueError:
-                raise
+            validate_age_requirement(curp)
         return curp
 
 
 class UserUpdateRequest(BaseModel):
     profession: Optional[Profession] = None
-    verification_id: Optional[str] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[AddressRequest] = None
@@ -492,9 +489,9 @@ class UserUpdateRequest(BaseModel):
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
-    signature: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
+    pronouns: Optional[str] = None
 
     @field_validator('beneficiaries')
     @classmethod
