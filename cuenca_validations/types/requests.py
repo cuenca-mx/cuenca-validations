@@ -494,6 +494,7 @@ class UserUpdateRequest(BaseModel):
     fiscal_regime_code: Optional[SATRegimeCode] = None
     pronouns: Optional[str] = None
     status: Optional[UserStatus] = None
+    required_level: Optional[int] = None
 
     @field_validator('beneficiaries')
     @classmethod
