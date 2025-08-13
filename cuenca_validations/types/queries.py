@@ -22,6 +22,7 @@ from .enums import (
     EventType,
     KYCFileType,
     SessionType,
+    TermsOfService,
     TransferNetwork,
     UserStatus,
 )
@@ -193,3 +194,7 @@ class PostalCodeQuery(QueryParams):
             pattern=r'^\d+$',
         ),
     ]
+
+
+class UsersTOSQuery(QueryParams):
+    type: TermsOfService
