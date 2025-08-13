@@ -8,6 +8,7 @@ __all__ = [
     'BankAccountValidationQuery',
     'BankAccountValidationRequest',
     'PostalCodeQuery',
+    'UsersTOSQuery',
     'BankAccountStatus',
     'BatchFileMetadata',
     'Beneficiary',
@@ -193,6 +194,7 @@ from .queries import (
     TransactionQuery,
     TransferQuery,
     UserQuery,
+    UsersTOSQuery,
     WalletQuery,
     WalletTransactionQuery,
 )
