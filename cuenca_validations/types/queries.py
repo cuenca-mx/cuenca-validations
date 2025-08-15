@@ -196,5 +196,9 @@ class PostalCodeQuery(QueryParams):
     ]
 
 
+class TOSQuery(QueryParams):
+    type: Optional[TermsOfService] = None
+
+
 class UsersTOSQuery(QueryParams):
     type: TermsOfService
