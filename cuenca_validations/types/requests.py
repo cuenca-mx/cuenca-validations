@@ -43,6 +43,7 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionTokenValidationStatus,
     UserCardNotification,
+    UserStatus,
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
@@ -492,6 +493,8 @@ class UserUpdateRequest(BaseModel):
     curp_document_uri: Optional[SerializableHttpUrl] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
     pronouns: Optional[str] = None
+    status: Optional[UserStatus] = None
+    required_level: Optional[int] = None
 
     @field_validator('beneficiaries')
     @classmethod
