@@ -737,4 +737,4 @@ class PhoneVerificationAssociationRequest(BaseModel):
 
 
 class UserDeleteRequest(BaseModel):
-    transfer_id: Optional[str] = None
+    transfer_id: str
