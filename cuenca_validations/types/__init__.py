@@ -109,6 +109,7 @@ __all__ = [
     'get_state_name',
     'uuid_field',
     'LogConfig',
+    'UserDeleteRequest',
 ]
 
 from .card import StrictPaymentCardNumber
@@ -223,6 +224,7 @@ from .requests import (
     TransferRequest,
     UserCredentialRequest,
     UserCredentialUpdateRequest,
+    UserDeleteRequest,
     UserListsRequest,
     UserLoginRequest,
     UserRequest,

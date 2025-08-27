@@ -734,3 +734,7 @@ class PartnerUpdateRequest(BaseRequest):
 
 class PhoneVerificationAssociationRequest(BaseModel):
     verification_id: str
+
+
+class UserDeleteRequest(BaseModel):
+    transfer_id: Optional[str] = None
