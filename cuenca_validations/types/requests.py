@@ -495,6 +495,7 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
+    fiscal_address: Optional[AddressRequest] = None
     pronouns: Optional[str] = None
     status: Optional[UserStatus] = None
     required_level: Optional[int] = None
