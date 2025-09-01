@@ -17,6 +17,7 @@ from pydantic_core import core_schema
 from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
+    AccountUseTypes,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -32,6 +33,8 @@ from ..types.enums import (
     IssuerNetwork,
     KYCFileType,
     KYCValidationSource,
+    MonthlyMovementsTypes,
+    MonthlySpendingTypes,
     PlatformType,
     PosCapability,
     Profession,
@@ -495,6 +498,9 @@ class UserUpdateRequest(BaseModel):
     pronouns: Optional[str] = None
     status: Optional[UserStatus] = None
     required_level: Optional[int] = None
+    account_use_type: Optional[AccountUseTypes] = None
+    monthly_movements_type: Optional[MonthlyMovementsTypes] = None
+    monthly_spending_type: Optional[MonthlySpendingTypes] = None
 
     @field_validator('beneficiaries')
     @classmethod
