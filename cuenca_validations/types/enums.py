@@ -704,3 +704,26 @@ class Profession(str, Enum):
     sistemas = 'Sistemas y Comunicaciones'
     independiente = 'Trabajador(a/e) Independiente'
     oficios = 'Oficios Varios'
+
+
+class AccountUseTypes(str, Enum):
+    personal_expenses = 'Gastos personales o familiares'
+    business_expenses = 'Gastos relacionados con tu actividad económica'
+    payment_of_goods_or_services = 'Pago de bienes o servicios'
+    send_or_receive_transfers = 'Enviar o recibir transferencias'
+
+
+class MonthlyMovementsTypes(str, Enum):
+    between_1_and_20 = 'Entre 1 y 20 movimientos'
+    between_20_and_40 = 'Entre 20 y 40 movimientos'
+    between_40_and_60 = 'Entre 40 y 60 movimientos'
+    more_than_60 = 'Más de 60 movimientos'
+
+
+class MonthlySpendingTypes(str, Enum):
+    less_than_1k = 'Menos de $1,000'
+    between_1k_and_10k = 'Entre $1,000 y $10,000'
+    between_10k_and_20k = 'Entre $10,000 y $20,000'
+    between_20k_and_50k = 'Entre $20,000 y $50,000'
+    between_50k_and_100k = 'Entre $50,000 y $100,000'
+    more_than_100k = 'Más de $100,000'

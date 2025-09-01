@@ -76,7 +76,7 @@ names_state = {
     State.HG: 'Hidalgo',
     State.JC: 'Jalisco',
     State.MC: 'México',
-    State.MN: 'Michoacan',
+    State.MN: 'Michoacán',
     State.MS: 'Morelos',
     State.NT: 'Nayarit',
     State.NL: 'Nuevo León',

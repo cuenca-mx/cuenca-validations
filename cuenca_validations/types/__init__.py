@@ -1,4 +1,5 @@
 __all__ = [
+    'AccountUseTypes',
     'AccountQuery',
     'Address',
     'ApiKeyQuery',
@@ -52,6 +53,8 @@ __all__ = [
     'KYCValidationSource',
     'Language',
     'LimitedWalletRequest',
+    'MonthlyMovementsTypes',
+    'MonthlySpendingTypes',
     'PartnerRequest',
     'PartnerUpdateRequest',
     'PhoneNumber',
@@ -113,6 +116,7 @@ __all__ = [
 
 from .card import StrictPaymentCardNumber
 from .enums import (
+    AccountUseTypes,
     AuthorizerTransaction,
     BankAccountStatus,
     CardErrorType,
@@ -136,6 +140,8 @@ from .enums import (
     KYCFileType,
     KYCValidationSource,
     Language,
+    MonthlyMovementsTypes,
+    MonthlySpendingTypes,
     PlatformType,
     PosCapability,
     Profession,
