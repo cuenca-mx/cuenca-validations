@@ -316,7 +316,7 @@ def test_user_request():
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
     )
-    assert UserRequest(**request).model_dump() == request
+    assert UserRequest(**request).model_dump(exclude_none=True) == request
 
 
 @freeze_time('2022-01-01')

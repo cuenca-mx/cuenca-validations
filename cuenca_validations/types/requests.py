@@ -450,7 +450,6 @@ class UserRequest(BaseModel):
             'Mexican government ID (18 characters). ' 'Must be pre-validated.'
         )
     )
-
     profession: Profession = Field(description='User profession or occupation')
     address: AddressRequest = Field(
         description='User residential address information'
@@ -463,13 +462,16 @@ class UserRequest(BaseModel):
         ...,
         description='ID of previously validated email verification',
     )
+    account_use_type: Optional[AccountUseTypes] = None
+    monthly_movements_type: Optional[MonthlyMovementsTypes] = None
+    monthly_spending_type: Optional[MonthlySpendingTypes] = None
 
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
                 'curp': 'GOCG650418HVZNML08',
-                'phone_number': '+525511223344',
-                'email_address': 'user@example.com',
+                'phone_verification_id': 'VEKp662Yrf6lMztl0-9qzk7Q',
+                'email_verification_id': 'VEwjDEcCMWZIk3JJ3p7P6T_A',
                 'profession': 'engineer',
                 'address': AddressRequest.model_json_schema().get('example'),
             }
