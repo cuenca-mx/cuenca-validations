@@ -17,10 +17,17 @@ from cuenca_validations.types import (
     SessionRequest,
     TransactionStatus,
     digits,
+    get_account_use_type_name,
+    get_monthly_movements_type_name,
+    get_monthly_spending_type_name,
+    get_profession_name,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
+    AccountUseTypes,
     EcommerceIndicator,
+    MonthlyMovementsTypes,
+    MonthlySpendingTypes,
     Profession,
     SessionType,
     State,
@@ -544,8 +551,33 @@ def test_limited_wallet_request():
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
 
 
-def test_get_state_name():
+def test_get_state_name() -> None:
     assert get_state_name(State.VZ) == 'Veracruz'
+
+
+def test_get_profession_name() -> None:
+    assert get_profession_name(Profession.empleado) == 'Empleado(a/e)'
+
+
+def test_get_account_use_type_name() -> None:
+    assert (
+        get_account_use_type_name(AccountUseTypes.personal_expenses)
+        == 'Gastos personales o familiares'
+    )
+
+
+def test_get_monthly_spending_type_name() -> None:
+    assert (
+        get_monthly_spending_type_name(MonthlySpendingTypes.less_than_1k)
+        == 'Menos de $1,000'
+    )
+
+
+def test_get_monthly_movements_type_name() -> None:
+    assert (
+        get_monthly_movements_type_name(MonthlyMovementsTypes.between_1_and_20)
+        == 'Entre 1 y 20 movimientos'
+    )
 
 
 def test_bank_account_validation_clabe_request():

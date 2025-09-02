@@ -110,6 +110,10 @@ __all__ = [
     'WebhookEvent',
     'digits',
     'get_state_name',
+    'get_profession_name',
+    'get_account_use_type_name',
+    'get_monthly_movements_type_name',
+    'get_monthly_spending_type_name',
     'uuid_field',
     'LogConfig',
 ]
@@ -169,6 +173,10 @@ from .general import (
     SantizedDict,
     StrictPositiveInt,
     digits,
+    get_account_use_type_name,
+    get_monthly_movements_type_name,
+    get_monthly_spending_type_name,
+    get_profession_name,
     get_state_name,
 )
 from .helpers import uuid_field
