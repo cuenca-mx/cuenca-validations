@@ -25,11 +25,11 @@ from cuenca_validations.types import (
     get_state_name,
 )
 from cuenca_validations.types.enums import (
-    AccountUseTypes,
+    AccountUseType,
     EcommerceIndicator,
     IncomeType,
-    MonthlyMovementsTypes,
-    MonthlySpendingTypes,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     Profession,
     SessionType,
     State,
@@ -567,21 +567,21 @@ def test_get_income_type_name() -> None:
 
 def test_get_account_use_type_name() -> None:
     assert (
-        get_account_use_type_name(AccountUseTypes.personal_expenses)
+        get_account_use_type_name(AccountUseType.personal_expenses)
         == 'Gastos personales o familiares'
     )
 
 
 def test_get_monthly_spending_type_name() -> None:
     assert (
-        get_monthly_spending_type_name(MonthlySpendingTypes.less_than_1k)
+        get_monthly_spending_type_name(MonthlySpendingType.less_than_1k)
         == 'Menos de $1,000'
     )
 
 
 def test_get_monthly_movements_type_name() -> None:
     assert (
-        get_monthly_movements_type_name(MonthlyMovementsTypes.between_1_and_20)
+        get_monthly_movements_type_name(MonthlyMovementsType.between_1_and_20)
         == 'Entre 1 y 20 movimientos'
     )
 

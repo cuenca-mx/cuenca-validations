@@ -17,7 +17,7 @@ from pydantic_core import core_schema
 from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
-    AccountUseTypes,
+    AccountUseType,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -34,8 +34,8 @@ from ..types.enums import (
     IssuerNetwork,
     KYCFileType,
     KYCValidationSource,
-    MonthlyMovementsTypes,
-    MonthlySpendingTypes,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     PlatformType,
     PosCapability,
     Profession,
@@ -463,9 +463,9 @@ class UserRequest(BaseModel):
         ...,
         description='ID of previously validated email verification',
     )
-    account_use_type: Optional[AccountUseTypes] = None
-    monthly_movements_type: Optional[MonthlyMovementsTypes] = None
-    monthly_spending_type: Optional[MonthlySpendingTypes] = None
+    account_use_type: Optional[AccountUseType] = None
+    monthly_movements_type: Optional[MonthlyMovementsType] = None
+    monthly_spending_type: Optional[MonthlySpendingType] = None
     income_type: Optional[IncomeType] = None
 
     model_config = ConfigDict(
@@ -503,9 +503,9 @@ class UserUpdateRequest(BaseModel):
     pronouns: Optional[str] = None
     status: Optional[UserStatus] = None
     required_level: Optional[int] = None
-    account_use_type: Optional[AccountUseTypes] = None
-    monthly_movements_type: Optional[MonthlyMovementsTypes] = None
-    monthly_spending_type: Optional[MonthlySpendingTypes] = None
+    account_use_type: Optional[AccountUseType] = None
+    monthly_movements_type: Optional[MonthlyMovementsType] = None
+    monthly_spending_type: Optional[MonthlySpendingType] = None
     income_type: Optional[IncomeType] = None
 
     @field_validator('beneficiaries')

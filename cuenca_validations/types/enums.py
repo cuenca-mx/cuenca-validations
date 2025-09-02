@@ -706,21 +706,21 @@ class Profession(str, Enum):
     oficios = 'oficios'
 
 
-class AccountUseTypes(str, Enum):
+class AccountUseType(str, Enum):
     personal_expenses = 'personal_expenses'
     business_expenses = 'business_expenses'
     payment_of_goods_or_services = 'payment_of_goods_or_services'
     send_or_receive_transfers = 'send_or_receive_transfers'
 
 
-class MonthlyMovementsTypes(str, Enum):
+class MonthlyMovementsType(str, Enum):
     between_1_and_20 = 'between_1_and_20'
     between_20_and_40 = 'between_20_and_40'
     between_40_and_60 = 'between_40_and_60'
     more_than_60 = 'more_than_60'
 
 
-class MonthlySpendingTypes(str, Enum):
+class MonthlySpendingType(str, Enum):
     less_than_1k = 'less_than_1k'
     between_1k_and_10k = 'between_1k_and_10k'
     between_10k_and_20k = 'between_10k_and_20k'

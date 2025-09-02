@@ -13,10 +13,10 @@ from pydantic import (
 
 from ..validators import sanitize_dict, sanitize_item
 from .enums import (
-    AccountUseTypes,
+    AccountUseType,
     IncomeType,
-    MonthlyMovementsTypes,
-    MonthlySpendingTypes,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     Profession,
     State,
 )
@@ -129,47 +129,47 @@ def get_profession_name(profession: Profession) -> str:
 
 
 names_account_use_types = {
-    AccountUseTypes.personal_expenses: 'Gastos personales o familiares',
-    AccountUseTypes.business_expenses: (
+    AccountUseType.personal_expenses: 'Gastos personales o familiares',
+    AccountUseType.business_expenses: (
         'Gastos relacionados con tu actividad económica'
     ),
-    AccountUseTypes.payment_of_goods_or_services: 'Pago de bienes o servicios',
-    AccountUseTypes.send_or_receive_transfers: (
+    AccountUseType.payment_of_goods_or_services: 'Pago de bienes o servicios',
+    AccountUseType.send_or_receive_transfers: (
         'Enviar o recibir transferencias'
     ),
 }
 
 
-def get_account_use_type_name(account_use_type: AccountUseTypes) -> str:
+def get_account_use_type_name(account_use_type: AccountUseType) -> str:
     return names_account_use_types[account_use_type]
 
 
 names_monthly_movements_types = {
-    MonthlyMovementsTypes.between_1_and_20: 'Entre 1 y 20 movimientos',
-    MonthlyMovementsTypes.between_20_and_40: 'Entre 20 y 40 movimientos',
-    MonthlyMovementsTypes.between_40_and_60: 'Entre 40 y 60 movimientos',
-    MonthlyMovementsTypes.more_than_60: 'Más de 60 movimientos',
+    MonthlyMovementsType.between_1_and_20: 'Entre 1 y 20 movimientos',
+    MonthlyMovementsType.between_20_and_40: 'Entre 20 y 40 movimientos',
+    MonthlyMovementsType.between_40_and_60: 'Entre 40 y 60 movimientos',
+    MonthlyMovementsType.more_than_60: 'Más de 60 movimientos',
 }
 
 
 def get_monthly_movements_type_name(
-    monthly_movements_type: MonthlyMovementsTypes,
+    monthly_movements_type: MonthlyMovementsType,
 ) -> str:
     return names_monthly_movements_types[monthly_movements_type]
 
 
 names_monthly_spending_types = {
-    MonthlySpendingTypes.less_than_1k: 'Menos de $1,000',
-    MonthlySpendingTypes.between_1k_and_10k: 'Entre $1,000 y $10,000',
-    MonthlySpendingTypes.between_10k_and_20k: 'Entre $10,000 y $20,000',
-    MonthlySpendingTypes.between_20k_and_50k: 'Entre $20,000 y $50,000',
-    MonthlySpendingTypes.between_50k_and_100k: 'Entre $50,000 y $100,000',
-    MonthlySpendingTypes.more_than_100k: 'Más de $100,000',
+    MonthlySpendingType.less_than_1k: 'Menos de $1,000',
+    MonthlySpendingType.between_1k_and_10k: 'Entre $1,000 y $10,000',
+    MonthlySpendingType.between_10k_and_20k: 'Entre $10,000 y $20,000',
+    MonthlySpendingType.between_20k_and_50k: 'Entre $20,000 y $50,000',
+    MonthlySpendingType.between_50k_and_100k: 'Entre $50,000 y $100,000',
+    MonthlySpendingType.more_than_100k: 'Más de $100,000',
 }
 
 
 def get_monthly_spending_type_name(
-    monthly_spending_type: MonthlySpendingTypes,
+    monthly_spending_type: MonthlySpendingType,
 ) -> str:
     return names_monthly_spending_types[monthly_spending_type]
 
