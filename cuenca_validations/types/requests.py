@@ -30,6 +30,7 @@ from ..types.enums import (
     EcommerceIndicator,
     FileExtension,
     Gender,
+    IncomeType,
     IssuerNetwork,
     KYCFileType,
     KYCValidationSource,
@@ -465,6 +466,7 @@ class UserRequest(BaseModel):
     account_use_type: Optional[AccountUseTypes] = None
     monthly_movements_type: Optional[MonthlyMovementsTypes] = None
     monthly_spending_type: Optional[MonthlySpendingTypes] = None
+    income_type: Optional[IncomeType] = None
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -504,6 +506,7 @@ class UserUpdateRequest(BaseModel):
     account_use_type: Optional[AccountUseTypes] = None
     monthly_movements_type: Optional[MonthlyMovementsTypes] = None
     monthly_spending_type: Optional[MonthlySpendingTypes] = None
+    income_type: Optional[IncomeType] = None
 
     @field_validator('beneficiaries')
     @classmethod

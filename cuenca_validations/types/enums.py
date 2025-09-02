@@ -727,3 +727,10 @@ class MonthlySpendingTypes(str, Enum):
     between_20k_and_50k = 'between_20k_and_50k'
     between_50k_and_100k = 'between_50k_and_100k'
     more_than_100k = 'more_than_100k'
+
+
+class IncomeType(str, Enum):
+    salary = 'salary'
+    freelance = 'freelance'
+    support_from_third_party = 'support_from_third_party'
+    variable = 'variable'

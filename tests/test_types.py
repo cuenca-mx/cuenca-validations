@@ -18,6 +18,7 @@ from cuenca_validations.types import (
     TransactionStatus,
     digits,
     get_account_use_type_name,
+    get_income_type_name,
     get_monthly_movements_type_name,
     get_monthly_spending_type_name,
     get_profession_name,
@@ -26,6 +27,7 @@ from cuenca_validations.types import (
 from cuenca_validations.types.enums import (
     AccountUseTypes,
     EcommerceIndicator,
+    IncomeType,
     MonthlyMovementsTypes,
     MonthlySpendingTypes,
     Profession,
@@ -557,6 +559,10 @@ def test_get_state_name() -> None:
 
 def test_get_profession_name() -> None:
     assert get_profession_name(Profession.empleado) == 'Empleado(a/e)'
+
+
+def test_get_income_type_name() -> None:
+    assert get_income_type_name(IncomeType.salary) == 'Sueldo o salario fijo'
 
 
 def test_get_account_use_type_name() -> None:

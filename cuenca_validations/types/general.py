@@ -14,6 +14,7 @@ from pydantic import (
 from ..validators import sanitize_dict, sanitize_item
 from .enums import (
     AccountUseTypes,
+    IncomeType,
     MonthlyMovementsTypes,
     MonthlySpendingTypes,
     Profession,
@@ -171,6 +172,18 @@ def get_monthly_spending_type_name(
     monthly_spending_type: MonthlySpendingTypes,
 ) -> str:
     return names_monthly_spending_types[monthly_spending_type]
+
+
+names_income_types = {
+    IncomeType.salary: 'Sueldo o salario fijo',
+    IncomeType.freelance: 'Independiente',
+    IncomeType.support_from_third_party: 'Apoyo de terceros o familiares',
+    IncomeType.variable: 'Variable',
+}
+
+
+def get_income_type_name(income_type: IncomeType) -> str:
+    return names_income_types[income_type]
 
 
 @dataclass
