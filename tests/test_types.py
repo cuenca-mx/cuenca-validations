@@ -328,6 +328,23 @@ def test_user_request():
     assert UserRequest(**request).model_dump(exclude_none=True) == request
 
 
+def test_user_request_invalid_profession():
+    request = dict(
+        curp='ABCD920604HDFSRN03',
+        profession=Profession.otro,
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            postal_code_id='PC2ygq9j2bS9-9tsuVawzErA',
+        ),
+        phone_verification_id='VE12345678',
+        email_verification_id='VE0987654321',
+    )
+    with pytest.raises(ValidationError):
+        UserRequest(**request)
+
+
 @freeze_time('2022-01-01')
 def test_user_request_underage():
     request = dict(
@@ -419,6 +436,7 @@ def test_user_update_request():
             ),
         ],
         curp_document_uri='https://sandbox.cuenca.com/files/EF123',
+        profession=Profession.empleado,
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
@@ -427,6 +445,7 @@ def test_user_update_request():
         update_req.curp_document_uri.unicode_string()
         == request['curp_document_uri']
     )
+    assert update_req.profession == Profession.empleado
 
     request['beneficiaries'] = [
         dict(
@@ -489,6 +508,10 @@ def test_user_update_request():
         )
     )
     UserUpdateRequest(**kyc_request)
+
+    request['profession'] = Profession.otro
+    with pytest.raises(ValidationError) as v:
+        UserUpdateRequest(**request)
 
 
 def test_session_request():

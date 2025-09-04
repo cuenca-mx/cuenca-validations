@@ -704,7 +704,7 @@ class Profession(str, Enum):
     sistemas = 'sistemas'
     independiente = 'independiente'
     oficios = 'oficios'
-    otros = 'otros'
+    otro = 'otro'
 
 
 class AccountUseType(str, Enum):
