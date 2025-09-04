@@ -533,6 +533,17 @@ class SessionRequest(BaseRequest):
     type: SessionType
     success_url: Optional[SerializableAnyUrl] = None
     failure_url: Optional[SerializableAnyUrl] = None
+    metadata: Optional[dict] = None
+
+    @model_validator(mode='before')
+    @classmethod
+    def validate_metadata(cls, values: dict) -> dict:
+        if values[
+            'type'
+        ] == SessionType.metamap_verification and not values.get('metadata'):
+            raise ValueError('Metadata expected for this session')
+        return values
+
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -540,6 +551,7 @@ class SessionRequest(BaseRequest):
                 'type': 'session.registration',
                 'success_url': 'http://example_success.com',
                 'failure_url': 'http://example_failure.com',
+                'metadata': {'verification_id': 'some_verification_id'},
             }
         }
     )
