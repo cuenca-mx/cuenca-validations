@@ -491,7 +491,7 @@ class UserRequest(BaseModel):
     @classmethod
     def validate_profession(cls, profession: Profession) -> Profession:
         if profession == Profession.otro:
-            raise ValueError('Profession "otro" is not allowed for this model')
+            raise ValueError('Profession "otro" is not allowed')
         return profession
 
 
@@ -528,7 +528,7 @@ class UserUpdateRequest(BaseModel):
     @classmethod
     def validate_profession(cls, profession: Profession) -> Profession:
         if profession == Profession.otro:
-            raise ValueError('Profession "otro" is not allowed for this model')
+            raise ValueError('Profession "otro" is not allowed')
         return profession
 
 
