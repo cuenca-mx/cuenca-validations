@@ -17,6 +17,7 @@ from pydantic_core import core_schema
 from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
+    AccountUseType,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -29,9 +30,12 @@ from ..types.enums import (
     EcommerceIndicator,
     FileExtension,
     Gender,
+    IncomeType,
     IssuerNetwork,
     KYCFileType,
     KYCValidationSource,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     PlatformType,
     PosCapability,
     Profession,
@@ -447,7 +451,6 @@ class UserRequest(BaseModel):
             'Mexican government ID (18 characters). ' 'Must be pre-validated.'
         )
     )
-
     profession: Profession = Field(description='User profession or occupation')
     address: AddressRequest = Field(
         description='User residential address information'
@@ -460,13 +463,17 @@ class UserRequest(BaseModel):
         ...,
         description='ID of previously validated email verification',
     )
+    account_use_type: Optional[AccountUseType] = None
+    monthly_movements_type: Optional[MonthlyMovementsType] = None
+    monthly_spending_type: Optional[MonthlySpendingType] = None
+    income_type: Optional[IncomeType] = None
 
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
                 'curp': 'GOCG650418HVZNML08',
-                'phone_number': '+525511223344',
-                'email_address': 'user@example.com',
+                'phone_verification_id': 'VEKp662Yrf6lMztl0-9qzk7Q',
+                'email_verification_id': 'VEwjDEcCMWZIk3JJ3p7P6T_A',
                 'profession': 'engineer',
                 'address': AddressRequest.model_json_schema().get('example'),
             }
@@ -480,6 +487,13 @@ class UserRequest(BaseModel):
             validate_age_requirement(curp)
         return curp
 
+    @field_validator('profession')
+    @classmethod
+    def validate_profession(cls, profession: Profession) -> Profession:
+        if profession == Profession.otro:
+            raise ValueError('Profession "otro" is not allowed')
+        return profession
+
 
 class UserUpdateRequest(BaseModel):
     profession: Optional[Profession] = None
@@ -492,9 +506,14 @@ class UserUpdateRequest(BaseModel):
     proof_of_life: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
+    fiscal_address: Optional[AddressRequest] = None
     pronouns: Optional[str] = None
     status: Optional[UserStatus] = None
     required_level: Optional[int] = None
+    account_use_type: Optional[AccountUseType] = None
+    monthly_movements_type: Optional[MonthlyMovementsType] = None
+    monthly_spending_type: Optional[MonthlySpendingType] = None
+    income_type: Optional[IncomeType] = None
 
     @field_validator('beneficiaries')
     @classmethod
@@ -504,6 +523,13 @@ class UserUpdateRequest(BaseModel):
         if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
             raise ValueError('The total percentage should be 100%')
         return beneficiaries
+
+    @field_validator('profession')
+    @classmethod
+    def validate_profession(cls, profession: Profession) -> Profession:
+        if profession == Profession.otro:
+            raise ValueError('Profession "otro" is not allowed')
+        return profession
 
 
 class UserLoginRequest(BaseRequest):

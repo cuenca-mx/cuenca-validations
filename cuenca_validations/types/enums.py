@@ -691,16 +691,47 @@ class SATRegimeCode(str, Enum):
 
 
 class Profession(str, Enum):
-    artisticas = 'Actividades Artísticas'
-    agropecuario = 'Agricultura, Ganadería o Pesca'
-    comercio = 'Comercio'
-    estudiante = 'Estudiante'
-    empleado = 'Empleado(a/e)'
-    emprendimiento = 'Emprendimiento'
-    hogar = 'Hogar'
-    profesor = 'Profesor(a/e)'
-    profesionista = 'Profesionista'
-    servidor_publico = 'Servidor(a/e) Público'
-    sistemas = 'Sistemas y Comunicaciones'
-    independiente = 'Trabajador(a/e) Independiente'
-    oficios = 'Oficios Varios'
+    artisticas = 'artisticas'
+    agropecuario = 'agropecuario'
+    comercio = 'comercio'
+    estudiante = 'estudiante'
+    empleado = 'empleado'
+    emprendimiento = 'emprendimiento'
+    hogar = 'hogar'
+    profesor = 'profesor'
+    profesionista = 'profesionista'
+    servidor_publico = 'servidor_publico'
+    sistemas = 'sistemas'
+    independiente = 'independiente'
+    oficios = 'oficios'
+    otro = 'otro'
+
+
+class AccountUseType(str, Enum):
+    personal_expenses = 'personal_expenses'
+    business_expenses = 'business_expenses'
+    payment_of_goods_or_services = 'payment_of_goods_or_services'
+    send_or_receive_transfers = 'send_or_receive_transfers'
+
+
+class MonthlyMovementsType(str, Enum):
+    between_1_and_20 = 'between_1_and_20'
+    between_20_and_40 = 'between_20_and_40'
+    between_40_and_60 = 'between_40_and_60'
+    more_than_60 = 'more_than_60'
+
+
+class MonthlySpendingType(str, Enum):
+    less_than_1k = 'less_than_1k'
+    between_1k_and_10k = 'between_1k_and_10k'
+    between_10k_and_20k = 'between_10k_and_20k'
+    between_20k_and_50k = 'between_20k_and_50k'
+    between_50k_and_100k = 'between_50k_and_100k'
+    more_than_100k = 'more_than_100k'
+
+
+class IncomeType(str, Enum):
+    salary = 'salary'
+    freelance = 'freelance'
+    support_from_third_party = 'support_from_third_party'
+    variable = 'variable'

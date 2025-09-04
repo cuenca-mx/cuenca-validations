@@ -1,4 +1,5 @@
 __all__ = [
+    'AccountUseType',
     'AccountQuery',
     'Address',
     'ApiKeyQuery',
@@ -43,6 +44,7 @@ __all__ = [
     'FileRequest',
     'FileUploadRequest',
     'Gender',
+    'IncomeType',
     'IssuerNetwork',
     'IdentityQuery',
     'JSONEncoder',
@@ -52,6 +54,8 @@ __all__ = [
     'KYCValidationSource',
     'Language',
     'LimitedWalletRequest',
+    'MonthlyMovementsType',
+    'MonthlySpendingType',
     'PartnerRequest',
     'PartnerUpdateRequest',
     'PhoneNumber',
@@ -107,12 +111,18 @@ __all__ = [
     'WebhookEvent',
     'digits',
     'get_state_name',
+    'get_profession_name',
+    'get_income_type_name',
+    'get_account_use_type_name',
+    'get_monthly_movements_type_name',
+    'get_monthly_spending_type_name',
     'uuid_field',
     'LogConfig',
 ]
 
 from .card import StrictPaymentCardNumber
 from .enums import (
+    AccountUseType,
     AuthorizerTransaction,
     BankAccountStatus,
     CardErrorType,
@@ -132,10 +142,13 @@ from .enums import (
     FileExtension,
     FileFormat,
     Gender,
+    IncomeType,
     IssuerNetwork,
     KYCFileType,
     KYCValidationSource,
     Language,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     PlatformType,
     PosCapability,
     Profession,
@@ -163,6 +176,11 @@ from .general import (
     SantizedDict,
     StrictPositiveInt,
     digits,
+    get_account_use_type_name,
+    get_income_type_name,
+    get_monthly_movements_type_name,
+    get_monthly_spending_type_name,
+    get_profession_name,
     get_state_name,
 )
 from .helpers import uuid_field

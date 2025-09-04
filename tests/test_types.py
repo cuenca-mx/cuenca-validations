@@ -17,10 +17,19 @@ from cuenca_validations.types import (
     SessionRequest,
     TransactionStatus,
     digits,
+    get_account_use_type_name,
+    get_income_type_name,
+    get_monthly_movements_type_name,
+    get_monthly_spending_type_name,
+    get_profession_name,
     get_state_name,
 )
 from cuenca_validations.types.enums import (
+    AccountUseType,
     EcommerceIndicator,
+    IncomeType,
+    MonthlyMovementsType,
+    MonthlySpendingType,
     Profession,
     SessionType,
     State,
@@ -316,7 +325,24 @@ def test_user_request():
         phone_verification_id='VE12345678',
         email_verification_id='VE0987654321',
     )
-    assert UserRequest(**request).model_dump() == request
+    assert UserRequest(**request).model_dump(exclude_none=True) == request
+
+
+def test_user_request_invalid_profession():
+    request = dict(
+        curp='ABCD920604HDFSRN03',
+        profession=Profession.otro,
+        address=dict(
+            street='calle 1',
+            ext_number='2',
+            int_number='3',
+            postal_code_id='PC2ygq9j2bS9-9tsuVawzErA',
+        ),
+        phone_verification_id='VE12345678',
+        email_verification_id='VE0987654321',
+    )
+    with pytest.raises(ValidationError):
+        UserRequest(**request)
 
 
 @freeze_time('2022-01-01')
@@ -410,6 +436,7 @@ def test_user_update_request():
             ),
         ],
         curp_document_uri='https://sandbox.cuenca.com/files/EF123',
+        profession=Profession.empleado,
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
@@ -418,6 +445,7 @@ def test_user_update_request():
         update_req.curp_document_uri.unicode_string()
         == request['curp_document_uri']
     )
+    assert update_req.profession == Profession.empleado
 
     request['beneficiaries'] = [
         dict(
@@ -480,6 +508,10 @@ def test_user_update_request():
         )
     )
     UserUpdateRequest(**kyc_request)
+
+    request['profession'] = Profession.otro
+    with pytest.raises(ValidationError) as v:
+        UserUpdateRequest(**request)
 
 
 def test_session_request():
@@ -544,8 +576,37 @@ def test_limited_wallet_request():
     assert LimitedWalletRequest(allowed_curp=curp, allowed_rfc=rfc)
 
 
-def test_get_state_name():
+def test_get_state_name() -> None:
     assert get_state_name(State.VZ) == 'Veracruz'
+
+
+def test_get_profession_name() -> None:
+    assert get_profession_name(Profession.empleado) == 'Empleado(a/e)'
+
+
+def test_get_income_type_name() -> None:
+    assert get_income_type_name(IncomeType.salary) == 'Sueldo o salario fijo'
+
+
+def test_get_account_use_type_name() -> None:
+    assert (
+        get_account_use_type_name(AccountUseType.personal_expenses)
+        == 'Gastos personales o familiares'
+    )
+
+
+def test_get_monthly_spending_type_name() -> None:
+    assert (
+        get_monthly_spending_type_name(MonthlySpendingType.less_than_1k)
+        == 'Menos de $1,000'
+    )
+
+
+def test_get_monthly_movements_type_name() -> None:
+    assert (
+        get_monthly_movements_type_name(MonthlyMovementsType.between_1_and_20)
+        == 'Entre 1 y 20 movimientos'
+    )
 
 
 def test_bank_account_validation_clabe_request():
