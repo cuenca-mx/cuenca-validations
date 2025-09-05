@@ -121,7 +121,7 @@ names_professions = {
     Profession.sistemas: 'Sistemas y Comunicaciones',
     Profession.independiente: 'Trabajador(a/e) Independiente',
     Profession.oficios: 'Oficios Varios',
-    Profession.otros: 'Otros',
+    Profession.otro: 'Otro',
 }
 
 

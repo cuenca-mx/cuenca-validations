@@ -487,6 +487,13 @@ class UserRequest(BaseModel):
             validate_age_requirement(curp)
         return curp
 
+    @field_validator('profession')
+    @classmethod
+    def validate_profession(cls, profession: Profession) -> Profession:
+        if profession == Profession.otro:
+            raise ValueError('Profession "otro" is not allowed')
+        return profession
+
 
 class UserUpdateRequest(BaseModel):
     profession: Optional[Profession] = None
@@ -516,6 +523,13 @@ class UserUpdateRequest(BaseModel):
         if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
             raise ValueError('The total percentage should be 100%')
         return beneficiaries
+
+    @field_validator('profession')
+    @classmethod
+    def validate_profession(cls, profession: Profession) -> Profession:
+        if profession == Profession.otro:
+            raise ValueError('Profession "otro" is not allowed')
+        return profession
 
 
 class UserLoginRequest(BaseRequest):
