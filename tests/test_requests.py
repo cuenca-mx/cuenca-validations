@@ -45,17 +45,17 @@ def test_session_request_without_metadata():
     assert request.user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
 
 
-def test_session_request_with_metadata():
+def test_session_request_with_resource_id():
     request_data = {
         'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
         'type': 'session.metamap_verification',
-        'metadata': {'verification_id': 'some_verification'},
+        'resource_id': 'some_verification_id',
     }
     request = SessionRequest(**request_data)
     assert request.type == SessionType.metamap_verification
     assert request.user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
-    assert request.metadata
-    assert request.metadata['verification_id'] == 'some_verification'
+    assert request.resource_id
+    assert request.resource_id == 'some_verification_id'
 
 
 def test_metamap_session_request_without_metadata():
@@ -67,4 +67,4 @@ def test_metamap_session_request_without_metadata():
     with pytest.raises(ValidationError) as exception:
         SessionRequest(**request_data)
 
-    assert 'Metadata expected for this session' in str(exception)
+    assert 'Resource id expected for this session' in str(exception)
