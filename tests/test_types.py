@@ -149,8 +149,7 @@ def test_invalid_class():
     raises a `TypeError`.
     """
 
-    class ClassWithoutToDict:
-        ...  # noqa: E701
+    class ClassWithoutToDict: ...  # noqa: E701
 
     invalid_class = ClassWithoutToDict()
     with pytest.raises(TypeError):
