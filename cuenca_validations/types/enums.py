@@ -588,7 +588,7 @@ class SessionType(str, Enum):
     account_entries = 'session.account_entries'
     download_file = 'session.download_file'
     upload_file = 'session.upload_file'
-    metamap_verification = 'session.metamap_verification'
+    onboarding_verification = 'session.onboarding_verification'
 
 
 class WebhookObject(str, Enum):

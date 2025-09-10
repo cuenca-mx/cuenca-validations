@@ -48,11 +48,11 @@ def test_session_request_without_metadata():
 def test_session_request_with_resource_id():
     request_data = {
         'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
-        'type': 'session.metamap_verification',
+        'type': 'session.onboarding_verification',
         'resource_id': 'some_verification_id',
     }
     request = SessionRequest(**request_data)
-    assert request.type == SessionType.metamap_verification
+    assert request.type == SessionType.onboarding_verification
     assert request.user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
     assert request.resource_id
     assert request.resource_id == 'some_verification_id'
@@ -61,7 +61,7 @@ def test_session_request_with_resource_id():
 def test_metamap_session_request_without_metadata():
     request_data = {
         'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
-        'type': 'session.metamap_verification',
+        'type': 'session.onboarding_verification',
     }
 
     with pytest.raises(ValidationError) as exception:

@@ -552,11 +552,8 @@ class SessionRequest(BaseRequest):
     @model_validator(mode='before')
     @classmethod
     def validate_metadata(cls, values: dict) -> dict:
-        if values[
-            'type'
-        ] == SessionType.metamap_verification and not values.get(
-            'resource_id'
-        ):
+        type, resource_id = values['type'], values.get('resource_id')
+        if type == SessionType.onboarding_verification and not resource_id:
             raise ValueError('Resource id expected for this session')
         return values
 
