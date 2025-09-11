@@ -445,7 +445,7 @@ class UserTOSAgreementRequest(BaseModel):
     signature_image_url: Optional[FileCuencaUrl] = None
 
 
-class UserRequest(BaseModel):
+class UserRequest(BaseRequest):
     curp: Curp = Field(
         description=(
             'Mexican government ID (18 characters). ' 'Must be pre-validated.'
@@ -495,7 +495,7 @@ class UserRequest(BaseModel):
         return profession
 
 
-class UserUpdateRequest(BaseModel):
+class UserUpdateRequest(BaseRequest):
     profession: Optional[Profession] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None

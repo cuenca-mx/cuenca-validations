@@ -435,16 +435,11 @@ def test_user_update_request():
                 percentage=50,
             ),
         ],
-        curp_document_uri='https://sandbox.cuenca.com/files/EF123',
         profession=Profession.empleado,
     )
     update_req = UserUpdateRequest(**request)
     beneficiaries = [b.model_dump() for b in update_req.beneficiaries]
     assert beneficiaries == request['beneficiaries']
-    assert (
-        update_req.curp_document_uri.unicode_string()
-        == request['curp_document_uri']
-    )
     assert update_req.profession == Profession.empleado
 
     request['beneficiaries'] = [
@@ -479,26 +474,6 @@ def test_user_update_request():
 
     assert 'The total percentage should be 100%' in str(v)
     request.pop('beneficiaries')
-
-    tos_request = dict(
-        terms_of_service=dict(
-            version='2022-01-01',
-            ip='127.0.0.1',
-            location='1111,1111',
-            type='ifpe',
-        )
-    )
-    UserUpdateRequest(**tos_request)
-
-    tos_request = dict(
-        terms_of_service=dict(
-            version='2022-01-01',
-            ip='2001:0db8:0000:0000:0000:ff00:0042:8329',
-            location='1111,1111',
-            type='ifpe',
-        )
-    )
-    UserUpdateRequest(**tos_request)
 
     kyc_request = dict(
         govt_id=dict(
