@@ -73,7 +73,7 @@ from .general import (
 from .helpers import validate_age_requirement
 from .identities import (
     AddressRequest,
-    BeneficiaryRequest,
+    BaseBeneficiary,
     Curp,
     KYCFile,
     Password,
@@ -493,6 +493,10 @@ class UserRequest(BaseRequest):
         if profession == Profession.otro:
             raise ValueError('Profession "otro" is not allowed')
         return profession
+
+
+class BeneficiaryRequest(BaseBeneficiary, BaseRequest):
+    phone_number: PhoneNumber
 
 
 class UserUpdateRequest(BaseRequest):

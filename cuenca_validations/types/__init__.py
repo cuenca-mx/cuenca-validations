@@ -188,7 +188,6 @@ from .helpers import uuid_field
 from .identities import (
     Address,
     Beneficiary,
-    BeneficiaryRequest,
     Curp,
     KYCFile,
     PhoneNumber,
@@ -223,6 +222,7 @@ from .queries import (
 from .requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
+    BeneficiaryRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,

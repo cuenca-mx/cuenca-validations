@@ -108,10 +108,6 @@ class BaseBeneficiary(BaseModel):
     )
 
 
-class BeneficiaryRequest(BaseBeneficiary):
-    phone_number: PhoneNumber
-
-
 class Beneficiary(BaseBeneficiary):
     phone_number: Union[PhoneNumber, str]
 
