@@ -89,42 +89,31 @@ class AddressRequest(BaseModel):
     )
 
 
-class BeneficiaryRequest(BaseModel):
+class BaseBeneficiary(BaseModel):
     name: str
     birth_date: dt.date
+    user_relationship: str
+    percentage: Annotated[int, Field(ge=1, le=100)]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "name": "Juan Perez",
+                "birth_date": "1907-07-06",
+                "phone_number": "+525500998877",
+                "user_relationship": "friend",
+                "percentage": 100,
+            }
+        }
+    )
+
+
+class BeneficiaryRequest(BaseBeneficiary):
     phone_number: PhoneNumber
-    user_relationship: str
-    percentage: Annotated[int, Field(ge=1, le=100)]
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "name": "Juan Perez",
-                "birth_date": "1907-07-06",
-                "phone_number": "+525500998877",
-                "user_relationship": "friend",
-                "percentage": 100,
-            }
-        }
-    )
 
 
-class Beneficiary(BaseModel):
-    name: str
-    birth_date: dt.date
+class Beneficiary(BaseBeneficiary):
     phone_number: Union[PhoneNumber, str]
-    user_relationship: str
-    percentage: Annotated[int, Field(ge=1, le=100)]
-    model_config = ConfigDict(
-        json_schema_extra={
-            "example": {
-                "name": "Juan Perez",
-                "birth_date": "1907-07-06",
-                "phone_number": "+525500998877",
-                "user_relationship": "friend",
-                "percentage": 100,
-            }
-        }
-    )
 
 
 class VerificationErrors(BaseModel):
