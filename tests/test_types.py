@@ -394,7 +394,9 @@ def test_curp_validation_request():
     assert all(field in error_msg for field in required_fields)
 
     req_curp = CurpValidationRequest(**request)
-    assert req_curp.model_dump() == request
+    # exclude_none=False to test that the request equals the original dict,
+    # since normally exclude_none defaults to True in BaseRequest.model_dump()
+    assert req_curp.model_dump(exclude_none=False) == request
 
     request['date_of_birth'] = dt.date(2006, 5, 17)
 
