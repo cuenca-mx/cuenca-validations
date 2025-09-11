@@ -14,7 +14,7 @@ __all__ = [
     'BankAccountStatus',
     'BatchFileMetadata',
     'Beneficiary',
-    'BeneficiaryResponse',
+    'BeneficiaryRequest',
     'BillPaymentQuery',
     'CardErrorType',
     'CardFundingType',
@@ -188,7 +188,7 @@ from .helpers import uuid_field
 from .identities import (
     Address,
     Beneficiary,
-    BeneficiaryResponse,
+    BeneficiaryRequest,
     Curp,
     KYCFile,
     PhoneNumber,

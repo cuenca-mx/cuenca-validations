@@ -89,7 +89,7 @@ class AddressRequest(BaseModel):
     )
 
 
-class Beneficiary(BaseModel):
+class BeneficiaryRequest(BaseModel):
     name: str
     birth_date: dt.date
     phone_number: PhoneNumber
@@ -108,7 +108,7 @@ class Beneficiary(BaseModel):
     )
 
 
-class BeneficiaryResponse(BaseModel):
+class Beneficiary(BaseModel):
     name: str
     birth_date: dt.date
     phone_number: Union[PhoneNumber, str]
