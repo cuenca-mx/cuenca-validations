@@ -73,7 +73,7 @@ from .general import (
 from .helpers import validate_age_requirement
 from .identities import (
     AddressRequest,
-    Beneficiary,
+    BeneficiaryRequest,
     Curp,
     KYCFile,
     Password,
@@ -500,7 +500,7 @@ class UserUpdateRequest(BaseRequest):
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[AddressRequest] = None
-    beneficiaries: Optional[list[Beneficiary]] = None
+    beneficiaries: Optional[list[BeneficiaryRequest]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
@@ -518,7 +518,7 @@ class UserUpdateRequest(BaseRequest):
     @field_validator('beneficiaries')
     @classmethod
     def beneficiary_percentage(
-        cls, beneficiaries: Optional[list[Beneficiary]] = None
+        cls, beneficiaries: Optional[list[BeneficiaryRequest]] = None
     ):
         if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
             raise ValueError('The total percentage should be 100%')
