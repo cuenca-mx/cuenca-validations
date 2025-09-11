@@ -1,7 +1,11 @@
 import pytest
 from pydantic import ValidationError
 
-from cuenca_validations.types.requests import UserTOSAgreementRequest
+from cuenca_validations.types.enums import SessionType
+from cuenca_validations.types.requests import (
+    SessionRequest,
+    UserTOSAgreementRequest,
+)
 from cuenca_validations.typing import DictStrAny
 
 
@@ -29,3 +33,38 @@ def test_file_cuenca_url_invalid() -> None:
     )
     with pytest.raises(ValidationError):
         UserTOSAgreementRequest(**request_data)
+
+
+def test_session_request_without_metadata():
+    request_data = {
+        'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+        'type': 'session.curp_validation',
+    }
+    request = SessionRequest(**request_data)
+    assert request.type == SessionType.curp_validation
+    assert request.user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
+
+
+def test_session_request_with_resource_id():
+    request_data = {
+        'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+        'type': 'session.onboarding_verification',
+        'resource_id': 'some_verification_id',
+    }
+    request = SessionRequest(**request_data)
+    assert request.type == SessionType.onboarding_verification
+    assert request.user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
+    assert request.resource_id
+    assert request.resource_id == 'some_verification_id'
+
+
+def test_metamap_session_request_without_metadata():
+    request_data = {
+        'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+        'type': 'session.onboarding_verification',
+    }
+
+    with pytest.raises(ValidationError) as exception:
+        SessionRequest(**request_data)
+
+    assert 'Resource id expected for this session' in str(exception)
