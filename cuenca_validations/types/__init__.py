@@ -14,6 +14,7 @@ __all__ = [
     'BankAccountStatus',
     'BatchFileMetadata',
     'Beneficiary',
+    'BeneficiaryRequest',
     'BillPaymentQuery',
     'CardErrorType',
     'CardFundingType',
@@ -221,6 +222,7 @@ from .queries import (
 from .requests import (
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
+    BeneficiaryRequest,
     CurpValidationRequest,
     EndpointRequest,
     EndpointUpdateRequest,

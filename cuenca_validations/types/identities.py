@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Union
 
 from pydantic import BaseModel, ConfigDict, Field, SecretStr, StringConstraints
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -89,12 +89,12 @@ class AddressRequest(BaseModel):
     )
 
 
-class Beneficiary(BaseModel):
+class BaseBeneficiary(BaseModel):
     name: str
     birth_date: dt.date
-    phone_number: PhoneNumber
     user_relationship: str
     percentage: Annotated[int, Field(ge=1, le=100)]
+
     model_config = ConfigDict(
         json_schema_extra={
             "example": {
@@ -106,6 +106,10 @@ class Beneficiary(BaseModel):
             }
         }
     )
+
+
+class Beneficiary(BaseBeneficiary):
+    phone_number: Union[PhoneNumber, str]
 
 
 class VerificationErrors(BaseModel):

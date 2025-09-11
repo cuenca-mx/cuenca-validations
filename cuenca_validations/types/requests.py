@@ -73,7 +73,7 @@ from .general import (
 from .helpers import validate_age_requirement
 from .identities import (
     AddressRequest,
-    Beneficiary,
+    BaseBeneficiary,
     Curp,
     KYCFile,
     Password,
@@ -330,7 +330,7 @@ class UserPldRiskLevelRequest(BaseModel):
     level: float = Field(ge=0.0, le=1.0)
 
 
-class CurpValidationRequest(BaseModel):
+class CurpValidationRequest(BaseRequest):
     names: Optional[str] = None
     first_surname: Optional[str] = None
     second_surname: Optional[str] = Field(
@@ -439,13 +439,13 @@ class FileCuencaUrl(str):
         )
 
 
-class UserTOSAgreementRequest(BaseModel):
+class UserTOSAgreementRequest(BaseRequest):
     tos_id: str
     location: Coordinate
     signature_image_url: Optional[FileCuencaUrl] = None
 
 
-class UserRequest(BaseModel):
+class UserRequest(BaseRequest):
     curp: Curp = Field(
         description=(
             'Mexican government ID (18 characters). ' 'Must be pre-validated.'
@@ -495,12 +495,16 @@ class UserRequest(BaseModel):
         return profession
 
 
-class UserUpdateRequest(BaseModel):
+class BeneficiaryRequest(BaseBeneficiary, BaseRequest):
+    phone_number: PhoneNumber
+
+
+class UserUpdateRequest(BaseRequest):
     profession: Optional[Profession] = None
     email_verification_id: Optional[str] = None
     phone_verification_id: Optional[str] = None
     address: Optional[AddressRequest] = None
-    beneficiaries: Optional[list[Beneficiary]] = None
+    beneficiaries: Optional[list[BeneficiaryRequest]] = None
     govt_id: Optional[KYCFile] = None
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
@@ -518,7 +522,7 @@ class UserUpdateRequest(BaseModel):
     @field_validator('beneficiaries')
     @classmethod
     def beneficiary_percentage(
-        cls, beneficiaries: Optional[list[Beneficiary]] = None
+        cls, beneficiaries: Optional[list[BeneficiaryRequest]] = None
     ):
         if beneficiaries and sum(b.percentage for b in beneficiaries) != 100:
             raise ValueError('The total percentage should be 100%')
@@ -590,7 +594,7 @@ class FileBatchUploadRequest(BaseModel):
     user_id: str
 
 
-class VerificationRequest(BaseModel):
+class VerificationRequest(BaseRequest):
     type: VerificationType
     recipient: Union[EmailStr, PhoneNumber] = Field(
         description='Phone or email to validate'
@@ -614,7 +618,7 @@ class VerificationRequest(BaseModel):
         )
 
 
-class VerificationAttemptRequest(BaseModel):
+class VerificationAttemptRequest(BaseRequest):
     code: Annotated[
         str,
         StringConstraints(strict=True, min_length=6, max_length=6),
@@ -655,11 +659,11 @@ class KYCValidationRequest(BaseRequest):
     force: bool = False
 
 
-class BankAccountValidationRequest(BaseModel):
+class BankAccountValidationRequest(BaseRequest):
     account_number: Union[Clabe, PaymentCardNumber]
 
 
-class UserListsRequest(BaseModel):
+class UserListsRequest(BaseRequest):
     curp: Optional[Curp] = Field(None, description='Curp to review on lists')
     rfc: Optional[Rfc] = Field(None, description='Rfc to review on lists')
     account_number: Optional[Union[Clabe, PaymentCardNumber]] = Field(
@@ -758,5 +762,5 @@ class PartnerUpdateRequest(BaseRequest):
     shareholders: Optional[list[Shareholder]] = None
 
 
-class PhoneVerificationAssociationRequest(BaseModel):
+class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
