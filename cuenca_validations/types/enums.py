@@ -259,6 +259,7 @@ class KYCValidationSource(str, Enum):
 class Gender(str, Enum):
     female = 'female'
     male = 'male'
+    non_binary = 'non_binary'
 
 
 class State(str, Enum):
