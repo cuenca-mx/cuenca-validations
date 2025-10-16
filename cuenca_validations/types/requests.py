@@ -519,8 +519,8 @@ class UserUpdateRequest(BaseRequest):
     monthly_movements_type: Optional[MonthlyMovementsType] = None
     monthly_spending_type: Optional[MonthlySpendingType] = None
     income_type: Optional[IncomeType] = None
-    phone_number: PhoneNumber | None = None
-    email_address: EmailStr | None = None
+    phone_number: Optional[PhoneNumber] = None
+    email_address: Optional[EmailStr] = None
 
     @model_validator(mode="before")
     @classmethod
