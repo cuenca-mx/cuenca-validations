@@ -519,6 +519,15 @@ class UserUpdateRequest(BaseRequest):
     monthly_movements_type: Optional[MonthlyMovementsType] = None
     monthly_spending_type: Optional[MonthlySpendingType] = None
     income_type: Optional[IncomeType] = None
+    phone_number: PhoneNumber | None = None
+    email_address: EmailStr | None = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
 
     @field_validator('beneficiaries')
     @classmethod
