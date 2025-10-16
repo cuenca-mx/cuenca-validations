@@ -509,6 +509,7 @@ class UserUpdateRequest(BaseRequest):
     proof_of_address: Optional[KYCFile] = None
     proof_of_life: Optional[KYCFile] = None
     curp_document_uri: Optional[SerializableHttpUrl] = None
+    rfc: Optional[Rfc] = None
     fiscal_regime_code: Optional[SATRegimeCode] = None
     fiscal_address: Optional[AddressRequest] = None
     pronouns: Optional[str] = None
