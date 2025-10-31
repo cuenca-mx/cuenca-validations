@@ -646,6 +646,7 @@ class TermsOfService(str, Enum):
     ifpe = 'ifpe'
     tarjetas_cuenca = 'tarjetas_cuenca'
     portal = 'portal'
+    publicidad = 'publicidad'
 
 
 class FileExtension(str, Enum):
