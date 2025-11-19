@@ -27,3 +27,10 @@ def test_multiple_generators():
     assert uuid1.startswith('CA')
     assert uuid2.startswith('TR')
     assert uuid1 != uuid2
+
+
+def test_sanitized_uuid():
+    generator = uuid_field('US')
+    uuid_str = generator()
+    assert "-" not in uuid_str
+    assert "-" not in uuid_str

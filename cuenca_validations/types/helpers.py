@@ -12,7 +12,9 @@ from .identities import Curp
 
 def uuid_field(prefix: str = '') -> Callable[[], str]:
     def base64_uuid_func() -> str:
-        return prefix + urlsafe_b64encode(uuid.uuid4().bytes).decode()[:-2]
+        base64_str = urlsafe_b64encode(uuid.uuid4().bytes).decode()[:-2]
+        sanitized = base64_str.replace('-', 'A').replace('_', 'B')
+        return prefix + sanitized
 
     return base64_uuid_func
 
