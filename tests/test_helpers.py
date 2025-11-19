@@ -33,4 +33,4 @@ def test_sanitized_uuid():
     generator = uuid_field('US')
     uuid_str = generator()
     assert "-" not in uuid_str
-    assert "-" not in uuid_str
+    assert "_" not in uuid_str
