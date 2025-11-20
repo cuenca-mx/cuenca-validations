@@ -1,4 +1,5 @@
 import datetime as dt
+import random
 import uuid
 from base64 import urlsafe_b64encode
 from typing import Callable, Optional, Union
@@ -13,7 +14,8 @@ from .identities import Curp
 def uuid_field(prefix: str = '') -> Callable[[], str]:
     def base64_uuid_func() -> str:
         base64_str = urlsafe_b64encode(uuid.uuid4().bytes).decode()[:-2]
-        sanitized = base64_str.replace('-', 'A').replace('_', 'B')
+        rnd = str(random.randint(0, 9))
+        sanitized = base64_str.replace('-', rnd).replace('_', rnd)
         return prefix + sanitized
 
     return base64_uuid_func
