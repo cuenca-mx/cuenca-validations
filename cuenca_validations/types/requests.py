@@ -1,4 +1,5 @@
 import datetime as dt
+from errno import EROFS
 from typing import Annotated, Any, Optional, Union
 
 from clabe import Clabe
@@ -93,6 +94,13 @@ from .morals import (
 CUENCA_FILE_URL = (
     r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-_]+)$'
 )
+
+DOCS_WITH_BACK = [
+    KYCFileType.ine,
+    KYCFileType.dni,
+    KYCFileType.residency,
+    KYCFileType.matricula_consular,
+]
 
 
 class BaseRequest(BaseModel):
@@ -544,6 +552,14 @@ class UserUpdateRequest(BaseRequest):
         if profession == Profession.otro:
             raise ValueError('Profession "otro" is not allowed')
         return profession
+
+    @field_validator('govt_id')
+    @classmethod
+    def validate_govt_id(cls, govt_id: KYCFile):
+        if govt_id and govt_id.type in DOCS_WITH_BACK and not govt_id.uri_back:
+            error = f'uri_back must be provided for type {govt_id.type.value}'
+            raise ValueError(error)
+        return govt_id
 
 
 class UserLoginRequest(BaseRequest):
