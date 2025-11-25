@@ -46,7 +46,7 @@ def test_extra_params_are_not_allowed():
     assert 'Extra inputs are not permitted' in str(ex.value)
 
 
-def test_update_user_update_govt():
+def test_update_user_update_govt() -> None:
     with pytest.raises(ValueError) as ex:
         UserUpdateRequest(govt_id={'type': 'ine', 'uri_front': 'files/123'})
     assert 'uri_back must be provided for type ine' in str(ex.value)

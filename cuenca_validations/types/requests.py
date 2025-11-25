@@ -554,7 +554,7 @@ class UserUpdateRequest(BaseRequest):
 
     @field_validator('govt_id')
     @classmethod
-    def validate_govt_id(cls, govt_id: KYCFile):
+    def validate_govt_id(cls, govt_id: KYCFile) -> KYCFile:
         if govt_id and govt_id.type in DOCS_WITH_BACK and not govt_id.uri_back:
             error = f'uri_back must be provided for type {govt_id.type.value}'
             raise ValueError(error)
