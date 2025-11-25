@@ -52,5 +52,4 @@ def test_update_user_update_govt() -> None:
     }
     with pytest.raises(ValueError) as ex:
         UserUpdateRequest(**govt_id)
-
     assert 'uri_back must be provided for type ine' in str(ex.value)
