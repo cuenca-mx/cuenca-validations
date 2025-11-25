@@ -1,5 +1,4 @@
 import datetime as dt
-from errno import EROFS
 from typing import Annotated, Any, Optional, Union
 
 from clabe import Clabe
