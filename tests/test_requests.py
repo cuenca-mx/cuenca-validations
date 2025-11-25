@@ -47,6 +47,10 @@ def test_extra_params_are_not_allowed():
 
 
 def test_update_user_update_govt() -> None:
+    govt_id: DictStrAny = {
+        "govt_id": {"type": "ine", "uri_front": "files/123"}
+    }
     with pytest.raises(ValueError) as ex:
-        UserUpdateRequest(govt_id={'type': 'ine', 'uri_front': 'files/123'})
+        UserUpdateRequest(**govt_id)
+
     assert 'uri_back must be provided for type ine' in str(ex.value)
