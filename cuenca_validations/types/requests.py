@@ -48,6 +48,7 @@ from ..types.enums import (
     TransactionTokenValidationStatus,
     UserCardNotification,
     UserStatus,
+    VerificationStatus,
     VerificationType,
     WalletTransactionType,
     WebhookEvent,
@@ -520,6 +521,7 @@ class UserUpdateRequest(BaseRequest):
     fiscal_regime_code: Optional[SATRegimeCode] = None
     fiscal_address: Optional[AddressRequest] = None
     pronouns: Optional[str] = None
+    blacklist_validation_status: Optional[VerificationStatus] = None
     status: Optional[UserStatus] = None
     required_level: Optional[int] = None
     account_use_type: Optional[AccountUseType] = None
