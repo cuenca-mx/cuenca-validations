@@ -8,7 +8,7 @@ from cuenca_validations.types.requests import (
 from cuenca_validations.typing import DictStrAny
 
 
-@pytest.mark.parametrize('environment', ['stage', 'sandbox', 'api'])
+@pytest.mark.parametrize('environment', ['api.stage', 'api.sandbox', 'api'])
 def test_file_cuenca_url(environment: str) -> None:
     request_data: DictStrAny = dict(
         tos_id='TS67dcae8e74e81bba5a77bf47',

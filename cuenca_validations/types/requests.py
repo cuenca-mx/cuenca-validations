@@ -92,7 +92,8 @@ from .morals import (
 )
 
 CUENCA_FILE_URL = (
-    r'^https:\/\/(?:stage|sandbox|api)\.cuenca\.com\/files\/([a-zA-Z0-9\-_]+)$'
+    r'^https:\/\/(?:api\.stage|api\.sandbox|api)\.cuenca\.com'
+    r'\/files\/([a-zA-Z0-9\-_]+)$'
 )
 
 DOCS_WITH_BACK = [
