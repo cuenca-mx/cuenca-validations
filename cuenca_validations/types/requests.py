@@ -531,6 +531,10 @@ class UserUpdateRequest(BaseRequest):
     income_type: Optional[IncomeType] = None
     phone_number: Optional[PhoneNumber] = None
     email_address: Optional[EmailStr] = None
+    is_inactive: Optional[bool] = None
+    is_fraud: Optional[bool] = None
+    is_pld_blocked: Optional[bool] = None
+    is_security_mode: Optional[bool] = None
 
     @model_validator(mode="before")
     @classmethod
