@@ -58,7 +58,7 @@ def test_update_user_update_govt() -> None:
     assert 'uri_back must be provided for type ine' in str(ex.value)
 
 
-def test_update_user_normalizes_email() -> None:
+def test_verification_request_normalizes_email() -> None:
     req = VerificationRequest(
         recipient='user+cuenca@Gmail.com',
         type=VerificationType.email,
@@ -66,7 +66,7 @@ def test_update_user_normalizes_email() -> None:
     assert req.recipient == 'user@gmail.com'
 
 
-def test_update_user_normalizes_phone() -> None:
+def test_verification_request_normalizes_phone() -> None:
     req = VerificationRequest(
         recipient='+116504401222',
         type=VerificationType.phone,
