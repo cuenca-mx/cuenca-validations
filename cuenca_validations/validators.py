@@ -1,7 +1,37 @@
 import base64
 import datetime as dt
+import re
 from enum import Enum
 from typing import Any, Callable, Optional, Union
+
+SANITIZE_PHONE_NUMBER = re.compile(r'[+.()\-\s]')
+STRIP_MX_MOBILE_PREFIX = re.compile(r'(52)(?:(?:044)|1)?(\d{10})$')
+STRIP_US_DUPLICATE_PREFIX = re.compile(r'^11(\d{10})$')
+
+
+def normalize_email(email: str) -> str:
+    """Lowercase email and strip plus labels from the local part.
+
+    mateohhr@Yahoo.com          -> mateohhr@yahoo.com
+    guerradzul+cuenca@gmail.com -> guerradzul@gmail.com
+    """
+    local, _, domain = email.partition('@')
+    return f'{local.split("+")[0]}@{domain}'.lower()
+
+
+def normalize_phone_number(phone_number: str) -> str:
+    """Sanitize and normalize phone numbers to E.164 format.
+
+    Handles:
+    - Special characters: +52 (55) 1234-5678 -> +525512345678
+    - MX mobile prefix:   +5215512345678     -> +525512345678
+    - MX 044 prefix:      +520445512345678   -> +525512345678
+    - US duplicate prefix: +116504401222     -> +16504401222
+    """
+    pn = SANITIZE_PHONE_NUMBER.sub('', phone_number)
+    pn = STRIP_MX_MOBILE_PREFIX.sub(r'\1\2', pn)
+    pn = STRIP_US_DUPLICATE_PREFIX.sub(r'1\1', pn)
+    return f'+{pn}'
 
 
 def sanitize_dict(d: dict) -> dict:
