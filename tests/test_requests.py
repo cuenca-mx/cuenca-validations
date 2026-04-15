@@ -1,9 +1,12 @@
 import pytest
 from pydantic import ValidationError
+from pydantic_extra_types.phone_numbers import PhoneNumber
 
+from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
     UserTOSAgreementRequest,
     UserUpdateRequest,
+    VerificationRequest,
 )
 from cuenca_validations.typing import DictStrAny
 
@@ -53,3 +56,29 @@ def test_update_user_update_govt() -> None:
     with pytest.raises(ValueError) as ex:
         UserUpdateRequest(**govt_id)
     assert 'uri_back must be provided for type ine' in str(ex.value)
+
+
+def test_update_user_normalizes_email() -> None:
+    req = VerificationRequest(
+        recipient='user+cuenca@Gmail.com',
+        type=VerificationType.email,
+    )
+    assert req.recipient == 'user@gmail.com'
+
+
+def test_update_user_normalizes_phone() -> None:
+    req = VerificationRequest(
+        recipient='+116504401222',
+        type=VerificationType.phone,
+    )
+    assert req.recipient == '+16504401222'
+
+
+def test_user_update_request_normalizes_email() -> None:
+    req = UserUpdateRequest(email_address='user+tag@Gmail.com')
+    assert req.email_address == 'user@gmail.com'
+
+
+def test_user_update_request_normalizes_phone() -> None:
+    req = UserUpdateRequest(phone_number=PhoneNumber('+116504401222'))
+    assert req.phone_number == '+16504401222'

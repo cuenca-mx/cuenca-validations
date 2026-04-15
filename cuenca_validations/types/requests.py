@@ -56,6 +56,7 @@ from ..types.enums import (
     WebhookObject,
 )
 from ..typing import DictStrAny
+from ..validators import normalize_email, normalize_phone_number
 from .card import (
     Cvv,
     ExpMonth,
@@ -543,6 +544,16 @@ class UserUpdateRequest(BaseRequest):
             raise ValueError('At least one parameter must be provided')
         return values
 
+    @field_validator('email_address', mode='before')
+    @classmethod
+    def validate_email_address(cls, v: Optional[str]) -> Optional[str]:
+        return normalize_email(v) if v else v
+
+    @field_validator('phone_number', mode='before')
+    @classmethod
+    def validate_phone_number(cls, v: Optional[str]) -> Optional[str]:
+        return normalize_phone_number(v) if v else v
+
     @field_validator('beneficiaries')
     @classmethod
     def beneficiary_percentage(
@@ -641,13 +652,16 @@ class VerificationRequest(BaseRequest):
         },
     )
 
-    @field_validator('recipient')
-    def validate_sender(cls, recipient: str, values):
-        return (
-            EmailStr(recipient)
-            if type == VerificationType.email
-            else PhoneNumber(recipient)
-        )
+    @model_validator(mode='before')
+    @classmethod
+    def normalize_recipient(cls, data):
+        _type = data.get('type')
+        recipient = data.get('recipient')
+        if _type == VerificationType.email:
+            data['recipient'] = normalize_email(recipient)
+        else:
+            data['recipient'] = normalize_phone_number(recipient)
+        return data
 
 
 class VerificationAttemptRequest(BaseRequest):
