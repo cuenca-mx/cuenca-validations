@@ -3,6 +3,7 @@ from dataclasses import dataclass
 from typing import Annotated, Any, Optional
 
 from pydantic import (
+    AfterValidator,
     AnyUrl,
     Field,
     HttpUrl,
@@ -11,7 +12,7 @@ from pydantic import (
     StringConstraints,
 )
 
-from ..validators import sanitize_dict, sanitize_item
+from ..validators import normalize_name, sanitize_dict, sanitize_item
 from .enums import (
     AccountUseType,
     IncomeType,
@@ -31,6 +32,12 @@ SerializableIPvAnyAddress = Annotated[
 
 NonEmptyStr = Annotated[
     str, StringConstraints(strip_whitespace=True, min_length=1)
+]
+
+NormalizedName = Annotated[
+    str,
+    StringConstraints(strip_whitespace=True, min_length=2),
+    AfterValidator(normalize_name),
 ]
 
 

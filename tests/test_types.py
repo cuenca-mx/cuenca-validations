@@ -5,6 +5,7 @@ from enum import Enum
 from typing import Annotated
 
 import pytest
+from clabe import Clabe
 from freezegun import freeze_time
 from pydantic import AfterValidator, BaseModel, SecretStr, ValidationError
 from pydantic.fields import FieldInfo
@@ -16,6 +17,7 @@ from cuenca_validations.types import (
     SantizedDict,
     SessionRequest,
     TransactionStatus,
+    UserQuery,
     digits,
     get_account_use_type_name,
     get_income_type_name,
@@ -199,6 +201,50 @@ def test_invalid_digits(number, error):
 def test_card_query_exp_cvv_if_number_not_set(input_value):
     with pytest.raises(ValueError):
         CardQuery(**input_value)
+
+
+def test_user_query_accepts_new_fields():
+    query = UserQuery(
+        clabe='646180157098510917',
+        curp='ABCD920604HDFSRN03',
+        name='Pedro Páramo',
+    )
+    assert isinstance(query.clabe, Clabe)
+    assert query.clabe == '646180157098510917'
+    assert query.curp == 'ABCD920604HDFSRN03'
+    assert query.name == 'pedro paramo'
+
+
+@pytest.mark.parametrize(
+    'raw, normalized',
+    [
+        ('ab', 'ab'),
+        ('  ab  ', 'ab'),
+        ('Raúl Andrés', 'raul andres'),
+        ('raul Andres', 'raul andres'),
+        ('  RAÚL   ANDRÉS  ', 'raul andres'),
+        ('María José', 'maria jose'),
+        ('ÑANDÚ', 'nandu'),
+    ],
+)
+def test_user_query_name_normalizes(raw, normalized):
+    assert UserQuery(name=raw).name == normalized
+
+
+@pytest.mark.parametrize(
+    'field, value',
+    [
+        ('clabe', 'not-a-clabe'),
+        ('curp', 'not-a-curp'),
+        ('name', ''),
+        ('name', ' '),
+        ('name', 'a'),
+        ('name', ' a '),
+    ],
+)
+def test_user_query_rejects_invalid(field, value):
+    with pytest.raises(ValidationError):
+        UserQuery(**{field: value})
 
 
 def test_exclude_none_in_dict():
