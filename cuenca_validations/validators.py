@@ -1,6 +1,7 @@
 import base64
 import datetime as dt
 import re
+import unicodedata
 from enum import Enum
 from typing import Any, Callable, Optional, Union
 
@@ -32,6 +33,19 @@ def normalize_phone_number(phone_number: str) -> str:
     pn = STRIP_MX_MOBILE_PREFIX.sub(r'\1\2', pn)
     pn = STRIP_US_DUPLICATE_PREFIX.sub(r'1\1', pn)
     return f'+{pn}'
+
+
+def normalize_name(name: str) -> str:
+    """Normalize names for search/index matching.
+
+    Strips accents, lowercases, and collapses internal whitespace.
+
+    Raúl  Andrés   -> raul andres
+    MARÍA JOSÉ     -> maria jose
+    """
+    collapsed = ' '.join(name.split())
+    nfkd = unicodedata.normalize('NFKD', collapsed)
+    return ''.join(c for c in nfkd if not unicodedata.combining(c)).lower()
 
 
 def sanitize_dict(d: dict) -> dict:

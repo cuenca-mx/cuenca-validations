@@ -1,6 +1,7 @@
 import datetime as dt
 from typing import Annotated, Optional
 
+from clabe import Clabe
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -26,6 +27,7 @@ from .enums import (
     TransferNetwork,
     UserStatus,
 )
+from .general import NormalizedName
 from .identities import Curp
 
 MAX_PAGE_SIZE = 100
@@ -157,6 +159,9 @@ class UserQuery(QueryParams):
     status: Optional[UserStatus] = None
     identity_uri: Optional[str] = None
     has_curp_document: Optional[bool] = None
+    clabe: Optional[Clabe] = None
+    curp: Optional[Curp] = None
+    name: Optional[NormalizedName] = None
 
 
 class IdentityQuery(QueryParams):

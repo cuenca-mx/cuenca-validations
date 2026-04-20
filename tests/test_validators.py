@@ -2,6 +2,7 @@ import pytest
 
 from cuenca_validations.validators import (
     normalize_email,
+    normalize_name,
     normalize_phone_number,
 )
 
@@ -33,3 +34,19 @@ def test_normalize_email(raw: str, normalized: str) -> None:
 )
 def test_normalize_phone_number(raw: str, normalized: str) -> None:
     assert normalize_phone_number(raw) == normalized
+
+
+@pytest.mark.parametrize(
+    'raw, normalized',
+    [
+        ('Raúl Andrés', 'raul andres'),  # accents + mixed case
+        ('raul andres', 'raul andres'),  # already normalized
+        ('RAÚL ANDRÉS', 'raul andres'),  # uppercase with accents
+        ('ÑANDÚ', 'nandu'),  # ñ and accent
+        ('María  José', 'maria jose'),  # collapse internal whitespace
+        ('  Raúl  ', 'raul'),  # trim + lowercase
+        ('Nuño Garçía', 'nuno garcia'),  # tilde and cedilla
+    ],
+)
+def test_normalize_name(raw: str, normalized: str) -> None:
+    assert normalize_name(raw) == normalized
