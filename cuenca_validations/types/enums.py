@@ -738,6 +738,7 @@ class IncomeType(str, Enum):
     support_from_third_party = 'support_from_third_party'
     variable = 'variable'
 
+
 class RequiredAction(str, Enum):
     level_up_required = 'level_up_required'
     level_up_invitation = 'level_up_invitation'
