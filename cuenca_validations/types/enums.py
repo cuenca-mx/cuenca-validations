@@ -737,3 +737,9 @@ class IncomeType(str, Enum):
     freelance = 'freelance'
     support_from_third_party = 'support_from_third_party'
     variable = 'variable'
+
+
+class RequiredAction(str, Enum):
+    level_up_required = 'level_up_required'
+    level_up_invitation = 'level_up_invitation'
+    fix_documents = 'fix_documents'
