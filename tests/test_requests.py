@@ -1,5 +1,3 @@
-from typing import Optional
-
 import pytest
 from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -40,52 +38,15 @@ def test_file_cuenca_url_invalid() -> None:
         UserTOSAgreementRequest(**request_data)
 
 
-_VERIFICATION_ID = 'VEKp662Yrf6lMztl0-9qzk7Q'
-_VALID_COORDINATE = (19.432607, -99.133209)
-
-
-@pytest.mark.parametrize(
-    ('payload', 'expected_dump'),
-    [
-        pytest.param(
-            {
-                'verification_id': _VERIFICATION_ID,
-                'location': _VALID_COORDINATE,
-            },
-            {
-                'verification_id': _VERIFICATION_ID,
-                'location': {
-                    'latitude': 19.432607,
-                    'longitude': -99.133209,
-                },
-            },
-            id='serializes',
-        ),
-        pytest.param(
-            {'location': _VALID_COORDINATE},
-            None,
-            id='missing_verification_id',
-        ),
-        pytest.param(
-            {
-                'verification_id': _VERIFICATION_ID,
-                'location': (91.0, 0.0),
-            },
-            None,
-            id='bad_coordinate',
-        ),
-    ],
-)
-def test_password_reset_request(
-    payload: DictStrAny,
-    expected_dump: Optional[DictStrAny],
-) -> None:
-    if expected_dump is None:
-        with pytest.raises(ValidationError):
-            PasswordResetRequest.model_validate(payload)
-    else:
-        req = PasswordResetRequest.model_validate(payload)
-        assert req.model_dump() == expected_dump
+def test_password_reset_request_serializes() -> None:
+    payload: DictStrAny = {'location': (19.432607, -99.133209)}
+    req = PasswordResetRequest.model_validate(payload)
+    assert req.model_dump() == {
+        'location': {
+            'latitude': 19.432607,
+            'longitude': -99.133209,
+        },
+    }
 
 
 def test_update_user_requires_at_least_one_param():

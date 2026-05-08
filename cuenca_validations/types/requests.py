@@ -456,7 +456,6 @@ class UserTOSAgreementRequest(BaseRequest):
 
 
 class PasswordResetRequest(BaseRequest):
-    verification_id: str
     location: Coordinate
 
 
