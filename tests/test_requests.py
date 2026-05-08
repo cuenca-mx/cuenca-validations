@@ -40,7 +40,6 @@ def test_file_cuenca_url_invalid() -> None:
         UserTOSAgreementRequest(**request_data)
 
 
-_VERIFICATION_ID = 'VEKp662Yrf6lMztl0-9qzk7Q'
 _VALID_COORDINATE = (19.432607, -99.133209)
 
 
@@ -48,12 +47,8 @@ _VALID_COORDINATE = (19.432607, -99.133209)
     ('payload', 'expected_dump'),
     [
         pytest.param(
+            {'location': _VALID_COORDINATE},
             {
-                'verification_id': _VERIFICATION_ID,
-                'location': _VALID_COORDINATE,
-            },
-            {
-                'verification_id': _VERIFICATION_ID,
                 'location': {
                     'latitude': 19.432607,
                     'longitude': -99.133209,
@@ -62,15 +57,12 @@ _VALID_COORDINATE = (19.432607, -99.133209)
             id='serializes',
         ),
         pytest.param(
-            {'location': _VALID_COORDINATE},
+            {},
             None,
-            id='missing_verification_id',
+            id='missing_location',
         ),
         pytest.param(
-            {
-                'verification_id': _VERIFICATION_ID,
-                'location': (91.0, 0.0),
-            },
+            {'location': (91.0, 0.0)},
             None,
             id='bad_coordinate',
         ),
