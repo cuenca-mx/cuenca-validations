@@ -455,6 +455,10 @@ class UserTOSAgreementRequest(BaseRequest):
     signature_image_url: Optional[FileCuencaUrl] = None
 
 
+class PasswordResetRequest(BaseRequest):
+    location: Coordinate
+
+
 class UserRequest(BaseRequest):
     curp: Curp = Field(
         description=(

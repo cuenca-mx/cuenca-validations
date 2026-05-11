@@ -4,6 +4,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
+    PasswordResetRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
     VerificationRequest,
@@ -35,6 +36,17 @@ def test_file_cuenca_url_invalid() -> None:
     )
     with pytest.raises(ValidationError):
         UserTOSAgreementRequest(**request_data)
+
+
+def test_password_reset_request_serializes() -> None:
+    payload: DictStrAny = {'location': (19.432607, -99.133209)}
+    req = PasswordResetRequest.model_validate(payload)
+    assert req.model_dump() == {
+        'location': {
+            'latitude': 19.432607,
+            'longitude': -99.133209,
+        },
+    }
 
 
 def test_update_user_requires_at_least_one_param():
