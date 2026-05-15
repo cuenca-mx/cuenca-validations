@@ -314,9 +314,8 @@ class FraudFundsTransferRequest(BaseRequest):
     clabe: Clabe
     concepto: NonEmptyStr
     amount: Optional[StrictPositiveInt] = None
-    reason: Optional[NonEmptyStr] = None
-    request_id: Optional[NonEmptyStr] = None
-    requested_by: Optional[NonEmptyStr] = None
+    reason: NonEmptyStr
+    request_id: NonEmptyStr
 
 
 class FraudFundsTransferAcceptedResponse(BaseRequest):
