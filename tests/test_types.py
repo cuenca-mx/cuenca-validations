@@ -683,6 +683,7 @@ def test_fraud_funds_transfer_models():
         clabe='646180157098510917',
         concepto='  fondos fraude  ',
         amount=100,
+        reason='fraud_report',
         request_id='REQ123',
     )
 
@@ -692,6 +693,7 @@ def test_fraud_funds_transfer_models():
         'clabe': '646180157098510917',
         'concepto': 'fondos fraude',
         'amount': 100,
+        'reason': 'fraud_report',
         'request_id': 'REQ123',
     }
 
