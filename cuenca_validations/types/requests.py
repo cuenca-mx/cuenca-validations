@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, Literal, Optional, Self, Union
 
 from clabe import Clabe, validate_clabe
 from pydantic import (
@@ -313,10 +313,10 @@ class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Clabe
     concepto: NonEmptyStr
-    amount: Optional[StrictPositiveInt] = None
-    reason: Optional[NonEmptyStr] = None
-    request_id: Optional[NonEmptyStr] = None
-    requested_by: Optional[NonEmptyStr] = None
+    amount: StrictPositiveInt | None = None
+    reason: NonEmptyStr | None = None
+    request_id: NonEmptyStr | None = None
+    requested_by: NonEmptyStr | None = None
 
     @field_validator('clabe', mode='before')
     @classmethod
@@ -339,15 +339,15 @@ class FraudFundsTransferResultEvent(BaseRequest):
     ]
     request_id: NonEmptyStr
     user_id: NonEmptyStr
-    transaction_id: Optional[NonEmptyStr] = None
-    amount: Optional[StrictPositiveInt] = None
-    clave_rastreo: Optional[NonEmptyStr] = None
-    reason_code: Optional[NonEmptyStr] = None
-    message: Optional[NonEmptyStr] = None
+    transaction_id: NonEmptyStr | None = None
+    amount: StrictPositiveInt | None = None
+    clave_rastreo: NonEmptyStr | None = None
+    reason_code: NonEmptyStr | None = None
+    message: NonEmptyStr | None = None
     completed_at: dt.datetime
 
     @model_validator(mode='after')
-    def validate_payload(self) -> 'FraudFundsTransferResultEvent':
+    def validate_payload(self) -> Self:
         if self.event_type == 'fraud_funds_transfer.succeeded':
             required = {
                 'transaction_id': self.transaction_id,
