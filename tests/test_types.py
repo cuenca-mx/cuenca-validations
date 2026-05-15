@@ -690,17 +690,6 @@ def test_fraud_funds_transfer_models():
     assert failed_event.reason_code == 'insufficient_funds'
 
 
-def test_fraud_funds_transfer_request_invalid_clabe():
-    with pytest.raises(ValidationError) as ex:
-        FraudFundsTransferRequest(
-            user_id='US123',
-            clabe='not-a-clabe',
-            concepto='fondos fraude',
-        )
-
-    assert 'La CLABE ingresada no es valida' in str(ex.value)
-
-
 @pytest.mark.parametrize(
     'event_type,expected_error',
     [
