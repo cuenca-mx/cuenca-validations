@@ -1,7 +1,7 @@
 import datetime as dt
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any, Literal, Optional, Union
 
-from clabe import Clabe
+from clabe import Clabe, validate_clabe
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -307,6 +307,69 @@ class WalletTransactionRequest(BaseRequest):
     wallet_uri: str
     transaction_type: WalletTransactionType
     amount: StrictPositiveInt
+
+
+class FraudFundsTransferRequest(BaseRequest):
+    user_id: NonEmptyStr
+    clabe: Clabe
+    concepto: NonEmptyStr
+    amount: Optional[StrictPositiveInt] = None
+    reason: Optional[NonEmptyStr] = None
+    request_id: Optional[NonEmptyStr] = None
+    requested_by: Optional[NonEmptyStr] = None
+
+    @field_validator('clabe', mode='before')
+    @classmethod
+    def validate_clabe_format(cls, clabe: str) -> str:
+        if not validate_clabe(clabe):
+            raise ValueError('La CLABE ingresada no es valida')
+        return clabe
+
+
+class FraudFundsTransferAcceptedResponse(BaseRequest):
+    request_id: NonEmptyStr
+    status: Literal['queued']
+
+
+class FraudFundsTransferResultEvent(BaseRequest):
+    schema_version: NonEmptyStr
+    event_type: Literal[
+        'fraud_funds_transfer.succeeded',
+        'fraud_funds_transfer.failed',
+    ]
+    request_id: NonEmptyStr
+    user_id: NonEmptyStr
+    transaction_id: Optional[NonEmptyStr] = None
+    amount: Optional[StrictPositiveInt] = None
+    clave_rastreo: Optional[NonEmptyStr] = None
+    reason_code: Optional[NonEmptyStr] = None
+    message: Optional[NonEmptyStr] = None
+    completed_at: dt.datetime
+
+    @model_validator(mode='after')
+    def validate_payload(self) -> 'FraudFundsTransferResultEvent':
+        if self.event_type == 'fraud_funds_transfer.succeeded':
+            required = {
+                'transaction_id': self.transaction_id,
+                'amount': self.amount,
+            }
+            missing = [
+                field for field, value in required.items() if value is None
+            ]
+            if missing:
+                raise ValueError(
+                    f'{", ".join(missing)} required for succeeded event'
+                )
+            return self
+
+        required = {
+            'reason_code': self.reason_code,
+            'message': self.message,
+        }
+        missing = [field for field, value in required.items() if value is None]
+        if missing:
+            raise ValueError(f'{", ".join(missing)} required for failed event')
+        return self
 
 
 class FraudValidationRequest(BaseModel):
