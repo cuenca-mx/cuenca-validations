@@ -1,9 +1,7 @@
-from __future__ import annotations
-
 import datetime as dt
 from typing import Annotated, Any, Literal, Optional, Union
 
-from clabe import Clabe, validate_clabe
+from clabe import Clabe
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -315,17 +313,10 @@ class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Clabe
     concepto: NonEmptyStr
-    amount: StrictPositiveInt | None = None
-    reason: NonEmptyStr | None = None
-    request_id: NonEmptyStr | None = None
-    requested_by: NonEmptyStr | None = None
-
-    @field_validator('clabe', mode='before')
-    @classmethod
-    def validate_clabe_format(cls, clabe: str) -> str:
-        if not validate_clabe(clabe):
-            raise ValueError('La CLABE ingresada no es valida')
-        return clabe
+    amount: Optional[StrictPositiveInt] = None
+    reason: Optional[NonEmptyStr] = None
+    request_id: Optional[NonEmptyStr] = None
+    requested_by: Optional[NonEmptyStr] = None
 
 
 class FraudFundsTransferAcceptedResponse(BaseRequest):
@@ -341,11 +332,11 @@ class FraudFundsTransferResultEvent(BaseRequest):
     ]
     request_id: NonEmptyStr
     user_id: NonEmptyStr
-    transaction_id: NonEmptyStr | None = None
-    amount: StrictPositiveInt | None = None
-    clave_rastreo: NonEmptyStr | None = None
-    reason_code: NonEmptyStr | None = None
-    message: NonEmptyStr | None = None
+    transaction_id: Optional[NonEmptyStr] = None
+    amount: Optional[StrictPositiveInt] = None
+    clave_rastreo: Optional[NonEmptyStr] = None
+    reason_code: Optional[NonEmptyStr] = None
+    message: Optional[NonEmptyStr] = None
     completed_at: dt.datetime
 
     @model_validator(mode='after')
