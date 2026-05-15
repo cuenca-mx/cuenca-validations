@@ -12,6 +12,9 @@ from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     CardQuery,
+    FraudFundsTransferAcceptedResponse,
+    FraudFundsTransferRequest,
+    FraudFundsTransferResultEvent,
     JSONEncoder,
     QueryParams,
     SantizedDict,
@@ -634,6 +637,96 @@ def test_get_monthly_movements_type_name() -> None:
 
 def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
+
+
+def test_fraud_funds_transfer_models():
+    request = FraudFundsTransferRequest(
+        user_id='US123',
+        clabe='646180157098510917',
+        concepto='  fondos fraude  ',
+        amount=100,
+        request_id='REQ123',
+    )
+
+    assert request.concepto == 'fondos fraude'
+    assert request.model_dump() == {
+        'user_id': 'US123',
+        'clabe': '646180157098510917',
+        'concepto': 'fondos fraude',
+        'amount': 100,
+        'request_id': 'REQ123',
+    }
+
+    response = FraudFundsTransferAcceptedResponse(
+        request_id='REQ123',
+        status='queued',
+    )
+
+    assert response.status == 'queued'
+
+    succeeded_event = FraudFundsTransferResultEvent(
+        schema_version='1.0',
+        event_type='fraud_funds_transfer.succeeded',
+        request_id='REQ123',
+        user_id='US123',
+        transaction_id='TR123',
+        amount=100,
+        clave_rastreo='RASTREO123',
+        completed_at=now,
+    )
+
+    assert succeeded_event.transaction_id == 'TR123'
+
+    failed_event = FraudFundsTransferResultEvent(
+        schema_version='1.0',
+        event_type='fraud_funds_transfer.failed',
+        request_id='REQ123',
+        user_id='US123',
+        reason_code='insufficient_funds',
+        message='Insufficient funds',
+        completed_at=now,
+    )
+
+    assert failed_event.reason_code == 'insufficient_funds'
+
+
+def test_fraud_funds_transfer_request_invalid_clabe():
+    with pytest.raises(ValidationError) as ex:
+        FraudFundsTransferRequest(
+            user_id='US123',
+            clabe='not-a-clabe',
+            concepto='fondos fraude',
+        )
+
+    assert 'La CLABE ingresada no es valida' in str(ex.value)
+
+
+@pytest.mark.parametrize(
+    'event_type,expected_error',
+    [
+        (
+            'fraud_funds_transfer.succeeded',
+            'transaction_id, amount required for succeeded event',
+        ),
+        (
+            'fraud_funds_transfer.failed',
+            'reason_code, message required for failed event',
+        ),
+    ],
+)
+def test_fraud_funds_transfer_result_event_requires_payload(
+    event_type, expected_error
+):
+    with pytest.raises(ValidationError) as ex:
+        FraudFundsTransferResultEvent(
+            schema_version='1.0',
+            event_type=event_type,
+            request_id='REQ123',
+            user_id='US123',
+            completed_at=now,
+        )
+
+    assert expected_error in str(ex.value)
 
 
 @pytest.mark.parametrize(
