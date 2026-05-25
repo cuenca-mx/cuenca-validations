@@ -403,9 +403,8 @@ class CurpValidationRequest(BaseRequest):
     @classmethod
     def validate_state_of_birth(cls, values: DictStrAny) -> DictStrAny:
         if (
-            'country_of_birth' in values
-            and values['country_of_birth'] == 'MX'
-            and 'state_of_birth' not in values
+            values.get('country_of_birth') == 'MX'
+            and values.get('state_of_birth') is None
         ):
             raise ValueError('state_of_birth required')
         return values
@@ -421,7 +420,7 @@ class CurpValidationRequest(BaseRequest):
             'country_of_birth',
             'gender',
         ]
-        missing = [r for r in required if r not in values.keys()]
+        missing = [r for r in required if values.get(r) is None]
         if not manual_curp and missing:
             raise ValueError(f'values required: {",".join(missing)}')
         return values
