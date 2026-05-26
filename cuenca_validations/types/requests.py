@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any, Literal, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -152,6 +152,10 @@ class StrictTransferRequest(BaseTransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber] = Field(
         description='Destination Clabe or Card number'
     )
+
+
+class UpdateTransferRequest(BaseRequest):
+    action: Literal['approve', 'reject']
 
 
 class CardUpdateRequest(BaseRequest):

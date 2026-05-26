@@ -5,6 +5,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
     PasswordResetRequest,
+    UpdateTransferRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
     VerificationRequest,
@@ -94,3 +95,30 @@ def test_user_update_request_normalizes_email() -> None:
 def test_user_update_request_normalizes_phone() -> None:
     req = UserUpdateRequest(phone_number=PhoneNumber('+116504401222'))
     assert req.phone_number == '+16504401222'
+
+
+@pytest.mark.parametrize('action', ['approve', 'reject'])
+def test_update_transfer_request_valid_action(action: str) -> None:
+    req = UpdateTransferRequest.model_validate({'action': action})
+    assert req.action == action
+    assert req.model_dump() == {'action': action}
+
+
+def test_update_transfer_request_invalid_action() -> None:
+    with pytest.raises(ValidationError) as ex:
+        UpdateTransferRequest.model_validate({'action': 'cancel'})
+    assert 'action' in str(ex.value)
+
+
+def test_update_transfer_request_missing_action() -> None:
+    with pytest.raises(ValidationError) as ex:
+        UpdateTransferRequest.model_validate({})
+    assert 'action' in str(ex.value)
+
+
+def test_update_transfer_request_forbids_extra() -> None:
+    with pytest.raises(ValidationError) as ex:
+        UpdateTransferRequest.model_validate(
+            {'action': 'approve', 'foo': 'bar'}
+        )
+    assert 'Extra inputs are not permitted' in str(ex.value)
