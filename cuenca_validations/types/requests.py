@@ -45,6 +45,7 @@ from ..types.enums import (
     State,
     TermsOfService,
     TrackDataMethod,
+    TransactionStatus,
     TransactionTokenValidationStatus,
     UserCardNotification,
     UserStatus,
@@ -155,7 +156,10 @@ class StrictTransferRequest(BaseTransferRequest):
 
 
 class UpdateTransferRequest(BaseRequest):
-    action: Literal['approve', 'reject']
+    status: Literal[
+        TransactionStatus.succeeded,
+        TransactionStatus.failed,
+    ]
 
 
 class CardUpdateRequest(BaseRequest):

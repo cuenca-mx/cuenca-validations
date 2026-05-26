@@ -97,28 +97,31 @@ def test_user_update_request_normalizes_phone() -> None:
     assert req.phone_number == '+16504401222'
 
 
-@pytest.mark.parametrize('action', ['approve', 'reject'])
-def test_update_transfer_request_valid_action(action: str) -> None:
-    req = UpdateTransferRequest.model_validate({'action': action})
-    assert req.action == action
-    assert req.model_dump() == {'action': action}
+@pytest.mark.parametrize('status', ['succeeded', 'failed'])
+def test_update_transfer_request_valid_status(status: str) -> None:
+    req = UpdateTransferRequest.model_validate({'status': status})
+    assert req.status == status
+    assert req.model_dump() == {'status': status}
 
 
-def test_update_transfer_request_invalid_action() -> None:
+@pytest.mark.parametrize(
+    'status', ['created', 'submitted', 'in_review', 'cancelled']
+)
+def test_update_transfer_request_invalid_status(status: str) -> None:
     with pytest.raises(ValidationError) as ex:
-        UpdateTransferRequest.model_validate({'action': 'cancel'})
-    assert 'action' in str(ex.value)
+        UpdateTransferRequest.model_validate({'status': status})
+    assert 'status' in str(ex.value)
 
 
-def test_update_transfer_request_missing_action() -> None:
+def test_update_transfer_request_missing_status() -> None:
     with pytest.raises(ValidationError) as ex:
         UpdateTransferRequest.model_validate({})
-    assert 'action' in str(ex.value)
+    assert 'status' in str(ex.value)
 
 
 def test_update_transfer_request_forbids_extra() -> None:
     with pytest.raises(ValidationError) as ex:
         UpdateTransferRequest.model_validate(
-            {'action': 'approve', 'foo': 'bar'}
+            {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
