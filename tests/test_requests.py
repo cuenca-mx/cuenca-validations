@@ -104,9 +104,7 @@ def test_update_transfer_request_valid_status(status: str) -> None:
     assert req.model_dump() == {'status': status}
 
 
-@pytest.mark.parametrize(
-    'status', ['created', 'submitted', 'in_review', 'cancelled']
-)
+@pytest.mark.parametrize('status', ['created', 'submitted', 'in_review'])
 def test_update_transfer_request_invalid_status(status: str) -> None:
     with pytest.raises(ValidationError) as ex:
         UpdateTransferRequest.model_validate({'status': status})

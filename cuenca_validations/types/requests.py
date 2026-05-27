@@ -156,9 +156,7 @@ class StrictTransferRequest(BaseTransferRequest):
 
 
 class UpdateTransferRequest(BaseRequest):
-    status: TransactionStatus = Field(
-        description='Must be succeeded or failed',
-    )
+    status: TransactionStatus
 
     @field_validator('status')
     @classmethod
