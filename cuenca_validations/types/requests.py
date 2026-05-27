@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Any, Literal, Optional, Union
+from typing import Annotated, Any, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -156,10 +156,19 @@ class StrictTransferRequest(BaseTransferRequest):
 
 
 class UpdateTransferRequest(BaseRequest):
-    status: Literal[
-        TransactionStatus.succeeded,
-        TransactionStatus.failed,
-    ]
+    status: TransactionStatus = Field(
+        description='Must be succeeded or failed',
+    )
+
+    @field_validator('status')
+    @classmethod
+    def validate_status(cls, status: TransactionStatus) -> TransactionStatus:
+        if status not in (
+            TransactionStatus.succeeded,
+            TransactionStatus.failed,
+        ):
+            raise ValueError('status must be succeeded or failed')
+        return status
 
 
 class CardUpdateRequest(BaseRequest):
