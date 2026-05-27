@@ -45,6 +45,7 @@ from ..types.enums import (
     State,
     TermsOfService,
     TrackDataMethod,
+    TransactionStatus,
     TransactionTokenValidationStatus,
     UserCardNotification,
     UserStatus,
@@ -152,6 +153,20 @@ class StrictTransferRequest(BaseTransferRequest):
     account_number: Union[Clabe, StrictPaymentCardNumber] = Field(
         description='Destination Clabe or Card number'
     )
+
+
+class UpdateTransferRequest(BaseRequest):
+    status: TransactionStatus
+
+    @field_validator('status')
+    @classmethod
+    def validate_status(cls, status: TransactionStatus) -> TransactionStatus:
+        if status not in (
+            TransactionStatus.succeeded,
+            TransactionStatus.failed,
+        ):
+            raise ValueError('status must be succeeded or failed')
+        return status
 
 
 class CardUpdateRequest(BaseRequest):
