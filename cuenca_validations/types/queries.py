@@ -154,9 +154,11 @@ class WalletTransactionQuery(QueryParams):
 
 
 class UserQuery(QueryParams):
+    ids: Optional[list[str]] = Field(default=None, max_length=MAX_PAGE_SIZE)
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
     status: Optional[UserStatus] = None
+    is_blocked: Optional[bool] = None
     identity_uri: Optional[str] = None
     has_curp_document: Optional[bool] = None
     clabe: Optional[Clabe] = None
