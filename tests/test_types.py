@@ -257,6 +257,11 @@ def test_user_query_accepts_ids_and_is_blocked():
     assert isinstance(dumped['ids'], list)
 
 
+def test_query_params_accepts_ids():
+    query = QueryParams(ids=['US1', 'US2'])
+    assert query.ids == ['US1', 'US2']
+
+
 def test_user_query_rejects_ids_over_limit():
     with pytest.raises(ValidationError):
         UserQuery(ids=[f'US{i}' for i in range(101)])

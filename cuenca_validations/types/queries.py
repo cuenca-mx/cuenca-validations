@@ -40,6 +40,7 @@ class QueryParams(BaseModel):
     ]
     limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
+    ids: Optional[list[str]] = Field(default=None, max_length=MAX_PAGE_SIZE)
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
     related_transaction: Optional[str] = None
@@ -154,7 +155,6 @@ class WalletTransactionQuery(QueryParams):
 
 
 class UserQuery(QueryParams):
-    ids: Optional[list[str]] = Field(default=None, max_length=MAX_PAGE_SIZE)
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
     status: Optional[UserStatus] = None
