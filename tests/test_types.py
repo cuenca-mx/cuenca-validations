@@ -12,9 +12,10 @@ from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     CardQuery,
-    FraudFundsTransferAcceptedResponse,
+    FraudFundsTransferErrorResponse,
+    FraudFundsTransferReasonCode,
     FraudFundsTransferRequest,
-    FraudFundsTransferResultEvent,
+    FraudFundsTransferSuccessResponse,
     JSONEncoder,
     QueryParams,
     SantizedDict,
@@ -679,83 +680,55 @@ def test_bank_account_validation_clabe_request():
 
 def test_fraud_funds_transfer_models():
     request = FraudFundsTransferRequest(
+        request_id='f0a2b3-request-hash',
         user_id='US123',
         clabe='646180157098510917',
-        concepto='  fondos fraude  ',
-        amount=100,
-        reason='fraud_report',
-        request_id='REQ123',
+        amount=10000,
+        concepto='  Devolución fraude  ',
     )
 
-    assert request.concepto == 'fondos fraude'
+    assert request.concepto == 'Devolución fraude'
     assert request.model_dump() == {
+        'request_id': 'f0a2b3-request-hash',
         'user_id': 'US123',
         'clabe': '646180157098510917',
-        'concepto': 'fondos fraude',
-        'amount': 100,
-        'reason': 'fraud_report',
-        'request_id': 'REQ123',
+        'amount': 10000,
+        'concepto': 'Devolución fraude',
     }
 
-    response = FraudFundsTransferAcceptedResponse(
-        request_id='REQ123',
-        status='queued',
-    )
-
-    assert response.status == 'queued'
-
-    succeeded_event = FraudFundsTransferResultEvent(
-        schema_version='1.0',
-        event_type='fraud_funds_transfer.succeeded',
-        request_id='REQ123',
+    request_full_balance = FraudFundsTransferRequest(
+        request_id='f0a2b3-request-hash',
         user_id='US123',
-        transaction_id='TR123',
-        amount=100,
-        clave_rastreo='RASTREO123',
-        completed_at=now,
+        clabe='646180157098510917',
     )
 
-    assert succeeded_event.transaction_id == 'TR123'
+    assert request_full_balance.model_dump() == {
+        'request_id': 'f0a2b3-request-hash',
+        'user_id': 'US123',
+        'clabe': '646180157098510917',
+    }
 
-    failed_event = FraudFundsTransferResultEvent(
-        schema_version='1.0',
-        event_type='fraud_funds_transfer.failed',
-        request_id='REQ123',
-        user_id='US123',
-        reason_code='insufficient_funds',
-        message='Insufficient funds',
-        completed_at=now,
+    success = FraudFundsTransferSuccessResponse(
+        transaction_id='SP123',
+        amount=10000,
+        clave_rastreo='CUENCA123',
     )
 
-    assert failed_event.reason_code == 'insufficient_funds'
+    assert success.model_dump() == {
+        'transaction_id': 'SP123',
+        'amount': 10000,
+        'clave_rastreo': 'CUENCA123',
+    }
 
+    error = FraudFundsTransferErrorResponse(
+        reason_code=FraudFundsTransferReasonCode.insufficient_funds,
+        message='Fondos insuficientes',
+    )
 
-@pytest.mark.parametrize(
-    'event_type,expected_error',
-    [
-        (
-            'fraud_funds_transfer.succeeded',
-            'transaction_id, amount required for succeeded event',
-        ),
-        (
-            'fraud_funds_transfer.failed',
-            'reason_code, message required for failed event',
-        ),
-    ],
-)
-def test_fraud_funds_transfer_result_event_requires_payload(
-    event_type, expected_error
-):
-    with pytest.raises(ValidationError) as ex:
-        FraudFundsTransferResultEvent(
-            schema_version='1.0',
-            event_type=event_type,
-            request_id='REQ123',
-            user_id='US123',
-            completed_at=now,
-        )
-
-    assert expected_error in str(ex.value)
+    assert error.model_dump() == {
+        'reason_code': 'INSUFFICIENT_FUNDS',
+        'message': 'Fondos insuficientes',
+    }
 
 
 @pytest.mark.parametrize(
