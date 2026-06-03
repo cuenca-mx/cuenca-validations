@@ -24,7 +24,6 @@ from .enums import (
     KYCFileType,
     SessionType,
     TermsOfService,
-    TransactionStatus,
     TransferNetwork,
     UserStatus,
 )
@@ -152,11 +151,6 @@ class WalletQuery(QueryParams):
 
 class WalletTransactionQuery(QueryParams):
     wallet_uri: Optional[str] = None
-
-
-class FraudFundsTransferQuery(QueryParams):
-    request_id: Optional[str] = None
-    status: Optional[TransactionStatus] = None
 
 
 class UserQuery(QueryParams):
