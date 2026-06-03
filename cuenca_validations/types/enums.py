@@ -79,6 +79,14 @@ class TransactionStatus(str, Enum):
     failed = 'failed'
 
 
+class FraudFundsTransferReasonCode(str, Enum):
+    user_not_found = 'USER_NOT_FOUND'
+    user_not_fraud_blocked = 'USER_NOT_FRAUD_BLOCKED'
+    insufficient_funds = 'INSUFFICIENT_FUNDS'
+    clabe_invalid = 'CLABE_INVALID'
+    internal_error = 'INTERNAL_ERROR'
+
+
 class TransferNetwork(str, Enum):
     internal = 'internal'
     spei = 'spei'
