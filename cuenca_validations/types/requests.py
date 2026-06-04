@@ -29,7 +29,6 @@ from ..types.enums import (
     Country,
     EcommerceIndicator,
     FileExtension,
-    FraudFundsTransferReasonCode,
     Gender,
     IncomeType,
     IssuerNetwork,
@@ -331,17 +330,6 @@ class FraudFundsTransferRequest(BaseRequest):
     clabe: Clabe
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
-
-
-class FraudFundsTransferSuccessResponse(BaseRequest):
-    transaction_id: NonEmptyStr
-    amount: StrictPositiveInt
-    clave_rastreo: NonEmptyStr
-
-
-class FraudFundsTransferErrorResponse(BaseRequest):
-    reason_code: FraudFundsTransferReasonCode
-    message: NonEmptyStr
 
 
 class FraudValidationRequest(BaseModel):
