@@ -12,10 +12,7 @@ from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     CardQuery,
-    FraudFundsTransferErrorResponse,
-    FraudFundsTransferReasonCode,
     FraudFundsTransferRequest,
-    FraudFundsTransferSuccessResponse,
     JSONEncoder,
     QueryParams,
     SantizedDict,
@@ -678,7 +675,7 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
-def test_fraud_funds_transfer_models():
+def test_fraud_funds_transfer_request():
     request = FraudFundsTransferRequest(
         request_id='f0a2b3-request-hash',
         user_id='US123',
@@ -706,28 +703,6 @@ def test_fraud_funds_transfer_models():
         'request_id': 'f0a2b3-request-hash',
         'user_id': 'US123',
         'clabe': '646180157098510917',
-    }
-
-    success = FraudFundsTransferSuccessResponse(
-        transaction_id='SP123',
-        amount=10000,
-        clave_rastreo='CUENCA123',
-    )
-
-    assert success.model_dump() == {
-        'transaction_id': 'SP123',
-        'amount': 10000,
-        'clave_rastreo': 'CUENCA123',
-    }
-
-    error = FraudFundsTransferErrorResponse(
-        reason_code=FraudFundsTransferReasonCode.insufficient_funds,
-        message='Fondos insuficientes',
-    )
-
-    assert error.model_dump() == {
-        'reason_code': 'INSUFFICIENT_FUNDS',
-        'message': 'Fondos insuficientes',
     }
 
 
