@@ -248,28 +248,33 @@ def test_user_query_rejects_invalid(field, value):
 
 
 def test_user_query_accepts_ids_and_is_blocked():
-    query = UserQuery(ids=['US1', 'US2'], is_blocked=True)
-    assert query.ids == ['US1', 'US2']
+    query = UserQuery(ids='US1,US2', is_blocked=True)
+    assert query.ids == 'US1,US2'
     assert query.is_blocked is True
     dumped = query.model_dump(exclude_none=True)
-    assert dumped['ids'] == ['US1', 'US2']
+    assert dumped['ids'] == 'US1,US2'
     assert dumped['is_blocked'] is True
-    assert isinstance(dumped['ids'], list)
+    assert isinstance(dumped['ids'], str)
 
 
 def test_query_params_accepts_ids():
-    query = QueryParams(ids=['US1', 'US2'])
-    assert query.ids == ['US1', 'US2']
+    query = QueryParams(ids='US1,US2')
+    assert query.ids == 'US1,US2'
+
+
+def test_query_params_ids_none():
+    query = QueryParams(ids=None)
+    assert query.ids is None
 
 
 def test_user_query_rejects_ids_over_limit():
     with pytest.raises(ValidationError):
-        UserQuery(ids=[f'US{i}' for i in range(101)])
+        UserQuery(ids=','.join(f'US{i}' for i in range(101)))
 
 
-def test_user_query_ids_empty_list_ok():
-    query = UserQuery(ids=[])
-    assert query.ids == []
+def test_user_query_ids_empty_string_ok():
+    query = UserQuery(ids='')
+    assert query.ids == ''
     assert 'ids' in query.model_dump(exclude_none=True)
 
 
