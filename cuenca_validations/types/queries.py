@@ -40,6 +40,7 @@ class QueryParams(BaseModel):
     ]
     limit: Optional[PositiveInt] = None
     user_id: Optional[str] = None
+    ids: Optional[str] = None
     created_before: Optional[dt.datetime] = None
     created_after: Optional[dt.datetime] = None
     related_transaction: Optional[str] = None
@@ -63,6 +64,18 @@ class QueryParams(BaseModel):
             },
         },
     )
+
+    @field_validator('ids')
+    @classmethod
+    def validate_ids_count(cls, value: Optional[str]) -> Optional[str]:
+        if value is None:
+            return None
+        id_count = len([part for part in value.split(',') if part.strip()])
+        if id_count > MAX_PAGE_SIZE:
+            raise ValueError(
+                f'ids must contain at most {MAX_PAGE_SIZE} values'
+            )
+        return value
 
     def model_dump(self, *args, **kwargs) -> DictStrAny:
         kwargs.setdefault('exclude_none', True)
@@ -157,6 +170,7 @@ class UserQuery(QueryParams):
     phone_number: Optional[str] = None
     email_address: Optional[EmailStr] = None
     status: Optional[UserStatus] = None
+    is_blocked: Optional[bool] = None
     identity_uri: Optional[str] = None
     has_curp_document: Optional[bool] = None
     clabe: Optional[Clabe] = None
