@@ -12,6 +12,7 @@ from pydantic.fields import FieldInfo
 
 from cuenca_validations.types import (
     CardQuery,
+    FraudFundsTransferRequest,
     JSONEncoder,
     QueryParams,
     SantizedDict,
@@ -672,6 +673,33 @@ def test_get_monthly_movements_type_name() -> None:
 
 def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
+
+
+def test_fraud_funds_transfer_request():
+    request = FraudFundsTransferRequest(
+        user_id='US123',
+        clabe='646180157098510917',
+        amount=10000,
+        concepto='  Devolución fraude  ',
+    )
+
+    assert request.concepto == 'Devolución fraude'
+    assert request.model_dump() == {
+        'user_id': 'US123',
+        'clabe': '646180157098510917',
+        'amount': 10000,
+        'concepto': 'Devolución fraude',
+    }
+
+    request_full_balance = FraudFundsTransferRequest(
+        user_id='US123',
+        clabe='646180157098510917',
+    )
+
+    assert request_full_balance.model_dump() == {
+        'user_id': 'US123',
+        'clabe': '646180157098510917',
+    }
 
 
 @pytest.mark.parametrize(

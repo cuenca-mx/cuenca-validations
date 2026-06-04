@@ -324,6 +324,13 @@ class WalletTransactionRequest(BaseRequest):
     amount: StrictPositiveInt
 
 
+class FraudFundsTransferRequest(BaseRequest):
+    user_id: NonEmptyStr
+    clabe: Clabe
+    amount: Optional[StrictPositiveInt] = None
+    concepto: Optional[NonEmptyStr] = None
+
+
 class FraudValidationRequest(BaseModel):
     amount: StrictPositiveInt
     merchant_name: str
