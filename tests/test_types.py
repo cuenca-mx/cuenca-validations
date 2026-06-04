@@ -639,7 +639,6 @@ def test_bank_account_validation_clabe_request():
 
 def test_fraud_funds_transfer_request():
     request = FraudFundsTransferRequest(
-        request_id='f0a2b3-request-hash',
         user_id='US123',
         clabe='646180157098510917',
         amount=10000,
@@ -648,7 +647,6 @@ def test_fraud_funds_transfer_request():
 
     assert request.concepto == 'Devolución fraude'
     assert request.model_dump() == {
-        'request_id': 'f0a2b3-request-hash',
         'user_id': 'US123',
         'clabe': '646180157098510917',
         'amount': 10000,
@@ -656,13 +654,11 @@ def test_fraud_funds_transfer_request():
     }
 
     request_full_balance = FraudFundsTransferRequest(
-        request_id='f0a2b3-request-hash',
         user_id='US123',
         clabe='646180157098510917',
     )
 
     assert request_full_balance.model_dump() == {
-        'request_id': 'f0a2b3-request-hash',
         'user_id': 'US123',
         'clabe': '646180157098510917',
     }

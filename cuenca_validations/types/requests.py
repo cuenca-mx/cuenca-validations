@@ -325,7 +325,6 @@ class WalletTransactionRequest(BaseRequest):
 
 
 class FraudFundsTransferRequest(BaseRequest):
-    request_id: NonEmptyStr
     user_id: NonEmptyStr
     clabe: Clabe
     amount: Optional[StrictPositiveInt] = None
