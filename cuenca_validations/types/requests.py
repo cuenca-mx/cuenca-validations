@@ -326,9 +326,19 @@ class WalletTransactionRequest(BaseRequest):
 
 class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
-    clabe: Clabe
+    clabe: Optional[Clabe] = None
+    bank_code: Optional[str] = None
+    tipo_pago: Optional[int] = None
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
+
+    @model_validator(mode='after')
+    def validate_destination(self) -> 'FraudFundsTransferRequest':
+        if self.clabe is None and self.bank_code is None:
+            raise ValueError('clabe or bank_code required')
+        if self.bank_code is not None and self.tipo_pago is None:
+            raise ValueError('tipo_pago required when using bank_code')
+        return self
 
 
 class FraudValidationRequest(BaseModel):
