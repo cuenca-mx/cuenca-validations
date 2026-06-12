@@ -29,6 +29,7 @@ from ..types.enums import (
     Country,
     EcommerceIndicator,
     FileExtension,
+    FraudFundsTransferTipoPago,
     Gender,
     IncomeType,
     IssuerNetwork,
@@ -328,7 +329,7 @@ class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Optional[Clabe] = None
     bank_code: Optional[str] = None
-    tipo_pago: Optional[int] = None
+    tipo_pago: Optional[FraudFundsTransferTipoPago] = None
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
 

@@ -1,4 +1,4 @@
-from enum import Enum
+from enum import Enum, IntEnum
 
 
 class CardNetwork(str, Enum):
@@ -743,3 +743,9 @@ class RequiredAction(str, Enum):
     level_up_required = 'level_up_required'
     level_up_invitation = 'level_up_invitation'
     fix_documents = 'fix_documents'
+
+
+class FraudFundsTransferTipoPago(IntEnum):
+    participante_participante = 7
+    devolucion_especial_ordenes_aceptadas_acreditadas = 23
+    devolucion_extemporanea_especial_ordenes_acreditadas = 24
