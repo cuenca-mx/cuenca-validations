@@ -732,6 +732,10 @@ def test_fraud_funds_transfer_request(data, expected_dump):
             dict(user_id='US123', bank_code='40012', tipo_pago=1),
             'Input should be 7, 23 or 24',
         ),
+        (
+            dict(user_id='US123', bank_code='99999', tipo_pago=7),
+            'Not a valid bank code',
+        ),
     ],
 )
 def test_fraud_funds_transfer_request_invalid(data, expected_error):

@@ -67,6 +67,7 @@ from .card import (
     StrictPaymentCardNumber,
 )
 from .general import (
+    BankCode,
     LogConfig,
     NonEmptyStr,
     SerializableAnyUrl,
@@ -328,7 +329,7 @@ class WalletTransactionRequest(BaseRequest):
 class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Optional[Clabe] = None
-    bank_code: Optional[str] = None
+    bank_code: Optional[BankCode] = None
     tipo_pago: Optional[FraudFundsTransferTipoPago] = None
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
