@@ -747,5 +747,3 @@ class RequiredAction(str, Enum):
 
 class FraudFundsTransferTipoPago(IntEnum):
     participante_participante = 7
-    devolucion_especial_ordenes_aceptadas_acreditadas = 23
-    devolucion_extemporanea_especial_ordenes_acreditadas = 24

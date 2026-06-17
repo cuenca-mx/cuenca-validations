@@ -696,23 +696,20 @@ def test_bank_account_validation_clabe_request():
             dict(user_id='US123', clabe='646180157098510917'),
             dict(user_id='US123', clabe='646180157098510917'),
         ),
-        *[
-            (
-                dict(
-                    user_id='US123',
-                    bank_code='40012',
-                    tipo_pago=tipo_pago,
-                    amount=5000,
-                ),
-                dict(
-                    user_id='US123',
-                    bank_code='40012',
-                    tipo_pago=tipo_pago,
-                    amount=5000,
-                ),
-            )
-            for tipo_pago in (7, 23, 24)
-        ],
+        (
+            dict(
+                user_id='US123',
+                bank_code='40012',
+                tipo_pago=7,
+                amount=5000,
+            ),
+            dict(
+                user_id='US123',
+                bank_code='40012',
+                tipo_pago=7,
+                amount=5000,
+            ),
+        ),
     ],
 )
 def test_fraud_funds_transfer_request(data, expected_dump):
@@ -730,7 +727,11 @@ def test_fraud_funds_transfer_request(data, expected_dump):
         ),
         (
             dict(user_id='US123', bank_code='40012', tipo_pago=1),
-            'Input should be 7, 23 or 24',
+            'Input should be 7',
+        ),
+        (
+            dict(user_id='US123', bank_code='40012', tipo_pago=23),
+            'Input should be 7',
         ),
         (
             dict(user_id='US123', bank_code='99999', tipo_pago=7),
