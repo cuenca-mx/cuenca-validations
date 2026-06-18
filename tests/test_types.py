@@ -676,30 +676,18 @@ def test_bank_account_validation_clabe_request():
 
 
 def test_fraud_funds_transfer_request():
-    request = FraudFundsTransferRequest(
+    assert FraudFundsTransferRequest(
         user_id='US123',
-        clabe='646180157098510917',
-        amount=10000,
-        concepto='  Devolución fraude  ',
-    )
+        bank_code='40012',
+    ).model_dump() == {'user_id': 'US123', 'bank_code': '40012'}
 
-    assert request.concepto == 'Devolución fraude'
-    assert request.model_dump() == {
-        'user_id': 'US123',
-        'clabe': '646180157098510917',
-        'amount': 10000,
-        'concepto': 'Devolución fraude',
-    }
+    with pytest.raises(ValidationError) as exc:
+        FraudFundsTransferRequest(user_id='US123')
+    assert 'clabe or bank_code required' in str(exc.value)
 
-    request_full_balance = FraudFundsTransferRequest(
-        user_id='US123',
-        clabe='646180157098510917',
-    )
-
-    assert request_full_balance.model_dump() == {
-        'user_id': 'US123',
-        'clabe': '646180157098510917',
-    }
+    with pytest.raises(ValidationError) as exc:
+        FraudFundsTransferRequest(user_id='US123', bank_code='99999')
+    assert 'Not a valid bank code' in str(exc.value)
 
 
 @pytest.mark.parametrize(
