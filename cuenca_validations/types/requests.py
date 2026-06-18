@@ -1,7 +1,7 @@
 import datetime as dt
 from typing import Annotated, Any, Optional, Union
 
-from clabe import Clabe
+from clabe import BANK_NAMES, Clabe
 from pydantic import (
     BaseModel,
     ConfigDict,
@@ -66,7 +66,6 @@ from .card import (
     StrictPaymentCardNumber,
 )
 from .general import (
-    BankCode,
     LogConfig,
     NonEmptyStr,
     SerializableAnyUrl,
@@ -328,9 +327,16 @@ class WalletTransactionRequest(BaseRequest):
 class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Optional[Clabe] = None
-    bank_code: Optional[BankCode] = None
+    bank_code: Optional[str] = None
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
+
+    @field_validator('bank_code')
+    @classmethod
+    def validate_bank_code(cls, bank_code: Optional[str]) -> Optional[str]:
+        if bank_code is not None and bank_code not in BANK_NAMES:
+            raise ValueError('Not a valid bank code')
+        return bank_code
 
     @model_validator(mode='after')
     def validate_destination(self) -> 'FraudFundsTransferRequest':

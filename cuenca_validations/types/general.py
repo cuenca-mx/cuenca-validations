@@ -2,7 +2,6 @@ import json
 from dataclasses import dataclass
 from typing import Annotated, Any, Optional
 
-from clabe import BANK_NAMES
 from pydantic import (
     AfterValidator,
     AnyUrl,
@@ -39,19 +38,6 @@ NormalizedName = Annotated[
     str,
     StringConstraints(strip_whitespace=True, min_length=2),
     AfterValidator(normalize_name),
-]
-
-
-def validate_bank_code(bank_code: str) -> str:
-    if bank_code not in BANK_NAMES:
-        raise ValueError('Not a valid bank code')
-    return bank_code
-
-
-BankCode = Annotated[
-    str,
-    StringConstraints(strip_whitespace=True),
-    AfterValidator(validate_bank_code),
 ]
 
 

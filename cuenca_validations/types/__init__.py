@@ -8,7 +8,6 @@ __all__ = [
     'BalanceEntryQuery',
     'BankAccountValidationQuery',
     'BankAccountValidationRequest',
-    'BankCode',
     'PostalCodeQuery',
     'UsersTOSQuery',
     'TOSQuery',
@@ -176,7 +175,6 @@ from .enums import (
 )
 from .files import BatchFileMetadata
 from .general import (
-    BankCode,
     JSONEncoder,
     LogConfig,
     SantizedDict,
