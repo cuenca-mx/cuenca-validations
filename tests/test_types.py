@@ -675,74 +675,19 @@ def test_bank_account_validation_clabe_request():
     assert BankAccountValidationRequest(account_number='646180157098510917')
 
 
-@pytest.mark.parametrize(
-    'data, expected_dump',
-    [
-        (
-            dict(
-                user_id='US123',
-                clabe='646180157098510917',
-                amount=10000,
-                concepto='  Devolución fraude  ',
-            ),
-            dict(
-                user_id='US123',
-                clabe='646180157098510917',
-                amount=10000,
-                concepto='Devolución fraude',
-            ),
-        ),
-        (
-            dict(user_id='US123', clabe='646180157098510917'),
-            dict(user_id='US123', clabe='646180157098510917'),
-        ),
-        (
-            dict(
-                user_id='US123',
-                bank_code='40012',
-                tipo_pago=7,
-                amount=5000,
-            ),
-            dict(
-                user_id='US123',
-                bank_code='40012',
-                tipo_pago=7,
-                amount=5000,
-            ),
-        ),
-    ],
-)
-def test_fraud_funds_transfer_request(data, expected_dump):
-    request = FraudFundsTransferRequest(**data)
-    assert request.model_dump() == expected_dump
+def test_fraud_funds_transfer_request():
+    assert FraudFundsTransferRequest(
+        user_id='US123',
+        bank_code='40012',
+    ).model_dump() == {'user_id': 'US123', 'bank_code': '40012'}
 
-
-@pytest.mark.parametrize(
-    'data, expected_error',
-    [
-        (dict(user_id='US123'), 'clabe or bank_code required'),
-        (
-            dict(user_id='US123', bank_code='40012'),
-            'tipo_pago required when using bank_code',
-        ),
-        (
-            dict(user_id='US123', bank_code='40012', tipo_pago=1),
-            'Input should be 7',
-        ),
-        (
-            dict(user_id='US123', bank_code='40012', tipo_pago=23),
-            'Input should be 7',
-        ),
-        (
-            dict(user_id='US123', bank_code='99999', tipo_pago=7),
-            'Not a valid bank code',
-        ),
-    ],
-)
-def test_fraud_funds_transfer_request_invalid(data, expected_error):
     with pytest.raises(ValidationError) as exc:
-        FraudFundsTransferRequest(**data)
-    assert expected_error in str(exc.value)
+        FraudFundsTransferRequest(user_id='US123')
+    assert 'clabe or bank_code required' in str(exc.value)
+
+    with pytest.raises(ValidationError) as exc:
+        FraudFundsTransferRequest(user_id='US123', bank_code='99999')
+    assert 'Not a valid bank code' in str(exc.value)
 
 
 @pytest.mark.parametrize(

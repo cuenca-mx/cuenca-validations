@@ -29,7 +29,6 @@ from ..types.enums import (
     Country,
     EcommerceIndicator,
     FileExtension,
-    FraudFundsTransferTipoPago,
     Gender,
     IncomeType,
     IssuerNetwork,
@@ -330,7 +329,6 @@ class FraudFundsTransferRequest(BaseRequest):
     user_id: NonEmptyStr
     clabe: Optional[Clabe] = None
     bank_code: Optional[BankCode] = None
-    tipo_pago: Optional[FraudFundsTransferTipoPago] = None
     amount: Optional[StrictPositiveInt] = None
     concepto: Optional[NonEmptyStr] = None
 
@@ -338,8 +336,6 @@ class FraudFundsTransferRequest(BaseRequest):
     def validate_destination(self) -> 'FraudFundsTransferRequest':
         if self.clabe is None and self.bank_code is None:
             raise ValueError('clabe or bank_code required')
-        if self.bank_code is not None and self.tipo_pago is None:
-            raise ValueError('tipo_pago required when using bank_code')
         return self
 
 
