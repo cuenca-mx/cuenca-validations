@@ -4,6 +4,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
+    CodiNotificationRequest,
     PasswordResetRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
@@ -123,3 +124,26 @@ def test_update_transfer_request_forbids_extra() -> None:
             {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_codi_notification_request_serializes() -> None:
+    payload: DictStrAny = {
+        'clave_rastreo': 'LT123456789',
+        'status': 'succeeded',
+        'payment_type': '19',
+        'monto': 10000,
+        'concepto': 'Pago CoDi test',
+        'cuenta_ordenante': '646180157000000001',
+        'cuenta_beneficiario': '646180157000000002',
+        'nombre_ordenante': 'Juan Perez',
+        'nombre_beneficiario': 'Maria Lopez',
+        'folio_esquema': '25535dd9e425535dd9ee',
+        'estampa_tiempo_cobro': 1704067200000,
+        'referencia_numerica': '1234567',
+        'alias_celular_ordenante': '2700754676',
+        'digito_verificador_ordenante': '34',
+        'alias_celular_beneficiario': '0754676270',
+        'digito_verificador_beneficiario': '27',
+    }
+    req = CodiNotificationRequest.model_validate(payload)
+    assert req.model_dump() == payload

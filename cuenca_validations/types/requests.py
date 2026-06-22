@@ -462,6 +462,25 @@ class CurpValidationRequest(BaseRequest):
         return values
 
 
+class CodiNotificationRequest(BaseRequest):
+    clave_rastreo: str
+    status: str
+    payment_type: Optional[str] = None
+    monto: Optional[int] = None
+    concepto: Optional[str] = None
+    cuenta_ordenante: Optional[str] = None
+    cuenta_beneficiario: Optional[str] = None
+    nombre_ordenante: Optional[str] = None
+    nombre_beneficiario: Optional[str] = None
+    referencia_numerica: Optional[str] = None
+    alias_celular_ordenante: Optional[str] = None
+    digito_verificador_ordenante: Optional[str] = None
+    alias_celular_beneficiario: Optional[str] = None
+    digito_verificador_beneficiario: Optional[str] = None
+    folio_esquema: str
+    estampa_tiempo_cobro: Optional[int] = None
+
+
 class TOSRequest(BaseModel):
     type: TermsOfService
     version: str
