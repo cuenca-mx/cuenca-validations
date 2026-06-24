@@ -2,7 +2,6 @@ import pytest
 from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from cuenca_validations.types import AgentRequest
 from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
     PasswordResetRequest,
@@ -124,11 +123,3 @@ def test_update_transfer_request_forbids_extra() -> None:
             {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
-
-
-def test_agent_request_normalizes_phone() -> None:
-    request = AgentRequest(
-        pairing_code='A1B2C3',
-        phone_number='+52 55 1234 5678',
-    )
-    assert request.phone_number == '+525512345678'

@@ -659,11 +659,6 @@ class AgentRequest(BaseRequest):
         }
     )
 
-    @field_validator('phone_number', mode='before')
-    @classmethod
-    def normalize_phone(cls, v: PhoneNumber) -> str:
-        return normalize_phone_number(str(v))
-
 
 class EndpointRequest(BaseRequest):
     url: SerializableHttpUrl
