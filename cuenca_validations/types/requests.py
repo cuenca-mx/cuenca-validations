@@ -18,6 +18,7 @@ from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AccountUseType,
+    AgentStatus,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -643,6 +644,45 @@ class SessionRequest(BaseRequest):
             }
         }
     )
+
+
+class AgentRequest(BaseRequest):
+    phone_number: PhoneNumber
+    device_info: DictStrAny = Field(default_factory=dict)
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'phone_number': '+525512345678',
+                'device_info': {'client': 'cursor', 'os': 'macOS'},
+            }
+        }
+    )
+
+    @field_validator('phone_number', mode='before')
+    @classmethod
+    def normalize_phone(cls, v: PhoneNumber) -> str:
+        return normalize_phone_number(str(v))
+
+
+class AgentUpdateRequest(BaseRequest):
+    pairing_code: Optional[str] = None
+    status: AgentStatus
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'pairing_code': 'ABC-123',
+                'status': 'succeeded',
+            }
+        }
+    )
+
+    @model_validator(mode='after')
+    def validate_update(self) -> 'AgentUpdateRequest':
+        if self.status == AgentStatus.created:
+            raise ValueError('Invalid status')
+        if self.status == AgentStatus.succeeded and not self.pairing_code:
+            raise ValueError('pairing_code is required')
+        return self
 
 
 class EndpointRequest(BaseRequest):

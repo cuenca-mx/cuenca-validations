@@ -589,6 +589,13 @@ class SessionType(str, Enum):
     account_entries = 'session.account_entries'
     download_file = 'session.download_file'
     upload_file = 'session.upload_file'
+    agent = 'session.agent'
+
+
+class AgentStatus(str, Enum):
+    created = 'created'
+    succeeded = 'succeeded'
+    failed = 'failed'
 
 
 class WebhookObject(str, Enum):

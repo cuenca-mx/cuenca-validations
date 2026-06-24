@@ -2,6 +2,10 @@ __all__ = [
     'AccountUseType',
     'AccountQuery',
     'Address',
+    'AgentQuery',
+    'AgentRequest',
+    'AgentStatus',
+    'AgentUpdateRequest',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
@@ -127,6 +131,7 @@ __all__ = [
 from .card import StrictPaymentCardNumber
 from .enums import (
     AccountUseType,
+    AgentStatus,
     AuthorizerTransaction,
     BankAccountStatus,
     CardErrorType,
@@ -200,6 +205,7 @@ from .identities import (
 )
 from .queries import (
     AccountQuery,
+    AgentQuery,
     ApiKeyQuery,
     BalanceEntryQuery,
     BankAccountValidationQuery,
@@ -223,6 +229,8 @@ from .queries import (
     WalletTransactionQuery,
 )
 from .requests import (
+    AgentRequest,
+    AgentUpdateRequest,
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
     BeneficiaryRequest,
