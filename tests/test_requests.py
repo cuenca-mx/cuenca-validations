@@ -2,7 +2,7 @@ import pytest
 from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from cuenca_validations.types import AgentStatus, AgentUpdateRequest
+from cuenca_validations.types import AgentRequest
 from cuenca_validations.types.enums import VerificationType
 from cuenca_validations.types.requests import (
     PasswordResetRequest,
@@ -126,16 +126,9 @@ def test_update_transfer_request_forbids_extra() -> None:
     assert 'Extra inputs are not permitted' in str(ex.value)
 
 
-def test_agent_update_request_rejects_created_status() -> None:
-    with pytest.raises(ValidationError) as exc:
-        AgentUpdateRequest(
-            pairing_code='ABC-123',
-            status=AgentStatus.created,
-        )
-    assert 'Invalid status' in str(exc.value)
-
-
-def test_agent_update_request_succeeded_requires_pairing_code() -> None:
-    with pytest.raises(ValidationError) as exc:
-        AgentUpdateRequest(status=AgentStatus.succeeded)
-    assert 'pairing_code is required' in str(exc.value)
+def test_agent_request_normalizes_phone() -> None:
+    request = AgentRequest(
+        pairing_code='A1B2C3',
+        phone_number='+52 55 1234 5678',
+    )
+    assert request.phone_number == '+525512345678'

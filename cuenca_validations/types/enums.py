@@ -593,9 +593,8 @@ class SessionType(str, Enum):
 
 
 class AgentStatus(str, Enum):
-    created = 'created'
-    succeeded = 'succeeded'
-    failed = 'failed'
+    active = 'active'
+    cancelled = 'cancelled'
 
 
 class WebhookObject(str, Enum):

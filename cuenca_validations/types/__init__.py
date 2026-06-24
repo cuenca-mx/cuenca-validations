@@ -5,7 +5,6 @@ __all__ = [
     'AgentQuery',
     'AgentRequest',
     'AgentStatus',
-    'AgentUpdateRequest',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
@@ -230,7 +229,6 @@ from .queries import (
 )
 from .requests import (
     AgentRequest,
-    AgentUpdateRequest,
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
     BeneficiaryRequest,
