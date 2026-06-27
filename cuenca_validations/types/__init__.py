@@ -4,7 +4,6 @@ __all__ = [
     'Address',
     'AgentQuery',
     'AgentRequest',
-    'AgentStatus',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
@@ -130,7 +129,6 @@ __all__ = [
 from .card import StrictPaymentCardNumber
 from .enums import (
     AccountUseType,
-    AgentStatus,
     AuthorizerTransaction,
     BankAccountStatus,
     CardErrorType,

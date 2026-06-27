@@ -592,11 +592,6 @@ class SessionType(str, Enum):
     agent = 'session.agent'
 
 
-class AgentStatus(str, Enum):
-    active = 'active'
-    cancelled = 'cancelled'
-
-
 class WebhookObject(str, Enum):
     user = 'user'
     transaction = 'transaction'

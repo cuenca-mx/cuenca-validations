@@ -15,7 +15,6 @@ from pydantic import (
 from ..typing import DictStrAny
 from ..validators import sanitize_dict
 from .enums import (
-    AgentStatus,
     BankAccountStatus,
     CardFundingType,
     CardIssuer,
@@ -195,7 +194,7 @@ class SessionQuery(QueryParams):
 
 
 class AgentQuery(QueryParams):
-    status: Optional[AgentStatus] = None
+    active: Optional[bool] = None
 
 
 class FileQuery(QueryParams):
