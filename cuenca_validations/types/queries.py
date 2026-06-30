@@ -193,6 +193,10 @@ class SessionQuery(QueryParams):
     type: SessionType
 
 
+class AgentQuery(QueryParams):
+    active: Optional[bool] = None
+
+
 class FileQuery(QueryParams):
     type: Optional[KYCFileType] = None
     id: Optional[str] = None

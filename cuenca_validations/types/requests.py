@@ -645,6 +645,21 @@ class SessionRequest(BaseRequest):
     )
 
 
+class AgentRequest(BaseRequest):
+    pairing_code: str
+    phone_number: PhoneNumber
+    device_info: DictStrAny = Field(default_factory=dict)
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'pairing_code': 'secret_code',
+                'phone_number': '+525512345678',
+                'device_info': {'client': 'cursor', 'os': 'macOS'},
+            }
+        }
+    )
+
+
 class EndpointRequest(BaseRequest):
     url: SerializableHttpUrl
     events: Optional[list[WebhookEvent]] = None

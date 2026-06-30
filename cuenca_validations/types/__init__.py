@@ -2,6 +2,8 @@ __all__ = [
     'AccountUseType',
     'AccountQuery',
     'Address',
+    'AgentQuery',
+    'AgentRequest',
     'ApiKeyQuery',
     'ApiKeyUpdateRequest',
     'AuthorizerTransaction',
@@ -200,6 +202,7 @@ from .identities import (
 )
 from .queries import (
     AccountQuery,
+    AgentQuery,
     ApiKeyQuery,
     BalanceEntryQuery,
     BankAccountValidationQuery,
@@ -223,6 +226,7 @@ from .queries import (
     WalletTransactionQuery,
 )
 from .requests import (
+    AgentRequest,
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
     BeneficiaryRequest,
