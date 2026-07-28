@@ -492,7 +492,7 @@ def test_curp_validation_request():
         CurpValidationRequest(**request)
     assert 'User does not meet age requirement.' in str(v)
 
-    # changing date of birth so user is underage
+    # restoring a valid age to isolate the missing state_of_birth error
     request['date_of_birth'] = dt.date(1970, 5, 17)
     del request['state_of_birth']
 
