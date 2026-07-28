@@ -43,6 +43,6 @@ def validate_age_requirement(birth_date: Union[dt.date, Curp]) -> dt.date:
         birth_date = get_birth_date_from_curp(birth_date)
 
     current_date = dt.date.today()
-    if relativedelta(current_date, birth_date).years < 18:
+    if not 18 <= relativedelta(current_date, birth_date).years <= 99:
         raise ValueError('User does not meet age requirement.')
     return birth_date
