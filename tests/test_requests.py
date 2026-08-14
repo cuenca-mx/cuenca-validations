@@ -2,7 +2,7 @@ import pytest
 from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
-from cuenca_validations.types.enums import VerificationType
+from cuenca_validations.types.enums import Country, VerificationType
 from cuenca_validations.types.requests import (
     PasswordResetRequest,
     UpdateTransferRequest,
@@ -95,6 +95,11 @@ def test_user_update_request_normalizes_email() -> None:
 def test_user_update_request_normalizes_phone() -> None:
     req = UserUpdateRequest(phone_number=PhoneNumber('+116504401222'))
     assert req.phone_number == '+16504401222'
+
+
+def test_user_update_request_accepts_country_of_birth() -> None:
+    req = UserUpdateRequest(country_of_birth=Country.CA)
+    assert req.country_of_birth == Country.CA
 
 
 @pytest.mark.parametrize('status', ['succeeded', 'failed'])
