@@ -38,7 +38,10 @@ from cuenca_validations.types.enums import (
     State,
 )
 from cuenca_validations.types.general import LogConfig, StrictPositiveInt
-from cuenca_validations.types.helpers import get_log_config
+from cuenca_validations.types.helpers import (
+    get_log_config,
+    validate_age_requirement,
+)
 from cuenca_validations.types.identities import Password
 from cuenca_validations.types.requests import (
     ApiKeyUpdateRequest,
@@ -457,7 +460,7 @@ def test_curp_validation_request():
         names='Pedro',
         first_surname='Páramo',
         second_surname=None,
-        date_of_birth=dt.date(1917, 5, 17),
+        date_of_birth=dt.date(1970, 5, 17),
         state_of_birth=State.DF.value,
         gender='male',
         manual_curp='ABCD920604HDFSRN03',
@@ -489,8 +492,8 @@ def test_curp_validation_request():
         CurpValidationRequest(**request)
     assert 'User does not meet age requirement.' in str(v)
 
-    # changing date of birth so user is underage
-    request['date_of_birth'] = dt.date(1917, 5, 17)
+    # restoring a valid age to isolate the missing state_of_birth error
+    request['date_of_birth'] = dt.date(1970, 5, 17)
     del request['state_of_birth']
 
     with pytest.raises(ValueError) as v:
@@ -502,6 +505,19 @@ def test_curp_validation_request_underage() -> None:
     with pytest.raises(ValueError) as v:
         CurpValidationRequest(manual_curp='ABCD240614HDFSRN03')
     assert 'User does not meet age requirement.' in str(v)
+
+
+@freeze_time('2026-07-27')
+def test_validate_age_requirement_overage() -> None:
+    with pytest.raises(ValueError) as v:
+        validate_age_requirement(dt.date(1926, 5, 17))
+    assert 'User does not meet age requirement.' in str(v.value)
+
+
+@freeze_time('2026-07-27')
+def test_validate_age_requirement_valid() -> None:
+    birth_date = dt.date(1950, 5, 17)
+    assert validate_age_requirement(birth_date) == birth_date
 
 
 def test_user_update_request():
