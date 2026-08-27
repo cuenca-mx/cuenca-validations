@@ -22,6 +22,7 @@ from .enums import (
     CardType,
     EventType,
     KYCFileType,
+    OperationalEventAction,
     SessionType,
     TermsOfService,
     TransferNetwork,
@@ -151,6 +152,11 @@ class StatementQuery(QueryParams):
 
 class AccountQuery(QueryParams):
     account_number: Optional[str] = None
+
+
+class OperationalEventQuery(QueryParams):
+    actor_id: Optional[str] = None
+    action: Optional[OperationalEventAction] = None
 
 
 class BalanceEntryQuery(QueryParams):
