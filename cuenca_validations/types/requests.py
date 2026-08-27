@@ -18,6 +18,7 @@ from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AccountUseType,
+    AccountValidationStatus,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -733,6 +734,39 @@ class VerificationAttemptRequest(BaseRequest):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: Curp
     allowed_rfc: Optional[Rfc] = None
+
+
+class AccountRequest(BaseRequest):
+    name: StrictStr
+    account_number: Clabe
+    alias: Optional[StrictStr] = None
+    curp: Optional[Curp] = None
+    rfc: Optional[Rfc] = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'name': 'Aceros del Norte SA de CV',
+                'account_number': '072691004495711499',
+                'alias': 'Proveedor acero',
+            }
+        },
+    )
+
+
+class AccountUpdateRequest(BaseRequest):
+    name: Optional[StrictStr] = None
+    alias: Optional[StrictStr] = None
+    validation_status: Optional[AccountValidationStatus] = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'alias': 'Fletes',
+                'validation_status': 'verified',
+            }
+        },
+    )
 
 
 class PlatformRequest(BaseModel):

@@ -1,6 +1,9 @@
 __all__ = [
     'AccountUseType',
     'AccountQuery',
+    'AccountRequest',
+    'AccountUpdateRequest',
+    'AccountValidationStatus',
     'Address',
     'AgentQuery',
     'AgentRequest',
@@ -60,6 +63,8 @@ __all__ = [
     'LimitedWalletRequest',
     'MonthlyMovementsType',
     'MonthlySpendingType',
+    'OperationalEventAction',
+    'OperationalEventQuery',
     'PartnerRequest',
     'PartnerUpdateRequest',
     'PasswordResetRequest',
@@ -129,6 +134,7 @@ __all__ = [
 from .card import StrictPaymentCardNumber
 from .enums import (
     AccountUseType,
+    AccountValidationStatus,
     AuthorizerTransaction,
     BankAccountStatus,
     CardErrorType,
@@ -155,6 +161,7 @@ from .enums import (
     Language,
     MonthlyMovementsType,
     MonthlySpendingType,
+    OperationalEventAction,
     PlatformType,
     PosCapability,
     Profession,
@@ -213,6 +220,7 @@ from .queries import (
     EventQuery,
     FileQuery,
     IdentityQuery,
+    OperationalEventQuery,
     PostalCodeQuery,
     QueryParams,
     SessionQuery,
@@ -226,6 +234,8 @@ from .queries import (
     WalletTransactionQuery,
 )
 from .requests import (
+    AccountRequest,
+    AccountUpdateRequest,
     AgentRequest,
     ApiKeyUpdateRequest,
     BankAccountValidationRequest,
