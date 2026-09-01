@@ -76,6 +76,22 @@ def test_legal_person_update_requires_at_least_one_param() -> None:
     assert 'At least one parameter must be provided' in str(ex.value)
 
 
+def test_moral_person_update_valid() -> None:
+    req = MoralPersonUpdateRequest.model_validate({'legal_name': 'New name'})
+    assert req.legal_name == 'New name'
+
+
+def test_moral_person_update_accepts_moral_rfc() -> None:
+    req = MoralPersonUpdateRequest.model_validate({'rfc': 'ADN850101ABC'})
+    assert req.rfc == 'ADN850101ABC'
+
+
+def test_moral_person_update_rejects_physical_rfc() -> None:
+    with pytest.raises(ValidationError) as ex:
+        MoralPersonUpdateRequest.model_validate({'rfc': 'GOCG650418TJ1'})
+    assert 'RFC must be 12 characters for moral persons' in str(ex.value)
+
+
 def test_operator_request_valid() -> None:
     req = OperatorRequest(
         name='Maria Lopez',
@@ -106,6 +122,11 @@ def test_operator_update_requires_at_least_one_param() -> None:
     with pytest.raises(ValueError) as ex:
         OperatorUpdateRequest()
     assert 'At least one parameter must be provided' in str(ex.value)
+
+
+def test_operator_update_valid() -> None:
+    req = OperatorUpdateRequest.model_validate({'name': 'New name'})
+    assert req.name == 'New name'
 
 
 def test_operator_login_request_valid() -> None:
