@@ -6,8 +6,10 @@ from cuenca_validations.types.enums import (
     Country,
     OperatorRole,
     OperatorStatus,
+    SessionType,
     VerificationType,
 )
+from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
     LegalPersonRequest,
     LegalPersonUpdateRequest,
@@ -16,6 +18,8 @@ from cuenca_validations.types.requests import (
     OperatorRequest,
     OperatorUpdateRequest,
     PasswordResetRequest,
+    SessionMetadata,
+    SessionRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
@@ -165,6 +169,37 @@ def test_operator_login_request_forbids_extra() -> None:
 def test_operator_login_response_valid() -> None:
     resp = OperatorLoginResponse(session_token='SEWqY5cvkISJOxHyEKjAKf8w')
     assert resp.session_token == 'SEWqY5cvkISJOxHyEKjAKf8w'
+
+
+def test_operator_query_valid() -> None:
+    query = OperatorQuery.model_validate({'email': 'maria.lopez@aceros.com'})
+    assert str(query.email) == 'maria.lopez@aceros.com'
+
+
+def test_operator_query_forbids_extra() -> None:
+    with pytest.raises(ValidationError) as ex:
+        OperatorQuery.model_validate(
+            {'email': 'maria@aceros.com', 'foo': 'bar'}
+        )
+    assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_session_request_with_operator_metadata() -> None:
+    req = SessionRequest(
+        user_id='USWqY5cvkISJOxHyEKjAKf8w',
+        type=SessionType.registration,
+        metadata=SessionMetadata(operator_id='OPWqY5cvkISJOxHyEKjAKf8w'),
+    )
+    assert req.metadata is not None
+    assert req.metadata.operator_id == 'OPWqY5cvkISJOxHyEKjAKf8w'
+
+
+def test_session_request_metadata_forbids_extra() -> None:
+    with pytest.raises(ValidationError) as ex:
+        SessionMetadata.model_validate(
+            {'operator_id': 'OPWqY5cvkISJOxHyEKjAKf8w', 'foo': 'bar'}
+        )
+    assert 'Extra inputs are not permitted' in str(ex.value)
 
 
 @pytest.mark.parametrize('environment', ['api.stage', 'api.sandbox', 'api'])

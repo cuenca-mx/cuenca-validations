@@ -159,6 +159,10 @@ class OperationalEventQuery(QueryParams):
     action: Optional[OperationalEventAction] = None
 
 
+class OperatorQuery(QueryParams):
+    email: Optional[EmailStr] = None
+
+
 class BalanceEntryQuery(QueryParams):
     funding_instrument_uri: Optional[str] = None
     wallet_id: str = 'default'
