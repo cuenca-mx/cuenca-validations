@@ -632,11 +632,29 @@ class UserLoginRequest(BaseRequest):
     )
 
 
+class SessionMetadata(BaseModel):
+    operator_id: Optional[str] = None
+    model_config = ConfigDict(extra='forbid')
+
+
+class SessionResponse(BaseModel):
+    id: str
+    created_at: dt.datetime
+    user_id: str
+    platform_id: str
+    expires_at: dt.datetime
+    type: SessionType
+    success_url: Optional[SerializableAnyUrl] = None
+    failure_url: Optional[SerializableAnyUrl] = None
+    metadata: Optional[SessionMetadata] = None
+
+
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
     success_url: Optional[SerializableAnyUrl] = None
     failure_url: Optional[SerializableAnyUrl] = None
+    metadata: Optional[SessionMetadata] = None
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
