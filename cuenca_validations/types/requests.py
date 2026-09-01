@@ -37,6 +37,8 @@ from ..types.enums import (
     KYCValidationSource,
     MonthlyMovementsType,
     MonthlySpendingType,
+    OperatorRole,
+    OperatorStatus,
     PlatformType,
     PosCapability,
     Profession,
@@ -925,12 +927,104 @@ class LegalPersonRequest(BaseRequest):
         },
     )
 
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Rfc) -> Rfc:
+        if len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
 
 class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
     rfc: Optional[Rfc] = None
     address: Optional[AddressRequest] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
+
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
+        if rfc is not None and len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
+
+class OperatorRequest(BaseRequest):
+    name: str
+    email: EmailStr
+    phone: PhoneNumber
+    company_user_id: str
+    role: OperatorRole
+    status: OperatorStatus = OperatorStatus.active
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'name': 'Maria Lopez',
+                'email': 'maria.lopez@aceros.com',
+                'phone': '+525512345678',
+                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'role': 'operator',
+            }
+        },
+    )
+
+    @field_validator('email', mode='before')
+    @classmethod
+    def validate_email(cls, email: str) -> str:
+        return normalize_email(email)
+
+
+class OperatorUpdateRequest(BaseRequest):
+    name: Optional[str] = None
+    phone: Optional[PhoneNumber] = None
+    role: Optional[OperatorRole] = None
+    status: Optional[OperatorStatus] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
+
+
+class OperatorLoginRequest(BaseRequest):
+    email: EmailStr
+    password: Annotated[Password, LogConfig(masked=True)]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'email': 'maria.lopez@aceros.com',
+                'password': 'supersecret',
+            }
+        },
+    )
+
+    @field_validator('email', mode='before')
+    @classmethod
+    def validate_email(cls, email: str) -> str:
+        return normalize_email(email)
+
+
+class OperatorLoginResponse(BaseModel):
+    session_token: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'session_token': 'SEWqY5cvkISJOxHyEKjAKf8w',
+            }
+        },
+    )
 
 
 class PhoneVerificationAssociationRequest(BaseRequest):

@@ -757,3 +757,13 @@ class OperationalEventAction(str, Enum):
     account_updated = 'account_updated'
     transfer_created = 'transfer_created'
     statement_downloaded = 'statement_downloaded'
+
+
+class OperatorRole(str, Enum):
+    operator = 'operator'
+    authorizer = 'authorizer'
+
+
+class OperatorStatus(str, Enum):
+    active = 'active'
+    disabled = 'disabled'
