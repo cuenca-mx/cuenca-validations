@@ -624,6 +624,7 @@ class WebhookEvent(str, Enum):
 class UserType(str, Enum):
     physical = 'physical'
     moral = 'moral'
+    legal_person = 'legal_person'
 
 
 class VerificationType(str, Enum):
