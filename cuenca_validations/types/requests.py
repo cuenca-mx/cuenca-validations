@@ -917,7 +917,7 @@ class PartnerUpdateRequest(BaseRequest):
     shareholders: Optional[list[Shareholder]] = None
 
 
-class MoralPersonRequest(BaseRequest):
+class LegalPersonRequest(BaseRequest):
     legal_name: str
     rfc: Rfc
     legal_representatives: list[LegalRepresentative]
@@ -945,13 +945,13 @@ class MoralPersonRequest(BaseRequest):
 
     @field_validator('rfc')
     @classmethod
-    def validate_moral_rfc(cls, rfc: Rfc) -> Rfc:
+    def validate_legal_rfc(cls, rfc: Rfc) -> Rfc:
         if len(rfc) != 12:
-            raise ValueError('RFC must be 12 characters for moral persons')
+            raise ValueError('RFC must be 12 characters for legal persons')
         return rfc
 
 
-class MoralPersonUpdateRequest(BaseRequest):
+class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
     rfc: Optional[Rfc] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
@@ -965,9 +965,9 @@ class MoralPersonUpdateRequest(BaseRequest):
 
     @field_validator('rfc')
     @classmethod
-    def validate_moral_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
+    def validate_legal_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
         if rfc is not None and len(rfc) != 12:
-            raise ValueError('RFC must be 12 characters for moral persons')
+            raise ValueError('RFC must be 12 characters for legal persons')
         return rfc
 
 

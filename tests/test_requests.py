@@ -11,8 +11,8 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
-    MoralPersonRequest,
-    MoralPersonUpdateRequest,
+    LegalPersonRequest,
+    LegalPersonUpdateRequest,
     OperatorLoginRequest,
     OperatorLoginResponse,
     OperatorRequest,
@@ -40,55 +40,55 @@ LEGAL_REPRESENTATIVE: DictStrAny = {
     },
 }
 
-MORAL_PERSON_REQUEST: DictStrAny = {
+LEGAL_PERSON_REQUEST: DictStrAny = {
     'legal_name': 'Aceros del Norte SA de CV',
     'rfc': 'ADN850101ABC',
     'legal_representatives': [LEGAL_REPRESENTATIVE],
 }
 
 
-def test_moral_person_request_valid() -> None:
-    req = MoralPersonRequest.model_validate(MORAL_PERSON_REQUEST)
+def test_legal_person_request_valid() -> None:
+    req = LegalPersonRequest.model_validate(LEGAL_PERSON_REQUEST)
     assert req.legal_name == 'Aceros del Norte SA de CV'
     assert req.rfc == 'ADN850101ABC'
 
 
-def test_moral_person_request_rejects_physical_rfc() -> None:
+def test_legal_person_request_rejects_physical_rfc() -> None:
     with pytest.raises(ValidationError) as ex:
-        MoralPersonRequest.model_validate(
-            {**MORAL_PERSON_REQUEST, 'rfc': 'GOCG650418TJ1'}
+        LegalPersonRequest.model_validate(
+            {**LEGAL_PERSON_REQUEST, 'rfc': 'GOCG650418TJ1'}
         )
-    assert 'RFC must be 12 characters for moral persons' in str(ex.value)
+    assert 'RFC must be 12 characters for legal persons' in str(ex.value)
 
 
-def test_moral_person_request_forbids_extra() -> None:
+def test_legal_person_request_forbids_extra() -> None:
     with pytest.raises(ValidationError) as ex:
-        MoralPersonRequest.model_validate(
-            {**MORAL_PERSON_REQUEST, 'foo': 'bar'}
+        LegalPersonRequest.model_validate(
+            {**LEGAL_PERSON_REQUEST, 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
 
 
-def test_moral_person_update_requires_at_least_one_param() -> None:
+def test_legal_person_update_requires_at_least_one_param() -> None:
     with pytest.raises(ValueError) as ex:
-        MoralPersonUpdateRequest()
+        LegalPersonUpdateRequest()
     assert 'At least one parameter must be provided' in str(ex.value)
 
 
-def test_moral_person_update_valid() -> None:
-    req = MoralPersonUpdateRequest.model_validate({'legal_name': 'New name'})
+def test_legal_person_update_valid() -> None:
+    req = LegalPersonUpdateRequest.model_validate({'legal_name': 'New name'})
     assert req.legal_name == 'New name'
 
 
-def test_moral_person_update_accepts_moral_rfc() -> None:
-    req = MoralPersonUpdateRequest.model_validate({'rfc': 'ADN850101ABC'})
+def test_legal_person_update_accepts_legal_rfc() -> None:
+    req = LegalPersonUpdateRequest.model_validate({'rfc': 'ADN850101ABC'})
     assert req.rfc == 'ADN850101ABC'
 
 
-def test_moral_person_update_rejects_physical_rfc() -> None:
+def test_legal_person_update_rejects_physical_rfc() -> None:
     with pytest.raises(ValidationError) as ex:
-        MoralPersonUpdateRequest.model_validate({'rfc': 'GOCG650418TJ1'})
-    assert 'RFC must be 12 characters for moral persons' in str(ex.value)
+        LegalPersonUpdateRequest.model_validate({'rfc': 'GOCG650418TJ1'})
+    assert 'RFC must be 12 characters for legal persons' in str(ex.value)
 
 
 def test_operator_request_valid() -> None:
