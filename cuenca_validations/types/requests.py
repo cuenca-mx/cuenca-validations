@@ -79,7 +79,6 @@ from .identities import (
     BaseBeneficiary,
     Curp,
     KYCFile,
-    LegalRfc,
     Password,
     PhoneNumber,
     Rfc,
@@ -866,7 +865,7 @@ class PartnerUpdateRequest(BaseRequest):
 
 class LegalPersonRequest(BaseRequest):
     legal_name: str
-    rfc: LegalRfc
+    rfc: Rfc
     legal_representatives: list[LegalRepresentative]
 
     model_config = ConfigDict(
@@ -893,7 +892,7 @@ class LegalPersonRequest(BaseRequest):
 
 class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
-    rfc: Optional[LegalRfc] = None
+    rfc: Optional[Rfc] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
 
 

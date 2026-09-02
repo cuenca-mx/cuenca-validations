@@ -198,7 +198,6 @@ from .identities import (
     Beneficiary,
     Curp,
     KYCFile,
-    LegalRfc,
     PhoneNumber,
     Rfc,
     TOSAgreement,
