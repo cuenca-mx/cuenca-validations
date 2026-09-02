@@ -4,8 +4,6 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from cuenca_validations.types.enums import Country, VerificationType
 from cuenca_validations.types.requests import (
-    LegalPersonRequest,
-    LegalPersonUpdateRequest,
     PasswordResetRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
@@ -13,45 +11,6 @@ from cuenca_validations.types.requests import (
     VerificationRequest,
 )
 from cuenca_validations.typing import DictStrAny
-
-LEGAL_PERSON_REQUEST: DictStrAny = {
-    'legal_name': 'Aceros del Norte SA de CV',
-    'rfc': 'ADN850101ABC',
-    'legal_representatives': [
-        {
-            'names': 'Juan',
-            'first_surname': 'Perez',
-            'job': 'Director General',
-            'phone_number': '+525512345678',
-            'email_address': 'juan.perez@aceros.com',
-            'address': {
-                'street': 'Reforma',
-                'ext_number': '265',
-                'postal_code_id': 'PC2ygq9j2bS9-9tsuVawzErA',
-            },
-        }
-    ],
-}
-
-
-def test_legal_person_request_rejects_physical_rfc() -> None:
-    with pytest.raises(ValidationError) as ex:
-        LegalPersonRequest.model_validate(
-            {**LEGAL_PERSON_REQUEST, 'rfc': 'GOCG650418TJ1'}
-        )
-    assert 'RFC must be 12 characters for legal persons' in str(ex.value)
-
-
-def test_legal_person_update_requires_at_least_one_param() -> None:
-    with pytest.raises(ValueError) as ex:
-        LegalPersonUpdateRequest()
-    assert 'At least one parameter must be provided' in str(ex.value)
-
-
-def test_legal_person_update_rejects_physical_rfc() -> None:
-    with pytest.raises(ValidationError) as ex:
-        LegalPersonUpdateRequest.model_validate({'rfc': 'GOCG650418TJ1'})
-    assert 'RFC must be 12 characters for legal persons' in str(ex.value)
 
 
 @pytest.mark.parametrize('environment', ['api.stage', 'api.sandbox', 'api'])

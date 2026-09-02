@@ -36,6 +36,14 @@ Rfc = Annotated[
     ),
 ]
 
+LegalRfc = Annotated[
+    str,
+    StringConstraints(
+        min_length=12,
+        max_length=12,
+    ),
+]
+
 # NOTE:
 # The Address model is kept for compatibility with legacy models and data
 # that expect all address fields to be optional. This allows older systems

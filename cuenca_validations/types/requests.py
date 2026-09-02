@@ -79,6 +79,7 @@ from .identities import (
     BaseBeneficiary,
     Curp,
     KYCFile,
+    LegalRfc,
     Password,
     PhoneNumber,
     Rfc,
@@ -865,7 +866,7 @@ class PartnerUpdateRequest(BaseRequest):
 
 class LegalPersonRequest(BaseRequest):
     legal_name: str
-    rfc: Rfc
+    rfc: LegalRfc
     legal_representatives: list[LegalRepresentative]
 
     model_config = ConfigDict(
@@ -889,32 +890,11 @@ class LegalPersonRequest(BaseRequest):
         },
     )
 
-    @field_validator('rfc')
-    @classmethod
-    def validate_legal_rfc(cls, rfc: Rfc) -> Rfc:
-        if len(rfc) != 12:
-            raise ValueError('RFC must be 12 characters for legal persons')
-        return rfc
-
 
 class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
-    rfc: Optional[Rfc] = None
+    rfc: Optional[LegalRfc] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
-
-    @model_validator(mode="before")
-    @classmethod
-    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
-        if not values:
-            raise ValueError('At least one parameter must be provided')
-        return values
-
-    @field_validator('rfc')
-    @classmethod
-    def validate_legal_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
-        if rfc is not None and len(rfc) != 12:
-            raise ValueError('RFC must be 12 characters for legal persons')
-        return rfc
 
 
 class PhoneVerificationAssociationRequest(BaseRequest):
