@@ -863,5 +863,38 @@ class PartnerUpdateRequest(BaseRequest):
     shareholders: Optional[list[Shareholder]] = None
 
 
+class LegalPersonRequest(BaseRequest):
+    legal_name: str
+    rfc: Rfc
+    legal_representatives: list[LegalRepresentative]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'legal_name': 'Aceros del Norte SA de CV',
+                'rfc': 'ADN850101ABC',
+                'legal_representatives': [
+                    {
+                        'names': 'Juan',
+                        'first_surname': 'Perez',
+                        'job': 'Director General',
+                        'phone_number': '+525512345678',
+                        'email_address': 'juan.perez@aceros.com',
+                        'address': AddressRequest.model_json_schema().get(
+                            'example'
+                        ),
+                    }
+                ],
+            }
+        },
+    )
+
+
+class LegalPersonUpdateRequest(BaseRequest):
+    legal_name: Optional[str] = None
+    rfc: Optional[Rfc] = None
+    legal_representatives: Optional[list[LegalRepresentative]] = None
+
+
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
