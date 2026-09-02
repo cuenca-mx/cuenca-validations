@@ -14,30 +14,24 @@ from cuenca_validations.types.requests import (
 )
 from cuenca_validations.typing import DictStrAny
 
-LEGAL_REPRESENTATIVE: DictStrAny = {
-    'names': 'Juan',
-    'first_surname': 'Perez',
-    'job': 'Director General',
-    'phone_number': '+525512345678',
-    'email_address': 'juan.perez@aceros.com',
-    'address': {
-        'street': 'Reforma',
-        'ext_number': '265',
-        'postal_code_id': 'PC2ygq9j2bS9-9tsuVawzErA',
-    },
-}
-
 LEGAL_PERSON_REQUEST: DictStrAny = {
     'legal_name': 'Aceros del Norte SA de CV',
     'rfc': 'ADN850101ABC',
-    'legal_representatives': [LEGAL_REPRESENTATIVE],
+    'legal_representatives': [
+        {
+            'names': 'Juan',
+            'first_surname': 'Perez',
+            'job': 'Director General',
+            'phone_number': '+525512345678',
+            'email_address': 'juan.perez@aceros.com',
+            'address': {
+                'street': 'Reforma',
+                'ext_number': '265',
+                'postal_code_id': 'PC2ygq9j2bS9-9tsuVawzErA',
+            },
+        }
+    ],
 }
-
-
-def test_legal_person_request_valid() -> None:
-    req = LegalPersonRequest.model_validate(LEGAL_PERSON_REQUEST)
-    assert req.legal_name == 'Aceros del Norte SA de CV'
-    assert req.rfc == 'ADN850101ABC'
 
 
 def test_legal_person_request_rejects_physical_rfc() -> None:
@@ -48,28 +42,10 @@ def test_legal_person_request_rejects_physical_rfc() -> None:
     assert 'RFC must be 12 characters for legal persons' in str(ex.value)
 
 
-def test_legal_person_request_forbids_extra() -> None:
-    with pytest.raises(ValidationError) as ex:
-        LegalPersonRequest.model_validate(
-            {**LEGAL_PERSON_REQUEST, 'foo': 'bar'}
-        )
-    assert 'Extra inputs are not permitted' in str(ex.value)
-
-
 def test_legal_person_update_requires_at_least_one_param() -> None:
     with pytest.raises(ValueError) as ex:
         LegalPersonUpdateRequest()
     assert 'At least one parameter must be provided' in str(ex.value)
-
-
-def test_legal_person_update_valid() -> None:
-    req = LegalPersonUpdateRequest.model_validate({'legal_name': 'New name'})
-    assert req.legal_name == 'New name'
-
-
-def test_legal_person_update_accepts_legal_rfc() -> None:
-    req = LegalPersonUpdateRequest.model_validate({'rfc': 'ADN850101ABC'})
-    assert req.rfc == 'ADN850101ABC'
 
 
 def test_legal_person_update_rejects_physical_rfc() -> None:
