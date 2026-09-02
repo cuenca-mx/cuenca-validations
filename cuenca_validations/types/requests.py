@@ -863,5 +863,59 @@ class PartnerUpdateRequest(BaseRequest):
     shareholders: Optional[list[Shareholder]] = None
 
 
+class LegalPersonRequest(BaseRequest):
+    legal_name: str
+    rfc: Rfc
+    legal_representatives: list[LegalRepresentative]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'legal_name': 'Aceros del Norte SA de CV',
+                'rfc': 'ADN850101ABC',
+                'legal_representatives': [
+                    {
+                        'names': 'Juan',
+                        'first_surname': 'Perez',
+                        'job': 'Director General',
+                        'phone_number': '+525512345678',
+                        'email_address': 'juan.perez@aceros.com',
+                        'address': AddressRequest.model_json_schema().get(
+                            'example'
+                        ),
+                    }
+                ],
+            }
+        },
+    )
+
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Rfc) -> Rfc:
+        if len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
+
+class LegalPersonUpdateRequest(BaseRequest):
+    legal_name: Optional[str] = None
+    rfc: Optional[Rfc] = None
+    legal_representatives: Optional[list[LegalRepresentative]] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
+
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
+        if rfc is not None and len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
+
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
