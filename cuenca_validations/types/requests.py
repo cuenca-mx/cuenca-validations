@@ -866,6 +866,7 @@ class PartnerUpdateRequest(BaseRequest):
 class LegalPersonRequest(BaseRequest):
     legal_name: str
     rfc: Rfc
+    address: AddressRequest
     legal_representatives: list[LegalRepresentative]
 
     model_config = ConfigDict(
@@ -873,6 +874,7 @@ class LegalPersonRequest(BaseRequest):
             'example': {
                 'legal_name': 'Aceros del Norte SA de CV',
                 'rfc': 'ADN850101ABC',
+                'address': AddressRequest.model_json_schema().get('example'),
                 'legal_representatives': [
                     {
                         'names': 'Juan',
@@ -893,6 +895,7 @@ class LegalPersonRequest(BaseRequest):
 class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
     rfc: Optional[Rfc] = None
+    address: Optional[AddressRequest] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
 
 
