@@ -745,3 +745,25 @@ class RequiredAction(str, Enum):
     level_up_required = 'level_up_required'
     level_up_invitation = 'level_up_invitation'
     fix_documents = 'fix_documents'
+
+
+class AccountValidationStatus(str, Enum):
+    verified = 'verified'
+    pending = 'pending'
+
+
+class OperationalEventAction(str, Enum):
+    account_created = 'account_created'
+    account_updated = 'account_updated'
+    transfer_created = 'transfer_created'
+    statement_downloaded = 'statement_downloaded'
+
+
+class OperatorRole(str, Enum):
+    operator = 'operator'
+    authorizer = 'authorizer'
+
+
+class OperatorStatus(str, Enum):
+    active = 'active'
+    disabled = 'disabled'

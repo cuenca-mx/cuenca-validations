@@ -18,6 +18,7 @@ from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AccountUseType,
+    AccountValidationStatus,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -36,6 +37,8 @@ from ..types.enums import (
     KYCValidationSource,
     MonthlyMovementsType,
     MonthlySpendingType,
+    OperatorRole,
+    OperatorStatus,
     PlatformType,
     PosCapability,
     Profession,
@@ -629,11 +632,29 @@ class UserLoginRequest(BaseRequest):
     )
 
 
+class SessionMetadata(BaseModel):
+    operator_id: Optional[str] = None
+    model_config = ConfigDict(extra='forbid')
+
+
+class SessionResponse(BaseModel):
+    id: str
+    created_at: dt.datetime
+    user_id: str
+    platform_id: str
+    expires_at: dt.datetime
+    type: SessionType
+    success_url: Optional[SerializableAnyUrl] = None
+    failure_url: Optional[SerializableAnyUrl] = None
+    metadata: Optional[SessionMetadata] = None
+
+
 class SessionRequest(BaseRequest):
     user_id: str
     type: SessionType
     success_url: Optional[SerializableAnyUrl] = None
     failure_url: Optional[SerializableAnyUrl] = None
+    metadata: Optional[SessionMetadata] = None
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
@@ -733,6 +754,39 @@ class VerificationAttemptRequest(BaseRequest):
 class LimitedWalletRequest(BaseRequest):
     allowed_curp: Curp
     allowed_rfc: Optional[Rfc] = None
+
+
+class AccountRequest(BaseRequest):
+    name: StrictStr
+    account_number: Clabe
+    alias: Optional[StrictStr] = None
+    curp: Optional[Curp] = None
+    rfc: Optional[Rfc] = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'name': 'Aceros del Norte SA de CV',
+                'account_number': '072691004495711499',
+                'alias': 'Proveedor acero',
+            }
+        },
+    )
+
+
+class AccountUpdateRequest(BaseRequest):
+    name: Optional[StrictStr] = None
+    alias: Optional[StrictStr] = None
+    validation_status: Optional[AccountValidationStatus] = None
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'alias': 'Fletes',
+                'validation_status': 'verified',
+            }
+        },
+    )
 
 
 class PlatformRequest(BaseModel):
@@ -891,12 +945,104 @@ class LegalPersonRequest(BaseRequest):
         },
     )
 
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Rfc) -> Rfc:
+        if len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
 
 class LegalPersonUpdateRequest(BaseRequest):
     legal_name: Optional[str] = None
     rfc: Optional[Rfc] = None
     address: Optional[AddressRequest] = None
     legal_representatives: Optional[list[LegalRepresentative]] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
+
+    @field_validator('rfc')
+    @classmethod
+    def validate_legal_rfc(cls, rfc: Optional[Rfc]) -> Optional[Rfc]:
+        if rfc is not None and len(rfc) != 12:
+            raise ValueError('RFC must be 12 characters for legal persons')
+        return rfc
+
+
+class OperatorRequest(BaseRequest):
+    name: str
+    email: EmailStr
+    phone: PhoneNumber
+    company_user_id: str
+    role: OperatorRole
+    status: OperatorStatus = OperatorStatus.active
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'name': 'Maria Lopez',
+                'email': 'maria.lopez@aceros.com',
+                'phone': '+525512345678',
+                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'role': 'operator',
+            }
+        },
+    )
+
+    @field_validator('email', mode='before')
+    @classmethod
+    def validate_email(cls, email: str) -> str:
+        return normalize_email(email)
+
+
+class OperatorUpdateRequest(BaseRequest):
+    name: Optional[str] = None
+    phone: Optional[PhoneNumber] = None
+    role: Optional[OperatorRole] = None
+    status: Optional[OperatorStatus] = None
+
+    @model_validator(mode="before")
+    @classmethod
+    def check_at_least_one_param(cls, values: DictStrAny) -> DictStrAny:
+        if not values:
+            raise ValueError('At least one parameter must be provided')
+        return values
+
+
+class OperatorLoginRequest(BaseRequest):
+    email: EmailStr
+    password: Annotated[Password, LogConfig(masked=True)]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'email': 'maria.lopez@aceros.com',
+                'password': 'supersecret',
+            }
+        },
+    )
+
+    @field_validator('email', mode='before')
+    @classmethod
+    def validate_email(cls, email: str) -> str:
+        return normalize_email(email)
+
+
+class OperatorLoginResponse(BaseModel):
+    session_token: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'session_token': 'SEWqY5cvkISJOxHyEKjAKf8w',
+            }
+        },
+    )
 
 
 class PhoneVerificationAssociationRequest(BaseRequest):
