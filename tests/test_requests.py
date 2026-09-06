@@ -167,8 +167,16 @@ def test_operator_login_request_forbids_extra() -> None:
 
 
 def test_operator_login_response_valid() -> None:
-    resp = OperatorLoginResponse(session_token='SEWqY5cvkISJOxHyEKjAKf8w')
+    resp = OperatorLoginResponse(
+        session_token='SEWqY5cvkISJOxHyEKjAKf8w',
+        operator_id='OPWqY5cvkISJOxHyEKjAKf8w',
+        role=OperatorRole.authorizer,
+        company_user_id='USWqY5cvkISJOxHyEKjAKf8w',
+    )
     assert resp.session_token == 'SEWqY5cvkISJOxHyEKjAKf8w'
+    assert resp.operator_id == 'OPWqY5cvkISJOxHyEKjAKf8w'
+    assert resp.role == OperatorRole.authorizer
+    assert resp.company_user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
 
 
 def test_operator_query_valid() -> None:

@@ -1035,11 +1035,17 @@ class OperatorLoginRequest(BaseRequest):
 
 class OperatorLoginResponse(BaseModel):
     session_token: str
+    operator_id: str
+    role: OperatorRole
+    company_user_id: str
 
     model_config = ConfigDict(
         json_schema_extra={
             'example': {
                 'session_token': 'SEWqY5cvkISJOxHyEKjAKf8w',
+                'operator_id': 'OPWqY5cvkISJOxHyEKjAKf8w',
+                'role': 'authorizer',
+                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
             }
         },
     )
