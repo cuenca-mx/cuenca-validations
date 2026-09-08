@@ -745,3 +745,4 @@ class RequiredAction(str, Enum):
     level_up_required = 'level_up_required'
     level_up_invitation = 'level_up_invitation'
     fix_documents = 'fix_documents'
+    wait_validation = 'wait_validation'
