@@ -755,4 +755,4 @@ class OperatorRole(str, Enum):
 
 class OperatorStatus(str, Enum):
     active = 'active'
-    disabled = 'disabled'
+    deactivated = 'deactivated'

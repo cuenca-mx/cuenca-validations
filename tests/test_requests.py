@@ -5,13 +5,11 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from cuenca_validations.types.enums import (
     Country,
     OperatorRole,
-    OperatorStatus,
     VerificationType,
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
     OperatorLoginRequest,
-    OperatorLoginResponse,
     OperatorRequest,
     OperatorUpdateRequest,
     PasswordResetRequest,
@@ -28,11 +26,10 @@ def test_operator_request_valid() -> None:
         name='Maria Lopez',
         email='Maria+Tag@Aceros.com',
         phone=PhoneNumber('+525512345678'),
-        company_user_id='USWqY5cvkISJOxHyEKjAKf8w',
+        legal_person_id='USWqY5cvkISJOxHyEKjAKf8w',
         role=OperatorRole.operator,
     )
     assert req.email == 'maria@aceros.com'
-    assert req.status == OperatorStatus.active
 
 
 def test_operator_request_rejects_invalid_role() -> None:
@@ -42,7 +39,7 @@ def test_operator_request_rejects_invalid_role() -> None:
                 'name': 'Maria Lopez',
                 'email': 'maria@aceros.com',
                 'phone': '+525512345678',
-                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'legal_person_id': 'USWqY5cvkISJOxHyEKjAKf8w',
                 'role': 'admin',
             }
         )
@@ -91,19 +88,6 @@ def test_operator_login_request_forbids_extra() -> None:
             }
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
-
-
-def test_operator_login_response_valid() -> None:
-    resp = OperatorLoginResponse(
-        session_token='SEWqY5cvkISJOxHyEKjAKf8w',
-        operator_id='OPWqY5cvkISJOxHyEKjAKf8w',
-        role=OperatorRole.authorizer,
-        company_user_id='USWqY5cvkISJOxHyEKjAKf8w',
-    )
-    assert resp.session_token == 'SEWqY5cvkISJOxHyEKjAKf8w'
-    assert resp.operator_id == 'OPWqY5cvkISJOxHyEKjAKf8w'
-    assert resp.role == OperatorRole.authorizer
-    assert resp.company_user_id == 'USWqY5cvkISJOxHyEKjAKf8w'
 
 
 def test_operator_query_valid() -> None:

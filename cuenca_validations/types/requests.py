@@ -905,9 +905,8 @@ class OperatorRequest(BaseRequest):
     name: str
     email: EmailStr
     phone: PhoneNumber
-    company_user_id: str
+    legal_person_id: str
     role: OperatorRole
-    status: OperatorStatus = OperatorStatus.active
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -915,7 +914,7 @@ class OperatorRequest(BaseRequest):
                 'name': 'Maria Lopez',
                 'email': 'maria.lopez@aceros.com',
                 'phone': '+525512345678',
-                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'legal_person_id': 'USWqY5cvkISJOxHyEKjAKf8w',
                 'role': 'operator',
             }
         },
@@ -958,24 +957,6 @@ class OperatorLoginRequest(BaseRequest):
     @classmethod
     def validate_email(cls, email: str) -> str:
         return normalize_email(email)
-
-
-class OperatorLoginResponse(BaseModel):
-    session_token: str
-    operator_id: str
-    role: OperatorRole
-    company_user_id: str
-
-    model_config = ConfigDict(
-        json_schema_extra={
-            'example': {
-                'session_token': 'SEWqY5cvkISJOxHyEKjAKf8w',
-                'operator_id': 'OPWqY5cvkISJOxHyEKjAKf8w',
-                'role': 'authorizer',
-                'company_user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
-            }
-        },
-    )
 
 
 class PhoneVerificationAssociationRequest(BaseRequest):
