@@ -746,3 +746,13 @@ class RequiredAction(str, Enum):
     level_up_invitation = 'level_up_invitation'
     fix_documents = 'fix_documents'
     wait_validation = 'wait_validation'
+
+
+class OperatorRole(str, Enum):
+    operator = 'operator'
+    authorizer = 'authorizer'
+
+
+class OperatorStatus(str, Enum):
+    active = 'active'
+    deactivated = 'deactivated'
