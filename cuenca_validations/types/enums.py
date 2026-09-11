@@ -748,6 +748,11 @@ class RequiredAction(str, Enum):
     wait_validation = 'wait_validation'
 
 
+class AccountValidationStatus(str, Enum):
+    verified = 'verified'
+    pending = 'pending'
+
+
 class OperatorRole(str, Enum):
     operator = 'operator'
     authorizer = 'authorizer'
