@@ -3,12 +3,15 @@ from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from cuenca_validations.types.enums import (
+    AccountValidationStatus,
     Country,
     OperatorRole,
     VerificationType,
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
+    AccountRequest,
+    AccountUpdateRequest,
     OperatorLoginRequest,
     OperatorRequest,
     OperatorUpdateRequest,
@@ -19,6 +22,27 @@ from cuenca_validations.types.requests import (
     VerificationRequest,
 )
 from cuenca_validations.typing import DictStrAny
+
+
+def test_account_request_valid() -> None:
+    req = AccountRequest.model_validate(
+        {
+            'name': 'Aceros del Norte SA de CV',
+            'account_number': '072691004495711499',
+            'alias': 'Proveedor acero',
+        }
+    )
+    assert req.name == 'Aceros del Norte SA de CV'
+    assert req.alias == 'Proveedor acero'
+
+
+def test_account_update_request_valid() -> None:
+    req = AccountUpdateRequest(
+        alias='Fletes',
+        validation_status=AccountValidationStatus.verified,
+    )
+    assert req.alias == 'Fletes'
+    assert req.validation_status == AccountValidationStatus.verified
 
 
 def test_operator_request_valid() -> None:
