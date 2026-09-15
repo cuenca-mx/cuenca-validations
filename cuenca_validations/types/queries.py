@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Optional
+from typing import Annotated, Optional, Union
 
 from clabe import Clabe
 from pydantic import (
@@ -28,7 +28,7 @@ from .enums import (
     UserStatus,
 )
 from .general import NormalizedName
-from .identities import Curp
+from .identities import Curp, Rfc
 
 MAX_PAGE_SIZE = 100
 
@@ -207,7 +207,7 @@ class FileQuery(QueryParams):
 
 
 class ClabeQuery(QueryParams):
-    allowed_curp_rfc: str
+    allowed_curp_rfc: Union[Curp, Rfc]
 
 
 class BankAccountValidationQuery(QueryParams):
