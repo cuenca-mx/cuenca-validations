@@ -993,5 +993,19 @@ class OperatorLoginRequest(BaseRequest):
         return normalize_email(email)
 
 
+class ReferencedClabeRequest(BaseRequest):
+    legal_person_id: str
+    allowed_curp_rfc: Union[Curp, Rfc]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'legal_person_id': 'USbIRH85qFQP5ggPKKQAu5PA',
+                'allowed_curp_rfc': 'LOPJ900101XXX',
+            }
+        },
+    )
+
+
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str

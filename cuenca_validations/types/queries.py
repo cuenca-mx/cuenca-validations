@@ -206,6 +206,10 @@ class FileQuery(QueryParams):
     id: Optional[str] = None
 
 
+class ClabeQuery(QueryParams):
+    allowed_curp_rfc: str
+
+
 class BankAccountValidationQuery(QueryParams):
     account_number: Optional[str] = None
     status: Optional[BankAccountStatus] = None
