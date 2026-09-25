@@ -993,6 +993,56 @@ class OperatorLoginRequest(BaseRequest):
         return normalize_email(email)
 
 
+class OperatorLoginUpdateRequest(BaseRequest):
+    """Complete operator login by verifying the emailed OTP code."""
+
+    code: StrictStr
+
+    model_config = ConfigDict(
+        json_schema_extra={'example': {'code': '123456'}},
+    )
+
+
+class OperatorLoginResponse(BaseModel):
+    """POST /operator-logins response (OTP challenge pending)."""
+
+    id: str
+    operator_id: str
+    expires_at: dt.datetime
+    email_hint: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'id': 'OLWqY5cvkISJOxHyEKjAKf8w',
+                'operator_id': 'OPWqY5cvkISJOxHyEKjAKf8w',
+                'expires_at': '2026-09-21T20:15:22Z',
+                'email_hint': 'ma****@aceros.com',
+            }
+        },
+    )
+
+
+class OperatorLoginSessionResponse(BaseModel):
+    """PATCH /operator-logins/{id} response (session after OTP)."""
+
+    id: str
+    operator_id: str
+    role: OperatorRole
+    legal_person_id: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'id': 'SEWqY5cvkISJOxHyEKjAKf8w',
+                'operator_id': 'OPWqY5cvkISJOxHyEKjAKf8w',
+                'role': 'authorizer',
+                'legal_person_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+            }
+        },
+    )
+
+
 class ReferencedClabeRequest(BaseRequest):
     legal_person_id: str
     allowed_curp_rfc: Union[Curp, Rfc]
