@@ -1009,3 +1009,103 @@ class ReferencedClabeRequest(BaseRequest):
 
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
+
+
+MAX_TRANSFER_ORDER_BATCH_LINES = 5000
+MAX_TRANSFER_ORDER_EXPIRATION_HOURS = 24 * 7
+
+
+class TransferOrderLineRequest(BaseRequest):
+    account_number: str = Field(description='Destination CLABE')
+    recipient_name: str
+    amount: int = Field(description='Always in cents, not in MXN pesos')
+    descriptor: str = Field(description='Short description for the recipient')
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'account_number': '646180157034181180',
+                'recipient_name': 'Doroteo Arango',
+                'amount': 100_00,
+                'descriptor': 'Mezcal, pulque y tequila',
+            }
+        },
+    )
+
+
+class TransferOrderRequest(BaseRequest):
+    account_number: Optional[str] = Field(
+        None, description='Destination CLABE for a single transfer'
+    )
+    recipient_name: Optional[str] = None
+    amount: Optional[int] = Field(
+        None, description='Always in cents, not in MXN pesos'
+    )
+    descriptor: Optional[str] = Field(
+        None, description='Short description for the recipient'
+    )
+    idempotency_key: str = Field(
+        description='Custom Id, must be unique for each transfer order'
+    )
+    user_id: Optional[str] = Field(
+        None, description='Source user to take the funds'
+    )
+    items: Optional[list[TransferOrderLineRequest]] = Field(
+        None, description='Batch lines. Omit for a single transfer'
+    )
+    expires_in_hours: Optional[int] = Field(
+        default=None,
+        gt=0,
+        le=MAX_TRANSFER_ORDER_EXPIRATION_HOURS,
+        description='Hours until the order expires. Default is set by oaxaca',
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'account_number': '646180157034181180',
+                'recipient_name': 'Doroteo Arango',
+                'amount': 100_00,
+                'descriptor': 'Mezcal, pulque y tequila',
+                'idempotency_key': 'UNIQUE-KEY-003',
+                'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+            }
+        },
+    )
+
+    @model_validator(mode='after')
+    def require_unitario_or_batch(self) -> 'TransferOrderRequest':
+        has_items = bool(self.items)
+        has_flat = all(
+            (
+                self.account_number is not None,
+                self.recipient_name is not None,
+                self.amount is not None,
+                self.descriptor is not None,
+            )
+        )
+        if has_items == has_flat:
+            raise ValueError(
+                'Provide either a single transfer (account_number, '
+                'recipient_name, amount, descriptor) or items[] for a batch, '
+                'not both'
+            )
+        if self.items is not None:
+            if len(self.items) > MAX_TRANSFER_ORDER_BATCH_LINES:
+                raise ValueError(
+                    'Batch exceeds maximum of '
+                    f'{MAX_TRANSFER_ORDER_BATCH_LINES} lines'
+                )
+            if len(self.items) == 0:
+                raise ValueError('items must not be empty')
+        return self
+
+
+class RejectTransferOrderRequest(BaseRequest):
+    rejection_reason: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {'rejection_reason': 'Monto incorrecto'},
+        },
+    )
