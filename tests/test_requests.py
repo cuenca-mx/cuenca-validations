@@ -9,10 +9,12 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
+    MAX_TRANSFER_ORDER_BATCH_LINES,
     OperatorLoginRequest,
     OperatorRequest,
     OperatorUpdateRequest,
     PasswordResetRequest,
+    TransferOrderRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
@@ -218,3 +220,36 @@ def test_update_transfer_request_forbids_extra() -> None:
             {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_transfer_order_request_shape() -> None:
+    line = {
+        'account_number': '646180157034181180',
+        'recipient_name': 'Doroteo Arango',
+        'amount': 100_00,
+        'descriptor': 'Mezcal',
+    }
+    single = TransferOrderRequest.model_validate(
+        {**line, 'idempotency_key': 'single'}
+    )
+    assert single.items is None
+    batch = TransferOrderRequest.model_validate(
+        {'idempotency_key': 'batch', 'items': [line]}
+    )
+    assert batch.items is not None
+
+    with pytest.raises(ValidationError, match='not both'):
+        TransferOrderRequest.model_validate(
+            {**line, 'idempotency_key': 'both', 'items': [line]}
+        )
+    with pytest.raises(ValidationError, match='items must not be empty'):
+        TransferOrderRequest.model_validate(
+            {**line, 'idempotency_key': 'empty', 'items': []}
+        )
+    with pytest.raises(ValidationError, match='Batch exceeds maximum'):
+        TransferOrderRequest.model_validate(
+            {
+                'idempotency_key': 'too-many',
+                'items': [line] * (MAX_TRANSFER_ORDER_BATCH_LINES + 1),
+            }
+        )

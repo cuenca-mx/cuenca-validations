@@ -1009,3 +1009,90 @@ class ReferencedClabeRequest(BaseRequest):
 
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
+
+
+MAX_TRANSFER_ORDER_BATCH_LINES = 5000
+MAX_TRANSFER_ORDER_EXPIRATION_HOURS = 24 * 7
+
+
+class TransferOrderLineRequest(BaseRequest):
+    account_number: str
+    recipient_name: str
+    amount: int
+    descriptor: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'account_number': '646180157034181180',
+                'recipient_name': 'Doroteo Arango',
+                'amount': 100_00,
+                'descriptor': 'Mezcal, pulque y tequila',
+            }
+        },
+    )
+
+
+class TransferOrderRequest(BaseRequest):
+    account_number: Optional[str] = None
+    recipient_name: Optional[str] = None
+    amount: Optional[int] = None
+    descriptor: Optional[str] = None
+    idempotency_key: str
+    user_id: Optional[str] = None
+    items: Optional[list[TransferOrderLineRequest]] = None
+    expires_in_hours: Optional[int] = Field(
+        default=None,
+        gt=0,
+        le=MAX_TRANSFER_ORDER_EXPIRATION_HOURS,
+    )
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'account_number': '646180157034181180',
+                'recipient_name': 'Doroteo Arango',
+                'amount': 100_00,
+                'descriptor': 'Mezcal, pulque y tequila',
+                'idempotency_key': 'UNIQUE-KEY-003',
+                'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+            }
+        },
+    )
+
+    @model_validator(mode='after')
+    def require_unitario_or_batch(self) -> 'TransferOrderRequest':
+        has_items = bool(self.items)
+        has_flat = all(
+            (
+                self.account_number is not None,
+                self.recipient_name is not None,
+                self.amount is not None,
+                self.descriptor is not None,
+            )
+        )
+        if has_items == has_flat:
+            raise ValueError(
+                'Provide either a single transfer (account_number, '
+                'recipient_name, amount, descriptor) or items[] for a batch, '
+                'not both'
+            )
+        if self.items is not None:
+            if len(self.items) > MAX_TRANSFER_ORDER_BATCH_LINES:
+                raise ValueError(
+                    'Batch exceeds maximum of '
+                    f'{MAX_TRANSFER_ORDER_BATCH_LINES} lines'
+                )
+            if len(self.items) == 0:
+                raise ValueError('items must not be empty')
+        return self
+
+
+class RejectTransferOrderRequest(BaseRequest):
+    rejection_reason: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {'rejection_reason': 'Monto incorrecto'},
+        },
+    )
