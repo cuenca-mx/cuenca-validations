@@ -1,5 +1,3 @@
-import datetime as dt
-
 import pytest
 from pydantic import ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
@@ -12,8 +10,6 @@ from cuenca_validations.types.enums import (
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
     OperatorLoginRequest,
-    OperatorLoginResponse,
-    OperatorLoginSessionResponse,
     OperatorLoginUpdateRequest,
     OperatorRequest,
     OperatorUpdateRequest,
@@ -106,28 +102,6 @@ def test_operator_login_update_request_forbids_extra() -> None:
             {'code': '123456', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
-
-
-def test_operator_login_response_valid() -> None:
-    resp = OperatorLoginResponse(
-        id='OLWqY5cvkISJOxHyEKjAKf8w',
-        operator_id='OPWqY5cvkISJOxHyEKjAKf8w',
-        expires_at=dt.datetime(2026, 9, 21, 20, 15, 22),
-        email_hint='ma****@aceros.com',
-    )
-    assert resp.id == 'OLWqY5cvkISJOxHyEKjAKf8w'
-    assert resp.email_hint == 'ma****@aceros.com'
-
-
-def test_operator_login_session_response_valid() -> None:
-    resp = OperatorLoginSessionResponse(
-        id='SEWqY5cvkISJOxHyEKjAKf8w',
-        operator_id='OPWqY5cvkISJOxHyEKjAKf8w',
-        role=OperatorRole.authorizer,
-        legal_person_id='USWqY5cvkISJOxHyEKjAKf8w',
-    )
-    assert resp.id == 'SEWqY5cvkISJOxHyEKjAKf8w'
-    assert resp.role == OperatorRole.authorizer
 
 
 def test_operator_query_valid() -> None:
