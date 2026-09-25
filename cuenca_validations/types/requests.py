@@ -1016,10 +1016,10 @@ MAX_TRANSFER_ORDER_EXPIRATION_HOURS = 24 * 7
 
 
 class TransferOrderLineRequest(BaseRequest):
-    account_number: str = Field(description='Destination CLABE')
+    account_number: str
     recipient_name: str
-    amount: int = Field(description='Always in cents, not in MXN pesos')
-    descriptor: str = Field(description='Short description for the recipient')
+    amount: int
+    descriptor: str
 
     model_config = ConfigDict(
         json_schema_extra={
@@ -1034,30 +1034,17 @@ class TransferOrderLineRequest(BaseRequest):
 
 
 class TransferOrderRequest(BaseRequest):
-    account_number: Optional[str] = Field(
-        None, description='Destination CLABE for a single transfer'
-    )
+    account_number: Optional[str] = None
     recipient_name: Optional[str] = None
-    amount: Optional[int] = Field(
-        None, description='Always in cents, not in MXN pesos'
-    )
-    descriptor: Optional[str] = Field(
-        None, description='Short description for the recipient'
-    )
-    idempotency_key: str = Field(
-        description='Custom Id, must be unique for each transfer order'
-    )
-    user_id: Optional[str] = Field(
-        None, description='Source user to take the funds'
-    )
-    items: Optional[list[TransferOrderLineRequest]] = Field(
-        None, description='Batch lines. Omit for a single transfer'
-    )
+    amount: Optional[int] = None
+    descriptor: Optional[str] = None
+    idempotency_key: str
+    user_id: Optional[str] = None
+    items: Optional[list[TransferOrderLineRequest]] = None
     expires_in_hours: Optional[int] = Field(
         default=None,
         gt=0,
         le=MAX_TRANSFER_ORDER_EXPIRATION_HOURS,
-        description='Hours until the order expires. Default is set by oaxaca',
     )
 
     model_config = ConfigDict(
