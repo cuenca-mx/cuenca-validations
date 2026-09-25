@@ -25,6 +25,7 @@ from .enums import (
     SessionType,
     TermsOfService,
     TransferNetwork,
+    TransferOrderStatus,
     UserStatus,
 )
 from .general import NormalizedName
@@ -233,3 +234,10 @@ class TOSQuery(QueryParams):
 
 class UsersTOSQuery(QueryParams):
     type: TermsOfService
+
+
+class TransferOrderQuery(QueryParams):
+    status: Optional[TransferOrderStatus] = Field(
+        None,
+        description='Filter transfer orders by status',
+    )
