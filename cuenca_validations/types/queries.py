@@ -237,7 +237,4 @@ class UsersTOSQuery(QueryParams):
 
 
 class TransferOrderQuery(QueryParams):
-    status: Optional[TransferOrderStatus] = Field(
-        None,
-        description='Filter transfer orders by status',
-    )
+    status: Optional[TransferOrderStatus] = None
