@@ -994,8 +994,6 @@ class OperatorLoginRequest(BaseRequest):
 
 
 class OperatorLoginUpdateRequest(BaseRequest):
-    """Complete operator login by verifying the emailed OTP code."""
-
     code: StrictStr
 
     model_config = ConfigDict(
