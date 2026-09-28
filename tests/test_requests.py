@@ -10,6 +10,7 @@ from cuenca_validations.types.enums import (
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
     OperatorLoginRequest,
+    OperatorLoginUpdateRequest,
     OperatorRequest,
     OperatorUpdateRequest,
     PasswordResetRequest,
@@ -86,6 +87,19 @@ def test_operator_login_request_forbids_extra() -> None:
                 'password': 'supersecret',
                 'foo': 'bar',
             }
+        )
+    assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_operator_login_update_request_valid() -> None:
+    req = OperatorLoginUpdateRequest.model_validate({'code': '123456'})
+    assert req.code == '123456'
+
+
+def test_operator_login_update_request_forbids_extra() -> None:
+    with pytest.raises(ValidationError) as ex:
+        OperatorLoginUpdateRequest.model_validate(
+            {'code': '123456', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
 

@@ -993,6 +993,16 @@ class OperatorLoginRequest(BaseRequest):
         return normalize_email(email)
 
 
+class OperatorLoginUpdateRequest(BaseRequest):
+    """Complete operator login by verifying the emailed OTP code."""
+
+    code: StrictStr
+
+    model_config = ConfigDict(
+        json_schema_extra={'example': {'code': '123456'}},
+    )
+
+
 class ReferencedClabeRequest(BaseRequest):
     legal_person_id: str
     allowed_curp_rfc: Union[Curp, Rfc]
