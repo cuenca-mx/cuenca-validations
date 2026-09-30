@@ -1049,7 +1049,7 @@ class TransferOrderRequest(BaseRequest):
     amount: Optional[int] = None
     descriptor: Optional[str] = None
     idempotency_key: str
-    user_id: Optional[str] = None
+    legal_person_id: Optional[str] = None
     items: Optional[list[TransferOrderLineRequest]] = None
     expires_in_hours: Optional[int] = Field(
         default=None,
@@ -1065,7 +1065,7 @@ class TransferOrderRequest(BaseRequest):
                 'amount': 100_00,
                 'descriptor': 'Mezcal, pulque y tequila',
                 'idempotency_key': 'UNIQUE-KEY-003',
-                'user_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'legal_person_id': 'USWqY5cvkISJOxHyEKjAKf8w',
             }
         },
     )

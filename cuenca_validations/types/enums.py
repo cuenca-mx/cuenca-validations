@@ -768,9 +768,3 @@ class TransferOrderStatus(str, Enum):
     authorized = 'authorized'
     rejected = 'rejected'
     expired = 'expired'
-
-
-class TransferOrderLineStatus(str, Enum):
-    pending = 'pending'
-    invalid = 'invalid'
-    submitted = 'submitted'
