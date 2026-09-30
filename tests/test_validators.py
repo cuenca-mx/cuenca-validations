@@ -3,6 +3,7 @@ import pytest
 from cuenca_validations.validators import (
     normalize_email,
     normalize_name,
+    normalize_operator_email,
     normalize_phone_number,
 )
 
@@ -19,6 +20,18 @@ from cuenca_validations.validators import (
 )
 def test_normalize_email(raw: str, normalized: str) -> None:
     assert normalize_email(raw) == normalized
+
+
+@pytest.mark.parametrize(
+    'raw, normalized',
+    [
+        ('Ops+Cobranza@Empresa.MX', 'ops+cobranza@empresa.mx'),  # keep tag
+        ('  ops@empresa.mx \n', 'ops@empresa.mx'),  # surrounding whitespace
+        ('ops@empresa.mx', 'ops@empresa.mx'),  # already normalized
+    ],
+)
+def test_normalize_operator_email(raw: str, normalized: str) -> None:
+    assert normalize_operator_email(raw) == normalized
 
 
 @pytest.mark.parametrize(
