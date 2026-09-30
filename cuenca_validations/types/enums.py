@@ -765,7 +765,6 @@ class OperatorStatus(str, Enum):
 
 class TransferOrderStatus(str, Enum):
     created = 'created'
-    authorizing = 'authorizing'
     authorized = 'authorized'
     rejected = 'rejected'
     expired = 'expired'
