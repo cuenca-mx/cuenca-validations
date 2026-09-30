@@ -18,7 +18,6 @@ from pydantic_extra_types.coordinate import Coordinate
 
 from ..types.enums import (
     AccountUseType,
-    AccountValidationStatus,
     AuthorizerTransaction,
     CardDesign,
     CardFundingType,
@@ -759,13 +758,15 @@ class AccountRequest(BaseRequest):
 class AccountUpdateRequest(BaseRequest):
     name: Optional[StrictStr] = None
     alias: Optional[StrictStr] = None
-    validation_status: Optional[AccountValidationStatus] = None
 
+    # validation_status is intentionally not part of this request: it is
+    # read-only for API clients and is only set by the platform after a
+    # successful verification transfer.
     model_config = ConfigDict(
+        extra='forbid',
         json_schema_extra={
             'example': {
                 'alias': 'Fletes',
-                'validation_status': 'verified',
             }
         },
     )
