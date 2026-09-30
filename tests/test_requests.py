@@ -1,5 +1,5 @@
 import pytest
-from pydantic import ValidationError
+from pydantic import SecretStr, ValidationError
 from pydantic_extra_types.phone_numbers import PhoneNumber
 
 from cuenca_validations.types.enums import (
@@ -30,7 +30,7 @@ def test_operator_request_valid() -> None:
         legal_person_id='USWqY5cvkISJOxHyEKjAKf8w',
         role=OperatorRole.operator,
     )
-    assert req.email == 'maria@aceros.com'
+    assert req.email == 'maria+tag@aceros.com'
 
 
 def test_operator_request_rejects_invalid_role() -> None:
@@ -65,7 +65,14 @@ def test_operator_login_request_valid() -> None:
             'password': 'supersecret',
         }
     )
-    assert req.email == 'operator@aceros.com'
+    assert req.email == 'operator+tag@aceros.com'
+
+
+def test_operator_login_request_keeps_plus_label() -> None:
+    req = OperatorLoginRequest(
+        email='Maria+Ops@Aceros.com', password=SecretStr('supersecret')
+    )
+    assert req.email == 'maria+ops@aceros.com'
 
 
 def test_operator_login_request_rejects_short_password() -> None:

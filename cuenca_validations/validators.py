@@ -20,6 +20,21 @@ def normalize_email(email: str) -> str:
     return f'{local.split("+")[0]}@{domain}'.lower()
 
 
+def normalize_operator_email(email: str) -> str:
+    """Trim and lowercase an operator email, preserving plus labels.
+
+    Operators use corporate mailboxes where plus-addressing is not
+    guaranteed to be an alias: ops+cobranza@empresa.mx may be a different
+    mailbox than ops@empresa.mx. Stripping the label would send
+    invitations and OTPs to the wrong address and make distinct operators
+    collide on the unique email, so only whitespace and case are
+    normalized.
+
+    Ops+Cobranza@Empresa.MX -> ops+cobranza@empresa.mx
+    """
+    return email.strip().lower()
+
+
 def normalize_phone_number(phone_number: str) -> str:
     """Sanitize and normalize phone numbers to E.164 format.
 

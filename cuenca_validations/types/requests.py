@@ -60,7 +60,11 @@ from ..types.enums import (
     WebhookObject,
 )
 from ..typing import DictStrAny
-from ..validators import normalize_email, normalize_phone_number
+from ..validators import (
+    normalize_email,
+    normalize_operator_email,
+    normalize_phone_number,
+)
 from .card import (
     Cvv,
     ExpMonth,
@@ -957,7 +961,7 @@ class OperatorRequest(BaseRequest):
     @field_validator('email', mode='before')
     @classmethod
     def validate_email(cls, email: str) -> str:
-        return normalize_email(email)
+        return normalize_operator_email(email)
 
 
 class OperatorUpdateRequest(BaseRequest):
@@ -990,7 +994,7 @@ class OperatorLoginRequest(BaseRequest):
     @field_validator('email', mode='before')
     @classmethod
     def validate_email(cls, email: str) -> str:
-        return normalize_email(email)
+        return normalize_operator_email(email)
 
 
 class OperatorLoginUpdateRequest(BaseRequest):
