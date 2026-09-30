@@ -9,6 +9,7 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
+    AccountUpdateRequest,
     OperatorLoginRequest,
     OperatorLoginUpdateRequest,
     OperatorRequest,
@@ -232,3 +233,18 @@ def test_update_transfer_request_forbids_extra() -> None:
             {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_account_update_request_rejects_validation_status() -> None:
+    with pytest.raises(ValidationError) as ex:
+        AccountUpdateRequest.model_validate(
+            {'alias': 'Fletes', 'validation_status': 'verified'}
+        )
+    assert 'validation_status' in str(ex.value)
+
+
+def test_account_update_request_alias_only() -> None:
+    req = AccountUpdateRequest(alias='Fletes')
+    assert req.alias == 'Fletes'
+    assert req.model_dump() == {'alias': 'Fletes'}
+    assert 'validation_status' not in AccountUpdateRequest.model_fields
