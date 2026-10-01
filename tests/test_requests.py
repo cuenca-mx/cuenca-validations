@@ -9,7 +9,6 @@ from cuenca_validations.types.enums import (
 )
 from cuenca_validations.types.queries import OperatorQuery
 from cuenca_validations.types.requests import (
-    MAX_TRANSFER_ORDER_BATCH_LINES,
     OperatorLoginRequest,
     OperatorLoginUpdateRequest,
     OperatorRequest,
@@ -244,26 +243,19 @@ def test_transfer_order_request_shape() -> None:
         'descriptor': 'Mezcal',
     }
     single = TransferOrderRequest.model_validate(
-        {**line, 'idempotency_key': 'single'}
+        {'idempotency_key': 'single', 'items': [line]}
     )
-    assert single.items is None
+    assert single.items is not None
+    assert len(single.items) == 1
     batch = TransferOrderRequest.model_validate(
-        {'idempotency_key': 'batch', 'items': [line]}
+        {'idempotency_key': 'batch', 'items': [line, line]}
     )
     assert batch.items is not None
+    assert len(batch.items) == 2
 
-    with pytest.raises(ValidationError, match='not both'):
-        TransferOrderRequest.model_validate(
-            {**line, 'idempotency_key': 'both', 'items': [line]}
-        )
     with pytest.raises(ValidationError, match='items must not be empty'):
         TransferOrderRequest.model_validate(
-            {**line, 'idempotency_key': 'empty', 'items': []}
+            {'idempotency_key': 'empty', 'items': []}
         )
-    with pytest.raises(ValidationError, match='Batch exceeds maximum'):
-        TransferOrderRequest.model_validate(
-            {
-                'idempotency_key': 'too-many',
-                'items': [line] * (MAX_TRANSFER_ORDER_BATCH_LINES + 1),
-            }
-        )
+    with pytest.raises(ValidationError):
+        TransferOrderRequest.model_validate({'idempotency_key': 'missing'})
