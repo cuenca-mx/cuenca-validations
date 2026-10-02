@@ -14,6 +14,7 @@ from cuenca_validations.types.requests import (
     OperatorRequest,
     OperatorUpdateRequest,
     PasswordResetRequest,
+    TransferOrderRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
@@ -232,3 +233,29 @@ def test_update_transfer_request_forbids_extra() -> None:
             {'status': 'succeeded', 'foo': 'bar'}
         )
     assert 'Extra inputs are not permitted' in str(ex.value)
+
+
+def test_transfer_order_request_shape() -> None:
+    line = {
+        'account_number': '646180157034181180',
+        'recipient_name': 'Doroteo Arango',
+        'amount': 100_00,
+        'descriptor': 'Mezcal',
+    }
+    single = TransferOrderRequest.model_validate(
+        {'idempotency_key': 'single', 'items': [line]}
+    )
+    assert single.items is not None
+    assert len(single.items) == 1
+    batch = TransferOrderRequest.model_validate(
+        {'idempotency_key': 'batch', 'items': [line, line]}
+    )
+    assert batch.items is not None
+    assert len(batch.items) == 2
+
+    with pytest.raises(ValidationError, match='items must not be empty'):
+        TransferOrderRequest.model_validate(
+            {'idempotency_key': 'empty', 'items': []}
+        )
+    with pytest.raises(ValidationError):
+        TransferOrderRequest.model_validate({'idempotency_key': 'missing'})

@@ -761,3 +761,10 @@ class OperatorRole(str, Enum):
 class OperatorStatus(str, Enum):
     active = 'active'
     deactivated = 'deactivated'
+
+
+class TransferOrderStatus(str, Enum):
+    created = 'created'
+    authorized = 'authorized'
+    rejected = 'rejected'
+    expired = 'expired'

@@ -1019,3 +1019,60 @@ class ReferencedClabeRequest(BaseRequest):
 
 class PhoneVerificationAssociationRequest(BaseRequest):
     verification_id: str
+
+
+class TransferOrderLineRequest(BaseRequest):
+    account_number: str
+    recipient_name: str
+    amount: int
+    descriptor: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'account_number': '646180157034181180',
+                'recipient_name': 'Doroteo Arango',
+                'amount': 100_00,
+                'descriptor': 'Mezcal, pulque y tequila',
+            }
+        },
+    )
+
+
+class TransferOrderRequest(BaseRequest):
+    idempotency_key: str
+    legal_person_id: Optional[str] = None
+    items: list[TransferOrderLineRequest]
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {
+                'idempotency_key': 'UNIQUE-KEY-003',
+                'legal_person_id': 'USWqY5cvkISJOxHyEKjAKf8w',
+                'items': [
+                    {
+                        'account_number': '646180157034181180',
+                        'recipient_name': 'Doroteo Arango',
+                        'amount': 100_00,
+                        'descriptor': 'Mezcal, pulque y tequila',
+                    }
+                ],
+            }
+        },
+    )
+
+    @model_validator(mode='after')
+    def validate_items(self) -> 'TransferOrderRequest':
+        if len(self.items) == 0:
+            raise ValueError('items must not be empty')
+        return self
+
+
+class RejectTransferOrderRequest(BaseRequest):
+    rejection_reason: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            'example': {'rejection_reason': 'Monto incorrecto'},
+        },
+    )
