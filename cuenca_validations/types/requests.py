@@ -1,5 +1,5 @@
 import datetime as dt
-from typing import Annotated, Any, Optional, Union
+from typing import Annotated, Any, Literal, Optional, Union
 
 from clabe import BANK_NAMES, Clabe
 from pydantic import (
@@ -50,6 +50,7 @@ from ..types.enums import (
     TrackDataMethod,
     TransactionStatus,
     TransactionTokenValidationStatus,
+    TransferOrderStatus,
     UserCardNotification,
     UserStatus,
     VerificationStatus,
@@ -1068,11 +1069,34 @@ class TransferOrderRequest(BaseRequest):
         return self
 
 
-class RejectTransferOrderRequest(BaseRequest):
-    rejection_reason: str
+class UpdateTransferOrderRequest(BaseRequest):
+    status: Literal[
+        TransferOrderStatus.authorized, TransferOrderStatus.rejected
+    ]
+    rejection_reason: Optional[str] = None
 
     model_config = ConfigDict(
         json_schema_extra={
-            'example': {'rejection_reason': 'Monto incorrecto'},
+            'examples': [
+                {'status': 'authorized'},
+                {
+                    'status': 'rejected',
+                    'rejection_reason': 'Monto incorrecto',
+                },
+            ]
         },
     )
+
+    @model_validator(mode='after')
+    def validate_rejection_reason(self) -> 'UpdateTransferOrderRequest':
+        if self.status is TransferOrderStatus.rejected:
+            if (
+                self.rejection_reason is None
+                or not self.rejection_reason.strip()
+            ):
+                raise ValueError('rejection_reason is required')
+        elif self.rejection_reason is not None:
+            raise ValueError(
+                'rejection_reason is only allowed when status is rejected'
+            )
+        return self
