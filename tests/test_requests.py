@@ -5,6 +5,7 @@ from pydantic_extra_types.phone_numbers import PhoneNumber
 from cuenca_validations.types.enums import (
     Country,
     OperatorRole,
+    TransferOrderStatus,
     VerificationType,
 )
 from cuenca_validations.types.queries import OperatorQuery
@@ -15,6 +16,7 @@ from cuenca_validations.types.requests import (
     OperatorUpdateRequest,
     PasswordResetRequest,
     TransferOrderRequest,
+    UpdateTransferOrderRequest,
     UpdateTransferRequest,
     UserTOSAgreementRequest,
     UserUpdateRequest,
@@ -259,3 +261,57 @@ def test_transfer_order_request_shape() -> None:
         )
     with pytest.raises(ValidationError):
         TransferOrderRequest.model_validate({'idempotency_key': 'missing'})
+
+
+def test_update_transfer_order_request_authorized() -> None:
+    req = UpdateTransferOrderRequest.model_validate({'status': 'authorized'})
+    assert req.status is TransferOrderStatus.authorized
+    assert req.rejection_reason is None
+
+
+def test_update_transfer_order_request_rejected() -> None:
+    req = UpdateTransferOrderRequest.model_validate(
+        {'status': 'rejected', 'rejection_reason': 'Monto incorrecto'}
+    )
+    assert req.status is TransferOrderStatus.rejected
+    assert req.rejection_reason == 'Monto incorrecto'
+
+
+def test_update_transfer_order_request_rejected_requires_reason() -> None:
+    with pytest.raises(ValidationError, match='rejection_reason is required'):
+        UpdateTransferOrderRequest.model_validate({'status': 'rejected'})
+    with pytest.raises(ValidationError, match='rejection_reason is required'):
+        UpdateTransferOrderRequest.model_validate(
+            {'status': 'rejected', 'rejection_reason': ''}
+        )
+    with pytest.raises(ValidationError, match='rejection_reason is required'):
+        UpdateTransferOrderRequest.model_validate(
+            {'status': 'rejected', 'rejection_reason': '   '}
+        )
+
+
+def test_update_transfer_order_request_authorized_forbids_reason() -> None:
+    with pytest.raises(
+        ValidationError,
+        match='rejection_reason is only allowed when status is rejected',
+    ):
+        UpdateTransferOrderRequest.model_validate(
+            {'status': 'authorized', 'rejection_reason': 'no'}
+        )
+
+
+def test_update_transfer_order_request_rejects_invalid_status() -> None:
+    with pytest.raises(ValidationError):
+        UpdateTransferOrderRequest.model_validate({'status': 'created'})
+    with pytest.raises(ValidationError):
+        UpdateTransferOrderRequest.model_validate({'status': 'expired'})
+    with pytest.raises(ValidationError):
+        UpdateTransferOrderRequest.model_validate({})
+
+
+def test_update_transfer_order_request_forbids_extra() -> None:
+    with pytest.raises(ValidationError) as ex:
+        UpdateTransferOrderRequest.model_validate(
+            {'status': 'authorized', 'operator_id': 'OP123'}
+        )
+    assert 'Extra inputs are not permitted' in str(ex.value)
